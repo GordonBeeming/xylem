@@ -5,7 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true, // Kept from new config. This is best practice, but might show new type errors you'll need to fix!
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

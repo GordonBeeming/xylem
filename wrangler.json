@@ -4,9 +4,9 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "cold-darkness-55ac",
+	"name": "xylem",
 	"main": ".open-next/worker.js",
-	"compatibility_date": "2025-04-01",
+	"compatibility_date": "2025-05-02",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],

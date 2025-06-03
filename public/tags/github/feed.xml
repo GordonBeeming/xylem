@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>Xylem</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect • Microsoft MVP</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Fri, 11 Oct 2019 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/github/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/github-markdown-guide</guid>
+    <title>Markdown Guide</title>
+    <link>https://gordonbeeming.com/blog/github-markdown-guide</link>
+    <description>Markdown cheatsheet for all your blogging needs - headers, lists, images, tables and more! An illustrated guide based on GitHub Flavored Markdown.</description>
+    <pubDate>Fri, 11 Oct 2019 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>github</category><category>guide</category>
+  </item>
+
+    </channel>
+  </rss>

@@ -47,3 +47,4 @@ next-env.d.ts
 
 # Ignore local SSL certificates
 *.pem
+.env

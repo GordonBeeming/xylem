@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'xylem',
   author: 'Gordon Beeming',
-  headerTitle: 'xylem',
+  headerTitle: 'xylem | Gordon Beeming',
   description:
     'Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect • Microsoft MVP',
   language: 'en-us',

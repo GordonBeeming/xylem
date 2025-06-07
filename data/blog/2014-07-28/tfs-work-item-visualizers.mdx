@@ -1,0 +1,37 @@
+﻿---
+title: 'TFS Work Item Visualizers'
+date: 2014-07-28
+tags: ['VSTS / TFS', 'Visual Studio', 'TFS', 'DotNet Pretty']
+draft: false
+summary: 'In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.'
+---
+
+
+In my last post ([Introduction to DotNet Pretty](https://gordonbeeming.com/blog/post/introduction-to-dotnet-pretty)) I mentioned that I would be added more visualizers to [DotNet Pretty](https://github.com/Gordon-Beeming/DotNet-Pretty) soon ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Today I finally managed to get around to that and [added some visualizers for TFS Work Items](https://github.com/Gordon-Beeming/DotNet-Pretty/commit/eddbb47baa633acae7101fa729b83096bf7b85d9).
+ 
+3 new visualizers were added 2 debugger display visualizers and 1 debugger visualizer. The first is for [Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType](http://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.workitemtracking.client.workitemtype.aspx) and just displays the Name of the Work Item Type 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/127720e214fafdd0199cbab84068763fa50da750/eb0a9d5f-2890-498b-a1c0-2e80135bcfb3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d2a6257b99a55fbf278bd825a492b35bbc42f061/18ac0d8a-58a5-4fec-a325-71afbb2bcca8.png)
+ 
+The next  one added was for [Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItem](http://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.workitemtracking.client.workitem.aspx) and that displays the Status, Id and Title of a work item which is awesome for viewing the results of a query during debugging ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7deafc95d358a50c2ceca807ad9316bb4b6d0d7b/cb3c239f-81cf-462f-8289-4a6376b1d4ee.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f76d99f0233b0578e4aa28dc8a797c5ddd79d387/12f4b980-f695-4dae-85c3-089f9d5e3cb8.png)
+ 
+Now having the above is very useful but drilling down into fields was a nightmare so I decided to create a nice visualizer for Work Item which would show you the work item on a form as it would be inside [Visual Studio](http://www.visualstudio.com/products/visual-studio-with-msdn-overview-vs). You simple click the little arrow next to the value and then click on View Work Item
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a122cde44eb21dfb201ce4fb2767e84c89d8bc62/dd2b31d7-274b-4ea4-bb6f-3fa825b2099e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8fa21f3681e4ad4d6aa90cd33e3edbf0b78be427/90464563-3e36-45a2-a720-4c3af6c9ed94.png) 
+ 
+and then you will notice that your life has just been changed ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Any links you click on from within this window will open in the web access and not in another dialog as you might expect.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/aed896f3e930ac6e9f34e0f1611f4c198054c7e5/961590e1-792c-46e1-97f5-4191c74a3af3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1dd797b58eff80e84b98131888ded709135e63ef/454838e0-4adf-4081-9990-2113789a45d6.png)
+ 
+This work item will show as it is at the current point in the code to the best of the visualizers abilities ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), in the case above I altered the title just before I opened the visualizer and it kept it's new value as expected ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f29b8607572531dac860388f9d7792445368751e/55f9d69c-c86b-4691-96b7-3468bf0109a6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9a0dfd4280c61b83072da696a5bebc36c5964f36/8d9125d8-44c4-44c4-a935-7f0a432c2ed4.png)
+ 
+I have tested this on both On Premise TFS and Online with [VSO](http://www.visualstudio.com/products/what-is-visual-studio-online-vs). The On Premise version did give an issue about COM which I'm hoping is just an issue on my machine/instance but will investigate anyway
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f107c7321342f9820a1c9ae4b4d12ad8f02da3c8/b96bc495-67a8-4848-9b07-573798b2457b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5777c72a0c506332411b3edfeb64235b4ca3d095/6c35d5ed-57e2-4597-b405-7be78b4c935e.png)
+ 
+I know this is going to help me speed working with the TFS API and I'm hoping it's useful to others as well ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+

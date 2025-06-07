@@ -1,0 +1,347 @@
+﻿---
+title: 'Generating code documentation using Ghost Doc Enterprise'
+date: 2017-04-30
+tags: ['Visual Studio', 'C#', 'Ghost Doc', 'Automated Builds']
+draft: false
+summary: 'I''ve recently started catching up with all the blogs that I''ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.'
+---
+
+
+I've recently started catching up with all the blogs that I've wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016. 
+ 
+I like building .net libraries and use [Ghost Doc](https://go.beeming.net/2qiuXVn) all the time to help me generate my documentation. 
+ 
+## Using Ghost Doc
+ 
+Before just jumping in let's see a little about what Ghost Doc is. First of all Ghost Doc as a [lot of features](http://submain.com/ghostdoc/editions/) and I would encourage you to visit their products page to see all of them. 
+ 
+Using the default shortcut of **ctrl + shift + D** you can add a basic comment to your code that generally only needs a little repair to make it properly human readable. Take this very basic add method for example
+
+
+```javascript
+public static long Add(long number1, long number2)
+{
+    return number1 + number2;
+}
+```
+
+
+Using the Ghost Doc shortcut I can generate some basic docs that would look like this
+
+
+```javascript
+/// <summary>
+/// Adds the specified number1.
+/// </summary>
+/// <param name="number1">The number1.</param>
+/// <param name="number2">The number2.</param>
+/// <returns>System.Int64.</returns>
+public static long Add(long number1, long number2)
+{
+    return number1 + number2;
+}
+```
+
+
+As you can see the default comments are very readable so in this case I'll use that comment as is ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+### Spell Check
+ 
+Ghost doc also installs with a spell checker which I love because my spelling is terrible at the best of times. Other spell checkers that I've used in the past in Visual Studio only check obvious things like string literals but Ghost Doc checks a whole lot more for example in variable names
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fd39033dc086529a884ab3569cb9d410ed5b3448/fd39033dc086529a884ab3569cb9d410ed5b3448.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a299f348b7248458cb99efd50e5d1bcf557ae55c/a299f348b7248458cb99efd50e5d1bcf557ae55c.png)
+ 
+Note how it splits the casing on the variable to know where each word is and you can correct your spelling with a single click on the mouse ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). You can configure what you want the spell check to work for in the options menu
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/61d4544dfe9144bd5a643add98b723fbf405640e/61d4544dfe9144bd5a643add98b723fbf405640e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2777f9b4ff55e65ad044f16376ed74de54c6b59f/2777f9b4ff55e65ad044f16376ed74de54c6b59f.png)
+ 
+With this extension installed opening other peoples code you very quickly notice typos that you would normally not ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+## Generating documentation with Ghost Doc
+ 
+So this posts primary focus is on how to generate documentation with Ghost Doc so let's see how that works. First off you'll need to have Ghost Doc installed obviously ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). Next open a cmd window and change directory to the directory where you have a solution with existing xml comments 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/af64ebc23808d728c24496c9a928f2847ea1e237/af64ebc23808d728c24496c9a928f2847ea1e237.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/202e537bde4180c9f494a9715a6ec4b81e082e41/202e537bde4180c9f494a9715a6ec4b81e082e41.png)
+ 
+Now all you have to do is run the cmd tool, passing in the solution file and a couple of other parameters
+
+
+```javascript
+"C:\Program Files (x86)\SubMain\GhostDoc Enterprise\SubMain.GhostDoc.Cmd.exe" /solution:"BasicCalc.sln" /helpConfiguration:"HelpFile" /projectconfiguration:"Debug" /consoledetailed
+```
+
+
+This will generate some output into the console because we specified the **/consoledetailed** flag
+
+
+```javascript
+Microsoft Windows [Version 10.0.15063]
+(c) 2017 Microsoft Corporation. All rights reserved.
+
+M:\_code\random\BasicCalc>"C:\Program Files (x86)\SubMain\GhostDoc Enterprise\SubMain.GhostDoc.Cmd.exe" /solution:"BasicCalc.sln" /helpConfiguration:"HelpFile" /projectconfiguration:"Debug" /consoledetailed
+SubMain.GhostDoc.Cmd v5.5.17070
+Copyright (c) 2002-2017 SubMain
+
+User: Gordon Beeming
+Target framework: 2.0.50727.8784
+
+  ------ Parsing started: Project: BasicCalc ------
+
+  Parsing...
+
+
+
+  ---------------------- Done ----------------------
+
+  Parsing complete -- 0 errors
+
+
+  Loading references...
+
+
+
+  Building Help Documentation...
+
+  Collecting member comments for "BasicCalc" project...
+
+  Building member comments file for "BasicCalc" project...
+
+  Building topic file for "BasicCalc" project...
+
+  Building reflection file for "BasicCalc" project...
+
+  Building solution topic file...
+
+  Building solution reflection file...
+
+  Building solution TOC file...
+
+  Building preview files...
+
+Info: CopyFromFileComponent: Instantiating component.
+Info: CopyFromFileComponent: Loading data file 'Theme\Transforms\skeleton.xml'.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Searching for files that match 'reflection.xml'.
+Info: CopyFromIndexComponent: Indexed 8 elements in 1 files.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 1 subcomponents.
+Info: IfThenComponent: Instantiating component.
+Info: SyntaxComponent: Instantiating component.
+Info: SyntaxComponent: Loaded 3 syntax generators.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Searching for files that match 'BasicCalc_comments.xml'.
+Info: CopyFromIndexComponent: Searching for files that match '*.xml'.
+Info: CopyFromIndexComponent: Indexed 148486 elements in 121 files.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Instantiating component.
+Info: ForEachComponent: Loading subcomponents.
+Info: IfThenComponent: Instantiating component.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ForEachComponent: Loaded 2 subcomponents.
+Info: CopyFromIndexComponent: Instantiating component.
+Info: CopyFromIndexComponent: Loaded 0 copy components.
+Info: ShowMissingComponent: Instantiating component.
+Info: ShowMissingComponent:
+    [Sandcastle Help File Builder, version 1.9.3.0]
+    Show Missing Documentation Component. Copyright c 2006-2011, Eric Woodruff, All Rights Reserved
+    http://SHFB.CodePlex.com
+Info: ShowMissingComponent:   All Show Missing options are disabled.  The component will do nothing.
+Info: VersionInfoComponent: Instantiating component.
+Info: VersionInfoComponent:
+    [Sandcastle Help File Builder, version 1.9.3.0]
+    Version Information Component. Copyright c 2006-2011, Eric Woodruff, All Rights Reserved
+    http://SHFB.CodePlex.com
+Info: CodeBlockComponent: Instantiating component.
+Info: CodeBlockComponent:
+    [Sandcastle Help File Builder, version 1.9.3.0]
+    Code Block Component. Copyright c 2006-2011, Eric Woodruff, All Rights Reserved.
+    Portions copyright (c) 2003, Jonathan de Halleux, All rights reserved.
+    http://SHFB.CodePlex.com
+Info: TransformComponent: Instantiating component.
+Info: PostTransformComponent: Instantiating component.
+Info: PostTransformComponent:
+    [Sandcastle Help File Builder, version 1.9.3.0]
+    Post-Transform Component. Copyright c 2006-2011, Eric Woodruff, All Rights Reserved
+    http://SHFB.CodePlex.com
+Info: MultiFormatOutputComponent: Instantiating component.
+Info: MultiFormatOutputComponent:
+    [Sandcastle Help File Builder, version 1.9.3.0]
+    Multi-Format Output Component. Copyright c 2006-2011, Eric Woodruff, All Rights Reserved
+    http://SHFB.CodePlex.com
+Info: MultiFormatOutputComponent: Loading components for HtmlHelp1 format
+Info: SharedContentComponent: Instantiating component.
+Info: SharedContentComponent: Searching for files that match 'Theme\content\shared_content.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\Theme\content\shared_content.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fsharp' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\Theme\content\shared_content.xml'.
+Info: SharedContentComponent: Found 1 files in Theme\content\shared_content.xml.
+Info: SharedContentComponent: Searching for files that match 'Theme\content\reference_content.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\Theme\content\reference_content.xml'.
+Info: SharedContentComponent: Found 1 files in Theme\content\reference_content.xml.
+Info: SharedContentComponent: Searching for files that match 'shared\content\syntax_content.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\shared\content\syntax_content.xml'.
+Info: SharedContentComponent: Found 1 files in shared\content\syntax_content.xml.
+Info: SharedContentComponent: Searching for files that match 'Theme\content\feedback_content.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\Theme\content\feedBack_content.xml'.
+Info: SharedContentComponent: Found 1 files in Theme\content\feedback_content.xml.
+Info: SharedContentComponent: Searching for files that match 'SharedBuilderContent.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'roottopictitle' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'rootlink' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'runningheadertext' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'locationinformation' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'assemblynameandmodule' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'copycode' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'locale' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\SharedBuilderContent.xml'.
+Info: SharedContentComponent: Found 1 files in SharedBuilderContent.xml.
+Info: SharedContentComponent: Searching for files that match 'PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Loading shared content file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'header' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'footer' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fb_alias' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fb_product' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fb_body' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fb_send' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'fb_headerfeedback' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'feedback_alias' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'feedback_product' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Overriding shared content item 'feedback_body' with value in file 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1\PresentationStyleBuilderContent.xml'.
+Info: SharedContentComponent: Found 1 files in PresentationStyleBuilderContent.xml.
+Info: SharedContentComponent: Loaded 641 shared content items.
+Info: ResolveReferenceLinksComponent2: Instantiating component.
+Info: ResolveReferenceLinksComponent2: Searching directory 'C:\Users\Gordon Beeming\AppData\Local\Temp\SubMain.GhostDoc`1' for targets files of the form 'reflection.xml'.
+Info: ResolveReferenceLinksComponent2: Loaded 47172 reference targets.
+Info: SaveComponent: Instantiating component.
+Info: BuildAssembler: Building topic N:BasicCalc
+Info: BuildAssembler: Building topic T:BasicCalc.Calc
+Info: BuildAssembler: Building topic AllMembers.T:BasicCalc.Calc
+Info: BuildAssembler: Building topic Methods.T:BasicCalc.Calc
+Info: BuildAssembler: Building topic M:BasicCalc.Calc.Add(System.Int64,System.Int64)
+Info: BuildAssembler: Building topic M:BasicCalc.Calc.Minus(System.Int64,System.Int64)
+Info: BuildAssembler: Building topic M:BasicCalc.Calc.Multiple(System.Int64,System.Int64)
+Info: BuildAssembler: Building topic M:BasicCalc.Calc.Divide(System.Int64,System.Int64)
+  Generating help documentation...
+
+  Building HTML help index file...
+
+  Compiling HTML help file...
+
+  Help folder: M:\_code\random\BasicCalc\Help
+  Done.
+
+M:\_code\random\BasicCalc>
+```
+
+
+*You will need to install* [*HTML Help Workshop*](https://go.beeming.net/2pvdNRt) *which you can get from Ghost Docs site.* 
+ 
+Now that will create a Help folder and inside it a .chm file
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8a5075d93437d391f1572b0c3a0bb7af7e8de8e6/8a5075d93437d391f1572b0c3a0bb7af7e8de8e6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fb32a24f3be5d8a49a1b15f2bd2209cc2cfbd832/fb32a24f3be5d8a49a1b15f2bd2209cc2cfbd832.png)
+ 
+We can open that file and you will notice that all our comments have been formatted nicely into what looks like the old msdn style documentation 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/21b8620107be08c84cadca5c42dd017c4ac68289/21b8620107be08c84cadca5c42dd017c4ac68289.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b12254952ab51fd6262e4d71cc683da22f41310b/b12254952ab51fd6262e4d71cc683da22f41310b.png)
+ 
+Ghost Doc generates to other formats as well as you would see on their [editions compare page](https://go.beeming.net/2pv5W6F) ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6cf9bba3beaa5675a6181a4c32f4bbcab7075416/6cf9bba3beaa5675a6181a4c32f4bbcab7075416.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9f10e49e6c5522dc3a44db43a27879c1402d5a8c/9f10e49e6c5522dc3a44db43a27879c1402d5a8c.png)
+ 
+We now have a chm that we can distribute with our source ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+## Adding this to our CI
+ 
+Generating docs from your machine is ok but then you have to remember to do it and what's worse is that you'll have to check that file into source control (Emphasis on the **Source** in source control ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)) which wouldn't be great. So naturally as [Donovan Brown](https://go.beeming.net/2pveWIL) reminds us "anything you can do on a command line you can do in VSTS or TFS" ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+ 
+I've gone ahead and setup a standard CI build using the built in Visual Studio template.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bd9894a54ddf48ddf4fc154653f605db440e9b59/bd9894a54ddf48ddf4fc154653f605db440e9b59.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b934c51a0112f155e3201a1419501cca81ab681/2b934c51a0112f155e3201a1419501cca81ab681.png)
+ 
+If we look at the current build artifacts you will notice that only our class library and pdb is being published
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6ca03c98b25deb4a107f402d7e78cb5e876b2b37/6ca03c98b25deb4a107f402d7e78cb5e876b2b37.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/14e5ca0618f65ee8e51437fdb2ddabd6c3c143be/14e5ca0618f65ee8e51437fdb2ddabd6c3c143be.png)
+ 
+To add the help file to this we are going to do a couple steps. First add Command Line task 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ee961e6deb49ddd015d27d3738d239759db3c4f5/ee961e6deb49ddd015d27d3738d239759db3c4f5.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/813a1d451ab49c3cc074d8985494dedde6965df1/813a1d451ab49c3cc074d8985494dedde6965df1.png)
+    
+and place it before the *Copy Files to: $(build.artifactstagingdirectory)* task
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b49c785397009c90991e2321d5ddd1cde70c9fd9/b49c785397009c90991e2321d5ddd1cde70c9fd9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/283d261fa98e7736f75bc45b12d23fd896572a0c/283d261fa98e7736f75bc45b12d23fd896572a0c.png)
+ 
+Now we need to update a couple values for the task
+ 
+1. Set the Tool to "C:\Program Files (x86)\SubMain\GhostDoc Enterprise\SubMain.GhostDoc.Cmd.exe"
+2. Set Arguments to "/solution:"BasicCalc.sln" /helpConfiguration:"HelpFile" /projectconfiguration:"$(BuildConfiguration)" /consoledetailed"
+    - Note that we are specifying $(BuildConfiguration) as the configuration so docs are generated for the configuration we are specifically building
+3. Check the Fail on Standard Error checkbox
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/256910708574992ea77e833affc4edd5e9148ebf/256910708574992ea77e833affc4edd5e9148ebf.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d99a5ae0c61449f778d972b2b510374b915e351d/d99a5ae0c61449f778d972b2b510374b915e351d.png)
+ 
+Now add a Copy Files task
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b91d987a38ff008bf85519d7368ad8b63add28c3/b91d987a38ff008bf85519d7368ad8b63add28c3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/15b1e6522b7d73e9f645d01e799823212368e6a2/15b1e6522b7d73e9f645d01e799823212368e6a2.png)
+ 
+and add this below the Command Line task
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4f116086dd74a1dc7605f186d787d7ee0f518e23/4f116086dd74a1dc7605f186d787d7ee0f518e23.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c8db2f81743d0f2bb8694a7cd73b2173bad07129/c8db2f81743d0f2bb8694a7cd73b2173bad07129.png)
+ 
+and now Set 
+
+1. Source Folder to "$(build.sourcesdirectory)"
+2. Contents to "\*\*\Help\\*\*"
+3. Target Folder to "BasicCalc\bin\$(BuildConfiguration)\"
+4. And Check the Overwrite checkbox
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/46bf70eef6196f19376ee6793299a42d3ed63f6c/46bf70eef6196f19376ee6793299a42d3ed63f6c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/667c78dc948d585885279a4ac6c6be7f131c5938/667c78dc948d585885279a4ac6c6be7f131c5938.png)
+ 
+If we click Save and run this build you will notice that after the build runs we have our help file in the drop ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0dca50466f9c69b6bddb5592b261d2c3e2d810d3/0dca50466f9c69b6bddb5592b261d2c3e2d810d3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/615b0fb26c7deb32d1abaae866cba05a7310e4a3/615b0fb26c7deb32d1abaae866cba05a7310e4a3.png)
+ 
+We are not guaranteed to always have up to date source documentation with our build outputs. 
+ 
+## Conclusion
+ 
+If you write libraries either for internal or external use using the xml comments I'd highly recommend you take a look at Ghost Doc as it makes your life really easy. Also with the very powerful Visual Studio integration developers will be a lot more productive and really have no excuse not to generate meaningful documentation for your class libraries. 
+ 
+Happy documenting ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+

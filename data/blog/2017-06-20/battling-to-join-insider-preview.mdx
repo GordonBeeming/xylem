@@ -1,0 +1,88 @@
+﻿---
+title: 'Battling to Join Insider Preview?'
+date: 2017-06-20
+tags: ['Microsoft Account', 'Windows Insider Program']
+draft: false
+summary: 'Today I tried to join one of my machines to the insider preview. Most people if they get issues would probably take it as a sign that putting the broken bits on their machine was a bad idea and the universe has saved them…I need my broken bits fix .'
+---
+
+
+Today I tried to join one of my machines to the insider preview. Most people if they get issues would probably take it as a sign that putting the *broken bits* on their machine was a bad idea and the universe has saved them…I need my broken bits fix ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+## The problem was…
+ 
+Well it all started out like normal, I went to the Windows Insider Program tab and clicked on Get started
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2e962c5068f8a141e5708a358d2d1d5d5c67047b/2e962c5068f8a141e5708a358d2d1d5d5c67047b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0ebbf7107c62ce70207e5cde2420905ca8e2139d/0ebbf7107c62ce70207e5cde2420905ca8e2139d.png)
+ 
+Generally this just works but this time I received a message that said "You need an account registered in the  Windows Insider Program to get Insider Preview builds. Register this account, or switch to one that is already registered.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5f7a37d8137c971610020cd7058062b4126eb5c9/5f7a37d8137c971610020cd7058062b4126eb5c9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/89a9d2068296286478cd64d296a800d25e2cca46/89a9d2068296286478cd64d296a800d25e2cca46.png)
+ 
+I tried to click on the switch account but for some reason that did nothing, maybe it's supposed to be a button or something? I checked my accounts and my regular MSA was in my accounts which is how it's always worked before
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3fc03ff6176611a2fdc0eaac88ad8bc6e760ded1/3fc03ff6176611a2fdc0eaac88ad8bc6e760ded1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/019cef8ece15c90ebaa2e422b2fdd84b7e1aed5c/019cef8ece15c90ebaa2e422b2fdd84b7e1aed5c.png)
+ 
+## The fix is to…
+ 
+My fix involved a little Bing search which landed me on [this page](https://go.beeming.net/2rSTgWG) where I found a little reg file that would opt you back into the insider program builds
+
+
+```javascript
+Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: May 20th 2016
+; Tutorial: http://www.tenforums.com/tutorials/12316-insider-builds-start-stop-receiving-windows-10-a.html
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\Applicability]
+"EnablePreviewBuilds"=dword:00000002
+"IsBuildFlightingEnabled"=dword:00000001
+"IsConfigExpFlightingEnabled"=dword:00000001
+"IsConfigSettingsFlightingEnabled"=dword:00000001
+"SuspensionStartTime"=-
+"SuspensionEndTime"=-
+```
+
+
+Basically just save that to your machine somewhere, right click on the file and select merge
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d47bd93059b2c94969536a7995a77d088bc641f9/d47bd93059b2c94969536a7995a77d088bc641f9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d776468dbfb9f7ff3e8eef0d7d61abe70eb686dc/d776468dbfb9f7ff3e8eef0d7d61abe70eb686dc.png)
+  
+You'll probably be asked if you sure you want to do this, click Yes
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b127600e9f866041b2a2e58499a0e76d88fdae02/b127600e9f866041b2a2e58499a0e76d88fdae02.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d02b1434f65921127bcb5e4baacb1d36f751aa84/d02b1434f65921127bcb5e4baacb1d36f751aa84.png)
+ 
+You then get a success (hopefully ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg))
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0ff1d041a764beb4f9d9afe59305253eff2ed359/0ff1d041a764beb4f9d9afe59305253eff2ed359.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6ceb4977e871c95b7c75a09ecd031b54fff497e6/6ceb4977e871c95b7c75a09ecd031b54fff497e6.png)
+ 
+If you navigate back to your windows insiders program tab (change away and back again if you never left it)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9b64b8026a76cbc973a456cb7ff84b1b5a35e3dd/9b64b8026a76cbc973a456cb7ff84b1b5a35e3dd.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0e51e9b7611c65ae82bd7aba065cb7aed8ac73fe/0e51e9b7611c65ae82bd7aba065cb7aed8ac73fe.png)
+ 
+You will see that the account windows has selected is probably not the MSA you usually use for Windows Insider Program. Click on the account and then click on Change
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d1078323e196b7802da9aa4982e4c2075f7f55b8/d1078323e196b7802da9aa4982e4c2075f7f55b8.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9e6ae1c04dfa965127d17aa56cca511e9cacaeda/9e6ae1c04dfa965127d17aa56cca511e9cacaeda.png)
+ 
+Select your regular MSA from the account list
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0a939596fbecf4acb47216b8d8c47727b7d6fbe9/0a939596fbecf4acb47216b8d8c47727b7d6fbe9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/cfc2affa34099cc46dc11271a0174eee2be7004f/cfc2affa34099cc46dc11271a0174eee2be7004f.png)
+ 
+Windows now says that the config needs some fixing so go ahead and click Fix me
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/affcb671b843ec102e3dbc8e3c467e0c21316d54/affcb671b843ec102e3dbc8e3c467e0c21316d54.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/304a6af77f7a22ee5382a4f3ebb07b85ffcfcc2f/304a6af77f7a22ee5382a4f3ebb07b85ffcfcc2f.png)
+ 
+Finally click Confirm to allow the change
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/05ece597503d165d3de99809ed1509f1e13b46ae/05ece597503d165d3de99809ed1509f1e13b46ae.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e06ec27dc55148913df0b756920dbdeaf805761a/e06ec27dc55148913df0b756920dbdeaf805761a.png)
+ 
+After a standard reboot you are ready to receive your insider builds ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d9bede7362bfeaf3656e49a28847d6da46a28537/d9bede7362bfeaf3656e49a28847d6da46a28537.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d1aaa30e6af0688a189cb1d9dbbb20d3b06eae4c/d1aaa30e6af0688a189cb1d9dbbb20d3b06eae4c.png)
+ 
+## Conclusion
+ 
+This probably wasn't all necessary as I'm assuming that it's a random coincidence that I couldn't click the switch account link (I did "turn it off and on again") but failing that link being clickable you now have a solution to still get your insider builds now.
+

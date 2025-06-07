@@ -1,0 +1,142 @@
+﻿---
+title: 'Setting up .net core continuous integration build with VSTS/TFS'
+date: 2017-04-23
+tags: ['VSTS / TFS', 'Visual Studio', 'Automated Builds', 'dotnet core']
+draft: false
+summary: 'You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I''d need to post specifically on .net core. After all it''s still a Visual Studio solution so things should just work, the keyword here is should . Things didn''t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).'
+---
+
+
+You might be wondering after recently posting [Setting up a standard continuous integration build with VSTS/TFS](https://gordonbeeming.com/blog/Post/2017/4/setting-up-a-standard-continuous-integration-build-with-vststfs) why I'd need to post specifically on .net core. After all it's still a Visual Studio solution so things should just work, the keyword here is should ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Things didn't just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)).
+ 
+## Sample project
+ 
+So we going to need a sample project for this, I'm going to create a standard .net core web project
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/89506ddad75c5a656279f6384174bbb3f59fa8ed/89506ddad75c5a656279f6384174bbb3f59fa8ed.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/36e054ccf99804864a041d99f027f3a943b34d4b/36e054ccf99804864a041d99f027f3a943b34d4b.png)
+ 
+using asp.net core 1.1 as a Web Application
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/81da1ec929f9aec277eb5eaef360c03fd73193a4/81da1ec929f9aec277eb5eaef360c03fd73193a4.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5cf2d5dd28d2643adbbddc756d9476af99dd6ae7/5cf2d5dd28d2643adbbddc756d9476af99dd6ae7.png)
+ 
+We also going to add another project using the *Unit Test Project (.NET Core)* template
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7a075de4032b924277c808d5764273425d75071b/7a075de4032b924277c808d5764273425d75071b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c5fba65a86218579babea9e9c5f4baf7925af6d4/c5fba65a86218579babea9e9c5f4baf7925af6d4.png)
+ 
+We now need to add the MVC nuget reference to this test project. Open manage Nuget reference for solution
+ 
+1. In the Installed tab
+2. Click on Microsoft.AspNetCore.Mvc
+3. Check the test project
+4. Click Install
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b88e6b1ab0ee7970e879dfd50b9f2e92cb5f43fc/b88e6b1ab0ee7970e879dfd50b9f2e92cb5f43fc.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/15b0bf637ae0cd2a3f407c2136cdbb9a16d516c6/15b0bf637ae0cd2a3f407c2136cdbb9a16d516c6.png)
+ 
+Next we'll 
+
+1. Add a reference to our web project
+2. Rename the test to "HomeControllerTests.cs"
+3. Rename the test class to "HomeControllerTests"
+4. Add a About Test Method which you can find in my [GitHub Gists](https://gist.github.com/Gordon-Beeming/15b859d2d5c49a924cc28e08bca56045)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/db9b3eae3fe4f8a1e30c3b6a58df8bb86af20d79/db9b3eae3fe4f8a1e30c3b6a58df8bb86af20d79.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3d868f6309d381e570a7db2d030590860480c037/3d868f6309d381e570a7db2d030590860480c037.png)
+ 
+That should be all we need to demonstrate CI being harder for .net core ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Check this code into TFS and we all set to get started
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c68759d136aca2d359b23c33329f102ac007655f/c68759d136aca2d359b23c33329f102ac007655f.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5270fa0e7899dc77d42b5434a217e6956faf502f/5270fa0e7899dc77d42b5434a217e6956faf502f.png)
+ 
+Let's start off by creating a standard build how explained in the last post I did [Setting up a standard continuous integration build with VSTS/TFS](https://gordonbeeming.com/blog/Post/2017/4/setting-up-a-standard-continuous-integration-build-with-vststfs), I only did the first section with non of the extra *fluff ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)*. 
+ 
+## Changes to build for .net core
+ 
+The first thing you will notice if you just try run the build it will break
+ 
+### Restoring .net core packages
+ 
+So our first set of errors is that the build can't find a bunch of references even though the restore step ran through.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/840538d3a08611e2ac7b97df53ea21f38de76a4b/840538d3a08611e2ac7b97df53ea21f38de76a4b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e413eb03818d35f0f466b02921c62cbc22364068/e413eb03818d35f0f466b02921c62cbc22364068.png)
+ 
+This is because we need to do our restore a different way using the .net core restore. Let's fix this by adding the .NET Core (PREVIEW) task to our build
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b020bdc53674223838a3f48e50e77176e16cd315/b020bdc53674223838a3f48e50e77176e16cd315.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0418724d881d2753f3551e6efd328fa8368b1f0d/0418724d881d2753f3551e6efd328fa8368b1f0d.png)
+ 
+Next we need to
+
+1. Place this task first in the list of tasks
+2. Change the Command to restore
+3. Set the Project(s) to "\*\*\\*.sln"
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/cf21ad0ddf5b4381f2f8db493bd72447b3fa23ae/cf21ad0ddf5b4381f2f8db493bd72447b3fa23ae.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/34048d9cb39c9f5d0bb0881a1d2a9029397cbcfb/34048d9cb39c9f5d0bb0881a1d2a9029397cbcfb.png)
+ 
+Click Save. Run your build. This time our build runs through but is partially succeeded. 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ec88a5c8f839abace92f3b97e1dd8cd5ccbf8baf/ec88a5c8f839abace92f3b97e1dd8cd5ccbf8baf.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0a2ce3e981aa84fc165a9a40d0ca1866aa457224/0a2ce3e981aa84fc165a9a40d0ca1866aa457224.png)
+ 
+We going to remove the Publish symbols path step from our build because we aren't going to need it
+ 
+[![SNAGHTML12c92962](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b770bae69fe3a6f0755812b4456079d52136641/2b770bae69fe3a6f0755812b4456079d52136641.png "SNAGHTML12c92962")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b51523346182523895d3dbd45564225a04160fbc/b51523346182523895d3dbd45564225a04160fbc.png)
+ 
+Click Save after removing this and run your build so we can confirm everything is green before continuing on.
+ 
+### Running .net core tests
+ 
+If you looked at your build after it ran you would have noticed that there is no test results
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/38b8d48dd57c0efcb8642477aa5ab8dc4dd6c1bd/38b8d48dd57c0efcb8642477aa5ab8dc4dd6c1bd.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c6ccf6095980edf9bb75a302a3bce71d22a39d48/c6ccf6095980edf9bb75a302a3bce71d22a39d48.png)
+ 
+We know that we have a test and that we are running tests in the build so what's going on here?
+ 
+Well you probably guessed it but we need to add the .NET Core (PREVIEW) step again this time
+
+1. Place the step after the Build solution step
+2. Change the Command to test
+3. Set the Project(s) to "\*\*\\*.Tests.csproj"
+4. Set the Arguments to "--no-build --logger:trx --configuration $(BuildConfiguration)"
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2bfc1e5c3b6d6e65a21502b38c53c6029cbaf202/2bfc1e5c3b6d6e65a21502b38c53c6029cbaf202.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/54b135d2ac9a80913f80aef9b868d3cc0781eb9b/54b135d2ac9a80913f80aef9b868d3cc0781eb9b.png)
+ 
+What we are doing now is using .net core's test capabilities, telling the running we want to log the results using the trx format and that we want to run the BuildConfiguration that the build is running under.
+ 
+Click Save. Run the build. You will notice that there is still no test results showing up and this is because we need to tell the build system to publish these results. Add the Publish Test Results task
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/95a68ea10889f5b99776639e55b706bdc08fd34f/95a68ea10889f5b99776639e55b706bdc08fd34f.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/33d01f7a3de1f0f5f0dcc94f606e5acd6db3970a/33d01f7a3de1f0f5f0dcc94f606e5acd6db3970a.png)
+ 
+Next we'll
+
+1. Make sure we place that task after the dotnet test task
+2. Set the Test Result Format to VSTest
+3. Set the Test Results Files to "\*\*/TestResults/\*.trx"
+4. Check the Merge Test Results checkbox
+5. Open the Advanced section and set the Configuration to "$(BuildConfiguration)"
+6. Check the Always run (we want to publish results if test fail ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg), thank you [Mikael Krief](https://twitter.com/mikaelkrief))
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b922ebf44ad303e9912a289c68c0789942175db6/b922ebf44ad303e9912a289c68c0789942175db6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7788e64dd0daf4e6907c14b80306b0e049e1b2cf/7788e64dd0daf4e6907c14b80306b0e049e1b2cf.png)
+ 
+Click Save. Run the build. This time when the build has run if you go to the Summary you will notice 2 weird things
+
+1. We have 2 tests found (but only building 1 configuration)
+2. The build says there is no tests found
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b2f41a43da94630d4db698fa1513d23bd41afc8/2b2f41a43da94630d4db698fa1513d23bd41afc8.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ccaf6932684fe62ab875fc4ac50c2c233b4a0417/ccaf6932684fe62ab875fc4ac50c2c233b4a0417.png)
+ 
+The 2nd issue is easy to fix, if you don't expect to have regular .net tests in the solution remove the standard test step to get rid of this warning
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/30fadb0ba1161cbce72beacb89671b34b6174166/30fadb0ba1161cbce72beacb89671b34b6174166.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/47bf8e28f33eebd2698651fa063b87891e9f774b/47bf8e28f33eebd2698651fa063b87891e9f774b.png)
+ 
+The 1st issue is because we are running the tests but not cleaning up the test results after the builds test results after they have generated or before we generate them in the build. The easiest way to fix this is to Clean all build directories before starting your build as I mentioned in the standard CI process blog mentioned multiple times in this post
+ 
+[![SNAGHTML12df5ea0](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/81f29eb73c99970feda51ebb203478b5337c7978/81f29eb73c99970feda51ebb203478b5337c7978.png "SNAGHTML12df5ea0")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f60473169b322ad11ca4d0d811c90bb6de08ac4c/f60473169b322ad11ca4d0d811c90bb6de08ac4c.png)
+ 
+If you don't want to do this you can look at adding in a delete task before your run tests step to remove all trx files.
+ 
+If we make either change, save and run the build. We'll notice that we have 1 test result. Note you may not have seen this experience if your build was running on a different agent each time but when it did run on the same agent again you would have seen this behavior
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3c2ca6d7b9b36e227be698d47fe4de90dc00ba0b/3c2ca6d7b9b36e227be698d47fe4de90dc00ba0b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/54596bd1b5d97958a0c098e32c22bdf36cc45b85/54596bd1b5d97958a0c098e32c22bdf36cc45b85.png)
+ 
+Now our CI process is behaving like normal ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+## Conclusion
+ 
+Yes there is extra steps you need to do for .net core but in the end the process is still considered easy, especially if you have developed with .net core and know the dotnet commands.
+

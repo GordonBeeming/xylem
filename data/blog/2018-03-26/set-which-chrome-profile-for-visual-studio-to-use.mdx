@@ -1,0 +1,78 @@
+﻿---
+title: 'Set which chrome profile for Visual Studio to use'
+date: 2018-03-26
+tags: ['Visual Studio', 'Productivity', 'Chrome']
+draft: false
+summary: 'At MVP Summit this year one of the valuable things I learnt (which I can share ) was from Colin Dembovsky (ALM MVP) which was Using Chrome to Solve Identity Hell. Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn''t that great. Not going to talk much about that here, you can read his post to find out more.'
+---
+
+
+At [MVP Summit](https://mvp.microsoft.com/summit) this year one of the valuable things I learnt (which I can share ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)) was from [Colin Dembovsky](http://www.colinsalmcorner.com/) (ALM MVP) which was [Using Chrome to Solve Identity Hell](http://www.colinsalmcorner.com/post/using-chrome-to-solve-identity-hell). Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn't that great. Not going to talk much about that here, you can read his post to find out more.
+
+## So chrome profiles are great, what are we trying to fix?
+
+As mentioned above chrome profiles are great so what's being annoying me a maybe you (if you arrived here from a search ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg))? The problem is that [Visual Studio](https://www.visualstudio.com/vs/) when set to use chrome as the browser does exactly that and uses chrome. 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ac3499f81db551fb61da4f081829418ab7007fad/ac3499f81db551fb61da4f081829418ab7007fad.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7eb0dfd7082127a6c456d2981bbda603aea2763b/7eb0dfd7082127a6c456d2981bbda603aea2763b.png)
+
+If you haven't had any issues with this you might not have as many chrome profiles open as I do ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). To explain this a bit better when you close all instances of chrome and then open chrome again the default chrome behavior is to load the last profile you had open. You can change this by pinning specific shortcuts to the profile or having a desktop shortcut to that profile.
+
+## Why is this frustrating?
+
+Before it wasn't annoying because I always had auth issues so I would launch the project ctrl + F5 and then immediately go into in-private mode (I know F5 gives you a similar experience but not always the desired running state ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg) or I would just log out of the accounts I usually use and then do some dev logging into test Microsoft accounts if need be and then later log myself out of there and back into my regular accounts. As you can imagine this is slightly painful.
+
+Now that I have the magic of profiles I would launch the app and it would open default chrome which would open my last active profile which could land me in a similar space as before where I'm using my real MSA for example. At this point I'd change the chrome profile back to *First User* and then either re-browse to the app or go back to VS and ctrl + F5 and this would then use the First user profile to do my dev but still felt a little clunky.
+
+## So how do we change this in Visual Studio?
+
+The way the shortcut works for chrome is a parameter is passed on load specifying which profile to load, to view this
+
+1. Right click on the chrome shortcut (I have pinned mine to the taskbar already)
+2. Right click on the name of the chrome profile shortcut
+3. Click on Properties
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59eeb29b0fda0c3255875839c1b0b97e4b024c68/59eeb29b0fda0c3255875839c1b0b97e4b024c68.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/aa8cbf29f1ec15676d6c9de4340220c5a077e9f0/aa8cbf29f1ec15676d6c9de4340220c5a077e9f0.png)
+
+This will open the properties for the shortcut where you will notice the --profile-directory parameter being passed into the chrome.exe executable. 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/803f59fef8e1515b91a18dfa5736d7d3d86a21f1/803f59fef8e1515b91a18dfa5736d7d3d86a21f1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f2474a9e794fa20a30d52d330282820041b91416/f2474a9e794fa20a30d52d330282820041b91416.png)
+
+Copy the full target as we'll use both parts next. Open up a web project in Visual Studio and 
+
+1. Click on the little down arrow next to the Start Debugging menu
+2. Click on Browse with...
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fe090ab4ac0a08efb5fafdad2684673466e981ac/fe090ab4ac0a08efb5fafdad2684673466e981ac.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/aed57b4538f25559ab983f111b6ab98efbc2e38a/aed57b4538f25559ab983f111b6ab98efbc2e38a.png)
+
+This will bring Browse with dialog where we will now click on Add...
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7dc64e696efc36f2d29d41090a61ac4ea473fc83/7dc64e696efc36f2d29d41090a61ac4ea473fc83.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/81a3d2e2a41cf2bed610027cc99f326f0f5956ba/81a3d2e2a41cf2bed610027cc99f326f0f5956ba.png)
+
+In this dialog we are going to paste the Target we copied from the properties window, remove the quotes around the path to chrome.exe and then cut the parameter part to the arguments section and give the *browser* and friendly name and click OK.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1364142de3ec20286f12bf059f027d37faf63daa/1364142de3ec20286f12bf059f027d37faf63daa.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c08dbe9234e3f4adf1ddfdac3fb7259667f02c50/c08dbe9234e3f4adf1ddfdac3fb7259667f02c50.png)
+
+This will add the browser to the overall list of browsers you have, if you are like me and want a consistent feel to launching sites then you'd probably want to make this browser your default
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/de8f2afdf0141068f0c636f67f8f3640e8f3f0a1/de8f2afdf0141068f0c636f67f8f3640e8f3f0a1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/53f169e14520c75d20a239269427fa520a2272f1/53f169e14520c75d20a239269427fa520a2272f1.png)
+
+All set to have a pain free browsing experience when doing your development ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+This now means that I can log into this dev profile that I have created and that account will always be logged in, if I have a Twitter, Facebook, MSA, anything account the cookies and all settings extensions are saved to that profile. You can roam this by signing into chrome with a development Google account if you want to make your config, remembered uris and passwords (not generally a good idea but love this for dev environments roam to all your machines easier. 
+
+Most importantly each time I launch from VS now I know what environment state I'm going to get ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+
+## Conclusion
+
+Visual Studio and a lot of other tools like chrome (yes the browser is a dev tool too ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)) have a lot of features that are less commonly used that can make your development experience less frustrating and ultimately more productive. You just need to look for them sometimes and think a little outside the box on how you can use them ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+
+If you have any other similar or related productivity tips please feel free to share them.
+
+Happy Chrome profiling ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f0742f44600711ffd5fda8095d041184ac8c18f0/f0742f44600711ffd5fda8095d041184ac8c18f0.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5fa8909dbdae4f61c263661a47e61f182b22c4e6/5fa8909dbdae4f61c263661a47e61f182b22c4e6.png)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8976b13a66663d0d9d4eb4ff9890117945161807/8976b13a66663d0d9d4eb4ff9890117945161807.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/62255578a4609c2ce8fc215ec6170c4d51aaa83a/62255578a4609c2ce8fc215ec6170c4d51aaa83a.png)
+
+5 'incognito plus' browsers so far ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+

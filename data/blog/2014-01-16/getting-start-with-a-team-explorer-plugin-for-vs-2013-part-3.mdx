@@ -1,0 +1,61 @@
+﻿---
+title: 'Getting start with a Team Explorer Plugin for VS 2013 Part 3'
+date: 2014-01-16
+tags: ['Visual Studio', 'Visual Studio Plugin', 'Getting Started', 'Plugins', 'Team Explorer']
+draft: false
+summary: 'In Getting start with a Team Explorer Plugin for VS 2013 Part 2 we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.'
+---
+
+
+In [Getting start with a Team Explorer Plugin for VS 2013 Part 2](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2) we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.
+ 
+## Creating a Team Explorer Page
+ 
+Add a new const to the GuidList class (in the Guids file) like below
+ 
+public const string sampleTeamExplorerPage = "8C4F4A24-38C3-451C-A55F-9532EA61E841";
+
+Create a class called SampleTeamExplorerPage and replace the contents with code below
+
+namespace Company.TeamExplorerSamplePlugin{    using System;    using System.ComponentModel;    using Microsoft.TeamFoundation.Controls;    [TeamExplorerPage(GuidList.sampleTeamExplorerPage)]    public class SampleTeamExplorerPage : ITeamExplorerPage    {        private IServiceProvider serviceProvider;        private bool isBusy;        public void Cancel()        {        }        public object GetExtensibilityService(Type serviceType)        {            return null;        }        public void Initialize(object sender, PageInitializeEventArgs e)        {            this.serviceProvider = e.ServiceProvider;        }        public bool IsBusy        {            get            {                return this.isBusy;            }            private set            {                this.isBusy = value;                this.FirePropertyChanged("IsBusy");            }        }        public void Loaded(object sender, PageLoadedEventArgs e)        {        }        public object PageContent        {            get            {                return null;            }        }        public void Refresh()        {        }        public void SaveContext(object sender, PageSaveContextEventArgs e)        {        }        public string Title        {            get            {                return "Sample Page";            }        }        public void Dispose()        {        }        public event PropertyChangedEventHandler PropertyChanged;        private void FirePropertyChanged(string propertyName)        {            if (this.PropertyChanged != null)            {                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));            }        }    }}
+
+Note how we used the GuidList.sampleTeamExplorerPage guid string that we created in the TeamExplorerPage attribute. We also set some basic properties as in the previous post. Now that we have a page we will want to set the contents of the page
+
+## Creating Team Explorer Page Contents
+
+Add a new user control to your project called SamplePageControl.xaml
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e7105ed46da746d014a7c13f0e0bc5ec6f402da2/383977f2-3f2a-4958-95b3-afaeee9377be.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ca7a46d7fe863775dcea59bb4570ae7061208865/ffa27309-650d-43fe-8921-b88d63a1c9d7.png)
+
+We will not be adding anything fancy to this control, just add a TextBlock and set the Text property so that we are able to see that it is loaded, below is a sample of this
+
+<UserControl x:Class="Company.TeamExplorerSamplePlugin.SamplePageControl"             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              mc:Ignorable="d"              d:DesignHeight="300" d:DesignWidth="300">    <Grid>        <TextBlock Text="Sample Page Content"></TextBlock>    </Grid></UserControl>
+
+You will at this stage need to add a reference to the assembly System.Xaml.
+
+## Defining the Team Explorer Page Content
+
+To define the Team Explorer Page Content all we need to do is change the PageContent property to return an instance of our SampleTeamExplorerPage class
+
+public object PageContent{    get    {        return new SamplePageControl();    }}
+
+This will now load our new user control each time this page is loaded.
+
+## Navigating to a Team Explorer Page
+
+All that is required to navigate to a Team Explorer Page is the guid of that page. To enable the navigation in our sample go to the SampleTeamExplorerNavigationItem class and change the Execute method to look like below
+
+public void Execute(){    var service = this.GetService<ITeamExplorer>();    if (service == null)    {        return;    }    service.NavigateToPage(new Guid(GuidList.sampleTeamExplorerPage), null);}
+
+You are also able to easily navigate to any other Page that is in Team Explorer if you know the guid, to make it easier to navigate to the default pages that are standards in TFS Microsoft has added a class called [TeamExplorerPageIds](http://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.controls.teamexplorerpageids%28v=vs.110%29.aspx) which contains the Ids of all the default pages. For example if you wanted to navigate to the home page you would use the code below in your execute method or any other place
+
+public void Execute(){    var service = this.GetService<ITeamExplorer>();    if (service == null)    {        return;    }    service.NavigateToPage(new Guid(TeamExplorerPageIds.Home), null);}
+
+You'll notice now if you run the project that when you click on the sample button you are taken through to our new page and the page content is visible
+
+ [![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a8377ac10f94a18bf4e4dc3f2c44d0913bc08d0c/4019be8e-c02c-404c-94a6-54723fbb688a.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/537045c9baf981df822eca7847bc6ea3866b6fad/8f7f833e-979f-41f0-af70-78c6c439b258.png)
+
+That's all that was required to create a Team Explorer Page with Content ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+In the [Getting start with a Team Explorer Plugin for VS 2013 Part 4](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4) we will be creating a new Team Explorer Section and then making some contents in the section content link through to this page.
+

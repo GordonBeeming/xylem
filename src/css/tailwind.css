@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
-@source '../node_modules/pliny'; /* Assuming this source is still relevant for your setup */
+@source '../node_modules/pliny';
+/* Assuming this source is still relevant for your setup */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Core theme configuration */
@@ -15,32 +16,47 @@
   /* Primary Colors - Blues/Teals */
   /* Derived from #007bff (links/accents), #004a70 (hero), #00334e (navbar/footer) */
   /* Hue target: ~245-260 (blues) */
-  --color-primary-50: oklch(0.95 0.04 255); /* Lighter, less saturated blue */
+  --color-primary-50: oklch(0.95 0.04 255);
+  /* Lighter, less saturated blue */
   --color-primary-100: oklch(0.9 0.07 255);
   --color-primary-200: oklch(0.8 0.1 257);
   --color-primary-300: oklch(0.7 0.14 258);
   --color-primary-400: oklch(0.65 0.16 259);
-  --color-primary-500: oklch(0.608 0.173 259.5); /* Approx. #007bff - for links, buttons */
-  --color-primary-600: oklch(0.48 0.13 250); /* Darker accent */
-  --color-primary-700: oklch(0.358 0.086 245.3); /* Approx. #004a70 - Hero background */
+  --color-primary-500: oklch(0.608 0.173 259.5);
+  /* Approx. #007bff - for links, buttons */
+  --color-primary-600: oklch(0.48 0.13 250);
+  /* Darker accent */
+  --color-primary-700: oklch(0.358 0.086 245.3);
+  /* Approx. #004a70 - Hero background */
   --color-primary-800: oklch(0.3 0.078 247);
-  --color-primary-900: oklch(0.267 0.071 249.7); /* Approx. #00334e - Navbar/Footer background */
-  --color-primary-950: oklch(0.22 0.06 250); /* Even darker blue */
+  --color-primary-900: oklch(0.267 0.071 249.7);
+  /* Approx. #00334e - Navbar/Footer background */
+  --color-primary-950: oklch(0.22 0.06 250);
+  /* Even darker blue */
 
   /* Gray Colors - Themed for your blog */
   /* Derived from #f8f9fa (page bg), #e9ecef (placeholders), #adb5bd (text) */
   /* Hue target: neutral or slightly cool gray ~260-275 */
-  --color-gray-50: oklch(0.981 0.0026 270); /* Approx. #f8f9fa - Page background */
-  --color-gray-100: oklch(0.936 0.005 270); /* Approx. #e9ecef - Light borders/backgrounds */
-  --color-gray-200: oklch(0.9 0.008 270); /* Light gray for borders (used as default border) */
+  --color-gray-50: oklch(0.981 0.0026 270);
+  /* Approx. #f8f9fa - Page background */
+  --color-gray-100: oklch(0.936 0.005 270);
+  /* Approx. #e9ecef - Light borders/backgrounds */
+  --color-gray-200: oklch(0.9 0.008 270);
+  /* Light gray for borders (used as default border) */
   --color-gray-300: oklch(0.85 0.01 270);
-  --color-gray-400: oklch(0.753 0.012 270); /* Approx. #adb5bd - Medium gray text (footer links) */
-  --color-gray-500: oklch(0.65 0.015 270); /* Mid-gray text */
-  --color-gray-600: oklch(0.556 0.016 270); /* Approx. #6c757d - Darker gray text */
+  --color-gray-400: oklch(0.753 0.012 270);
+  /* Approx. #adb5bd - Medium gray text (footer links) */
+  --color-gray-500: oklch(0.65 0.015 270);
+  /* Mid-gray text */
+  --color-gray-600: oklch(0.556 0.016 270);
+  /* Approx. #6c757d - Darker gray text */
   --color-gray-700: oklch(0.45 0.014 270);
-  --color-gray-800: oklch(0.3 0.01 270); /* Dark gray text for light backgrounds */
-  --color-gray-900: oklch(0.225 0.003 270); /* Approx. #212529 - Very dark gray text */
-  --color-gray-950: oklch(0.15 0.002 270); /* Near black */
+  --color-gray-800: oklch(0.3 0.01 270);
+  /* Dark gray text for light backgrounds */
+  --color-gray-900: oklch(0.225 0.003 270);
+  /* Approx. #212529 - Very dark gray text */
+  --color-gray-950: oklch(0.15 0.002 270);
+  /* Near black */
 
   /* Line heights (from original) */
   --line-height-11: 2.75rem;
@@ -63,73 +79,98 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor); /* Uses our new themed gray-200 */
+    border-color: var(--color-gray-200, currentColor);
+    /* Uses our new themed gray-200 */
   }
 
   a,
   button {
-    outline-color: var(--color-primary-500); /* Uses our new themed primary-500 */
+    outline-color: var(--color-primary-500);
+    /* Uses our new themed primary-500 */
   }
 
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid;
-    border-radius: var(--radius-sm); /* Assuming --radius-sm is defined elsewhere or by default */
-    outline-color: var(--color-primary-500); /* Uses our new themed primary-500 */
+    border-radius: var(--radius-sm);
+    /* Assuming --radius-sm is defined elsewhere or by default */
+    outline-color: var(--color-primary-500);
+    /* Uses our new themed primary-500 */
   }
 }
 
 @layer utilities {
   .prose {
     & a {
-      color: var(--color-primary-500); /* Uses new themed primary-500 */
+      color: var(--color-primary-500);
+
+      /* Uses new themed primary-500 */
       &:hover {
-        color: var(--color-primary-600); /* Uses new themed primary-600 */
+        color: var(--color-primary-600);
+        /* Uses new themed primary-600 */
       }
+
       & code {
         /* Inline code within a link */
-        color: var(--color-primary-400); /* Uses new themed primary-400 */
+        color: var(--color-primary-400);
+        /* Uses new themed primary-400 */
       }
     }
+
     & :where(h1, h2) {
       font-weight: 700;
-      letter-spacing: var(--tracking-tight); /* Assuming --tracking-tight is defined */
+      letter-spacing: var(--tracking-tight);
+      /* Assuming --tracking-tight is defined */
     }
+
     & h3 {
       font-weight: 600;
     }
+
     & :where(code):not(pre code) {
       /* General inline code */
-      color: var(--color-primary-700); /* Changed from indigo to a darker themed primary */
-      background-color: var(--color-primary-50); /* Added a subtle background for contrast */
+      color: var(--color-primary-700);
+      /* Changed from indigo to a darker themed primary */
+      background-color: var(--color-primary-50);
+      /* Added a subtle background for contrast */
       padding: 0.1em 0.3em;
       border-radius: 0.25rem;
     }
   }
 
   .prose-invert {
+
     /* For dark mode */
     & a {
-      color: var(--color-primary-400); /* Lighter primary for dark backgrounds */
+      color: var(--color-primary-400);
+
+      /* Lighter primary for dark backgrounds */
       &:hover {
         color: var(--color-primary-300);
       }
+
       & code {
         color: var(--color-primary-300);
       }
     }
+
     & :where(h1, h2, h3, h4, h5, h6) {
-      color: var(--color-gray-100); /* Light gray for headings on dark backgrounds */
+      color: var(--color-gray-100);
+      /* Light gray for headings on dark backgrounds */
     }
+
     & :where(code):not(pre code) {
       /* General inline code in dark mode */
-      color: var(--color-primary-200); /* Lighter primary for code text */
-      background-color: var(--color-gray-800); /* Darker background for contrast */
+      color: var(--color-primary-200);
+      /* Lighter primary for code text */
+      background-color: var(--color-gray-800);
+      /* Darker background for contrast */
     }
   }
 }
@@ -160,8 +201,10 @@
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 input:-webkit-autofill,
@@ -189,4 +232,43 @@ input:-webkit-autofill:focus {
 .linkicon {
   display: inline-block;
   vertical-align: middle;
+}
+
+
+.figure-container img {
+  max-width: 100%;
+  /* Ensures the image never overflows its container */
+  height: auto;
+  /* Maintains the aspect ratio as the width changes */
+  display: block;
+  /* Removes any extra space below the image */
+  margin-left: auto;
+  /* Centers the image if it's smaller than the container */
+  margin-right: auto;
+}
+
+.figure-container figcaption {
+  text-align: center;
+  font-style: italic;
+  margin-top: 0.5em;
+  color: #6b7280;
+  /* text-gray-500 */
+}
+
+.iframe-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* This creates a 16:9 aspect ratio box. Adjust if you need other ratios. */
+  padding-top: 56.25%;
+}
+
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
 }

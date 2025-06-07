@@ -1,0 +1,163 @@
+﻿---
+title: 'Upgrade/Publish TFS 2013 Process Templates with PowerShell'
+date: 2014-09-12
+tags: ['VSTS / TFS', 'Rangers Research', 'TFS 2013', 'GitHub Projects', 'PowerShell']
+draft: false
+summary: 'I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.'
+---
+
+
+I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process 🙂. When I first started doing customizations I used the [TFS Power Tools](http://visualstudiogallery.msdn.microsoft.com/f017b10c-02b4-4d6d-9845-58a06545627f) to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.
+
+## Using Command Line
+
+After a while I started using command line ([witadmin importwitd](http://msdn.microsoft.com/en-us/library/dd312129.aspx)), this was slightly faster but I found myself keeping a list commands in a txt file and then searching for the one I need when needed and run it.
+
+## A Basic PowerShell Script
+
+I follow [Martin Hinshelwood](http://twitter.com/nakedalm) on various social media and one day he posted a blog post titled [Upgrading to Visual Studio Scrum 3.0 process template in TFS 2013](http://nakedalm.com/upgrading-to-visual-studio-scrum-3-0-process-template-in-tfs-2013/), although I had been at this point playing a lot with upgrading from TFS 2012 to TFS 2013 there was one piece of magic in that post that changed the way I applied process template changes up until today. It was a script that simple looped through the work item definitions in a set folder and imported them into TFS
+
+
+```powershell
+Param(
+      [string] $CollectionUrlParam = $(Read-Host -prompt "Collection (enter to pick):"), 
+      [string] $TeamProjectName = $(Read-Host -prompt "Team Project:"),
+      [string] $ProcessTemplateRoot = $(Read-Host -prompt "Process Template Folder:")
+      )
+
+$TeamProjectName = "teamswithareas"
+$ProcessTemplateRoot = "C:\Users\mrhinsh\Desktop\TfsProcessTemplates\Microsoft Visual Studio Scrum 3.0 - Preview"
+$CollectionUrl = "http://kraken:8080/tfs/tfs01"
+
+$TFSConfig = "${env:ProgramFiles}\Microsoft Team Foundation Server 11.0\Tools\TFSConfig.exe"
+$WitAdmin = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 12.0\Common7\IDE\witadmin.exe"
+
+witds = Get-ChildItem "$ProcessTemplateRoot\WorkItem TrackingType\Definitions"
+
+foreach ($witd in $witds)
+{
+   Write-Host "Importing $witd"
+   & $WitAdmin importwitd /collection:$CollectionUrl /p:$TeamProjectName /f:$($witd.FullName)
+}
+$WitAdmin importcategories /collection:$CollectionUrl /p:$TeamProjectName /f:"$ProcessTemplateRoot\WorkItem Tracking\Categories.xml"
+$WitAdmin importprocessconfig /collection:$CollectionUrl /p:$TeamProjectName /f:"$ProcessTemplateRoot\WorkItem Tracking\Process\ProcessConfiguration.xml"
+```
+
+
+## Small Script Evolution
+
+This worked for a while but I still had keep a couple of PowerShell files for the different projects I want to import the process templates into. I ended up adding over the next while adding a couple of additions to the script like publishing new global lists
+
+
+```powershell
+#if there is a file with the name GlobalLists-ForImport.xml import it as Global List info for the current collection
+if (Test-Path "$ProcessTemplateRoot\GlobalLists-ForImport.xml")
+{
+    Write-Host "Importing GlobalLists-ForImport.xml"
+    & $WitAdmin importgloballist /collection:$CollectionUrl /f:"$ProcessTemplateRoot\GlobalLists-ForImport.xml"
+}
+```
+
+
+and imported linked types
+
+
+```powershell
+#import each Link Type for the $CollectionName
+foreach($witd_LinkType in $witd_LinkTypes)
+{
+    Write-Host "Importing $($witd_LinkType.Name)"
+    & $WitAdmin importlinktype /collection:$CollectionUrl /f:$($witd_LinkType.FullName)
+}
+```
+
+
+## ALM Rangers - vsarUpgradeGuide & vsarSAFe
+
+### vsarUpgradeGuide
+
+The first project I joined after joining the [ALM Rangers](http://aka.ms/vsarUnderstand) was the [TFS Upgrade Guide](http://aka.ms/treasure8). The last part of my contributions for the upgrade guide was a PowerShell script that could help you easily upgrade your process templates (or at least publish them) after you have made the changes required to make them compatible with TFS 2013. And for some reason it wasn't until then that I made the script target multiple team projects in the same collection.
+
+### vsarSAFe
+
+The latest small modifications that were made to the script were for the project vsarSAFe which looks at how to modify your process template to make them [SAFe](http://scaledagileframework.com) aware. If you aren't familiar with SAFe it stands for Scaled Agile Framework. As I'm writing this we are showing up as Delayed on the [Flight Plan](http://blogs.msdn.com/b/willy-peter_schaub/archive/2014/05/08/alm-community-shipped-the-flight-plan-a-simple-known-and-informative-view.aspx) but will be landing soon 😁
+
+
+<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/ba60b061a3488e3b2b06d13e01b6d1fc501c1fce/8d0c3b38-e0d8-4482-a4c2-550f91a144d7.png" alt="" width="0" height="0" caption="" />
+
+
+Most of the changes included here were just around adding comments and cleaning the script up a bit to make it easier to read.
+
+## So what does the script look like?
+
+The final script (as it is now) looks like below
+
+
+```powershell
+# Copyright © Microsoft Corporation.  All Rights Reserved.
+# This code released under the terms of the 
+# Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.)
+# 
+#config
+$server = "MyTfsServer"
+$port = 8080
+$virtualDirectory = "tfs"
+$CollectionName = "DefaultCollection"
+$TeamProjectNames = @("Team Project 1", "Team Project 2", "Team Project 7", "Sample Scrum Project 1")
+$ProcessTemplateRoot = "C:\templates\Microsoft Visual Studio Scrum 2013.3"
+
+$CollectionUrl = "http://$($server)$(if ($port -ne 80) { ":$port" })$(if (![string]::IsNullOrEmpty($virtualDirectory)) { "/$virtualDirectory" })/$($CollectionName)"
+$API_Version = "12.0"
+
+#----------------------------
+# don't edit below this line
+#----------------------------
+
+#get a reference to the witadmin executable path for the current api version
+$WitAdmin = "${env:ProgramFiles(x86)}\Microsoft Visual Studio $API_Version\Common7\IDE\witadmin.exe"
+
+#if there is a file with the name GlobalLists-ForImport.xml import it as Global List info for the current collection
+if (Test-Path "$ProcessTemplateRoot\GlobalLists-ForImport.xml")
+{
+    Write-Host "Importing GlobalLists-ForImport.xml"
+    & $WitAdmin importgloballist /collection:$CollectionUrl /f:"$ProcessTemplateRoot\GlobalLists-ForImport.xml"
+}
+
+#get a reference to all work item type definitions
+$wit_TypeDefinitions = Get-ChildItem "$ProcessTemplateRoot\WorkItem Tracking\TypeDefinitions\*.*" -include "*.xml"
+
+#get a reference to all work item link types
+$witd_LinkTypes = Get-ChildItem "$ProcessTemplateRoot\WorkItem Tracking\LinkTypes\*.*" -include "*.xml"
+
+#import each Link Type for the $CollectionName
+foreach($witd_LinkType in $witd_LinkTypes)
+{
+    Write-Host "Importing $($witd_LinkType.Name)"
+    & $WitAdmin importlinktype /collection:$CollectionUrl /f:$($witd_LinkType.FullName)
+}
+
+foreach ($TeamProjectName in $TeamProjectNames)
+{
+    Write-Host "Upgrading $TeamProjectName."
+
+    #import each Type Definition for the $TeamProjectName
+    foreach($wit_TypeDefinition in $wit_TypeDefinitions)
+    {
+        Write-Host "Importing $($wit_TypeDefinition.Name)"
+        & $WitAdmin importwitd /collection:$CollectionUrl /p:$TeamProjectName /f:$($wit_TypeDefinition.FullName)
+    }
+
+    #import work item categories for the $TeamProjectName
+    & $WitAdmin importcategories /collection:$CollectionUrl /p:$TeamProjectName /f:"$ProcessTemplateRoot\WorkItem Tracking\Categories.xml"
+
+    #import work item process configuration for the $TeamProjectName
+    & $WitAdmin importprocessconfig /collection:$CollectionUrl /p:$TeamProjectName /f:"$ProcessTemplateRoot\WorkItem Tracking\Process\ProcessConfiguration.xml"
+}
+Write-Host "Done upgrading team projects"
+```
+
+
+This script now targets unlimited team projects in 1 team project collection, updates the categories, configuration, global lists and link types. 
+
+This takes care of all the things I need when making process template changes as I now make what ever changes I need run the script and check my changes in the browser. It doesn't get much easier than this but if you have a easier way do let me know 😀.
+

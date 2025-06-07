@@ -26,6 +26,7 @@ import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 
+
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -78,6 +79,25 @@ async function createTagCount(allBlogs) {
   })
   const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
   writeFileSync('./src/app/tag-data.json', formatted)
+}
+
+async function createYearsCount(allBlogs) {
+  const yearCount: Record<string, number> = {}
+  allBlogs.forEach((file) => {
+    let date = new Date(file.date)
+    if (date && (!isProduction || file.draft !== true)) {
+      const year = date.getFullYear().toString()
+      if (year !== '1970') {
+        if (year in yearCount) {
+          yearCount[year] += 1
+        } else {
+          yearCount[year] = 1
+        }
+      }
+    }
+  })
+  const formatted = await prettier.format(JSON.stringify(yearCount, null, 2), { parser: 'json' })
+  writeFileSync('./src/app/year-data.json', formatted)
 }
 
 function createSearchIndex(allBlogs: any[]): void {
@@ -182,6 +202,7 @@ export default makeSource({
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
     createTagCount(allBlogs)
+    createYearsCount(allBlogs)
     createSearchIndex(allBlogs)
   },
 })

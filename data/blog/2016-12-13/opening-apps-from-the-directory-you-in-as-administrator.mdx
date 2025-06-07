@@ -1,0 +1,41 @@
+﻿---
+title: 'Opening apps from the directory you in as Administrator'
+date: 2016-12-13
+tags: ['Windows Explorer', 'Command Line', 'Run As Admin', 'PowerShell']
+draft: false
+summary: 'The other day I saw a post that Greg Duncan shared about opening CMD and PowerShell from the directory you in.'
+---
+
+
+The other day I saw a post that [Greg Duncan](https://go.beeming.net/2ho9QfO) shared about opening CMD and PowerShell from the directory you in.
+
+>  
+> How did I not know this? Open CMD/PS to the directory you're in, from File Explorer (no right-click needed) [https://t.co/ynPFCGw9xm](https://t.co/ynPFCGw9xm) [pic.twitter.com/hL2iFGVHsE](https://t.co/hL2iFGVHsE)
+> — Greg Duncan (@gduncan411) [December 7, 2016](https://twitter.com/gduncan411/status/806520465573511168)
+
+Now although there is no rocket science behind this I never thought to ever try it, now that I have tried it I can't use it ![Sad smile](https://gordonbeeming.com/images/emoticons/sad.svg)
+ 
+## The Problem is…
+ 
+You see the problem is ever time I need a CMD or PowerShell window it generally needs to be running in admin mode (any one who knows how let me know ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)). 
+ 
+## The Resolution is…
+ 
+Now being a week since seeing the post I really feel that I should be using this gem so decided to write code to make it possible for me. I won't go into too much detail because the code is on GitHub ([https://go.beeming.net/2hocTo8](https://go.beeming.net/2hocTo8)). Basically all you do is 
+ 
+1. Copy the [admin.exe](https://go.beeming.net/2hpMyDC) from the compiled folder on GitHub *(or pull down the code and compile yourself)* into your windows folder, which is location in C:\Windows by default.
+ 
+2. Click in the address bar in windows explorer
+ 
+[![explorer_2016-12-13_13-13-16](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0123e3048b69438fcd8dbcf0f5ee7d16d370a43/d0123e3048b69438fcd8dbcf0f5ee7d16d370a43.png "explorer_2016-12-13_13-13-16")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e0de1ba591f07df2f97f3ddd0282e016a0773ed1/e0de1ba591f07df2f97f3ddd0282e016a0773ed1.png)
+ 
+3. Type any command 
+ 
+[![explorer_2016-12-13_13-14-26](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b355a257309cb7e083caf4b3306cded9ec95b3f0/b355a257309cb7e083caf4b3306cded9ec95b3f0.png "explorer_2016-12-13_13-14-26")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7f3f18e3edd052d26f43368334232deb4737ab40/7f3f18e3edd052d26f43368334232deb4737ab40.png)
+ 
+4. Press enter and see it launch that app as Administrator with the working directory set correctly
+ 
+[![cmd_2016-12-13_13-15-19](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/85ae72b922085f63a6863ab21cab620e6ce9f869/85ae72b922085f63a6863ab21cab620e6ce9f869.png "cmd_2016-12-13_13-15-19")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/40f6bff594e09cb4a5b509d024f04450ec554d32/40f6bff594e09cb4a5b509d024f04450ec554d32.png)
+ 
+Hope this little utility will fill this little gap I had for others as well ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+

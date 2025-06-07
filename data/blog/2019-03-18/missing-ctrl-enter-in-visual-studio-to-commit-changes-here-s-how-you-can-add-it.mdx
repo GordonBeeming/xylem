@@ -1,0 +1,33 @@
+﻿---
+title: 'Missing ctrl + enter in Visual Studio to commit changes? Here’s how you can add it'
+date: 2019-03-18
+tags: ['git', 'VSTS / TFS', 'Visual Studio']
+draft: false
+summary: 'So something that you''ve probably noticed when using dev tools in the web and Visual Studio Code is that you can hit ctrl + enter and with this you may have noticed that in Visual Studio you can''t do that. Below you''ll see how you can add this to your IDE.'
+---
+
+
+So something that you've probably noticed when using dev tools in the web and [Visual Studio Code](https://code.visualstudio.com/) is that you can hit ctrl + enter and with this you may have noticed that in [Visual Studio](https://visualstudio.microsoft.com/) you can't do that. Below you'll see how you can add this to your IDE.
+
+## Adding keyboard shortcuts for Team Explorer
+
+First off open Visual Studio and press **ctrl + Q** to jump to the search VS textbox and then type *keyboard* and then select *Change hotkeys and keyboard shortcuts*. 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1633af0d52ccd737d26f9f3b97285df9d564e102/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9b079fa2f3c1f10efd3ec5bb39d84f48283daeeb/image.png)
+
+This will open the Options dialog to the Keyboard section under environment. 
+
+1. First off type **team.git.commit** in the show commands containing field
+2. Select **Team.Git.Commit**
+3. Select **Team Explorer** from the Use new shortcut in
+4. In the Press shortcut keys textbox press **ctrl + enter**
+5. Click Assign
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/45ce36feab7a8ffc5e86f25f26d9a0130d43f6bc/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/81fc9df646289aaca0efe74151f0663157f9e5e8/image.png)
+
+You can repeat this if you want for **Commit and Sync** and assign the shortcut **ctrl + shift + enter**.
+
+Having this shortcut can help improve your flow a lot. If you want to 'switch' to the commit screen you could make the Use new shortcut in drop list as Global and it will switch to changes (because there is no comment, if there is a comment it's going to just commit so beware of that).
+
+**EDIT:** To go to Commit changes window from anywhere you can bind **Team.Git.GoToGitChanges** as **Global** and that will jump to the window ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+

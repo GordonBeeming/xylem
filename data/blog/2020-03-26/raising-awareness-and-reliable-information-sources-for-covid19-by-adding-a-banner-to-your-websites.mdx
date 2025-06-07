@@ -1,0 +1,181 @@
+﻿---
+title: 'Raising awareness and reliable information sources for #COVID19 by adding a banner to your websites'
+date: 2020-03-26
+tags: ['Raising Awareness', 'COVID19']
+draft: false
+summary: 'Recently talking to people it''s obvious that a lot of people are either not following what is going on globally and in lots of cases have information that seems to have been obtained from unreliable sources MyBroadband released a post titled "New rules for all co.za websites and ISPs during coronavirus outbreak" which mentioned that ISPs needed a visible link to one of the South African information sites for corona virus so thought it would be a useful thing for more people to add banners in general to their sites linking to a trusted source for corona virus information'
+---
+
+
+Recently talking to people it's obvious that a lot of people are either not following what is going on globally and in lots of cases have information that seems to have been obtained from unreliable sources
+
+MyBroadband released a post titled "[New rules for all co.za websites and ISPs during coronavirus outbreak](https://mybroadband.co.za/news/internet/344953-new-rules-for-all-co-za-websites-and-isps-during-coronavirus-outbreak.html)" which mentioned that ISPs needed a visible link to one of the South African information sites for corona virus so thought it would be a useful thing for more people to add banners in general to their sites linking to a trusted source for corona virus information
+
+I've added my link pointing to [https://sacoronavirus.co.za/](https://sacoronavirus.co.za/) using information found in their site footer.
+
+Below you can find 2 code snippets and the code for it is on GitHub ([Gordon-Beeming/CoronaVirus-Banners](https://github.com/Gordon-Beeming/CoronaVirus-Banners)) as well where I hope that if you make a variation of the snippet you'd do a PR so we can add more that people can easily drop into their websites to help make people more aware of this virus and where to find good sources of information for it. The snippets below look like this image which is at the time of writing this on my blog
+
+
+<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/32f304e73d424cbc1c0d696e75b510987490046f/2020-03-26_22-19-48.jpg" alt="" width="0" height="0" caption="" />
+
+
+## Links to be more informed
+
+Before showing the snippets I'd like to share some places I look for information 
+
+- Coronavirus disease (COVID-19) Pandemic [https://www.who.int/emergencies/diseases/novel-coronavirus-2019](https://www.who.int/emergencies/diseases/novel-coronavirus-2019)
+- COVID-19 Corona Virus South African Resource Portal [https://sacoronavirus.co.za/](https://sacoronavirus.co.za/)
+- In South Africa subscribing to eNCA on YouTube will let you know when live streams are happening from government [https://www.youtube.com/channel/UCI3RT5PGmdi1KVp9FG_CneA](https://www.youtube.com/channel/UCI3RT5PGmdi1KVp9FG_CneA)
+
+I don’t use social media generally as a trusted source for this but do follow some accounts that have shared helpful information so far
+
+- World Health Organization (WHO) [@WHO](https://twitter.com/WHO)
+- eNCA [@eNCA](https://twitter.com/eNCA)
+- Department of Health [@HealthZA](https://twitter.com/HealthZA)
+- NICD [@nicd_sa](https://twitter.com/nicd_sa)
+
+Here is also some dashboards and real world numbers
+
+- Bing coronavirus (COVID-19) tracker from Microsoft [https://www.bing.com/covid](https://www.bing.com/covid)
+- Coronavirus map from Google [https://google.org/crisisresponse/covid19-map](https://google.org/crisisresponse/covid19-map)
+- Coronavirus COVID-19 Global Cases by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) [https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
+
+If you have any useful resources feel free to ping me on twitter on in the comments 😊
+
+
+## Basic Html with external image
+
+The first snippet has an image that will download
+
+
+```html
+<style>
+    body {
+        margin-top: 60px;
+    }
+
+    #sacoronavirus-banner {
+        position: fixed;
+        height: 60px;
+        background-color: #004020;
+        left: 0;
+        right: 0;
+        top: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        z-index: 99;
+        font-size: 16px;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content {
+        height: 60px;
+        width: 550px;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content p {
+        margin: 8px auto;
+        float: left;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content img {
+        width: 275px;
+        height: 60px;
+        float: right;
+    }
+</style>
+<div id="sacoronavirus-banner">
+    <center>
+        <div id="sacoronavirus-content">
+            <p><a href="https://sacoronavirus.co.za/" target="_blank" rel="external nofollow"
+                    title="COVID-19 Corona Virus South African Resource Portal">Emergency Hotline: 0800 029
+                    999<br />WhatsApp Support Line: 0600-123456</a></p>
+            <a href="https://sacoronavirus.co.za/" target="_blank" rel="external nofollow"
+                title="COVID-19 Corona Virus South African Resource Portal"><img src="/images/footer-logo.png"
+                    border="0" /></a>
+        </div>
+    </center>
+</div>
+```
+
+
+## Basic Html with embed image
+
+This snippet embeds the image as a base64 image so it's downloaded with the contents of your page on load
+
+
+```html
+<style>
+    body {
+        margin-top: 60px;
+    }
+
+    #sacoronavirus-banner {
+        position: fixed;
+        height: 60px;
+        background-color: #004020;
+        left: 0;
+        right: 0;
+        top: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        z-index: 99;
+        font-size: 16px;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content {
+        height: 60px;
+        width: 550px;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content p {
+        margin: 8px auto;
+        float: left;
+    }
+
+    #sacoronavirus-banner #sacoronavirus-content img {
+        width: 275px;
+        height: 60px;
+        float: right;
+    }
+</style>
+<div id="sacoronavirus-banner">
+    <center>
+        <div id="sacoronavirus-content">
+            <p><a href="https://sacoronavirus.co.za/" target="_blank" rel="external nofollow"
+                    title="COVID-19 Corona Virus South African Resource Portal">Emergency Hotline: 0800 029
+                    999<br />WhatsApp Support Line: 0600-123456</a></p><a href="https://sacoronavirus.co.za/"
+                target="_blank" rel="external nofollow"
+                title="COVID-19 Corona Virus South African Resource Portal"><img
+                    src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAA8CAYAAABFJF7vAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAADqdSURBVHhe7V0HfBRF336up/eQRgo1IfROCDVBpCgdQaVIUZqABRELKgiKoKA0C0Wk996REBJCr0kIJYU00vsll7vLle8/c3cQQgKIvt/7qvfkt9m92dnZ2SnPPP+Z2VmYYYYZZphhhhlmmGGGGWaYYYYZZphhhhlmmPGfgcC4fybo9Xox7QbrgdfowiZ0bMNPmGGGGf8oUB1XCqCPU1dU7JNKpBsFAkGp8VSNeGYyISIJoN0G2tpwBzPMMONfAa1WEy8SiYcRoVwzOlWLZyITIpI6tDtDmyd3MMMMM/5tKKat+5MIRWjc1whm2uh0OqZIzERihhn/XtjT9hvxQY1dG08lE0J3oVAYbDx+MnQ66IrzoS8pJBbSGR2fARVq6IryoC8tYexldDTDDDP+x9CUtn6Gw8fxVDOnQqv5SSwUTTD+rBaae7FQ7F4KdXQY9PICchFA6OQOabPusH71IwhdvQweq0B1/jDKD/8CTeI16Mvl5ELX1fKFrG1vWPWfAqGLQQzpFXLIF7/FOoVg+/5qCC2tuXtV6IrzULL4TQit7GE3YzW02amQr3wHkkYdYP36x9yP+uJRKA78RDT6+KMLXWrDol0fSNv2pB8io+sfh15ZBuWJTZC2DoXIs57R9VGwNNPEk2LUaemZvSFt0gmQyoxn//egVyqgTY6jNL0HbW4G5Qkjfh0EMivKazcI3etA7BMAoYOr8Qoz/qHYT6ZOf+PxI3gqmZCsOUW7boZfj6P88GrI13zIK4WkQVtIG3eCvkIFdVwUNEnXILBygMOnOyAJbG+8gqBWoWTZVChPb6bzdpAEBEFStwV0iiJUxERCk34LAmtH2M/4DdJW3TmJFM8ZCvWVI3CYvYcq+wuGcKpA+ftmCncCLENHw2bacmiTYpA/vQMsOw6C7Ucb+MOWHV2HspVvU6GnCmBNyo3UFIRC6DUa6PLTaF9Bce0M+483QmjnbAj4D0J5bB2Kl7wJh4+3QtZlsNHVAL2ilBOe6tIhupea318glkDs2xj2n2yDyIN1T/1vQC8vhOrCYSijdhPxXYGujBSnVsvTi0NAe6ZAWRoKBEQsNvQcjSBr0weyzoOJSP/8sygL41GQGA7rWoGw96kikKnMcRDxa1LOQuzZBpBIqfwpIZBYGM5Vwq19U1Ev5CMIRFJIrFyMrmb8QcQTmTQ0Hj+CZzFzHs8VI9RXwyBf9QGEtk5wnH8UDgtPwGr057Ae/xUcvwuH3QcbSdooUbxoFK9EHGTGlK79GMqILaQYguG47CLsv9gFq1GzYTPxOzguPQfbqaQciJCKFrxGhBTLScAidAS/XBmxne+rg/L0Vr6XdXvlEZbUsxbUeMz0hp4Kv9Xg9+Cw4hIcf7rK904/XoXTymuwDBmBittnUTz/dao4GsNFzwp6NvWlY5D/+ikv1A8qnRGMFEt+mATV5UNEeCPh/FM0XNYlwHrsAmgzE1E87xXoVeUGz/9FaAuyULbmE+SNCyTiG0MkfpRUX67hAYj4eBtERCK0tIPIuTZEtfwgciQVSW4Vdy+hdNMXKJjWFsULRkGbdoeH+TzIurELicfmIuMyNRLZt4yuBKMJrdepUXGUFCeRiub2T9Ak34Q+Jxram6v4eQ6TuU15U3D3GLJjNuLicmrwtEqDuxl/EPoa5fOzkEn1oIomXzWTDvRcQUgCO/AK+2CjlsoiuB+shn4IXV4aVFH7yJUI6NZFKI78ArGXP+xnb4fYtfaj14lEsOjxOmwnLyPPZZD/8j6v/NKW3SGwdYb6BplSJLmrQpefSSRwjhdsSWBHo6sBLC6mnhhjW8bdhNSiCVilYHuxGCJ3P9hM/5HMk16ouHMOyvAdRt9PR9mWb5A/oQWKvn4Veop3ddCl3oHq4gFI/MnsmroMYu+GELn5wGrgVFgOfh+a1Dhuhv03oS8rQcX5QxDVbwHLj7bAalEErBeEwW7eEdh/sB42r86G/cwNkCwmwl0Uhruf70DMZ9twb95+qL8/A+slZ7k/iy7DqIKfR/7U9ihbP6faPHsSsqN3QV2ajNKsWFiSGaW4f854hopF2h6ow9fQkZ7I9y7UO6dAlH0BuptkMh+l9Je1g6YsDppT75H5bMgLdel9VJSmswIGqYMPEo5SudL8sTiZwcBqafV4bjKpuHOFWtO7ZOt3gbjJo5W3MixCXoXVy1MgsLDiv8sPkuqgimz5+ucQ2rAO4sfBoivtNgSS+m1QcesstCnM7LGDRfuXoCvMIlMoyuCxEtRXTvBWXdZpMCeGyiBTzXhkUCaMSGoCO2fz2ifsCOVhpKyeESJnD8ja9YZV3wmQBgZXew9N+h2S4GpYdBsOITMRjGA+LTq8zAlPdenoA+L7/0ShshRfkzkz7NhqdMm8g6ax4ah/egPqHf8FdWkLJCUZHBeJ0WIB2sScQr3dC9Fg3ccI3vAFQmhr99un8F33Ebz3Lkb721H42L8VLny4HlazNlEeXkDhu12gvZ9gvNuToSPVoCy8i5zYI0Qk9WDhWAd58ZEP8lHqMxhiWQKUiztSnucAefupfJVBf3MnlQ8yxdK/hnZNPwjqTyAz2pZfU5J6ATL7OqROzsC9SV8UxF9EcUYMP2fGX4PnIhOWpRVx1FKQYpB1HmpwrAEiF09Yv7UI0s4DSVpq+XVMHluQ0ngSWGWTdR7CmIDUSDivcDKqhIyIlJE7DZ4qoZyZP6QwLLq+YnR5iMoVmymTyuRSHcR1GvM+FS3JZt0zmh2ynqPIvPsa1uO+hrRtH66mqoL1xzDZLbB4vAOZ9ZuwZ9XmpjyB+/8zyFEUowuRwafhW7GTlOPlrFQkFeUjt6wMeQoF8mifXFKIa7lp2HPrPOLyM1DE0oXSlSs746aj+BeTArmZm44Vl4/jpV3fouGFvVj44kgoXvsYZQsnoCL2rPGuNUNZkIjkqI2wdvWFpUsdlNy/RVkrgCLzKim3Zag48ilUhXbU2GRDUJhE8dCTMtVCR0JD5KSD9gIp1Lr+0OVuhvrcbFSkhyHn5l7Y+7WByMIGWde2waFuB6ScXsjTvDJKVQqMXjgRF+JvGF2eH/dy0jFo/iikF2QbXR4i7n4ihi4Yx+/3T8FzKxMtFRhWYViL/LTCz85zP6XUaqhKIXT2AqyePhOfdUay/g5dThonMElgEJkFdaG+/vsjfQtaMnE0dy5BUqcZRH6BRteH+CPKhEFPpCRyp3urKaOL8oyuT4bhGdlfpeetApGrNyc81eVjRpeHqLhzmSsqZg48mer+WmRQnvTaOBf96rVGU6kWY5yKsKhuCtY2TMHOpgk41OoW3zaSmysRBnsuVmjYRsYhRIxQjE8rpr3YmLZU98l8FCOHzKYFUXvQ9OJ+/Dh0IspIQaovHed+akLunePwaDkQ8uy7KLp/BdYODkTExUQIOyFpPQHCVi9CaBUPXYE9BF5DIWz5MURtFkLc/zvoXd+E3jsYmqRcyjsHiBtOgsClLYqST0CeepHipIUFEVRpTgp0Qmto5FnGuxqgpTK9//pJZBc96v48KKMyuu/aSdo/Thj5ihLsvfo7NNrHG52/K56bTMBGIqjA8Bb1GaEjZaLXaSGwfLZXegQio7miM3SEssrGzBhdYSbU0RHcjaGCCqiOZLosdISxWFcBL/AGaE0dck8BVw9UsHRaUhN/FHSz6ghBXL8FxLUbQXV2D5THfnvQKmrIZCzd8DnVwGdPy78CigoV+m1fgC+6DsO8kNexv3ky+hXdRumZdJzflIwNS1Ox8ssMXNpfiGa18pCj09OjGVKSUwgd6sjNRNYa2mnoN7ExubGixfxTISOPcrUSH4VvR2+dCumZSYZh8RogsXJHRWkirJ29IZZYID/xNAWiQFb0JgqyghqUzqRS10L6Rgwk/X6AuMNUiNqOhKTdKEh6fQnLUbtgMTkKkpB3qeHyRG7cBmg1pbTdh7IkAxpVISQWpHytnUE5bLzrQ7ByVtkMfV5QylBgjIANaXY+4SopEUMjyFzJYvxH4blSjKWBQGoY5NH9EZnGKqhYRi3Ks7G+jnWesfyQWRpdKIiuZFZRpVOeMozcMDATRyiz4n0q1YIKu6G4sxaTFXTTr5qhK8jk9xFWIr7ir15H3oi6tJENT/v80Q3p5tV0trI4Gw8rQyCRwu6dn4hMbVHy41Tkv9kU+ZPboGBmd0gCOlJr6wChvWu11/7VYCnw7rG1eN2/A/r5t6MyL8Se+NF45YtsLNlUhI0n5Qi7XI7fr5ehnb8GP99150pE9yAlDa24pUSGRk7u6F23OV5v0hFvtQzB8CZBCKkbiLoOrg/Sm5GOUCTChcxEdEu+gVg2zMzMvmpgaeuF8sJ8qORlkMqk1JYY1GFFWT4K753kxxzGkSUtkYNGkcPNSC0bgWMsZ2rkqPHIuLIDIimLhwjqkmSIxDZELNSwqeSQWD7abyc0PR6lx4mYCKwO24z7lcwU9izhceex7PhGnL971egKpORlYBWVyY2Re1BIaozBRCKs9EWS36FfjUcUKdATZOoxxa2heJZVKLE56gDW03Wl6v/+SN6fwXPTr8gngCeWNjvF6FI9tFnJyBsbCPmK6RBZWvG5G7qSXOizU40+qgfLU81dkv5UAIV+jY3ZQvf1bQRx3RaoIFNHp5AbTJz4K5A07gRBDZPjKoP1mTzNzIGilJMJ6zQW2DoZHek6K5LV9i60UYXn+1q8oDwGCr4aVw6Jfxs+/G01dBY9RzNI6rWC3ftrYfXGXD6Pg032q+navxLbbkYhu7QI0zs+nH80ZsRoeLjTcxEBiMWGkS43Oyk6tAEOlLrRcxmUBlMdFlRZdw55H3cmLsH60Nl4y+c1hMp6oqWuM99P9R2JHT2/QOyEJVjXbwrauPtRvdZzsyi9tAChJ9cjhhRmdZBSo6NRFkFqJUSFmk1mZPcUwaF+D5TlRxBpPCTwzKsbsPHNLjg5vzm+6eaNHTPeRmFavPEsWTop++HZIpRaB8MAgF5IykZIaoQqs1bD5qNUUcnsAcVSzN++BIs2LcHKA2vQ5v1QZBChMGX9BpXjodSo7A7bgRc/G4I55C/2fgIavdUOS3avxAdrP0PHj/uhlBoZU9nIzM/C6O+nIpdq21sr38fEpW9DxTriSXW9NPc17A3fiVlrP0f/eaM5Wf1d8dxkImnambO/KnLXEws/m/Sky0sh8gmkjCJpGTyQWgQFysO3GX3UAGJ3ZeQOUkBWkDZ/OGeOEYFF99eIkPKgvhGBCrJJdVQpLF8YbfRRDSqRB59n8oQMY2fUZMvq5HmQtepJz/hwZMjunZVwXnHhwea49Ez1JhsFUi1dsftSyyl29uAzcu0+3gzb93+BRZch0CZd5/1AkiaUrv9hyKkFnHt6K1a+NOEROW9nb4/XRozix8w0Ya1njw4yXC50Q7paYsxnZt7o0NOvCSyKPNBq9D50nL4Lgz8/jAnfh2Pq8ghM/OE0Bs85ig5TdyFk8nEcPUD3azoFh4bPQoCzFwSkaIqU5ei75SvksJm0VWDt3RpWPiOh1rmhokIMS+emkNkFwLVhR+KzMmTFrDB4pPR09u+J11cegG/HwegwoAE8/EqRdvc8kYcWankqCu7tIzGsh32dEFg6NoLUsi7KlEQk0vrw7cJG7R4FM3pEdO2A9r1xfMEeRHxzkJfb/TdO43B0JPadPYSLi0/j1IJ9ODZvB77dvRTZRXnY9MEvuLk0HFELjyA58x6upd81BEio5VQLP771Faw1KsQvj0LCL1dgQcpeSabfjxO+wvZP1mH/JxtI8UQhJv0hEf7d8NxkIvaqD2nT7qi4ewGqM4Y5JFXB5n4odn3HZ8GyCsNg2Xs8BNYOUOxeDM2tC9ytKlghLl3zEV1/HxahI3lrXRmyDi9z00cdtQfKqL3cNJC0DK2+AhNMcpPhacpEl5lsmNFLrZNF/ynVhMlcDFuNodCJ6uhKk3qHqzTFodWVQiFQpVAeXk1mjh2kzbrWHO5fhKUXDmJ8yx7wsHmoukwYP3YstdxiMmG0VJH1GNJNhMPZnlRSDE/E/rOO99HNQ7D6cDRKVBVkEQggkYohFpGioU3EfovZ/B0B8uVK7I1KRf/PDuPTRQmYEzgRH3UaRAVPjwx5ASYd+qnatPJp3R0Zd0pRkAzcOpuLm5FpOP79MsSFkRKtKEXurbU88aTWbhDb+EGpqQepQ2u06j8e/oHtoCpJJdL5gTjFGyd+3omLu8MRE56K5FvlKLhbTs9XG/Ye9Y13ewjWl6Ehwm/sbZjkaSO1JHXmhJKyYpxLjIYFlbUZa2dj4Fej8c2OZXTfCiiInAcE9caN5NtYdnAVNBLJI31z3NSjPUs31pA9KDm0a+TNVvYQoA6b+UxmdbGyGrP5b4LnJhPW2ttMWkwtsx3kSydAsWc59MX5VBtJ3JGEqyAmL/y0D3TFObAe9SWZBIap6SJnd9hN/RF6yoDCOYNQvp8Kk/E6ZkOzjrmSea9CcWIdNwFsRn1hSvoHELp6kjLqBtXlw6iIjYCsbR8iKFvj2cfByMkEETumuGuzUujacw829dWTKNuyEAXvdyETJwM2I+dCXIet//QcoEepjhBEHn6834QRrNbUArHCuGMx1HGRsAgZAZGLh8H9PwTW6box9gyRyQvVxrFuvbro8WJPSiIhrCylaNlEhPASO+NZBj2siMjbutfH6eicJxJzZTCSuZVWiOFzf0fOpVrY+PJUWFDlOUCmbHx+htHXQzh4N0HD7oNQRqafnVttUiRk7uiKkHnzd0T8shmq4lRkXlsErbIQCjKb4yMPICvuDCR2btAI5ci6+S3yM/U4uXQhNMX3SGmVwNrBnvZSiK08EfjiCIrU4x3erE9IIKz+vSxmonmT2btwzBwsGvclFo2di7gVUQhq2BJDFozBJxvnoH/7PrAxqj0TaTzY8xnRD6lTKBBRsTeUTUY+TBGxe/xd8fxkQhATmzrMO8TnZMhXf4DcMQ2QP7EF8t9oYCCSPKqU4xbCss/YRwqurOPLsP9wC1cX8lXv0XX1+XV5bzSkytwZqitHYBE0APZz95GqedyMYGFZhLxO5k0hdCSTLbq/+kj4D0CZA43GsDdCy8iOWh7FwRUo/KgHCmaFouDDEBR99hLKNs/hL67ZTl8FywHVqZJng16v5ffg76xUAuu0tpmwmEyoAuRPbYuCdzojf0JzyDfMhiQgGNZvzDX6/M9h952LeKFOU9gZJxE+DgGmTXmbE3BtLx1s7GSIVZsqh2Fr7VEXcQllKFGouXtV8DSuwZSUSETYcDIei1ZmY0PfGZCKRFgfc9p49lE07DYQbV77nIfn4N2GiEvEW3eNIosIZR2lsR7pl2ch99pBhMpc0bnHWOTf/RH5SVtRcN8SVzathKWdlDJEQI2+HaxcfeBUtznavfk5bGs9gbQrNT4msDk0oYEdEH0vBmfjr6Kemw/8XL0Qn5GMvReP49zNS9gzayPa1mvG896gRgxpwPdEEhVkxpYoyqCkxrZEUQqhTkMV8GEV1BKJaWtIt78DnlpfqFCwecwdDL+qB7P1y88fgjYmApr7iRCSLJQEtIMseAB/I7amm7AOVCW77tZ5aKilZupCUq8lJG16QtKg5RMjp1MqyLzaTc0FmSOdBvAWvyr4i2pn90Ho5gdJi248PC3Zsuqb9EhUiDlYK2IsPKxfR+wXCKFxpOp5oUm9hYq4C5DSPdkU/cpgRUVLaVQetpVPN2fvNcla94C0+3AIq2kp/0qwe/fbNBfzeoxCc0qTmsCIIDQkBA6im5jxnhO6XW/1YAiVtaRzurwCcbovvtxgGM3QanWwlklQ190Ovu62sLKQ8tGbrDw50vIVSMuV88rIOnVNYPeo52GPz6bWx2dn1yFm4lKIq7zLxEH+ynLTcHnrIuTcuwKxvggl2WmUb3roysWwGzIdW66cwg8NE7H6lgV0QWPQ8eohJN++Bmt7S3pmMZkmtWDj1hCeTXqhOZlBbK5PTSimMuk9ugnWz/wFA9q+yN2aTG6PYT1GYvagt/HBujlYTGaqp50r1EQGOrUCm2f+hkGkpnu1exHl1HiFRUegbcNWmPDiaIwgcyh29RW42Tig5bsh9DxUColM3nj5LXy96WvkbLoNRzJvc0qL4P5qPYQtOopuAW35ff9HkUpq1Nd4/Aj+EjIxoTKnPjXgSqjKxX/k2r8znje9nhesRWyzbhauj1tEFbfmCsWwc+cOnN42CSEj/TAstiHFlRkA9Ecqb+uQGdiyqRBh19MxsDOd79YQ7Ro7w9HSijXABPaPPZ0Aamqlk7NKcPB8MjYdT0RsSv4DUmGEEty4Fpr1kmN80+5oRA1PVTA/GdE74dGETJ7cJFwjczrjzg0yCVRIaNId8enb8ba3Gh9ttcSYECXkZMacEHfHmw52yKLGxj2wHTxb9kTD4IFkURZCSQ2Mo09rY+iPg/WXhMVGoZVXY7i4GN4sjqCGobazB+qSGmG4lBhNJJkBmUSGYDLFHezscT0lDvGZyejWqD3i7t+mJxejpV9jRN6+iC6NO8CGFG92cR4i6LejhTWakjq8mhSNHk2CIaFGhOVNWMwZBLHRPuvKZuX/HP5/yMSM/21cy76H+ZE7sXPIB0aXmiEvL8PB77ojv64I79zzI5LgVMIl/LlxC3DyVAlG9/KHp7MNqRAd1GoVLCwM84FKSkpgZ2eoEOXl5bC0NLgrVSr8fuU+Pll7CXfTC0kgCKmCa/Hhqy0wpLc7mrk/vmRBQco5CEQSOHi1RmHCFjjVGw51eQESMlKRem0lCn36oEHqeSicm0OQEo7sgJ6wL4mBk21t1G8yGDZ0b3VpEsknNSxcW+He2eWo034Sn3JgxnPhrycTNuZeIpfzHnsz/jvgE8Eo/SvvHRwcjGcfx+abkbibl8FnvD4NTFeoEpZi4dkdmJtWG0JmVpCrm4UtoicugbPxBTqGV4YORUxMDBZ99y0iT0di757d6NP3JfToEYoZM2bgxRd7Y+So1zH2jbEQSyRYs24tfjiSh62n4jmhCCjeF34egsY+j68fc/P4PDQKnYmS9JOQWDjB2s2wLk5MWjx+2b8CQYGtse/SUXh5NkQQmdfnisvgqM5ArTqdMKbrIEhFYv4s2dcXwq3pNGTcPgELWxc4+wTxcKqCleuMrExSYFX18v8vHoz8GDtkqx7/p8EaCHcPjwcNQSX89WQSS4Vn0qRJvHD8GfBEoj/W6jGYjiu7cdChKTH/q6iUkZXj+aR9ZVTnxmBwf9p5g7vpmI24VB6psrKywsHDh2tMp4Xn9nESGNecbPdngFaZgw+3vYHF6XZ0Nz187Jzx+4jPUc/RzejDgJycbPz000/Ipn1UxBkcOnoEXYI748LlC0QysZj9yafo1etF2NraobCwEPaODpg+fTpm/nQOK/bFQEBE+MGw5pgz+tFiVl58HykX16FhyAfIuvwppPU/RPipU5BKpGjXvi3EVhb4Yuu3cHD1xIHwXXihQ29q4ArxRqv+aNOsBa5fv47vv/8BK5Yvh6QiHqqSBFi790Dy+dUIeOHxOSYMCoUC33377WNpyH6bKnR1++dBTdcy9z+D573e9DwMGo0Wo0ePgq/fY31rZjPn7wZWxFjmmPYmVP39R/BJ2CZ08A7Ayw1q7jOoisVhazDj3DHUIjv/3PiFqGP/+LKMY8eMRU5eLhZ+swCvDBmKc+ej0LpVO5y/dAEfzfoYt+Ji0aPnC/B090RBQT4srK0w7e1p/NoJi09h/fE7mPFaS3w5qtJqfITMuAOoUCtg7+wKjSoLjmTixBI5HT92DG3bt+NKrIJMp4qKCiSV5cDT0gkyatykQglUZHZpSWUcPX4c3y5cCGsrGVKi3kHtoMWIOTADzV/+FkJx9ev8mCr4n63U/1DUSCZ/amjYjP8cTMW4anH+s8X7j9aP/i368EKypt/b1RIJ6ys5cfwYunXvivQ0tviQEOvWb+QRPXfuHEJDuiErKxtikQQnT4aR23lYGvtWGH6YGoymfi6PFURWneU5t2Dj4AV5xklYOjajIAUI9K+H9z/4ALY2tkhLSUHClSuI3bMZOLUXSfvWIiMyHBn37qCstBS9evfGjytWwMZCRtGSQCxzhqoglkw2GcqL0gw3qoLcnBxMnzYdn8/+DOcp/szsYf0+DGzP5D8jGzmZ+Gyv0Wiwfcd2/k6QUqXk/tVqw5B5ZT8qIr3IyAiUFBfzMP6JeGrRMiuTfw7mn9mNOo618FrjTkaXZ8PWm2cwvIZrWOX5dc1qlJF50LhxIzg6uWDz9q0YNvgVKjs67N27DyHdu6FDx2Cs+WkFhFJLvDXhLchkD4ffr8Rn4si5VHxaRZlc3fUufFoOQknKKvgEfQe9wBJ5qQlw9W2A3bPGon5jMeR5OfDr6A+JTAitRoDC1BwU55WSuw6ewVPQuFMwMu5ehU/zbii4u54qsgD5yfFwCegJF7/HX11IS01F1NmzGD58OL5fsoQTAes4bhzYGAkJCWRKWsLR0RHx8fFo06YtLl26iOzsbHTp2gVFhUVk6uVARyZCbe/aRD5K1KlbBxfOn4dUJoO1tTXvR7K0tIK/v7/xjn87/PVmDmPcPZd/R1jcedRycMHk0FfhYvNo5x/zE3HrApxtHWlzgsczrlx+4EoY0goNbxaza/u3CoVFNfNI/pOo0FRgx/kjcKPKF9r44eOzVmfP1RMY3K4XH16Nz7zH3Rv8iYWgj1w/jXt59/lxoFd9dGvUjh9XBzm1jhYSMR9OrIyI25cQVL85udecTuuiw5FalIPPuhgWkHr32BpcyWKLC1ExIJNhbf+pqO9oeHXhlZ3fIktRxDIR7jaO2DboPey5cxHfnd0LEXtfidw56Fop3dPXzhUTWr2AdsbV+MNT4/BZ2GZIpTJodFqqxFpISZ1o6Do7iQwvNWyLN5p1e9BBmphZhPoeD8sPc7u6axI8/V9Eee5u+AavwM3TO6CFCLVqN8WVjbPQ+uVGWD9jD4Z/2QdlRSoiBxcc/uE06rf0gH+XuojcpUMQ2f33rh9Ho6ABEKhvoTwvGsXFEjh6NodH48ffMk9JTsZxMo26duuGPXv2ICkxEZ06dYaNjTV8fX1x6tQpToTMXHN390DDhg24AvP29kb7Dh0QFnYSIioXd+7cRVDHIFiQ3+KSIuTl5sHF1RUv9OoJawur6jo2/y74682cxUd/w+XEG/i0/yR09W+D4T9Mg4Ikr0nSsXFz1jKtidwLe0s7yKjwVz5nQpmijFfcylhyYj0CPOqihV8gknLS8c3+X7i7ksI3SU4GNnzJwjShuFTOW0oGkzv7zSZaMRnKiIAV7HIKR0WS1AQWjkmamvBz+HZQQ4dtFw4jr5B9vsMAFtcv96zE2lO7+O/I+Os4m2RY/q9cWc6fjd2PzVdgeLCn+DByZStrVb3XxrMH0cDNjz/vihObcZbCZCguq/Q8xvhvOLMHFxKiuRtLO56WFO6ms4egrpQW1aFVLT/E5j6U93eJWKLSE3EuPR5R9+PxXdQe4xngGpEMcz93PwGXM5N45c4vL8XFjEScTTO48438hCffxG9EVMFrP8Lq62HkU0DPqaSw7+A0nTuTepv7O5USh8jUWziSeB2TDv6EwTsX8vxgLVplIuGgZ2KLK6nlt4ivDC9bFubdg5ClISkANz9LXDmajLx0OU6tiUFxTinCV19CWiw90/Y4PuSsKyGiLC8hE8mVyCaPzBsdKpQ5fMkC0zT2qqjl5sZHmJiamDJlCkaOYi8+6nnlP378BHr16Y26pDaaNW/OyaJefSL/7t0REOBPZOGCoA5BaNmyJVdfOaRSAgIC0LJVK3Ql5dKmdWvcS0hCejqZg/9APLpY6jOCFYAjNyJwfOZqynAh3EmZXGnZja/zsDJsG1r5BuBaym0sHfExJNTynCOZ6U/k8MmeZQ/OLR/5CbZcOIIceSGyqVAveX0Wahk/LSGklq6pZ33YWNnw3vXfb1+glvcyNp7Zx9bdwciO/XGDCui9vAzcz03H0jc+w4KDa/i90gsysZTCnrbha2yevBA7Lx2DO9n6v4RthQO1sF0btsGJ2+egVCoxvttQ3KaKEkcbW4Ni3pBp8Da+VNihbnP8cGITxcnpwZwJBjY82rdFd5xPjsFLBV358zOS2Hb+GM7cuoRijQLTQl7FpvOHMH/odHSbPxoRn27g8Qtw9UFE4jVkleRhTv8paOpjeJmMvbnb3rcJbG1scNirLnJKCzFt/XxYUKvO1tJYPuZzjP/xA3i61kZ6fjbyy4px7V4sbhMx3M/PwoJh7/NKxuLxJAS4eCEuP51PJJNS68nuK6DnYX0RYqEAv8ZEYGbwIDKFHh2tEQnYSiYGEasjJcJnA1BGmOaeGM4QKC1YJ+9gf1JWRkfWicnixd5CZk5sJiwDW9vkCJWLPZS3Q6ssAM7ArhMQmZRT+ZCR2NJqK2Dj7AO9RgltmQ5WjvZA8j0EdvOHfwdX+DT1RP323ki8moCQtzojPTaL/JZAS2VCQmSkp0hrK5SUf5ZQq8ogklpRzB9E8wEYaYwdO45FgBNap06d+Hb//n20a9cOTs7OCGzUiE4b8p3Fk6kSExwdHI1HpFYbNDAe/TvwXMqkglpIe0sbXpFM8HL2QHLufSqUYswdPA2jO/XH1eQ4fq6UfUeHCoPp3Eg6F07kcIla9JFBffFSi25YFf5wXVcBZdJ727/FtE1f4/0d3+IVks9Ljq3HxJDhmEwV9RcirKSsNPhRxX+v7zik5NwnqS3CwuHvk7n1GradO4RsleHTGuVUcVR076xyOb4bPoNIMBzLR83GD6M/hYhK07HYKIwO7ocBrUKw5uTD1eiZ+UalD01rN8AVUgKVh2A15P55v4mYs+9HQ4GkArX+zG6MCxmC8cED8SupMQW1zNeTb8Hfsy6iU+/yt07T5bncFHz3hdFwtX/4xq5Sq8bUbd/gzbWfQ01Kw8vOBT5OnvQ8MzCqc3/soOdRUVYxkuzVLBihTYLQKaAthpOp5e3iiYTsFKp4hjdTnwQpqcMABzdcykzglcXUOjNCYJWcNRJfn9vL3SqDvS9iIipegeiPzTpp4OyJtmTWsN/cjbzkKuS4X0bmEcHgZiAbX1tXhPg2hgtbjIiIiJGLjirkpYzqF5lmd5NaOpGCpDgSGbDFj3TqUpC+g8hKCEVhMVx83KkBkcDGyYUUnBpatQYeAfUgFpFJZUF3F9vSM+mgKmYrq1lDJWdLjYr4OiZsAaaqRMKQlpaGXbt28TK+cuVKrqSLiorg5eXFR4eYMl254kf8unYNtm/fjswsIi1j2vzb8VxkwmY6suXnsopyjS7AiegodG7Yms9jYElb+c1LESMdKjymc2ydUDVlCsuY5PxM3tp18X/4PgIrvD+N/gyrxs7Br+Pm42BsJIrUCqQUZnH/Lzfvhok9hvPXxNefPYDLJJ9lUoMNysypCipAIqN5UE7xZHnNXrySsk4/igtrlVl8VHqSwuSPhamhfedAQ19FdkEeMovzsGHSItxIuYWfT+8i78akousYfF290MyrIcLuXuQVo5Dix/o98khW923WGc0obnuuhGFWzzHYQaqF9akMaBnCzx2JicSxqw9fbrOkCrF8+CysHv8lJxBWuSXGGZpSiQxlRMZONvacZHnBpe2rg6tQpixFcyI7LU9VejTD7okY2SIUP5MiZGEwhUE6g1xZK2zIoy0xp4n08o3PyQiHpd3DasfXOWF/Og3mdxuOs298hZFNu3AyMnhj8eNeuT9GtFq9ABPavICjr83G5oFTiYY0Rv81Fz8WlK1HU1SUF5NfUhPyBOhUlpCQWnP09UFGfDEaBPngVtQdipPKcA2lo6IwF9lJefDw94SsVgAVJg2ZRfmwdahFYaVDqWLKSgxLp8en7jPISAbtJjKZP28eN6m//uorLFu6FJEREThw8CCWL1tOvvS4ePEyFGVlOHL4EHbuePZPovyTUXNuPgEsoxe88h5G/PQhlpEpMG7Vp2TquCKAJDp7lZoVehFVVAY2DMZIg7k9WOOB9k62DlQhvXGPzJR9l07Ao8rX81grwOAks0ERmSBjggbg/N1rOBV3ASR0seb0blxOiuULzLTxa4ycwjwsOfgrFh1Zh8Fte8KWlNOy45uw+9JxTmam8Lo36YgZWxZh+to5EIvFVMn9cDczFbsvHoez8Z0IJzt7pBZkYcv5I2BLE+ZR5WImFQd7DsMRJhGh3UtN4EQ1uGUoKZA7OHI1jMKVoGtAa9xIikbjOv6IuHMBPQLa4+D109h39RQnOFvbh8sFsrVTtWQymNDKNxCXk2/i+yO/YTml78igl7gaYrCj59p94SgnlQJFKa6SuZeQkUQVlJkg3MsT0bd+K8QUpD9QD4YX+Fj/BCMqUkkUmR8vH4U1mZqMHEw8woiBwWSmMM9MJTDYEUmbzuuJOEzH3Igif2z2bDmVAQYLZnIYg2B3N631UR0ca7fmha1cIUZp9jk06BACtbKYrtFCriSThwJq1bsREq7eJ7NJinIyfxzcrHm+Jl5KQ51OvSj+eti4OUOoywebiKVSlMHKqSE1LNWvQ1yuKMeLL76ImTNnkjmkQk52Dvzq1EHa/XSu7IpJpbAXG50cHXlH9IgRI/hM8Jqe4d+EpxY/yrAah4ZLleW4lZEINxtH+NTy4gmqoIpiLbPkBKKnksj2rHebjXyoNWq+FgY/R35ZH0dSdhrc7F35OxQmyJUK2JA/bm/T79LyUk4OmYU5FGEB3BxdOTklk3lja2XNR3wYaSXmpMLDyY0vaMPkaWphJnxdvHiNYIXZnsJkuE/hsGUH2XWsZLNwHKnlt6+0Jgp7trj78Wjg7gdLqQUVez2sSCWw+JQTgVkZ3yw2dSaz0aZkIhz27K7GcJl6Yz33pex52BKQ5C+VVJCUzD13egYTysifJbW4lVc9Y4opMTeNm4/svswPC9uQHmTzU0HOys1GXQ9vZOTnwIHIiYXB0uxp+PV6GOLz0hFbmI0j8Ve4G6/0JFXY3tHChp5Hggz2AXoKro59Ldye9D3W3jiFCYd+5nmpo/TcOmwmhvi3xzvH1mLZ5ePkDt4JHDNxMZKLczFg6wKD+UWR/qTTQExr0we7SMlNYgtBUSVnCvS99n3xbY+aV8m7eewLIoA82DkAHs0mIzr8OGTW1rCxrYusayuRdCWVzCEhQscFIeFyBvJTsuDo5YyEO1r0m/4lboT/hiYvjIeu4CDyMrKhpIbJr90EuPi2Md7hUZSWliKLTBc/Pz/cuXOHCEWNhIR4dO7SBZGRkdyd9auUlyv4qA7rP7mXfA/1GzR8emX6Z8A8A9aMh2AdsJ03zEYFEVY0628hNzGb1CUSEjmqOGGxfwaTBvC2c0HClKVYQyRkIhPWIbrtlZkYTGTCFqZedvkY42yu5KInLEZKUQ76bf0aIm6uCXjDYUFbCZGiie+Y3xOvz0ZonWYGh2pQknMHuXHbSG3oyOxpDoFVM9y9sBdeDdvj3M69qO2RjNzUAtRp6YuMuxlEcqRiyivQrO8sqBWkWCysUa9lZ5Qk/IrCXAXEVrVQN2hSjaTLyJSNmrHzUqmUHzM3puHZ2iOs0ZLJZHzWrYQIV017tnRCBZEoe1ZG8jpKXxE9q2kkjnU2y8vksK3UWLHGjoGFxSb+sbRgw/1MVbH7sYEHNi+FoYzMKSs6Zu/rsPuzvsoHip/iKeHXkDlK92EKnIXBwEYQ2TH3S/FkfWTsVQTmzvyyUSsdqSzmh93DdD82ciim+NeA/wCZ0IOU/74RuqwUSFuFQtLMMAFIV5LPP14ladaF//7/APuOMVunRNywldHFjKchIjkOoRu/YIzBfzOlNaZpNyy/dJirCd55yv6okNYhFXV30lI+7MvIhPXnaCj/q5IJC4r1PZmUSX8iEzYiw76hY1r050GBo599G7TE7qEzH1FkVcGuGrHkbWSSWXYrPR6LRnyMIBsHZN+Ngk+z7ji6aCG6DnOHpZ0IUisZojZfg3vbN6lSZ0Mis4ZPm94YtOwdKCheDqTw3hn4Nvo2q3nSHhvOHfvGGL7iHJuUduLECTquwyetsfkntra28PDwQHx8ApYtX4YZ789AcHAwToWfQqm8FF/MnYM1a9bgmwULcGD/fk4KbB6Khipzi5YtMf7NNxETHY1vvvmGk8KHs2bxlyHbtWuLQYMGoVnzFnj3nel8xnBQUBCysjO5QiosKOSjTEwl1a9fHzfj4vj7cffJ/Jo8dSqir19Hn959EHnmDCZPnswJacCAAfiIwq+o0GA5xbV5ixawIPJKTEpCbm4epkyZjJuxsfyZCwsK4Ormho8/+Ri9evbCgoXfoBXFtxr89fNM2DKNUCn5l+zKSbZW3L7E3ZXH1qN0w5cPvvHKUWleCS9SlX7z0qoz9kIY50xwsD3rYzGdY+DnyY2fM/ozgplUD9wqX1PZrbK7CVQpeJgmVI4bQ5X7cLBwiL3/zujsF4h32vUx9IHoSZGQCTqlbS++7gar8sysYzC14Ka+ElMys7dqxUYSYErH6I37r5xizAdbKY05shEx1jqyFtaJzL7lvd98IpEwsGDfGzgZF+9chhWRyIw1s3FdIUfDjgORePU4Wg/sh0uXnXH9SBzCVsXBs/tklOdGw87ND15t+2Dyb18hLjOZtnvUGkvQp2mwIeAawCohI0rWcltaWUEuL+EkwUiktKwUtWvXRlFRIVVQUi/kv4zcWH8Wmyafn59HlVVqmMNE4ahI1eTm5nKFs3zlSgwYNJDfY+PGjfiayObL+fOwf98+Kk5ayEvkcHNz52G6015eWoI6RGJHjxzF0qXL+LB0HBEIW9WeqQ9bUhFvvvUWunbthgAysQ4fOsxfUDT1Dd4gwmrSpDG2b9/GlUYJhe/o4MDzh5G+na01VysKMtfYsPcPy5ZhwoQJOH/uPDp1CsaG337j4fwRPHVRhy+++GI87Wobfj2E6tx+CGwcIQ1oCwkVSqGtI/8gV/nBXyDr2I9/SV/s44+yrYv4amfqswcgDewA+Yp3oL4eDk3CdYhr+UK+8h1oUu9CmxQN5cktUJ3eDnFgEMpWfwTNrcucqCR+jWm/Bqoze6E6uZlUT1eU0nn2bV8WFvvkpDbtNldE5YdWQZd7H9qMuxDVaYqytZ9B4OyBsnWfU5wP8E9tiIyL8LD7lR/9FcrwbfQc7SH/eSb/jrH6+in+oXRWQ7RUCNk6teoLR/hK/GxZR8XWhVBF7ILQxRMi18eS5m8BVmi7+TXB8aQbfGFn1l8yO3gw359OjaPzrP/EQB62UktMb9cX17Lu4VD8VX4xG627mX0PW2IjcDDxBpfSBiLR481WL0CuLKdzZ6hSss+GGlQImyEbQnkyLDAYX4eOgA+ZT88CTwdXyEieX024gR6tX8DqE+uRQbJ8cL8ppEoL4VXPE94tR6BOyAAo7t+A/wuvIYUiP3TxFNRyqAV3yic5mV2HPtkAWzJ7ngS2Fkt8YjxcnF3g5l4Lt27GYdzYsXAjNRJ5OgKTp0zBwIGDcPTYMT7/KCIigs8n8fT05L9Zxb1w7gI8vbw4kTBcu3KVnzt69AipmE5ITUnBtWvXcOf2Xa4GkhISsXrNatgQYbGZwvv37SeV0Rf79++jNksDJ0dn7N27G7169UIExYERmLe3D5GdJeIT7qJRo0AUFhZg9JgxSExIQMeOHTmxMBPtxo0bfOJcvXr1MH7CW/j99xMIDe2BqKhzaN++HSeSlOQUuLq6YvPmLYiJieYq6tr1a3jppZf4m+hVUDxnzpzvjceP4LnJREyVT02FTrl3OdRReyFt0R0aIgQtKRIZmTjlh38hs6MtNDejYPPWN6Sj7XhllAW9DKuXJ0B59SREts7Q5aXDctA0qKL2webtJRB71IcqbAv/bo31pO8gcnTj3xqW0P0kjTpAk3gdIu+GdK8YSBq05l/GY2EqYyL40Kgs9DUqztT6Fefxb9Qow7YRAchISslh0XM0/wC60N6Ff7CpfPcPsH33R4gpPAWRg7heM1gPfRcVybHM0IXIxYuTpKhxR1RE7obF8JmsikHSpBNdr4IuO5WIrwOvmH9HsFGuPg1a8YljJSoFPujQD20862MV5Q1bdZ2RA/tztLTFNFItV4lM2ALQfAIaPXRueSnS5YVccZiGjB2IbD/rNBhp8nz+Tg+bZcKGlkc07YIPggYguHYAWrrXgcNTKnVVdPRvzacinCOFUkQVtpyU1LxdS5FJJKZzro0SsQ5JxTmIKsrDvN1L8e3RjXBx90YZmcBpaXdx5LPN8CXif1pesf4DLw8vDBo6BAX5BWjbti1SUimfSal06tyZzJ1A3i/CTJDLly5h1OjR8KfKyjptWYVlFZARckF+Plq1aoUAf3+EhIRwVTFq1GjeR8Lc2fR6Bwd7DBs2jM9hYa/6c9VAeeLu6cFJgZk1ffv0xcVLFzFk6FB0oHuyvgxraysMGDgQ1lTRa9f2Rm1vb3h4esHP15eTGpu2zzqHmdII7hjM3yXy9w+As5MTXFxcOfl1DO4Iaxtril8AXu7XD1evXsXIkSPgRH7GkeIJ7tiJp4WNzWOjXjWSyVPrQU19JmUbv4L167PIvBBCfekYqYJY6PKzeMsPspPV10/CauTnUN+6AJsh06FJuQXliY2wCBkOUd2mKN9JxOEdCHVaHCw7D4aSlIfVmDnQ5aSjfM8PYB85t528mKsOVXQ4dFQgpF2HoiLuPCy6DKYWSU6KhtQIuVv2nwTlwZ8BIh7LLkOhuRdN4aTAot9klHwzBrZvLoCGlAu7lpknViM+IVmiQOmaT2EzZTH/lrEqnBRR3WaQtnkB5aR+2PeQZS26UmUgHto4n4iJFFjbnihb9ZHhA2RUGSpIAdnSs/3dweaVhGyci7Oj5sLF2h4Lzu7Bx2GkAFmHHskK1mdye+IPj4zmcLDSw8wXttOzOSka/PLSRIxvEYqDCVcwcOsCXj4Y5lC+fMI+RP8nsebkNszZuYgqjB9uZyWjLqlOIVWwMkURnG2c4Epqhy2xuCFiN9yo4fB29ca2ad/Do8qsXjOeG399nwmkMsiXTyNVsg/K4+shJEWhLcqGxasfwnL4DMj6vAlNMlVqqtjK4xvIzPgMshffQNn2b/lvTWI06dc6EJKME5DZoaVWR3nkV5St/wIyUhBskWpWSEn3GT7mzb5tTNJVl5tOJkwixI2DoDq1BbIOfXh02MQtobG/Q0Stq5rMFdXR36BNvQX1zbPcTBGwSXMSCSrOH4aGCERAx8qDq1D68weQtO6JcpLPyt83QX3xKCmhtij7bQ4/VpNc15XLUXHxGCcxpm501EprM/6+H0yqjNqkECNHz30w3P12m17o4tMIbdz80N6jDho6UYUlUnC0tEE7cmvrbtyMx+1oG9a4PcJHzeFEwmBDYbU2Xt+ezteq8hLo82Jc6DCcnX8InXwD4SoRkymRzj+t0rhOc2qByWTIScY2IpImdN+vqRyenr3JTCT/T3huZcIquibpJv/GjJBaagnZploiAJGtodCwDNaWlUBEBbDiXgzElPlCS2voSgqgzUyCkEwKPtRG8lrEKicpES3Z3gKSomLHWtAV5/Nv7QjUKv4FQB2Ria4wFyKvevzjXiLPunTvbP6ZTjbtSV9WTK0gtZhEGGx9T9bXwcgHNvYQkVrSsE9GkmnC4qGneLHPbOjFEmjJXGJ9H0Kyy3WlxXxUSFKnCT/P7sP6SHTFuWALKbPvJAsobqxvhqkrfUYSX83ejP8O5FQuriZEIykvFXllZF5Tfta2t0dT32aoTw2U4Ts1ZvzF+FNDw1G0e/xNLDPMMOPfiCQiE8M6E1XwVOrW63VP/jK5GWaY8W9C9UvUEZ5KJgKB8Jjx0AwzzPgXg/dh6vUn+Y9q8Cxmjg0Fcoc8ehqdzDDDjH8l9MVEGY3JzDEsC1gFz6BMBKVEJBPZzEAzzDDj3wutVjuzJiJheKbubgrgQIVOM4YOK82RN8MMM/4NML6w+IFYLDGsn1oDnmrmVAapkwCdTjefDkOFQuHDBTnMMMOMfxyorpcJhMIwIol5JCguGp1rxB8iExNYPwrt2HLsD79XYIYZZvyTwFZcTyMSMayiZYYZZphhhhlmmGGGGWaYYYYZZphhhhlmmGHGfwvA/wGVz+moYk0pOwAAAABJRU5ErkJggg=='
+                    border="0" /></a>
+        </div>
+    </center>
+</div>
+```
+
+
+## Printable Media
+
+if you are looking for posters for putting up in your offices the below resource was shared with me and has a lot of great resources that you can use for free.
+
+[Free Printable Posters and Signs for COVID-19 for Small Businesses & Organizations](https://www.websiteplanet.com/blog/free-printable-posters-covid-19/)
+
+
+## Conclusion
+
+There have been 2 things that have frustrated me more then anything about Corona Virus
+
+Firstly, as with most other things in the world it’s hard to know when you have information that is real or fake news
+
+Secondly, It doesn’t feel like *educated people* are trying hard enough to get more educated to help others who have less access to information
+
+Hopefully if enough people see banners across the internet about the Corona Virus they will go read more on it and be able to make better decisions and we can all help to flatten the curve globally
+

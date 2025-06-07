@@ -1,0 +1,57 @@
+﻿---
+title: 'Getting start with a Team Explorer Plugin for VS 2013 Part 4'
+date: 2014-01-16
+tags: ['Visual Studio', 'Visual Studio Plugin', 'Getting Started', 'Team Explorer']
+draft: false
+summary: 'In Getting start with a Team Explorer Plugin for VS 2013 Part 3 we created a Team Explorer Page and we will be using that item in this post and therefore assume that you have been through it already and created the page.'
+---
+
+
+In [Getting start with a Team Explorer Plugin for VS 2013 Part 3](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-3) we created a Team Explorer Page and we will be using that item in this post and therefore assume that you have been through it already and created the page.
+ 
+## Creating a Team Explorer Section
+ 
+Add a new const to the GuidList class (in the Guids file) like below
+ 
+public const string sampleTeamExplorerSection = "09C3A4DF-7040-4AC4-BA8B-0740B53BD9D7";
+
+Create a class called SampleTeamExplorerSection and replace the contents with code below
+
+namespace Company.TeamExplorerSamplePlugin{    using System;    using System.ComponentModel;    using Microsoft.TeamFoundation.Controls;    [TeamExplorerSection(GuidList.sampleTeamExplorerSection, TeamExplorerPageIds.Home, 100)]    public class SampleTeamExplorerSection : ITeamExplorerSection    {        private IServiceProvider serviceProvider;        private bool isBusy;        private bool isExpanded = true;        private bool isVisible = true;        public void Initialize(object sender, SectionInitializeEventArgs e)        {            this.serviceProvider = e.ServiceProvider;        }        public event PropertyChangedEventHandler PropertyChanged;        public void Cancel()        {        }        public object GetExtensibilityService(Type serviceType)        {            return null;        }        public bool IsBusy        {            get            {                return this.isBusy;            }            private set            {                this.isBusy = value;                this.FirePropertyChanged("IsBusy");            }        }        public bool IsExpanded        {            get            {                return this.isExpanded;            }            set            {                this.isExpanded = value;                this.FirePropertyChanged("IsExpanded");            }        }        public bool IsVisible        {            get            {                return this.isVisible;            }            set            {                this.isVisible = value;                this.FirePropertyChanged("IsVisible");            }        }        public void Loaded(object sender, SectionLoadedEventArgs e)        {        }        public void Refresh()        {        }        public void SaveContext(object sender, SectionSaveContextEventArgs e)        {        }        public object SectionContent        {            get            {                return null;            }        }        public string Title        {            get            {                return "Sample Section";            }        }        public void Dispose()        {        }        private void FirePropertyChanged(string propertyName)        {            if (this.PropertyChanged != null)            {                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));            }        }    }}
+
+Note how we used the GuidList.sampleTeamExplorerSection guid string that we created in the TeamExplorerSection attribute. We also set some basic properties as in the previous posts. Note also that we used a Parent Page Id of TeamExplorerPageIds.Home in the TeamExplorerSection attribute which will mean that the section will show on the home Team Explorer Page. Another thing to notice is that the IsExpanded Property is defaulted to true, this will allow our section to be expanded by default when loaded.
+
+## Creating Team Explorer Section Contents
+
+Add a new user control to your project called SampleSectionControl.xaml
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4c23a1fc3e992da61741e9996dd73e5b6bf5b0c1/96f0bb55-09f4-44ff-bdb8-2049e1123f7c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e28935f65cf45f57a30f8a17b0f6b29ea1b5e774/f3dc64b8-46ee-4f10-ac82-dafbd466a0d8.png)
+
+We will be adding a TextBlock and setting the Text property so that we are able to see that it is loaded, we will also be adding a button that we will use to navigate to our Team Explorer Page from the C# code, below is a sample of this
+
+**XAML**
+
+<UserControl x:Class="Company.TeamExplorerSamplePlugin.SampleSectionControl"             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              mc:Ignorable="d"              d:DesignHeight="300" d:DesignWidth="300">    <Grid>        <StackPanel>            <TextBlock Text="Sample Section Content"></TextBlock>            <Button Click="Button_Click" Content="Open Sample Page"></Button>        </StackPanel>    </Grid></UserControl>
+
+**C#**
+
+namespace Company.TeamExplorerSamplePlugin{    using System;    using System.Windows;    using System.Windows.Controls;    using Microsoft.TeamFoundation.Controls;    /// <summary>    ///     Interaction logic for SampleSectionControl.xaml    /// </summary>    public partial class SampleSectionControl : UserControl    {        private readonly IServiceProvider serviceProvider;        public SampleSectionControl(IServiceProvider serviceProvider)        {            this.InitializeComponent();            this.serviceProvider = serviceProvider;        }        private void Button_Click(object sender, RoutedEventArgs e)        {            var service = this.GetService<ITeamExplorer>();            if (service == null)            {                return;            }            service.NavigateToPage(new Guid(GuidList.sampleTeamExplorerPage), null);        }        public T GetService<T>()        {            if (this.serviceProvider != null)            {                return (T)this.serviceProvider.GetService(typeof(T));            }            return default(T);        }    }}
+
+## Defining the Team Explorer Page Content
+
+To define the Team Explorer Section Content all we need to do is change the PageContent property to return an instance of our SampleTeamExplorerSection class
+
+public object SectionContent{    get    {        return new SampleSectionControl(serviceProvider);    }}
+
+This will now load our new user control each time this section is loaded.
+
+If you run the solution and go to the Team Explorer you will see that our section exists at the bottom of the Team Explorer Home  page.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f2606ef241681ef51747e9b0c1add4ca063d7dd5/ecc57b69-123d-4316-846e-f3c45a3c7350.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c217d27d29415bb1ec19485b2f2e60a7fb3f3b97/41841dd7-d7d6-475a-b776-bb706b1a3c44.png)
+
+If you click the Open Sample Page button you are taken through to the sample page created in the previous post.
+
+![](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/537045c9baf981df822eca7847bc6ea3866b6fad/8f7f833e-979f-41f0-af70-78c6c439b258.png)
+
+That's all that is required for the Team Explorer Section with custom content embedded.
+

@@ -1,0 +1,91 @@
+﻿---
+title: 'Searching in VSTS/TFS'
+date: 2017-08-06
+tags: ['VSTS / TFS', 'TFS', 'Search', 'Google', 'VSTS']
+draft: false
+summary: 'This post is largely showing off a cool feature of chrome but the core focus is how you can be more productive with VSTS search'
+---
+
+
+This post is largely showing off a cool feature of chrome but the core focus is how you can be more productive with VSTS search ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+
+Visual Studio Team Services let's you [search across all your code and work items](https://go.beeming.net/2vAYeg7). What's really strange about this is how without this functionality it was harder trying to find work items and code but I used to say it would be nice if we had a better work item search and it would be nice to have a code search instead of having to pull all the code to my machine. I now find my self saying, why isn't it as easy as searching [Google](https://go.beeming.net/2vALian). 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ca79f460525f79f58c76f399a6cf6622575eb5fb/ca79f460525f79f58c76f399a6cf6622575eb5fb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a3d43b77090276bbcac6456f475ca99b3019f9e2/a3d43b77090276bbcac6456f475ca99b3019f9e2.png)
+
+Well it is ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg), I don't often notice features like this search because I used to just type what I want in the address bar and hit enter, switching between search engines was a process of copy, navigate to other search engine and paste. One day I saw a friend of mine [Rory Bolle](https://go.beeming.net/2vAu6S7) have a search bar like the image above and my life changed as he showed me this feature ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Part of getting through each day generally has a lot of how can I be more efficient with boring tasks, and although not really a task on it's own browsing to where to search is boring and something you don't have to do ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+## Searching VSTS faster using chrome
+
+Chrome supports custom search engines and that's what functionality we going to use now. Open Chrome settings
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0e8e929313aa15787f4f88552d7de561ff388a94/0e8e929313aa15787f4f88552d7de561ff388a94.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/83f1f4a0d199ec20c56ec9510a522417a8ee7bff/83f1f4a0d199ec20c56ec9510a522417a8ee7bff.png)
+
+Scroll down to the Search engine section and then click on Manage search engines
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/57edd7859c902adeaf7cc856398fa676ba66dd19/57edd7859c902adeaf7cc856398fa676ba66dd19.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1f1f06808c54bbab17bb6d2cc399ff6375ba11cc/1f1f06808c54bbab17bb6d2cc399ff6375ba11cc.png)
+
+under the **Other search engines** section click **ADD**
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a9bba3844913f859fb9aed069ad6673aaae3119d/a9bba3844913f859fb9aed069ad6673aaae3119d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f35f2b1b3776649bf2980aa43eb91d2138f371a4/f35f2b1b3776649bf2980aa43eb91d2138f371a4.png)
+
+We are going to add 2 search engines here, first for code search (replace your account name in the url)
+
+Search engine: TFS Code Search
+
+Keyword: tfsc
+
+Url: 
+
+- VSTS: https://**&lt;your account name&gt;**.visualstudio.com/\_search?type=Code&lp=search-account&text=%s&\_a=research
+
+- TFS: https://**&lt;server&gt;:&lt;port&gt;**/tfs/**&lt;team**  **project collection&gt;**/\_search?type=Code&lp=apps-account&text=%s&\_a=contents
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5231cd64c882f2199caeb099f8ef9767f07d5b5c/5231cd64c882f2199caeb099f8ef9767f07d5b5c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6ff1b6fa279a0abd5bf8fb419045efbe640c3674/6ff1b6fa279a0abd5bf8fb419045efbe640c3674.png)
+
+repeat that process again, this time for work item search
+
+Search engine: TFS Work Item Search
+
+Keyword: tfsw
+
+Url: 
+
+- VSTS: https://**&lt;your account name&gt;**.visualstudio.com/\_search?type=Work%20item&lp=apps-account&text=%s&\_a=search
+
+- TFS: https://**&lt;server&gt;:&lt;port&gt;**/tfs/**&lt;team**  **project collection&gt;**/\_search?type=Work%20item&lp=apps-account&text=%s&\_a=research
+
+You should now have these 'search engines' in your list and you can use this in your browser
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c6d3b83c81a4df4c0fa3705549902152da74c9b6/c6d3b83c81a4df4c0fa3705549902152da74c9b6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b6ef339831e89c96e5e07b13180b4b2a817a1dfe/b6ef339831e89c96e5e07b13180b4b2a817a1dfe.png)
+
+In the browser bar type **tfsw** and then **space bar** and search for something like **test**
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bbef9567f17d60b301a6076e5f7ee4a9c949d05e/bbef9567f17d60b301a6076e5f7ee4a9c949d05e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/69639f9bd63aa7408c556c488bedc35e60edb86f/69639f9bd63aa7408c556c488bedc35e60edb86f.png)
+
+and press enter
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/69d95497f00fc5ec7a7d1abce3d8ec52f9f36b5d/69d95497f00fc5ec7a7d1abce3d8ec52f9f36b5d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4c9f2008b7ad9dc90fd2e1807b4389cd0d48326a/4c9f2008b7ad9dc90fd2e1807b4389cd0d48326a.png)
+
+This will go ahead and perform a work item search on your account for the phrase that you typed in. Try the same thing with the tfsc shortcut
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/70daa62a34d63667963fc6510baba058c8cb8588/70daa62a34d63667963fc6510baba058c8cb8588.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c4811f6ce663fea71f6f689727f47d1a05dbeeed/c4811f6ce663fea71f6f689727f47d1a05dbeeed.png)
+
+as you can see this then obviously searches your code ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7517ee13f4069a8ca76235b106e3d5e437740028/7517ee13f4069a8ca76235b106e3d5e437740028.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/af054e2f391350c3c882e1dc5dabf93e10bf0466/af054e2f391350c3c882e1dc5dabf93e10bf0466.png)
+
+## Conclusion
+
+Firstly you don't need to do those extra navigations to get to a page where you can search, it's super easy to just use what your browser has built in. 
+
+Secondly, chromes search engines functionality can be used for any site basically just take a url and replace the 'search term' part of the url with %s. For example in my list I generally have the .NET Framework Reference Source ([https://referencesource.microsoft.com/#q=%s](https://referencesource.microsoft.com/#q=%s "https://referencesource.microsoft.com/#q=%s")) to easily find .net source
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e9e97c30cb604992ab6428fabbb6633be02820b1/e9e97c30cb604992ab6428fabbb6633be02820b1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9ad963c782a9d4e57fc010bd2d80d71ed66c62dc/9ad963c782a9d4e57fc010bd2d80d71ed66c62dc.png)
+
+which conveniently brings up 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a5f893600d34ca95901d1eea7b10a07bdc4f1744/a5f893600d34ca95901d1eea7b10a07bdc4f1744.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c6feb8db462cb94c4ef263481ae97b5e7382ccfc/c6feb8db462cb94c4ef263481ae97b5e7382ccfc.png)
+
+Cheers and have fun searching ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+

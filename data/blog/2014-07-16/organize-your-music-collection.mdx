@@ -1,0 +1,23 @@
+﻿---
+title: 'Organize your Music Collection'
+date: 2014-07-16
+tags: ['GitHub Projects', 'PowerShell']
+draft: false
+summary: 'I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called PowerShell - Automatically organizing your mp3-collection. Although this wasn''t exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine and categorize a bit more . You can grab the script off GitHub Gist organise-music.ps1.'
+---
+
+
+I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called [PowerShell - Automatically organizing your mp3-collection](http://blogs.msdn.com/b/johan/archive/2008/09/23/powershell-automatically-organizing-your-mp3-collection.aspx). Although this wasn't exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg) and categorize a bit more . You can grab the script off [GitHub](http://github.com) Gist [organise-music.ps1](https://gordonbeeming.com/blog/gist/b74b800d65b99a3b3eff). 
+ 
+Basically the script will take any structure of music and organize it into the structure below
+ 
+%root%
+ 
+%root% / %Album Artist%
+ 
+%root%/ %Album Artist% / %Album Year%
+ 
+%root%/ %Album Artist% / %Album Year%/ %Album Name%
+ 
+You also don't need to have all your files in a single folder for this to work, it will recursively find matching file extensions ("\*.m4a", "\*.m4b", "\*.mp3", "\*.mp4", "\*.wma", "\*.flc") and then work out where each file should be placed, creating directories where needed and cleaning up empty directories and extra files when finished ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+

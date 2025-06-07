@@ -1,0 +1,114 @@
+﻿---
+title: 'Failover or Restart Results in Reseed of Identity - FIX'
+date: 2015-01-07
+tags: ['Adoption Blockers', 'Old Blog Posts', 'Data', 'SQL Server']
+draft: false
+summary: 'This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.'
+---
+
+
+This post has been ported from [http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/](http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ "http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/") which I then repeated on [https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/](https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/ "https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/").
+ 
+There existed an "issue" for us when we moved to SQL 2012 where every time your SQL instance restarted for any reason be it manually or server unexpectedly turned off your identity columns would have jumped numbers on the next record being inserted. It was also raised on the [connect site](https://connect.microsoft.com) [http://connect.microsoft.com/SQLServer/feedback/details/739013/alwayson-failover-results-in-reseed-of-identity](http://connect.microsoft.com/SQLServer/feedback/details/739013/alwayson-failover-results-in-reseed-of-identity "http://connect.microsoft.com/SQLServer/feedback/details/739013/alwayson-failover-results-in-reseed-of-identity").
+ 
+We found out that this was not actually an issue and was by design for performance to optimize the amount of disk IOs that were required to generate sequence numbers. A post on SQL Server Training describes how to change the cache size [http://www.sqlserver-training.com/sequence-breaks-gap-in-numbers-after-restart-sql-server-gap-between-numbers-after-restarting-server/-](http://www.sqlserver-training.com/sequence-breaks-gap-in-numbers-after-restart-sql-server-gap-between-numbers-after-restarting-server/ "http://www.sqlserver-training.com/sequence-breaks-gap-in-numbers-after-restart-sql-server-gap-between-numbers-after-restarting-server/-").
+ 
+Before seeing that post however I developed another solution that basically reseeded every table on instance startup so the issue didn't exist. To use this solution you can just run the script below on your SQL instance.
+
+
+```javascript
+USE master; 
+GO
+CREATE PROCEDURE sp_FixSeeds2012
+AS
+BEGIN
+
+	--foreach database
+	DECLARE @DatabaseName varchar(255)
+	
+	DECLARE DatabasesCursor CURSOR READ_ONLY
+	FOR
+		SELECT name
+		FROM sys.databases
+		where name not in ('master','tempdb','model','msdb') and sys.databases.state_desc = 'online'
+
+	OPEN DatabasesCursor
+
+	FETCH NEXT FROM DatabasesCursor
+	INTO @DatabaseName
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+	
+		EXEC ('USE '+@DatabaseName + '
+
+		--foreach identity column
+		DECLARE @tableName varchar(255)
+		DECLARE @columnName varchar(255)
+		DECLARE @schemaName varchar(255)
+	
+		DECLARE IdentityColumnCursor CURSOR READ_ONLY
+		FOR
+		
+			select TABLE_NAME , COLUMN_NAME, TABLE_SCHEMA 
+			from INFORMATION_SCHEMA.COLUMNS 
+			where COLUMNPROPERTY(object_id(TABLE_NAME), COLUMN_NAME, ''IsIdentity'') = 1 
+		
+
+		OPEN IdentityColumnCursor
+
+		FETCH NEXT FROM IdentityColumnCursor
+		INTO @tableName, @columnName, @schemaName
+
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+		
+			print ''['+@DatabaseName+'].[''+@tableName+''].[''+@schemaName+''].[''+@columnName+'']'' 
+			EXEC (''declare @MAX int = 0
+					select @MAX = max(''+@columnName+'') from ['+@DatabaseName+'].[''+@schemaName+''].[''+@tableName+'']
+					if (@MAX IS NULL)
+					BEGIN
+						SET @MAX = 0
+					END
+					DBCC CHECKIDENT(['+@DatabaseName+'.''+@schemaName+''.''+@tableName+''],RESEED,@MAX)'')
+
+			FETCH NEXT FROM IdentityColumnCursor
+			INTO @tableName, @columnName, @schemaName
+
+		END
+
+		CLOSE IdentityColumnCursor
+		DEALLOCATE IdentityColumnCursor')
+
+
+
+		FETCH NEXT FROM DatabasesCursor
+		INTO @DatabaseName
+
+	END
+
+	CLOSE DatabasesCursor
+	DEALLOCATE DatabasesCursor
+END
+GO
+
+EXEC sp_configure 'show advanced options', 1 ;
+GO
+RECONFIGURE
+GO
+EXEC sp_configure 'scan for startup procs', 1 ;
+GO
+RECONFIGURE
+GO
+
+
+
+EXEC sp_procoption @ProcName = 'sp_FixSeeds2012' 
+    , @OptionName = 'startup' 
+    , @OptionValue = 'true' 
+GO
+```
+
+
+Hope this helps someone as I see the connect issue on it is still active.
+

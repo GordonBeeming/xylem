@@ -1,0 +1,63 @@
+﻿---
+title: 'Do you know Optional Parameters?'
+date: 2014-07-07
+tags: ['Language Features', 'CSharp', 'Just Coding']
+draft: false
+summary: 'Up until about an hour ago I thought I knew how optional parameters worked but didn''t actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like'
+---
+
+
+Up until about an hour ago I thought I knew how optional parameters worked but didn't actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like
+ 
+[![2014-07-07_21-38-15](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/db80359761eafb0f21cf76aceb5fb82aa5e37c4e/0c73150d-1fb9-4fdc-9ee0-eb692685174f.png "2014-07-07_21-38-15")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fe457f926f53993383943852a522800de9b45a7a/b074e073-017d-4e25-9c2d-86772a42bca8.png)
+ 
+with code like
+ 
+[![2014-07-07_21-38-58](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3c7ccebf4d2d40828a03e5c6008cdf9e18951bf1/abb78685-0269-448f-9868-7c4a8246fa6d.png "2014-07-07_21-38-58")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/54b2a86716fa6dc39cea0d39ef85110d4637d90a/ed0a28c8-67e9-4bfd-9fd7-126e7cc77fb9.png)
+ 
+It's obviously that the second snippet is easier to read but do you know what's actually happening?
+ 
+[Andrew Clymer](https://twitter.com/andrewclymer) mentioned mentioned in [training today](http://www.rocksolidknowledge.com/) that optional parameters are compiled into the calling code and not the method where they are used and thought this is something that others might not have known as well ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+See below for a quick example of this. Create a new Console Application and Class Library as below
+ 
+[![MyCalc_-_Microsoft_Visual_Studio_(Administrator)_2014-07-07_21-13-21](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1009fff1211b5702fd258cf02ba95c9f42e0e882/5615f450-4884-4cb7-b2b9-b1270fa4663f.png "MyCalc_-_Microsoft_Visual_Studio_(Administrator)_2014-07-07_21-13-21")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b406f1520a862173c24cb3165e4f5981c7e3bad3/63a3bf1b-74c2-45f5-bd12-248ad5715732.png)
+ 
+If you run this you will see in a console window the message Hello with some underscores.
+ 
+[![filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2ce16e766a38425d65549f154c47aabd6b9301cc/42a206e6-1eb3-457d-a01a-398da48a0cba.png "filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e1c718e3dcb6d179da29c5dfac38654aa19ab5ab/820944e7-fa38-434a-960f-d5b16c62c69e.png)
+ 
+This is what we expect and there is nothing unusual there but what happens if we change the code for the Utils class like below
+ 
+[![2014-07-07_21-09-22](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/88b30d8185d504c7732a6c9ea50cb50b710e42df/c917f409-f56d-45b1-be06-9cdcda04449c.png "2014-07-07_21-09-22")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5f5390901e780b9d4546891d07276980607a74f4/d4ec1aad-d148-43fd-84e4-694fa9241289.png)
+ 
+Now build **only** the class library, copy the output assembly (CalcLibrary.dll) to the console windows output directory and then run the console window from windows explorer
+   
+[![CUsersGordonBDocumentsvisual_studio_2013Proj_2014-07-07_21-14-55](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f54b4aa2be4f309afc47ef158d770d47ee5fe819/40f4afbb-0ad5-4629-8bb3-0d07c1c578f1.png "CUsersGordonBDocumentsvisual_studio_2013Proj_2014-07-07_21-14-55")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/32648af8c1e6af8f74500fd5e7e37ab2e16fa40d/f28758f0-b323-4927-9492-b77fc8832fac.png)
+ 
+You'll notice that again we see what we expect. Now change your Utils class to have underscores as a default in a name parameter and place that in the return string like this
+ 
+[![2014-07-07_21-17-36](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b1d8486f50b6bc0a6c2ba5983cd35ed897490eec/5560b27a-0f44-4b47-8f7b-99c55c9a3a81.png "2014-07-07_21-17-36")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/65dfaa0120697a0507a37888879f667eff044e83/1df6f5a3-1a25-41e8-bc31-7f47aa685348.png)
+ 
+Again if you run this you will get what you expect 
+  
+[![filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2ce16e766a38425d65549f154c47aabd6b9301cc/48ca8c44-35b8-41d9-8a4f-58ec3e4c086c.png "filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e1c718e3dcb6d179da29c5dfac38654aa19ab5ab/d1c11670-fe97-4af6-a2c8-8a07b911dfb8.png)
+ 
+Now lets make that second change we did and replace the underscores with a underscore dash repeated 5 times like so
+ 
+[![2014-07-07_21-19-21](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8f23726ff17f460980de249a564ebfa25eaf5f4d/96d7b2a3-55fe-4924-84aa-f39d8390661a.png "2014-07-07_21-19-21")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5f93d972b592f11e5d350e3715d0f976db05d852/e39da627-ca62-4a39-bace-ad14734c25ff.png)
+ 
+Build just the class library, copy the assembly over and run the console app in windows explorer and you'll see that the nothing changed in the console window
+ 
+[![filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2ce16e766a38425d65549f154c47aabd6b9301cc/f9a1debf-531f-4e55-99fa-aed94c22793e.png "filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e1c718e3dcb6d179da29c5dfac38654aa19ab5ab/2d572f23-0dc5-4952-9d5f-43c4d2e1a02a.png)
+ 
+I recently watch [Bart De Smet](http://pluralsight.com/training/Authors/Details/bart-desmet)'s [Pluralsight](http://pluralsight.com) videos ([C# Language Internals - Part 1](www.pluralsight.com/training/Courses/Description/csharp-language-internals) | [C# Language Internals - Part 2](http://pluralsight.com/training/Courses/TableOfContents/csharp-language-internals-part2)) and one thing I realized is that I thought I knew *stuff* and to almost truly know you should check the IL or view the IL in a nice tool like IL Spy. So I opened the code in IL Spy and took a look at the class library to make sure that it update and as expected it did
+ 
+[![2014-07-07_21-30-54](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2f5b94b528c3c3d1af8c987fc4cd5d9e17d8fa12/3b6b8c99-de3f-4f16-9495-ed9cfb231e70.png "2014-07-07_21-30-54")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/537ae07eff4ee046d10ae07c393428427529a69f/697acabc-5f7c-4e9d-b3a9-91c2697a78c1.png)
+ 
+and to then opened the program class in the class library and found that the code that the console app was compiled against had been added to the call to Utils.GetMessage
+  
+[![2014-07-07_21-32-03](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/df432f29d0894d40c4fd9efede6aee0b2b742348/a934cb3d-c52c-438b-ab0f-c2ede2b65d4e.png "2014-07-07_21-32-03")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/35ffdffe0e36e8fbcb0f82d6b44d26d469ba6bb4/1e304d91-1b41-4364-b3b5-d78663e7a326.png)
+ 
+In this example there is nothing that could go wrong and you probably would worry about the behavior of the optional parameter but there will be cases in more *important* code where this could be a problem maybe for performance or even security I'm guessing.
+

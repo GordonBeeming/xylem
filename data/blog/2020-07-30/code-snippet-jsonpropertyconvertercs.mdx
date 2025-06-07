@@ -1,0 +1,87 @@
+﻿---
+title: '[ code snippet ] JsonPropertyConverter.cs'
+date: 2020-07-30
+tags: ['JSON', 'code snippet']
+draft: false
+summary: 'JsonConverter that works with System.Text.Json allows having a string property that will just store the json element string instead of trying to parse the properties into a complex object'
+---
+
+
+JsonConverter that works with System.Text.Json allows having a string property that will just store the json element string instead of trying to parse the properties into a complex object
+
+
+## Code Snippet
+
+
+```csharp
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+public class JsonPropertyConverter : JsonConverter<string>
+{
+  public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  {
+    using (var jsonDoc = JsonDocument.ParseValue(ref reader))
+    {
+      return jsonDoc.RootElement.GetRawText();
+    }
+  }
+
+  public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+  {
+    using (var jsonDoc = JsonDocument.Parse(value))
+    {
+      jsonDoc.RootElement.WriteTo(writer);
+    }
+  }
+}
+```
+
+
+## Sample Usage
+
+This code snippet allows you to parse json that looks something like this
+
+
+```json
+{
+  "Name": "Gordon Beeming",
+  "Age": 30,
+  "CustomProperties": {
+    "Profile": "https://beeming.dev/",
+    "Twitter": "https://twitter.com/GordonBeeming",
+    "GitHub": "https://github.com/Gordon-Beeming",
+    "LinkedIn": "https://www.linkedin.com/in/gordon-beeming/"
+  }
+}
+```
+
+
+into a C# model that looks like this
+
+
+```csharp
+using System.Text.Json.Serialization;
+// using MyNamespace.JsonConverters;
+
+public class User
+{
+  public string Name { get; set; }
+  public int Age { get; set; }
+
+  [JsonConverter(typeof(JsonPropertyConverter))]
+  public string CustomProperties { get; set; }
+}
+```
+
+
+This is great for if you are loading dynamic json based off another property in the model
+
+
+## Learn More
+
+[JsonConverterAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonconverterattribute?view=netcore-3.1)
+
+[How to write custom converters for JSON serialization (marshalling) in .NET](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to)
+

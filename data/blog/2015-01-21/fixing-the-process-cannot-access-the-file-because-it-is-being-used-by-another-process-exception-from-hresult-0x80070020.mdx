@@ -1,0 +1,29 @@
+﻿---
+title: 'Fixing The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)'
+date: 2015-01-21
+tags: ['IIS', 'Skype']
+draft: false
+summary: 'I had some "Weird" things happening with IIS on one of my developer machines. After trouble shooting for a while I decided that was definitely not winning and removed all features from my pc that were even the slightest related to IIS, my pc required a restart so I did. When it came back I re-enabled all the features as I would normally do and then attempted to put my dev site in IIS. For some reason all the sites were stopped and when trying to start them I received the message'
+---
+
+
+I had some "Weird" things happening with IIS on one of my developer machines. After trouble shooting for a while I decided that was definitely not winning and removed all features from my pc that were even the slightest related to IIS, my pc required a restart so I did. When it came back I re-enabled all the features as I would normally do and then attempted to put my dev site in IIS. For some reason all the sites were stopped and when trying to start them I received the message
+ 
+***---------------------------Internet Information Services (IIS) Manager---------------------------The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)---------------------------OK   ---------------------------***
+ 
+This was very weird as I was at this stage thinking that there shouldn't be anything running on port 80. I ran a Bing search and [kb973094 - Error 0x80070020 when you try to start a Web site in IIS 7.0](http://support.microsoft.com/kb/973094). Although I am using a later version of IIS I still gave it a read because most times things are similar or the same. In the resolution section it said I should run the below in Command Prompt
+ 
+netstat -aon | find ":80"
+
+With that I would get the output 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2734e906c5b25bf24a61d7b3bef25c188d9c0bfe/e7122c0e-2e30-4f5e-b421-32e16bbbce0a.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7c2cd45e9b7bc9a705ea0267b06da7d88118e43a/31402981-7e10-4d90-8857-a28b38ebdba5.png) 
+
+and from there I needed to take the Process ID (Last Column) and look in Task Manager. When I opened Task Manager I noticed that the process that was using port 80 was [Skype](http://www.skype.com/). After Ending the Skype process and doing an IIS Reset everything was back to normal.
+
+I wanted to find out why Skype would be using port 80 and so I went into the settings and noticed a checkbox that was allowing it to use that port
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c84af0bf9a43146ca59b1ca9ec495e8b7dca2a47/0b80e5ab-d4f9-4125-965a-5c0a5af90ab0.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b27b23e09f3199c870655e22bc617b197cb1401/586c65af-09b6-48a7-8ffa-bdf84a11c8e5.png) 
+
+After un-checking this box Skype has not taken control again =).
+

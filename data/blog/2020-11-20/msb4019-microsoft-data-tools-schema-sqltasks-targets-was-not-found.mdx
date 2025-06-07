@@ -10,13 +10,13 @@ summary: '.'
 So dotnet.exe can't find **Microsoft.Data.Tools.Schema.SqlTasks.targets** when you are running your build and you are getting an error similar to this?
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/8676879b0452501ecb43e5ef990f70d9e015772f/2021-02-04_3-51-11.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_3-51-11.jpg" src="./images/2021-02-04_3-51-11.jpg" alt="" width="0" height="0" caption="" />
 
 
 No matter how many times you check your install, you just can't figure out why this doesn't work right? When you run it in Visual Studio everyone works as expected right?
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/847372fae8740a1443036dded99f41caf2eb223c/2021-02-04_3-00-09.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_3-00-09.jpg" src="./images/2021-02-04_3-00-09.jpg" alt="" width="0" height="0" caption="" />
 
 
 ## So what's going on here, is my install corrupt?
@@ -47,7 +47,7 @@ Assuming that for some reason (like in my case) you are compiling the sql projec
 You are going to have to option up the Configuration Manager in Visual Studio
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/4214f1c4bb89e51431fccf024e149bfd6cf4f72c/2021-02-04_3-55-36.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_3-55-36.jpg" src="./images/2021-02-04_3-55-36.jpg" alt="" width="0" height="0" caption="" />
 
 
 1. Change the configuration to Release
@@ -55,13 +55,13 @@ You are going to have to option up the Configuration Manager in Visual Studio
 3. Click Close
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/5a247331fd05d311a17dd248ad3e984617258b8d/2021-02-04_3-57-23.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_3-57-23.jpg" src="./images/2021-02-04_3-57-23.jpg" alt="" width="0" height="0" caption="" />
 
 
 You can now run your build again and it should work
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/d33ffbab1d58662b9bf0c1694dfe44eea69e1f4d/2021-02-04_4-00-34.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-00-34.jpg" src="./images/2021-02-04_4-00-34.jpg" alt="" width="0" height="0" caption="" />
 
 
 The side affect of this way is that you need to find a different way to compile your sql projects and not use the solution file
@@ -74,7 +74,7 @@ Similar to step 2 we are going to exclude the sql projects from a configuration.
 Open the configuration manager again. In the configuration drop list select *&lt;New...&gt;*
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/75813f49b1910f0d76a9bbead05b2b6c014ac3ba/2021-02-04_4-03-41.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-03-41.jpg" src="./images/2021-02-04_4-03-41.jpg" alt="" width="0" height="0" caption="" />
 
 
 1. Give it a name, I'm going to go with ReleaseWithoutDatabases
@@ -83,19 +83,19 @@ Open the configuration manager again. In the configuration drop list select *&lt
 4. Click OK
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/0473970fa99f35757cbdbaec19b02eb8aadb9c0b/2021-02-04_4-05-19.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-05-19.jpg" src="./images/2021-02-04_4-05-19.jpg" alt="" width="0" height="0" caption="" />
 
 
 Similar to option 2 untick the Build box for the database project and click Close
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/64437f7b8e422115e11cc16f0b9b6f0f8c2a9a24/2021-02-04_4-08-16.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-08-16.jpg" src="./images/2021-02-04_4-08-16.jpg" alt="" width="0" height="0" caption="" />
 
 
 Now we'll be able to run the build again, this time pass in the new configuration name and it should just work
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/7161e3c33408e2b41167cf7c24426ff3de62d09f/2021-02-04_4-10-47.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-10-47.jpg" src="./images/2021-02-04_4-10-47.jpg" alt="" width="0" height="0" caption="" />
 
 
 With this method if you are adding specific bits and pieces to your project file to handle the release configuration differently you'd now need to add it for this configuration as well so you could end up forgetting to do it, maybe it's something that's not that important but maybe it is. Just consider the risk of missing something
@@ -119,7 +119,7 @@ msbuild BlogSqlTasksMissing.sln /p:Configuration=Release
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/88368f4dc149eb10cc46e8ba5fc3a74b6b00c911/2021-02-04_4-24-29.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-02-04_4-24-29.jpg" src="./images/2021-02-04_4-24-29.jpg" alt="" width="0" height="0" caption="" />
 
 
 Sure there will be other parameters you'll need to change too but this is probably the last reasonable option

@@ -49,7 +49,9 @@ To get rid of this message and put Application Insights in a state where you can
  
 Open the **App.xaml.cs** file and at the end of the **App()** method add the following code
  
+```csharp
 Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsSession.Default.Start("license key from ApplicationInsights.config");
+```
 
 As the snippet mentions you need to grab the license key (aka: instrumentation key) from the ApplicationInsights.config
 
@@ -67,7 +69,9 @@ To see the data head over to the Usage Tab on VSO Application Insights
 
 Because I am using a new application I will just log which of the groups the user clicks into. To do this (if you are using the Split Page Application) navigate to **ItemsPage.xaml.cs** file and change the ItemView\_ItemClick method to be like below
 
+```csharp
 /// <summary>/// Invoked when an item is clicked./// </summary>/// <param name="sender">The GridView (or ListView when the application is snapped)/// displaying the item clicked.</param>/// <param name="e">Event data that describes the item clicked.</param>void ItemView_ItemClick(object sender, ItemClickEventArgs e){    var properties = new Dictionary<string, object>() {{"Title", ((SampleDataGroup)e.ClickedItem).Title}};    Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsChannel.Default.LogEvent("Store/ItemView", properties);    // Navigate to the appropriate destination page, configuring the new page    // by passing required information as a navigation parameter    var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;    this.Frame.Navigate(typeof(SplitPage), groupId);}
+```
 
 We are simple logging that the Item Click event was fired and logging the title of the group that was clicked. This when you click around in the sample app will log to Application Insights as you click around and generate some data. To see the features that were logged head over to **Event Insights** under the **Features** tab
 

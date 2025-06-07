@@ -13,7 +13,9 @@ In [Getting start with a Team Explorer Plugin for VS 2013 Part 1](https://gordon
  
 Add a new const to the GuidList class (in the Guids file) like below
  
+```csharp
 public const string sampleTeamExplorerNavigationItem = "8C35B3DF-D7CC-45BC-B958-BFAE3E157A21";
+```
 
 Add any image (to be used as the icon) to the Resources.resx file and call it SampleImage like below
 
@@ -21,7 +23,7 @@ Add any image (to be used as the icon) to the Resources.resx file and call it Sa
 
 Create a class called SampleTeamExplorerNavigationItem and replace the contents with code below
 
-```cs
+```csharp
 namespace Company.TeamExplorerSamplePlugin{    using System;    using System.ComponentModel;    using System.ComponentModel.Composition;    using System.Drawing;    using System.Windows.Forms;    using Microsoft.TeamFoundation.Controls;    using Microsoft.VisualStudio.Shell;    [TeamExplorerNavigationItem(GuidList.sampleTeamExplorerNavigationItem, 100)]    public class SampleTeamExplorerNavigationItem : ITeamExplorerNavigationItem    {        private Image image = Resources.SampleImage;        private bool isVisible = true;        private string text = "Sample Button";        [ImportingConstructor]        public SampleTeamExplorerNavigationItem([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)        {            this.serviceProvider = serviceProvider;        }        private IServiceProvider serviceProvider { get; set; }        public Image Image        {            get            {                return this.image;            }            set            {                this.image = value;                this.FirePropertyChanged("Image");            }        }        public bool IsVisible        {            get            {                return this.isVisible;            }            set            {                this.isVisible = value;                this.FirePropertyChanged("IsVisible");            }        }        public string Text        {            get            {                return this.text;            }            set            {                this.text = value;                this.FirePropertyChanged("Text");            }        }        public void Execute()        {            MessageBox.Show("Execute Called");        }        public void Invalidate()        {        }        public void Dispose()        {        }        public event PropertyChangedEventHandler PropertyChanged;        private void FirePropertyChanged(string propertyName)        {            if (this.PropertyChanged != null)            {                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));            }        }        public T GetService<T>()        {            if (this.serviceProvider != null)            {                return (T)this.serviceProvider.GetService(typeof(T));            }            return default (T);        }    }}
 ```
 

@@ -19,25 +19,11 @@ which does let you change the accent and background color for windows. So you st
  
 Basically you need a registry file with the contents below (save that into a .reg file), set the hex values for your color and then run it.
  
-1: Windows Registry Editor Version 5.00
-
-<!--CRLF-->
-
-       2:  
-
-<!--CRLF-->
-
-       3: [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Personalization]
-
-<!--CRLF-->
-
-       4: "PersonalColors_Accent"="#00b8ff"
-
-<!--CRLF-->
-
-       5: "PersonalColors_Background"="#000000"
-
-<!--CRLF-->
+```reg
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Personalization]
+"PersonalColors_Accent"="#00b8ff"
+"PersonalColors_Background"="#000000"
+```
 
 You can also download this reg file from GutHub using [https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/set-theme-colors.reg](https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/set-theme-colors.reg "https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/set-theme-colors.reg") and you can download an app that takes in the 2 hex values and then set it, you will need to run the app as administrator otherwise it will crash. [https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/ChangeWindowsTheme.exe](https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/ChangeWindowsTheme.exe "https://github.com/Gordon-Beeming/ChangeWindowsTheme/blob/master/Downloads/ChangeWindowsTheme.exe")
 

@@ -84,10 +84,10 @@ const nextConfig = () => {
     },
     async headers() {
       return [
-        {
-          source: '/(.*)',
-          headers: securityHeaders,
-        },
+        // {
+        //   source: '/(.*)',
+        //   headers: securityHeaders,
+        // },
       ]
     },
     webpack: (config, options) => {

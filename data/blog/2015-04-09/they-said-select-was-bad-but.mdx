@@ -71,7 +71,7 @@ GO
 With this in place we are able to do a select and notice that we do have data
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/d39f30ecd684d4c3251c66cf4d5d72acd9d148c1/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_10-58-42.png" src="./images/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
 
 
 I then somewhere along the line added another column to the view (in this case table) like so
@@ -103,13 +103,13 @@ GO
 which showed me that the view still had a star
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/1ca6e58786866072bcdbb3ea041975fdf70f5ae4/2021-07-13_10-39-11.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_10-39-11.png" src="./images/2021-07-13_10-39-11.png" alt="" width="0" height="0" caption="" />
 
 
 but why then did the results show otherwise?
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/67cf456ed0f9bafe6f2a57133fa3cc9570b33915/2021-07-13_10-40-20.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_10-40-20.png" src="./images/2021-07-13_10-40-20.png" alt="" width="0" height="0" caption="" />
 
 
 After as mentioned many hours of looking at this from checking that the app was till configured to hit this database and not a random other environment to restarting my PC. I reinstalled all the objects and by doing that lost all my sample data. Which we would simulate by dropping the table and view and then recreating the table with the extra column and then creating the view as we previously did
@@ -154,7 +154,7 @@ GO
 This now returned the data I was expecting
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/194b070d187a22f7dcae6a474db3c0a508a30c0e/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-15-21.png" src="./images/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
 
 
 So what was different now? The code looked the same so what could it be. At the point the non lazy developer on a lot of energy drinks kicked in and I started digging which made me revert the table changes and reinstall everything again and then made the single column add as above which I confirmed made the weirdness return which for completeness looks like this
@@ -203,7 +203,7 @@ GO
 and then running that select
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/d39f30ecd684d4c3251c66cf4d5d72acd9d148c1/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_10-58-42.png" src="./images/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
 
 
 It was at this point that I realized that reinstalling the view fixed my problem probably. To try this you can either drop and create the view or simple ALTER it which is the most likely way you would do this in production for most people
@@ -222,7 +222,7 @@ GO
 and then once again we run the select
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/194b070d187a22f7dcae6a474db3c0a508a30c0e/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-15-21.png" src="./images/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
 
 
 and we now have that extra column.
@@ -251,13 +251,13 @@ GO
 revealed that the column wasn't there
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/147b177f5696845fe3fece1c5811a28d91ccef0a/2021-07-13_11-19-38.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-19-38.png" src="./images/2021-07-13_11-19-38.png" alt="" width="0" height="0" caption="" />
 
 
 whereas running that ALTER statement on the view again and checking the results showed the 3 columns
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/8b667ede09f694d6c4e097e57f5e641416315038/2021-07-13_11-21-39.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-21-39.png" src="./images/2021-07-13_11-21-39.png" alt="" width="0" height="0" caption="" />
 
 
 So this again illustrated what the ALTER achieved, he also mentioned that we can use sp\_refreshview to refresh the view
@@ -290,13 +290,13 @@ GO
 we are given a warning saying that we could be breaking stuff
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/16062ecfb5cbda8837af2e763584230cfdd1f96b/2021-07-13_11-24-56.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-24-56.png" src="./images/2021-07-13_11-24-56.png" alt="" width="0" height="0" caption="" />
 
 
 and so we ran the select and I was thinking that it would throw an error
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/194b070d187a22f7dcae6a474db3c0a508a30c0e/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-15-21.png" src="./images/2021-07-13_11-15-21.png" alt="" width="0" height="0" caption="" />
 
 
 and we noticed that the sp\_rename didn't seem to work or at least that's what I would have thought before our earlier discovery. So just to double check we looked at the information schema again
@@ -320,7 +320,7 @@ GO
 and thought it would show us the same result as earlier with a row for A, B and C but instead noted that D was showing here
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/1041d1b5f67c3fd360c7526a5346e935c787dd91/2021-07-13_11-28-33.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-28-33.png" src="./images/2021-07-13_11-28-33.png" alt="" width="0" height="0" caption="" />
 
 
 now I was thinking where could it be keeping the info for the views columns then and more importantly how do we get a A column back from the result when it doesn't exist. We looked next turned to sys.views and sys.columns
@@ -338,7 +338,7 @@ GO
 this showed us the A column still being there as part of what SQL knew to be in the view
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/1041d1b5f67c3fd360c7526a5346e935c787dd91/2021-07-13_11-28-33.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-28-33.png" src="./images/2021-07-13_11-28-33.png" alt="" width="0" height="0" caption="" />
 
 
 so how does the view get the data which was in column A and is now in column D? Well for this we turn back to sp\_refreshview, information schema, sys.views and sys.columns
@@ -370,7 +370,7 @@ GO
 which shows us
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/06c7ca58af5c4280912bf1cf12d18efb530ac78f/2021-07-13_11-33-04.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-33-04.png" src="./images/2021-07-13_11-33-04.png" alt="" width="0" height="0" caption="" />
 
 
 Now this is the part I looked at by myself so I can only assume that SQL is smart here and uses the column id/pos when it queries and labels the result as what it currently believes to be the column name
@@ -398,7 +398,7 @@ GO
 and as we could almost expect from this post column E didn't exist but what about column B? It should exist right be cause haven't refreshed the view cache but how could it because it was now dropped from the database. This most weirdly for me returns the column (which I guess could be expected) but now we have no data for column B
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/a7492cdfdc0df9f672fd42bebcbbc0f8382f8508/2021-07-13_11-35-31.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-35-31.png" src="./images/2021-07-13_11-35-31.png" alt="" width="0" height="0" caption="" />
 
 
 we run the magic again to see what SQL thinks is going on
@@ -427,7 +427,7 @@ GO
 and notice now that information schema says we have no column B and also no column E and the sys.views and sys.columns query shows D, B and C rows
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/24bf059c77c479a6c77a162e4b5a7cf1e885ed0a/2021-07-13_11-36-48.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-36-48.png" src="./images/2021-07-13_11-36-48.png" alt="" width="0" height="0" caption="" />
 
 
 a sp\_refreshview and select
@@ -445,7 +445,7 @@ GO
 shows the data as we would now expect it
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/12cedf208d8a3984d152b74f291a6db014978713/2021-07-13_11-39-20.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-39-20.png" src="./images/2021-07-13_11-39-20.png" alt="" width="0" height="0" caption="" />
 
 
 Now again here I am assuming what SQL does and here I think it must obviously be using sys.columns for what columns to show and then going to information schema for where to find the data, naturally not find a matching column would return null data. However looking at the result above showing the queries off information schema, sys.views and sys.columns disproves my previous idea about how it matches the columns. Maybe it checks if the same amount of columns exist then use order matching otherwise the name matching or something silly like that but then that wouldn't work for a rename and drop and create without refreshing the view
@@ -475,7 +475,7 @@ GO
 and we now have the data
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/4173122dfa4b007a6446e1cd9df05b79aeca1a3d/2021-07-13_11-41-31.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-41-31.png" src="./images/2021-07-13_11-41-31.png" alt="" width="0" height="0" caption="" />
 
 
 and this is were things get very weird for me (could also be because it's late and my brain is tired) but if we drop, add and rename a column
@@ -498,7 +498,7 @@ GO
 and run our select
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/df76a8825f8849170d92d0cba42bdb7a6e44e47a/2021-07-13_11-42-58.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-42-58.png" src="./images/2021-07-13_11-42-58.png" alt="" width="0" height="0" caption="" />
 
 
 we expect that column C would contain NULL data as before but instead column E has the NULL data. Looking back to our new favorite place
@@ -524,7 +524,7 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/45a26f58174efc7a504ec1f5c1e16bf262d9f12e/2021-07-13_11-45-34.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-45-34.png" src="./images/2021-07-13_11-45-34.png" alt="" width="0" height="0" caption="" />
 
 
 we notice that column C has been removed as expected. If we run our refresh and select again
@@ -539,7 +539,7 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/90cea24e0d6f4d2a2bc566f08b3748cf352ff069/2021-07-13_11-48-24.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-48-24.png" src="./images/2021-07-13_11-48-24.png" alt="" width="0" height="0" caption="" />
 
 
 We see that now column E has data and the old column D has been renamed to G and has data. From this my new assumption is like my old one and that is that SQL get's the column pos it needs data for from information schema and then get's the label for those columns from that same position in sys.columns.
@@ -574,13 +574,13 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/1dfa3541e847888a8368c5c04665aafcc98ef1a6/2021-07-13_11-51-57.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-51-57.png" src="./images/2021-07-13_11-51-57.png" alt="" width="0" height="0" caption="" />
 
 
 now based on our last theory we were saying that it would get columns to get data from from Information Schema and labels from sys.columns so you would almost expect a similar result as Information Schema has 2 results and sys.columns has 3 to before with the last column being NULL. Let's run that select
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/21f35a34df3d44cb65a0ef102db8baef9e6b7e08/2021-07-13_11-52-43.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_11-52-43.png" src="./images/2021-07-13_11-52-43.png" alt="" width="0" height="0" caption="" />
 
 
 And instead of getting a NULL value at the end we get an error
@@ -647,7 +647,7 @@ GO
 And the select just to verify data
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/d39f30ecd684d4c3251c66cf4d5d72acd9d148c1/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_10-58-42.png" src="./images/2021-07-13_10-58-42.png" alt="" width="0" height="0" caption="" />
 
 
 Looks good.
@@ -668,7 +668,7 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/3aae003b987dcf9b65331732a5166a63f10ee90e/2021-07-13_12-01-18.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_12-01-18.png" src="./images/2021-07-13_12-01-18.png" alt="" width="0" height="0" caption="" />
 
 
 We are given just our 2 columns as expected. Although this didn't magically give us the 3rd column if we do a sp\_helptext on the view we will see that we are only asking for column A and B. Now if we ALTER the view to include column E
@@ -686,7 +686,7 @@ GO
 and run the select
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/d5a0b826fa5acbf3230be8b98e697c2edaa9776f/2021-07-13_12-01-19.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_12-01-19.png" src="./images/2021-07-13_12-01-19.png" alt="" width="0" height="0" caption="" />
 
 
 We are given the extra column and nothing has surprised us yet
@@ -711,7 +711,7 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/d1e4ac83900b391526da7395bb1abb51835a406b/2021-07-13_12-11-57.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_12-11-57.png" src="./images/2021-07-13_12-11-57.png" alt="" width="0" height="0" caption="" />
 
 
 We get the error
@@ -736,7 +736,7 @@ GO
 ```
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/7b01e9305dc16c5b7052948e4a0e138574fcb727/2021-07-13_12-13-59.png" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2021-07-13_12-13-59.png" src="./images/2021-07-13_12-13-59.png" alt="" width="0" height="0" caption="" />
 
 
 No surprises here either
@@ -749,7 +749,7 @@ Think back to some of the weird SQL errors that you've had in the past, I can th
 This is also unfortunately one of the times where "Have you turned if off and on again" will not help as after restarting SQL you will still get the "wrong" data
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/9f12e373d2572f12b23f02ece5a7c3c405e1df80/itcrow.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/itcrow.jpg" src="./images/itcrow.jpg" alt="" width="0" height="0" caption="" />
 
 
 From all of this you can see that using SELECT \* is a bad idea, in most cases if you change a view you wouldn't go and refresh, alter or drop and create every other view in your database as that makes no sense at all.

@@ -8,14 +8,14 @@ summary: 'Today I find myself with yet another bit of functionality that only wo
 
 
 Today I find myself with yet another bit of functionality that only works when you are running in Administrator Mode. A while back I had Full Admin Mode always enabled, downside of this is the store apps don't work at all. Up side is your PC works as expected ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). I created a PowerShell script to download Channel 9 videos as described in my post [Easily download Ch9 videos](https://gordonbeeming.com/blog/post/easily-download-ch9-videos), this script worked perfectly but recently started breaking with the error
-    
-    Start-BitsTransfer : Object reference not set to an instance of an object.
-    At C:\s\ch9$\Download All.ps1:90 char:21
-    +                     Start-BitsTransfer $url $($destination + $mp4fileName)
-    +                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        + CategoryInfo          : NotSpecified: (:) [Start-BitsTransfer], NullReferenceException
-        + FullyQualifiedErrorId : System.NullReferenceException,Microsoft.BackgroundIntelligentTransfer.Management.NewBitsTransferCommand
-    
+ 
+Start-BitsTransfer : Object reference not set to an instance of an object.
+At C:\s\ch9$\Download All.ps1:90 char:21
++                     Start-BitsTransfer $url $($destination + $mp4fileName)
++                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Start-BitsTransfer], NullReferenceException
+    + FullyQualifiedErrorId : System.NullReferenceException,Microsoft.BackgroundIntelligentTransfer.Management.NewBitsTransferCommand
+ 
 What changed? Only switching back to not full admin mode, before realizing this however I added a bit switch into my script so that it would use the <a href="http://msdn.microsoft.com/en-us/library/system.net.webclient.aspx">WebClient</a> object for downloads if set to 1. But today is when I thought to myself, maybe this is just another one of those "needs to be admin mode" things. 
  
 And guess what, it was. Switched to run as Administrator and everything works great.

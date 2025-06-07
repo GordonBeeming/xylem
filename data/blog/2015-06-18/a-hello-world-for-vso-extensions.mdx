@@ -44,7 +44,10 @@ Let's add a [extensions.json manifest](https://www.visualstudio.com/integrate/ex
 [![Add_New_Item_-_VSO_Time_Ticker_2015-06-18_20-11-47](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7216f07281d4c88e16dfe4a6d1a40b1e3a63f3a8/733afe1c-4af2-4e38-9392-f68dfb506114.png "Add_New_Item_-_VSO_Time_Ticker_2015-06-18_20-11-47")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a72a078164bfea8bd8d28c7b6dbc436b6cd1c64b/1febdf1e-8824-45bb-ae5c-ce1060abde18.png)
  
 and drop in the content below, replace the **baseUri** property to include the port you have been assigned for SSL for the project.
- {  "namespace": "VSO-Time-Ticker",  "version": "0.0.1",  "name": "Time Ticker",  "description": "A simple extension for Visual Studio Online of a Time Ticker",  "provider": {    "name": "Gordon Beeming"  },  "baseUri": "https://localhost:44300/",  "icon": "https://localhost:44300/images/some-icon.png",  "contributions": {    "vss.web#hubs": [      {        "id": "time",        "name": "Time",        "groupId": "home",        "order": 22,        "uri": "index.html",        "usesSdk": true,        "fullPage": false      }    ]  }}
+
+```json
+{  "namespace": "VSO-Time-Ticker",  "version": "0.0.1",  "name": "Time Ticker",  "description": "A simple extension for Visual Studio Online of a Time Ticker",  "provider": {    "name": "Gordon Beeming"  },  "baseUri": "https://localhost:44300/",  "icon": "https://localhost:44300/images/some-icon.png",  "contributions": {    "vss.web#hubs": [      {        "id": "time",        "name": "Time",        "groupId": "home",        "order": 22,        "uri": "index.html",        "usesSdk": true,        "fullPage": false      }    ]  }}
+```
 
 ### Get the SDK
 
@@ -84,11 +87,15 @@ This is a rather simple step, replace the reference to *app.js* with one to *sdk
 
 Add the following script just inside your body tag
 
+```html
 <script type="text/javascript">    // Initialize the VSS sdk    VSS.init({        setupModuleLoader: true,        moduleLoaderConfig: {            paths: {                "Scripts": "scripts"            }        }    });    // Wait for the SDK to be initialized    VSS.ready(function () {        require(["Scripts/app"], function (app) { });    });</script>
+```
 
 So at this stage your full index.html page will look like
 
+```html
 <!DOCTYPE html><html lang="en"><head>    <meta charset="utf-8" />    <title>TypeScript HTML App</title>    <link rel="stylesheet" href="app.css" type="text/css" />    <script src="sdk/Scripts/VSS.SDK.js"></script></head><body>    <script type="text/javascript">        // Initialize the VSS sdk        VSS.init({            setupModuleLoader: true,            moduleLoaderConfig: {                paths: {                    "Scripts": "scripts"                }            }        });        // Wait for the SDK to be initialized        VSS.ready(function () {            require(["Scripts/app"], function (app) { });        });    </script>    <h1>TypeScript HTML App</h1>    <div id="content"></div></body></html>
+```
 
 ## 
 
@@ -96,7 +103,9 @@ So at this stage your full index.html page will look like
 
 In your App.ts file remove the window.onload function and replace it with it's body so your App.ts file will look like below
 
+```typescript
 class Greeter {    element: HTMLElement;    span: HTMLElement;    timerToken: number;    constructor(element: HTMLElement) {        this.element = element;        this.element.innerHTML += "The time is: ";        this.span = document.createElement('span');        this.element.appendChild(this.span);        this.span.innerText = new Date().toUTCString();    }    start() {        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);    }    stop() {        clearTimeout(this.timerToken);    }}var el = document.getElementById('content');var greeter = new Greeter(el);greeter.start();
+```
 
 ### Run App
 
@@ -185,7 +194,9 @@ Everything still works ![Open-mouthed smile](https://gordonbeeming.com/images/em
 
 Now that we have a publicly accessible website running on https (for FREE) we can take that url and replace what we currently have in our manifest so it will now look like this
 
+```json
 {  "namespace": "VSO-Time-Ticker",  "version": "0.0.2",  "name": "Time Ticker",  "description": "A simple extension for Visual Studio Online of a Time Ticker",  "provider": {    "name": "Gordon Beeming"  },  "baseUri": "https://vso-hello-world.azurewebsites.net/",  "icon": "https://vso-hello-world.azurewebsites.net/images/some-icon.png",  "contributions": {    "vss.web#hubs": [      {        "id": "time",        "name": "Time",        "groupId": "home",        "order": 22,        "uri": "index.html",        "usesSdk": true,        "fullPage": false      }    ]  }}
+```
 
 Re-install your extension
 

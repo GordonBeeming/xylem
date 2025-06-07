@@ -26,13 +26,13 @@ In that example, we passed in a version number so that we could control the vers
 Before creating the workflow to publish our template, we'll need to get an API key from nuget.org. Head over to [NuGet Gallery | API Keys](https://www.nuget.org/account/apikeys) and then Click on **Create**, then there are a couple of settings that you should set for the API key
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/da39a3ee5e6b4b0d3255bfef95601890afd80709/2023-11-05_21-18-32.png" alt="Make sure you configure the scope of the API Key to only what is required" width="0" height="0" caption="Make sure you configure the scope of the API Key to only what is required" />
+<Figure key="./images/2023-11-05_21-18-32.png" src="./images/2023-11-05_21-18-32.png" alt="Make sure you configure the scope of the API Key to only what is required" width="0" height="0" caption="Make sure you configure the scope of the API Key to only what is required" />
 
 
 Make sure you copy the API Key, as you will only be able to regenerate the key in the future
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/da39a3ee5e6b4b0d3255bfef95601890afd80709/2023-11-05_21-24-22.png" alt="Copy the API Key, as we'll use this in the next steps" width="0" height="0" caption="Copy the API Key, as we'll use this in the next steps" />
+<Figure key="./images/2023-11-05_21-24-22.png" src="./images/2023-11-05_21-24-22.png" alt="Copy the API Key, as we'll use this in the next steps" width="0" height="0" caption="Copy the API Key, as we'll use this in the next steps" />
 
 
 Go to your repository on GitHub and Click on Settings | ASecrets and variables | Actions | New repository secret (if you are using environments in your repository, add an environment variable instead so it's scoped just to where you plan on publishing the package)
@@ -77,19 +77,19 @@ The main thing to take note of in this workflow is that we are creating a versio
 Save the file and head over to the Actions tab to watch the workflow run, once done you should see a successful work like below
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/da39a3ee5e6b4b0d3255bfef95601890afd80709/2023-11-05_21-28-42.png" alt="This success of this workflow means a new version of our package has published to nuget.org" width="0" height="0" caption="This success of this workflow means a new version of our package has published to nuget.org" />
+<Figure key="./images/2023-11-05_21-28-42.png" src="./images/2023-11-05_21-28-42.png" alt="This success of this workflow means a new version of our package has published to nuget.org" width="0" height="0" caption="This success of this workflow means a new version of our package has published to nuget.org" />
 
 
 We can now head over to nuget.org and see that our package has published as expected
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/da39a3ee5e6b4b0d3255bfef95601890afd80709/2023-11-05_21-35-10.png" alt="Version 2023.11.5.1 of the package GordonBeeming.DefaultFiles.CSharp was publish from this workflow" width="0" height="0" caption="Version 2023.11.5.1 of the package GordonBeeming.DefaultFiles.CSharp was publish from this workflow" />
+<Figure key="./images/2023-11-05_21-35-10.png" src="./images/2023-11-05_21-35-10.png" alt="Version 2023.11.5.1 of the package GordonBeeming.DefaultFiles.CSharp was publish from this workflow" width="0" height="0" caption="Version 2023.11.5.1 of the package GordonBeeming.DefaultFiles.CSharp was publish from this workflow" />
 
 
 If we check for an update from the dotnet cli, we'll see this version is ready as well
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-png/da39a3ee5e6b4b0d3255bfef95601890afd80709/2023-11-05_21-37-48.png" alt="dotnet new update --check-only shows a new update of our package is available " width="0" height="0" caption="dotnet new update --check-only shows a new update of our package is available " />
+<Figure key="./images/2023-11-05_21-37-48.png" src="./images/2023-11-05_21-37-48.png" alt="dotnet new update --check-only shows a new update of our package is available " width="0" height="0" caption="dotnet new update --check-only shows a new update of our package is available " />
 
 
 ## Conclusion

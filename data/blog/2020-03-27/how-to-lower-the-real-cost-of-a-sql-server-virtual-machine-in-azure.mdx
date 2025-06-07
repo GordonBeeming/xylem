@@ -15,13 +15,13 @@ Whenever you take out an Azure VM you generally get a single disk which is not t
 At the moment what we have is a brand new virtual machine created using the **SQL Server 2019 Web on Windows Server 2019 - Gen1** image
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/4ab1d78692bc245e1dd2d775c9afc7d7dba2dabf/2020-03-26_19-45-17.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-26_19-45-17.jpg" src="./images/2020-03-26_19-45-17.jpg" alt="" width="0" height="0" caption="" />
 
 
 with a default setup using managed disks you get a 1TB Standard SSD which you need to pay for the full usage of each month which if you not using it all is costly (considering you are paying monthly and not using it 😀)
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/2bc3feaf812585f9be9be2501e3addb453a29e5b/2020-03-26_19-40-35.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-26_19-40-35.jpg" src="./images/2020-03-26_19-40-35.jpg" alt="" width="0" height="0" caption="" />
 
 
 So how do we make this cheaper?
@@ -43,13 +43,13 @@ So let’s go 😊
 From the Azure Portal navigate to your machine and click **Disks**, then **Add data disk**, open the name drop list and then **Create disk**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/dfa036b3b81e96b4266dad5f8045a044ada58163/2020-03-27_19-29-18.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_19-29-18.jpg" src="./images/2020-03-27_19-29-18.jpg" alt="" width="0" height="0" caption="" />
 
 
 Enter a name for the new data disk, the resource group should already be selected, click on **Change size** and select a new data disk size. Remember that you are able to extend a data disk so if you select something too small you can always expand it later. Click **OK** and then **Create**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/85b89b1680f9870fba65792c0326b8fb4c85cd32/2020-03-27_19-46-02.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_19-46-02.jpg" src="./images/2020-03-27_19-46-02.jpg" alt="" width="0" height="0" caption="" />
 
 
 Click **Save**
@@ -58,19 +58,19 @@ Click **Save**
 Back in the virtual machine open up Disk Manager by right clicking on the windows button and then Disk Management
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/86a9e8624435a81b047cf8de98f2b303e22539c7/2020-03-27_20-13-59.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_20-13-59.jpg" src="./images/2020-03-27_20-13-59.jpg" alt="" width="0" height="0" caption="" />
 
 
 When disk management opens click **OK** on the *Initialize Disk* window
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/db2d20fa35f1324b30cf1dd52e5e0a5293472573/2020-03-27_20-22-18.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_20-22-18.jpg" src="./images/2020-03-27_20-22-18.jpg" alt="" width="0" height="0" caption="" />
 
 
 Right click on the new disk and click **New Simple Volume...**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/a1cd708c206ce1684aa47423ac30de9855fd4a01/2020-03-27_20-26-20.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_20-26-20.jpg" src="./images/2020-03-27_20-26-20.jpg" alt="" width="0" height="0" caption="" />
 
 
 You can configure specifics if you have for the new disk, but **Next, Next, Next, Next, Finish** should be 100% fine 😀.
@@ -141,37 +141,37 @@ C:\Users\TsAdmin>robocopy F:\ E:\ *.* /j /e /sec /Xo /Xd "System Volume Informat
 At this point we can head to the Azure Portal and stop the virtual machine so we can remove the extra disk, when asked if you want to stop the machine click yes
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/ec82f6a261fd9f41b28b4624a39a86284b8dd07a/2020-03-27_22-12-04.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-12-04.jpg" src="./images/2020-03-27_22-12-04.jpg" alt="" width="0" height="0" caption="" />
 
 
 On the **Disks** section click **Edit**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/7ddd657b65dfc5c7c71ef4c45e9f40bc2f610b81/2020-03-27_22-14-36.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-14-36.jpg" src="./images/2020-03-27_22-14-36.jpg" alt="" width="0" height="0" caption="" />
 
 
 Click the ellipse on the old disk and then click **Detach** and **Save**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/d339e305c12a0ee2bb37f2d24f394e5154e921fb/2020-03-27_22-19-05.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-19-05.jpg" src="./images/2020-03-27_22-19-05.jpg" alt="" width="0" height="0" caption="" />
 
 
 Back on the **Overview** tab click **Start** to start the machine back up
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/ea341b49b3c76fbb8d1baa09c725b3d668d405e9/2020-03-27_22-23-59.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-23-59.jpg" src="./images/2020-03-27_22-23-59.jpg" alt="" width="0" height="0" caption="" />
 
 
 Connect back to your virtual machine and open Disk Management again. Right click on the drive and then click on **Change Drive Letter and Paths...**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/ce0226f32669fe3360e446336e0fa1cb400955c9/2020-03-27_22-38-32.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-38-32.jpg" src="./images/2020-03-27_22-38-32.jpg" alt="" width="0" height="0" caption="" />
 
 
 Click the **Change** button, Change the drive letter to **F** (this was the drive of the previous drive), Click **OK** and then when you ask if you are sure because some apps may break, click **Yes**
 
 
-<Figure src="https://gordonbeeming.com/blog/binaries/stream/image-jpeg/940eb649e3de5ee4623f3d44f17d8bb1b838f0b3/2020-03-27_22-47-52.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="./images/2020-03-27_22-47-52.jpg" src="./images/2020-03-27_22-47-52.jpg" alt="" width="0" height="0" caption="" />
 
 
 Things are all ready to go now. Open and admin CMD window again and run the script below

@@ -20,10 +20,10 @@ export default function Page() {
 
   return (
     <>
-      {/* <AuthorLayout content={mainContent}>
-        <MDXLayoutRenderer code={author.body.code} />
-      </AuthorLayout> */}
-      <h1>{author.name}</h1>
+      <AuthorLayout content={mainContent}>
+        {/* <MDXLayoutRenderer code={author.body.code} /> */}
+        <h1>{author.name}</h1>
+      </AuthorLayout>
     </>
   )
 }

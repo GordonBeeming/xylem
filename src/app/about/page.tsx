@@ -22,6 +22,9 @@ export default function Page() {
     <>
       <AuthorLayout content={mainContent}>
         {/* <MDXLayoutRenderer code={author.body.code} /> */}
+        <pre>
+          {JSON.stringify(author, null, 5)}
+        </pre>
         <h1>{author.name}</h1>
       </AuthorLayout>
     </>

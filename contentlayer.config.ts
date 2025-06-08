@@ -227,8 +227,8 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createYearsCount(allBlogs)
+    await createTagCount(allBlogs)
+    await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)
     copyImages(allBlogs)
   },

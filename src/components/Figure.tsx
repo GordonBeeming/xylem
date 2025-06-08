@@ -32,7 +32,7 @@ export const Figure: React.FC<FigureProps> = ({ src, alt, width, height, caption
     <div>
       <figure className="figure-container">
         <img {...imageProps} />
-        {caption && <figcaption>{caption}</figcaption>}
+        {caption && <figcaption>Figure: {caption}</figcaption>}
       </figure>
     </div>
   )

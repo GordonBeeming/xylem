@@ -1,0 +1,269 @@
+﻿---
+title: 'Setting up 2 factor authentication and email verification with .net core 2.0'
+date: 2018-02-15
+tags: ['Security', 'dotnet core', 'Just Coding']
+draft: false
+summary: 'Today I played with a new .net core template just to see what the authentication options were out the box and was surprised to see just how easy it is to go from nothing to having a base project that has authentication fully baked in with 2 factor authentication and email verification.'
+---
+
+
+Today I played with a new [.net core](https://dot.net) template just to see what the authentication options were out the box and was surprised to see just how easy it is to go from nothing to having a base project that has authentication fully baked in with 2 factor authentication and email verification.
+
+In this post we'll cover
+
+1. Setting up a new .net core project with local app users
+2. Enabling email verification
+3. Setting up 2 factor authentication
+
+Let's get started
+
+## Setting up a new .net core project with local app users
+
+This first part is just setting up a new .net core 2.0 making sure you select the local app users option for security, start off by creating a new project
+
+1. Under the .NET Core Project section
+2. Select ASP.NET Core Web Application
+3. Enter a name for your app
+4. Click OK
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b690b474caea2e4cf73695d3e770e325286f2feb/b690b474caea2e4cf73695d3e770e325286f2feb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e160b9dcb4a594987e19fb728f129badff1c2694/e160b9dcb4a594987e19fb728f129badff1c2694.png)
+
+Next we'll select the project and authentication options, for this example we'll
+
+1. Select ASP.NET Core 2.0
+2. We'll use a Web Application using the Model-View-Controller template
+3. Click Change Authentication
+4. Select Individual User Accounts
+5. Then from the drop list make sure Store user accounts in-app is selected
+6. Click OK
+7. Click OK
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bc8b01cc3804d8f97a27f959b84c3c3007ccfe7d/bc8b01cc3804d8f97a27f959b84c3c3007ccfe7d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/15f3ac66b099fff994c0ee46022b650b2b64f11c/15f3ac66b099fff994c0ee46022b650b2b64f11c.png)
+
+Congratulations you have done no work and have a fully working template project ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7972fdaba4365a0a8574e4d6a618e6b3cc598538/7972fdaba4365a0a8574e4d6a618e6b3cc598538.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a7d450f110d4f7b409e9ecfe8579fb4de78e592c/a7d450f110d4f7b409e9ecfe8579fb4de78e592c.png)
+
+Luckily the rest of this can be done following posts that are conveniently located in the project, we don't even have to Google for answers ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+We just need to run migrations now, for this we are just going to attempt to login
+
+1. Click Log in
+2. Enter a email address
+3. Enter a password
+4. Click OK
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/46af162c631ebe4624f39140b0ea9756d290d378/46af162c631ebe4624f39140b0ea9756d290d378.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/673e874df0b3c7495ce8b57836900ea32643f6f4/673e874df0b3c7495ce8b57836900ea32643f6f4.png)
+
+We'll get the new improved not yellow screen of death, click Apply Migrations
+
+[![SNAGHTML43d1b8c4](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/cf4287a96528a5b7907a2ec06a3cb45be8579b05/cf4287a96528a5b7907a2ec06a3cb45be8579b05.png "SNAGHTML43d1b8c4")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/27822a42bcde9e8b5588027b181d59069a279cec/27822a42bcde9e8b5588027b181d59069a279cec.png)
+
+After a short while the screen will indicate that you can refresh and migrations should be applied
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/118d9c0ec02d26ff27ceb216f381905f43c8f107/118d9c0ec02d26ff27ceb216f381905f43c8f107.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4f16ad6703eedf79af1cf0397af8dac8e0a8866a/4f16ad6703eedf79af1cf0397af8dac8e0a8866a.png)
+
+After that migrations would have been applied. We can test this by registering a new user
+
+1. Click on Register
+2. Enter an email address
+3. Enter your password
+4. Re-enter your password
+5. Click Register
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e90c107b91e571dc6be0ee1c9d1522e286fae0c3/e90c107b91e571dc6be0ee1c9d1522e286fae0c3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f1314db6deb2cbbc29a77d013f40bf0efc56b8f1/f1314db6deb2cbbc29a77d013f40bf0efc56b8f1.png)
+
+You are registered, of course at the moment you were not asked to verify your email address because we haven't enabled that yet.
+
+## Enabling email verification
+
+The link for enabling email verification can be found in the EmailSender.cs file under the Services folder. If you want to follow the official documentation for this section you can use the link [https://go.microsoft.com/fwlink/?LinkID=532713](https://go.microsoft.com/fwlink/?LinkID=532713 "https://go.microsoft.com/fwlink/?LinkID=532713"), alternatively you can follow here where you might get some extra hints
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fbc06ea9d579468bc30eb406cb40f190db3a6858/fbc06ea9d579468bc30eb406cb40f190db3a6858.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4a86d622e2bbfaf7cfa10bb5a90b32fab1f2da12/4a86d622e2bbfaf7cfa10bb5a90b32fab1f2da12.png)
+
+Start off by going to the Startup.cs file and adding the following code to the ConfigureServices method
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/35662bf7ddffa3a02dcedad981d320aabe9a59bc/35662bf7ddffa3a02dcedad981d320aabe9a59bc.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7e1b3413c77db17c6e7e0a70b4d3837cce1095f1/7e1b3413c77db17c6e7e0a70b4d3837cce1095f1.png)
+
+Under the services folder add a new file called AuthMessageSenderOptions.cs with the contents
+
+
+```javascript
+public class AuthMessageSenderOptions
+{
+    public string SendGridUser { get; set; }
+    public string SendGridKey { get; set; }
+}
+```
+
+
+Now right click on the project and click on Manage User Secrets
+
+## [![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/81e0ba473f8b0d947ecbce2900ce194f306b0690/81e0ba473f8b0d947ecbce2900ce194f306b0690.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/33ce48eee832d131382539af2fb79e3cf4ff582c/33ce48eee832d131382539af2fb79e3cf4ff582c.png)
+
+Set the content to the below which will be your send grid username and key
+
+
+```javascript
+{
+  "SendGridUser": "GordonBeeming",
+  "SendGridKey": "<key removed>"
+}
+```
+
+
+Next go to the Startup.cs and add the below code to the bottom of the ConfigureServices method
+
+
+```javascript
+services.Configure<AuthMessageSenderOptions>(Configuration);
+```
+
+
+You can now add the SendGrid nuget package with the command *Install-Package SendGrid*. Next go to the EmailService.cs file and replace the class with the below
+
+
+```javascript
+public class EmailSender : IEmailSender
+{
+    public EmailSender(Microsoft.Extensions.Options.IOptions<AuthMessageSenderOptions> optionsAccessor)
+    {
+        Options = optionsAccessor.Value;
+    }
+
+    public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+
+    public Task SendEmailAsync(string email, string subject, string message)
+    {
+        return Execute(Options.SendGridKey, subject, message, email);
+    }
+
+    public async Task Execute(string apiKey, string subject, string message, string email)
+    {
+        var client = new SendGrid.SendGridClient(apiKey);
+        var msg = new SendGrid.Helpers.Mail.SendGridMessage()
+        {
+            From = new SendGrid.Helpers.Mail.EmailAddress("my-app@beeming.co.za", "My App"),
+            Subject = subject,
+            PlainTextContent = message,
+            HtmlContent = message
+        };
+        msg.AddTo(new SendGrid.Helpers.Mail.EmailAddress(email));
+        var result = await client.SendEmailAsync(msg);
+        if (result.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+#if DEBUG
+            var error = await result.Body.ReadAsStringAsync();
+            throw new Exception(error);
+#else
+            throw new Exception("Unable to send email!");
+#endif
+        }
+    }
+}
+```
+
+
+Open AccountController.cs and find the below line in the Register post method and comment it out or delete it. This will mean that when someone new registers we won't auto log them in
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f5538607b0033eb62f5fd87b1b152557d86df565/f5538607b0033eb62f5fd87b1b152557d86df565.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5da3547adf862b8076e82ef38ac9810e9063f329/5da3547adf862b8076e82ef38ac9810e9063f329.png)
+
+That should be all you need to do. Test this by signing up using the register page and see if you get an email 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0a7c8bdc1a4590dc5a63b7dcebbd6b211801df16/0a7c8bdc1a4590dc5a63b7dcebbd6b211801df16.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b87209dba2ec95b301d65b7ee5438ddf5f84740c/b87209dba2ec95b301d65b7ee5438ddf5f84740c.png)
+
+After clicking of the link you should be shown a page saying that your email address is verified
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d24f3e4714d42433e7ecf6843f1db5ccf28b49ad/d24f3e4714d42433e7ecf6843f1db5ccf28b49ad.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bdbacd7d14a3772abc20e605dd9124a01c07e1b7/bdbacd7d14a3772abc20e605dd9124a01c07e1b7.png)
+
+and you will now be able to login
+
+## Setting up 2 factor authentication
+
+Firstly it's important to note that 2 factor auth is supported with no changes but this section addresses adding the QR Code to the 2 factor auth page
+
+The link for enabling 2 factor authentication can be found in the EnableAuthenticator.cshtml file under the Views/Manage folder. If you want to follow the official documentation for this section you can use the link [https://go.microsoft.com/fwlink/?Linkid=852423](https://go.microsoft.com/fwlink/?Linkid=852423 "https://go.microsoft.com/fwlink/?Linkid=852423"), alternatively you can follow here and do it 'right'.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9b13baa000dc69b38a53085eeb092b45f5d436a7/9b13baa000dc69b38a53085eeb092b45f5d436a7.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/be006a2ce72529f98f2137ee2452434997189e1a/be006a2ce72529f98f2137ee2452434997189e1a.png)
+
+Now obviously with software development there is never really a right way but some solutions feel less dirty and are therefore more right ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). Where this example will differ from the official docs is that we are going to use bower for the reference we adding instead of downloading the file and storing it in our source control. 
+
+The default experience can be seen by 
+
+1. Clicking on your profile name
+2. Clicking on Two-factor authentication
+3. Clicking on Add authentication app
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f04df3ea57e56a36e99e5015e7189fab3b3daca2/f04df3ea57e56a36e99e5015e7189fab3b3daca2.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/acc15a774581529ff5a08788f6ff6b7beb259500/acc15a774581529ff5a08788f6ff6b7beb259500.png)
+
+You will see here that you are given a code that your are required to type in and a message for how you can add a QR Code
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/80d09f1fc350e36f700836dd358b47591e6eabe5/80d09f1fc350e36f700836dd358b47591e6eabe5.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6f3cf9ea809491863871aca18055d46b0043e9be/6f3cf9ea809491863871aca18055d46b0043e9be.png)
+
+Start off by right clicking on the project and going to Manage Bower Packages...
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/09caa308706885aba2a23ec1fecc7260b69bfd99/09caa308706885aba2a23ec1fecc7260b69bfd99.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7bcc4bd6f1888fd17f9acdf89c50583efecfb39d/7bcc4bd6f1888fd17f9acdf89c50583efecfb39d.png)
+
+Next we need to
+
+1. Click on the Browse tab
+2. Type qrcodejs into the search box
+3. Click on the first option
+4. Which should be by the author CatTail and
+5. Click Install
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bdc87ab687fba83d5b29f9193fb1d78ef89a30c3/bdc87ab687fba83d5b29f9193fb1d78ef89a30c3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4fb23596a7fccd0a792463a318c87f5dfa5b64b9/4fb23596a7fccd0a792463a318c87f5dfa5b64b9.png)
+
+Next open the bundleconfig.json file and add the following config
+
+
+```javascript
+{
+  "outputFileName": "wwwroot/lib/qrcode.min.js",
+  "inputFiles": [
+    "bower_components/qrcodejs/qrcode.js"
+  ]
+},
+```
+
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9f327656c5215a9cbbbb5d6b68ea45cb5fcd815f/9f327656c5215a9cbbbb5d6b68ea45cb5fcd815f.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/777221076cae430fa0b0f4155ad0c4381a705dd9/777221076cae430fa0b0f4155ad0c4381a705dd9.png)
+
+Now we have 1 small bit of configuration left, open EnableAuthenticator.cshtml mentioned above and add the below code to the script section...you can also remove line 24 which is what shows the info message on how to setup the QR Code.
+
+
+```javascript
+<script type="text/javascript" src="~/lib/qrcode.min.js"></script>
+<script type="text/javascript">
+    new QRCode(document.getElementById("qrCode"),
+        {
+            text: "@Html.Raw(Model.AuthenticatorUri)",
+            width: 150,
+            height: 150
+        });
+</script>
+```
+
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ea61ec57cc37bbc4d5b8680057567d083bd068a3/ea61ec57cc37bbc4d5b8680057567d083bd068a3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9c0f7dcb54a8043e7f38ac9edcb94700387621b8/9c0f7dcb54a8043e7f38ac9edcb94700387621b8.png)
+
+That's all that is required and now when you go configure 2 factor authentication you will see a QR Code that you can scan with a authenticator app like the [Microsoft Authenticator app](https://go.beeming.net/2sBYPys). You can test this by going to your profile and 
+
+1. Clicking on Two-factor authentication
+2. You still have the code if your want/need to type it but
+3. Now you can also scan the QR Code, scan it with your app and then
+4. Enter the verification code you see in the app and
+5. Click Verify
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/faee9c5b4cebddab2ff4c72a42d4169033b41767/faee9c5b4cebddab2ff4c72a42d4169033b41767.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1f3902a5015a033f8560ac9191514690074f86da/1f3902a5015a033f8560ac9191514690074f86da.png)
+
+You'll now be presented with the recovery codes which you can use if you get locked out of your account because you can't access your 2FA device
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c96a8ef308310e24d18f33d440425c51ee923b7f/c96a8ef308310e24d18f33d440425c51ee923b7f.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/169f323e697a454593606da7d0dae476dfb70b4e/169f323e697a454593606da7d0dae476dfb70b4e.png)
+
+All done ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+## Conclusion 
+
+Doing pretty much anything that you used to do is the same if not simpler than how it used to be with the full framework before. Adding social logins from here is also very easy but I'll save that for another post ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+

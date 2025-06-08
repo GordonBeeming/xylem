@@ -1,0 +1,129 @@
+﻿---
+title: 'How to Tweet Azure Pipeline activity easily'
+date: 2018-09-20
+tags: ['VSTS / TFS', 'Azure DevOps', 'Web Online Tools']
+draft: false
+summary: 'A while back I created a service linked to Twitter that tweets when your pipeline has completed in Azure Pipelines. This post is going to show you how you can easily tweet when your builds complete .'
+---
+
+
+A while back I created a service linked to Twitter that tweets when your pipeline has completed in [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/). This post is going to show you how you can easily tweet when your builds complete ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+Before I get started with the how, let's discuss the why ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+## Why did I create this service?
+
+With the announcement of unlimited build minutes and 10 parallel pipelines for open source projects there will be a lot more open source projects using Azure Pipelines. My thinking is it would be nice for an open project to expose deployments and private releases easier. That's where this service comes in. As an owner of a project you can setup web hooks in [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/) and this service will send a tweet to your Twitter handle and optionally add extra #Tags that your users would generally be following for your project. You'll get something like below
+
+> 
+> [@GordonBeeming](https://twitter.com/GordonBeeming?ref_src=twsrc%5Etfw) BeemingBlogCore - WebApp - CD: Deployment of release Release-89 on stage PROD succeeded. Time to deploy: 00:00:52. [https://t.co/8tMe50NiMt](https://t.co/8tMe50NiMt)
+> — My Pipelines (@MyPipelines) [September 19, 2018](https://twitter.com/MyPipelines/status/1042525842704949253?ref_src=twsrc%5Etfw)
+
+It would be great if this service is used by a lot of projects but I guess we'll see how that goes ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), worst case I've got my projects and it was a good experiment.
+
+## Creating an API Key
+
+To create an api key you'd need to start off by 
+
+1. Browsing to [https://gordonbeeming.com/blog/](https://gordonbeeming.com/blog/)
+2. Clicking on online tools in the right navigation
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/72b96fd33ad3f5a8ec4cb9d26def81638e51db67/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0c31ee69d3bd081c7d14c68ee548c5ad5f1dcbbe/image.png)
+
+Next click on *My API Keys*
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8e3fb05a01b4ed806006ca55c753c9458b7e8e64/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bd568ab4cf13e09888e6538c8468b20aaa04604b/image.png)
+
+You'll now be asked to login if you aren't already or just register as a new user if you not registered ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c5a835f0b76340651e6b3328dc42a4bdd013eafb/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/04acb78665dd2cb072575c32fbcc0a9b40af894b/image.png)
+
+Once logged in you can click create
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/099408f57b86bdf6a750fabf4016ec383b78e407/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/028377a0cb9c067e43fa27b636f38675036f8479/image.png)
+
+Enter the form fields
+
+1. Comment - This is just for your reference and doesn't get used
+2. Handle - Yours or your projects Twitter handle, if you don't want to me mentioned you can leave it blank ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+3. Tags - What tags do you want to use when tweeting that a build or release has completed
+4. Expire Date - How long do you want this key to be valid for, by default it uses 3 months but you can make that as long as you'd like
+5. Click Create
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e281dd13677f8d7151abdd543d953252eefe0829/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/cad720f6a15224b0a23c4facaf7e467ee99fcb7c/image.png)
+
+Now you'll be redirected to the Edit view. Copy the api key, it's important. Because none of your data can be accessed with the key we leave it in the edit view for if you forget it and come back later. If this key is used in future to access the data in anyway this will change.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3d51e8bc436d417d74b9fd0eea9f94b3d1e73e8d/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f8f8f62174667b14e32eaca40ef36053929fb8cf/image.png)
+
+That's all for creating a key ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+## Creating web hooks in Azure DevOps
+
+The steps for creating builds and releases are the same, just the forms vary slightly. Start off by 
+
+1. Opening project settings from your project
+2. Clicking on Service hooks
+3. Clicking on Create subscription
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/929eb5ad5f9fca5f0d993e1e87f1c0ab7547a38e/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3468ba9fb6818e524df86c39178bdf6bf13c77bb/image.png)
+
+When the dialog opens scroll down to Web Hooks and click Next
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d91f5d47424537de95233bac75d8f79092588254/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1a4a2642ad69721483fa5e614c8608fe0f8a3024/image.png)
+
+That small step should be used if you doing a build or release web hook.
+
+### Web hook for a completed build
+
+In the Trigger window
+
+1. Make sure Build completed is selected
+2. Specify a specific pipeline that you want this web hook to be for or leave as [Any] if you want all to trigger the web hook
+3. Choose what statuses you want this web hook to trigger for
+4. Click Next
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/402d8dfa094659780acb7377c125b84d67b2cd82/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c898bff3b4a7d818856b13c61b696a74189131fa/image.png)
+
+In the Action window enter the Url as [https://gordonbeeming.com/blog/api/azure-devops-hooks/build-completed](https://gordonbeeming.com/blog/api/azure-devops-hooks/build-completed) and the HTTP headers as "**apikey:&lt;your api key&gt;**". You can play with the amount of resource details to send if you want as well. We pull various pieces out as you could see above, from the html block for example we pull the build location so that it's easy for someone to browse to that end point.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9fb8a157af4b4854caede889b57ac12ab16873d8/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3468561f913d45310d55506fbf9e755226bc308c/image.png)
+
+After that is al set you can go ahead and click Test. The dialog will think for a bit and then should show succeeded ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9050b4b85dda05b59bebb768c156e537fe3611ea/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59fddc09c8d7085b81ffbf05ad4f695dd216a0ff/image.png)[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/52dafdacd44b3defc306cb264d30e7c868108503/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7b6309b31abba2817c2ae8a863d341488d2e4f7c/image.png)
+
+Lastly click Close on that dialog and Finish on the main dialog. 
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fcad5dfa2a51ce0ed27cee1d8aa68458e02cf8eb/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/768b7d93e56c2efe08b9eb0e9b2b9309d0cb7dcc/image.png)
+
+Your web hook is created.
+
+### Web hook for a completed releases
+
+In the Trigger window
+
+1. Make sure Release deployment completed is selected
+2. Specify a specific pipeline that you want this web hook to be for or leave as [Any] if you want all to trigger the web hook
+3. If a specific pipeline was selected you'll be given the option to select which environment to trigger for
+4. Choose what statuses you want this web hook to trigger for
+5. Click Next
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b9e29abd6f5dfef65f706628efa4adcad46fc172/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ea1ad3dc875a4a530daee19bf9bc3dde5309dbbc/image.png)
+
+In the Action window enter the Url as [https://gordonbeeming.com/blog/api/azure-devops-hooks/release-deployment-completed](https://gordonbeeming.com/blog/api/azure-devops-hooks/release-deployment-completed "https://gordonbeeming.com/blog/api/azure-devops-hooks/release-deployment-completed") and the HTTP headers as "**apikey:&lt;your api key&gt;**". You can play with the amount of resource details to send if you want as well. We pull various pieces out as you could see above, from the html block for example we pull the build location so that it's easy for someone to browse to that end point.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e9ebc6c2cfebc3b398c90f8bf798196d2727562a/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/52e585081f93c324090f8b9862d2440cd27f78f7/image.png)
+
+As with the build web hook you can click Test to verify and afterwards click Close and Finish on the above dialog.
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c8d65be70ec90921e23a5e730c427a0d4b0ea961/image_thumb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/51661481787a97b606604eb9b1d87e166ea86db6/image.png)
+
+Your release web hook is now created and when it runs for matching criteria in your web hook you should see something out on Twitter
+
+## Future plans
+
+I'm thinking that if this is a useful service and widely used I'll mature the setup to Azure Functions and probably allow users to bring their own AppId and AppSecrets to be able to Tweet as their own account, who knows I might need to introduce that feature due to abuse on this one. Another idea is support more web hook triggers if that's something people want.
+
+Let's see how it goes and feedback and ideas is very welcome ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+

@@ -1,0 +1,99 @@
+﻿---
+title: 'Creating "fake" TFS Builds'
+date: 2014-07-18
+tags: ['VSTS / TFS', 'Adoption Blockers', 'TFS Build']
+draft: false
+summary: 'This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.'
+---
+
+
+This post has been ported from [https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/](https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/ "https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/").
+
+Sometimes you can’t always use the tools you want to use. This is especially true when there is already a bunch of stuff setup around existing tools. Lets say for example that you have an existing application doing your builds, for everything you need around TFS you can do it from within the Web Access although this is all fine and works well, when you want to see how the builds are running you need to go out to another tool to see this information.
+
+Today I’m going to help you setup your builds external to TFS to send build information to TFS so that you can see this info in TFS, the purpose of this is just to give you visibility from TFS and is a very basic introduction that can be extended on a lot with bigger builds.
+
+Before we dig into any code, you will need to [create a Build Definition](http://msdn.microsoft.com/en-us/library/ms181716.aspx) that we will use for our fake builds, if you don’t currently have any controllers setup for you specific collection you will need to create one, after you create the build definition you will be able to de register this build controller as it’s not needed for the manually builds which we will be using.
+
+What we had initially was a **build.bat** file that has the basics in it (build the build.proj file and log to different files for multiple levels of logging and dumps the latest build in a folder) that our current build server would run that looked like below
+
+```bat
+@echo offcall "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\VsDevCmd.bat"msbuild build.proj /t:DoBuild /v:d  /fl1 /fl2 /fl3 /fl4 /flp1:logfile=build.log /flp2:logfile=build.errors.log;errorsonly /flp3:logfile=build.warnings.log;warningsonly /flp4:logfile=build.details.log;detailsonly /p:OutputPath=\\GORDON-PC\Demos\drops\TfsFakeBuilds-Latest
+```
+
+
+and a **build.proj** file that basically just let use build multiple projects that could be part of multiple solutions (for the purpose of this post we only have 1)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="DoBuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <ItemGroup>    <BuildProject Include="TfsFakeBuilds.sln"/>  </ItemGroup>     <Target Name="DoBuild">    <MSBuild Projects="@(BuildProject)">    </MSBuild>  </Target></Project>
+```
+
+The next steps was to create 2 msbuild tasks that we could use for the starting and stopping of our TFS Build. Create a new class library project and add a reference to the following assemblies
+
+- Microsoft.Build.Framework
+- Microsoft.Build.Utilities.v4.0
+- Microsoft.TeamFoundation.Build.Client
+- Microsoft.TeamFoundation.Client
+- Microsoft.TeamFoundation.Common
+- Microsoft.VisualStudio.Services.Common
+
+Add 2 classes that each inherit from *Microsoft.Build.Utilities.Task*, you can call theses classes TfsFakeBuildStart and TfsFakeBuildFinish. All these 2 tasks are going to do is call a call into a 3rd class that is going to do all the work.
+
+**TfsFakeBuildStart.cs**
+
+```csharp
+namespace TfsBuildTask{    using System;    using Microsoft.Build.Framework;    using Microsoft.Build.Utilities;    public class TfsFakeBuildStart : Task    {        [Required]        public string Architecture { get; set; }        [Required]        public string CollectionUri { get; set; }        [Required]        public string Configuration { get; set; }        [Required]        public string DefinitionName { get; set; }        [Required]        public string DetailedLogPath { get; set; }        [Required]        public string DropLocation { get; set; }        [Required]        public string ErrorLogPath { get; set; }        [Required]        public string PathFromBuildRoot { get; set; }        [Required]        public string RegularLogPath { get; set; }        [Required]        public string ServerPath { get; set; }        [Required]        public string TargetNames { get; set; }        [Required]        public string TeamProjectName { get; set; }        [Required]        public string WarningLogPath { get; set; }        public override bool Execute()        {            try            {                base.Log.LogMessage("Tfs Fake Build Starting on '" + this.DefinitionName + "'.");                FakeBuildObject.Instance.Start(this.DetailedLogPath, this.ErrorLogPath, this.WarningLogPath, this.DropLocation, this.RegularLogPath, this.CollectionUri, this.TeamProjectName, this.DefinitionName, this.Configuration, this.PathFromBuildRoot, this.Architecture, this.ServerPath, this.TargetNames);                base.Log.LogMessage("Tfs Fake Build Started on '" + this.DefinitionName + "'.");                return true;            }            catch (Exception ex)            {                base.Log.LogError("Failed to start Fake Build: " + ex);                return false;            }        }        public IBuildEngine BuildEngine { get; set; }        public ITaskHost HostObject { get; set; }    }}
+```
+
+**TfsFakeBuildFinish.cs**
+
+```csharp
+namespace TfsBuildTask{    using System;    using Microsoft.Build.Framework;    using Microsoft.Build.Utilities;    public class TfsFakeBuildFinish : Task    {        public override bool Execute()        {            try            {                base.Log.LogMessage("Tfs Fake Build Stopping.");                FakeBuildObject.Instance.Stop();                base.Log.LogMessage("Tfs Fake Build Stopped.");                return true;            }            catch(Exception ex)            {                base.Log.LogError("Failed to stop Fake Build: " + ex);                 return false;            }        }        public IBuildEngine BuildEngine { get; set; }        public ITaskHost HostObject { get; set; }    }}
+```
+
+In our 3rd class we will be getting a reference to a build definition and then kicking off a manual build in our start method and then in our stop method we will collection all the information to from the build and finish off the TFS manual build. Create a 3rd class like below
+
+**FakeBuildObject.cs**
+
+```csharp
+namespace TfsBuildTask{    using System;    using System.IO;    using System.Linq;    using Microsoft.TeamFoundation.Build.Client;    using Microsoft.TeamFoundation.Client;    public class FakeBuildObject    {        private static FakeBuildObject instance;        private string architecture;        private string collectionUri;        private string configuration;        private string definitionName;        private string detailedLogPath;        private string dropLocation;        private string errorLogPath;        private string pathFromBuildRoot;        private string regularLogPath;        private string serverPath;        private string targetNames;        private string teamProjectName;        private string warningLogPath;        private IBuildDefinition buildDefinition;        private IBuildProjectNode buildProjectNode;        private IBuildServer buildServer;        private TfsTeamProjectCollection collection;        private IBuildDetail detail;        private DateTime startTime;        private DateTime endTime;        public static FakeBuildObject Instance        {            get            {                if (instance == null)                {                    instance = new FakeBuildObject();                }                return instance;            }        }        public void Start(string detailedLogPath, string errorLogPath, string warningLogPath, string dropLocation, string regularLogPath, string collectionUri, string teamProjectName, string definitionName, string configuration, string pathFromBuildRoot, string architecture, string serverPath, string targetNames)        {            this.detailedLogPath = detailedLogPath;            this.errorLogPath = errorLogPath;            this.warningLogPath = warningLogPath;            this.dropLocation = dropLocation;            this.regularLogPath = regularLogPath;            this.collectionUri = collectionUri;            this.teamProjectName = teamProjectName;            this.definitionName = definitionName;            this.configuration = configuration;            this.pathFromBuildRoot = pathFromBuildRoot;            this.architecture = architecture;            this.serverPath = serverPath;            this.targetNames = targetNames;            this.startTime = DateTime.Now;            this.collection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(this.collectionUri));            this.buildServer = this.collection.GetService<IBuildServer>();            this.buildDefinition = this.buildServer.GetBuildDefinition(this.teamProjectName, this.definitionName);            this.detail = this.buildDefinition.CreateManualBuild(this.definitionName + " - " + DateTime.Now.ToString("yyyyMMddHHmmss"), this.dropLocation);            this.buildProjectNode = this.detail.Information.AddBuildProjectNode(this.configuration, this.pathFromBuildRoot, this.architecture, this.serverPath, this.startTime, this.targetNames);        }        public void Stop()        {            this.endTime = DateTime.Now;            string[] regularLinesFromLog = ConvertToLines(this.ReadFile(this.regularLogPath));            string[] errorLinesFromLog = ConvertToLines(this.ReadFile(this.errorLogPath));            string[] warningLinesFromLog = ConvertToLines(this.ReadFile(this.warningLogPath));            this.buildProjectNode.CompilationErrors = 0;            this.buildProjectNode.CompilationWarnings = 0;            DateTime nextMessageLogTime = this.startTime;            int timeBetweenMessages = Convert.ToInt32((this.endTime - this.startTime).TotalMilliseconds / regularLinesFromLog.Length);            foreach (string line in regularLinesFromLog)            {                if (!string.IsNullOrEmpty(line))                {                    if (errorLinesFromLog.Contains(line))                    {                        this.buildProjectNode.Node.Children.AddBuildError(line, nextMessageLogTime);                        this.buildProjectNode.CompilationErrors++;                    }                    else if (warningLinesFromLog.Contains(line))                    {                        this.buildProjectNode.Node.Children.AddBuildWarning(line, nextMessageLogTime);                        this.buildProjectNode.CompilationWarnings++;                    }                    else                    {                        this.buildProjectNode.Node.Children.AddBuildMessage(line, BuildMessageImportance.Normal, nextMessageLogTime);                    }                }                nextMessageLogTime.AddMilliseconds(timeBetweenMessages);            }            this.buildProjectNode.Node.Children.AddExternalLink("Detailed Log File", new Uri(this.detailedLogPath));            this.buildProjectNode.Node.Children.AddExternalLink("Error Log File", new Uri(this.errorLogPath));            this.buildProjectNode.Node.Children.AddExternalLink("Warning Log File", new Uri(this.warningLogPath));            this.buildProjectNode.Save();            this.detail.Information.Save();            this.detail.FinalizeStatus(errorLinesFromLog.Length == 1 && string.IsNullOrEmpty(errorLinesFromLog[0]) ? BuildStatus.Succeeded : BuildStatus.Failed);        }        private static string[] ConvertToLines(string sr)        {            return sr.Replace("\r",string.Empty).Split('\n');        }        private string ReadFile(string logPath)        {            using (FileStream fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))            {                using (StreamReader sr = new StreamReader(fs))                {                    return sr.ReadToEnd();                }            }        }    }}
+```
+
+The last parts is just to include this task in your build and then you will have the info in TFS to display on your dashboard and view without having to bounce out to another tool.
+
+For this we created a folder called tfs\_config along side our build.proj file and then placed the dll of our fake build tasks in that folder as well as 2 files as below that will be used to kick off and complete the TFS Manual Build
+
+**tfs.build.tasks**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <UsingTask AssemblyFile="TfsBuildTask.dll" TaskName="TfsFakeBuildStart" />  <UsingTask AssemblyFile="TfsBuildTask.dll" TaskName="TfsFakeBuildFinish" />  </Project>
+```
+
+**tfs.build.targets**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <Import Project="tfs.build.tasks" />  <PropertyGroup>    <BuildRoot>\\GORDON-PC\Demos\TfsFakeBuilds\</BuildRoot>    <DropLocation>\\GORDON-PC\Demos\TfsFakeBuilds\</DropLocation>  </PropertyGroup>    <Target Name="StartTfsBuild">    <TfsFakeBuildStart Architecture="x86" CollectionUri="http://TfsServerUri:8080/tfs" Configuration="Debug" DefinitionName="Demo Definition" DetailedLogPath="$(BuildRoot)build.detailed.log" DropLocation="$(DropLocation)" ErrorLogPath="$(BuildRoot)build.errors.log" PathFromBuildRoot="$(BuildRoot)build.bat" RegularLogPath="$(BuildRoot)build.log" ServerPath="$/TfsFakeBuilds/build.bat" TargetNames="Defaults" TeamProjectName="Demos" WarningLogPath="$(BuildRoot)build.warnings.log">          </TfsFakeBuildStart>  </Target>  <Target Name="EndTfsBuild" DependsOnTargets="StartTfsBuild;DoBuild">    <TfsFakeBuildFinish />  </Target></Project>
+```
+
+next we opened the build.proj file and added the line below above the target DoBuild
+
+```xml
+<import Project="tfs_config\tfs.build.targets" />
+```
+
+and for the last piece we duplicated the build.bat file so that full builds on dev machines would not log to TFS, all that we changed in that build.bat file was the target that we use with the msdbuild command to EndTfsBuild.
+
+Any finally we could stay in TFS for build info once again and we got all the info you see below ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Hope this helps somebody else as well.
+
+
+<Figure key="./images/1.jpg" src="./images/1.jpg" alt="" width="0" height="0" caption="" />
+
+
+<Figure key="./images/2.jpg" src="./images/2.jpg" alt="" width="0" height="0" caption="" />
+
+
+<Figure key="./images/3.png" src="./images/3.png" alt="" width="0" height="0" caption="" />
+
+
+<Figure key="./images/4.png" src="./images/4.png" alt="" width="0" height="0" caption="" />
+

@@ -1,0 +1,81 @@
+﻿---
+title: 'Introduction to DotNet Pretty'
+date: 2014-07-17
+tags: ['Visual Studio', 'Visual Studio Plugin', 'DotNet Pretty']
+draft: false
+summary: 'Another thing that come out of last weeks training was Visual Studio Debuggers. This lead to me finding the coolest visualizer ever called TPL Dataflow Debugger Visualizer which allows you to easily visualize your TPL Dataflow'
+---
+
+
+## Some Background on why
+ 
+Another thing that come out of last weeks [training](http://www.rocksolidknowledge.com/) was Visual Studio Debuggers. This lead to me finding the coolest visualizer ever called [TPL Dataflow Debugger Visualizer](http://visualstudiogallery.msdn.microsoft.com/20f5adc0-984f-4158-8e09-7406a6581b5b) which allows you to easily visualize your TPL Dataflow
+ 
+![TPL DataFlow Debugger Visualizer](http://visualstudiogallery.msdn.microsoft.com/20f5adc0-984f-4158-8e09-7406a6581b5b/image/file/137542/1/tplDataFlow.jpg?Id=137542)
+ 
+Because I found this awesome visualizer I decided that everything while debugging could be awesome if there were more of these so I have created a [GitHub](http://github.com) project called [DotNet Pretty](https://github.com/Gordon-Beeming/DotNet-Pretty) where I plan on creating many visualizers to really try light up the debugging experience.
+ 
+## What is DebuggerDisplayAttribute?
+ 
+In case you don't know [DebuggerDisplayAttribute](http://msdn.microsoft.com/en-us/library/ms228992.aspx) is used when you want to have a "pretty" representation of the properties in your class when seeing it in the debugger.
+ 
+### What MSDN says
+ 
+Debugger display attributes allow the developer of the type, who specifies and best understands the runtime behavior of that type, to also specify what that type will look like when it is displayed in a debugger.
+ 
+### How do you implement them
+ 
+You simple place the [DebuggerDisplay Attribute](http://msdn.microsoft.com/en-us/library/ms228992.aspx) on a class like below
+ 
+[![2014-07-17_21-10-51](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b7b7a794c304393bfc264fecced2ecdc0b1467a7/ca9aa840-7456-4dae-904b-33145ed09d9b.png "2014-07-17_21-10-51")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7d98d96998d469f2c0491a54da5641a901a491be/905e7e51-8136-4baa-9693-024559b2f864.png)
+ 
+When the break point is hit instead of you seeing the objects ToString() implementation of the method as below
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/16180c7b0bed1984a977670ad45f1b81a9717bfa/3002dedc-552c-45ee-843b-1ee66f09e8a2.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6d5226a4256d8836bc70f579fe1a8f39d168716c/b2324ac0-05da-4170-8860-36cfc0fe299e.png)
+ 
+which of course you could override to show a nice message if you wanted to, you will get something like below
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5a53e64ebcc25898bcfece2b4d9d7fd33153dc5d/d3e0eec7-ef4f-42c8-ad1f-f4acd9d0ad69.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/141b1ab774000ddd841a862f8b9009d45217cb66/849aedc2-bd39-43e9-9d32-a5c7a3873f30.png)
+ 
+It doesn't seem like such a big deal with 1 object but think of how easy it would be to know stuff about objects when they in a list if they each implemented this attribute. Now obviously to use the attribute like this you need to own the object so you can add the attribute and release it.
+ 
+## DotNet Pretty's first contribution
+ 
+The first contribution to DotNet Pretty is one that was used in the training which allows you to use the [DebuggerDisplay](http://msdn.microsoft.com/en-us/library/ms228992.aspx) Attribute in a different way. 
+ 
+### Code
+ 
+This time you specify the target in the attribute like below
+ 
+[![2014-07-17_21-35-39](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/24019610ae35393ac985bf8fe392c7f409899426/8054fd3b-ad5d-4df1-bd70-3473ddf4b3c4.png "2014-07-17_21-35-39")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f1cbc3095b287ef7fcb36deab43b1d59ade7888a/12168802-f0de-45ff-96e4-64cea7c80d9e.png)
+ 
+As you can see this is just floating in a random .cs file so it doesn't have to be placed anywhere specific in the code.
+ 
+### What it looks like
+ 
+This time instead of seeing the ToString() method 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3ff0e78e0264de2fc27160bdb4adbdd2b8c5578c/0bf16d51-3d22-45d4-816c-169ab5e353c9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4031d8d35554c1bbdb661c815461ed7a2d3a55f8/4f732aa6-3eec-43fb-85d2-a123d8ef8f6b.png)
+ 
+You will see 
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5c9ffb8fbe9ae348e8aecb47832d47aadc93c0b9/e726a20e-7f0d-43b4-8912-4fb3bdd44573.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ee6374b48f0d59c67a4639aad3c6cb4aa2f5596e/9865bd66-88a9-44e1-963e-89e6dbeb7289.png)
+       
+### Deploying Visualizers
+ 
+Now obviously Visual Studio can't do magic to find out where the visualizers are across your whole machine so to get your custom visualizers to you work you simple need to drop the output assemblies in the path C:\Users\**[username]**\Documents\**[Visual Studio Version]**\Visualizers which in my case is C:\Users\**GordonB**\Documents\**Visual Studio 2013**\Visualizers.
+ 
+[![2014-07-17_21-43-33](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2dc8ffee4b1a9cc2b37b05344250e477ca7d3fcd/83d7d529-215e-4708-9dce-1c679791b7a5.png "2014-07-17_21-43-33")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/17fc7a3c3ba7368bad9b1c354178ff93f731def2/f5e2db27-d625-41d3-af3b-caf2b17dfdee.png)
+ 
+## How is the TDL Dataflow visualizer done?
+ 
+In short the TPL Dataflow visualizer uses the [DebuggerVisualizerAttribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.debuggervisualizerattribute.aspx) which looks something like below
+ 
+[![2014-07-17_21-47-11](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/69d445ce15b44bf44e24dee6827d8caef77d471a/18a52a41-3f86-4938-9721-a7f8865caefc.png "2014-07-17_21-47-11")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a3d3b551d2fe2341400dc265dc5f8e99d9d41c28/bf05cf9b-445f-42ed-91ab-670c44a7c8d3.png)
+  
+I will do a in detail post on [DebuggerVisualizer Attribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.debuggervisualizerattribute.aspx) when I add one to DotNet Pretty. For now though you can browse the [source code of the TPL Dataflow Debugger Visualizer](https://dataflowdebuggerview.codeplex.com/SourceControl/latest) on [CodePlex](http://www.codeplex.com/).
+ 
+## So what's the plan?
+ 
+My plan at the moment is to find the [.net](http://www.microsoft.com/net) types that I use most and implement visualizers for them. I'm planning on trying to get some nice ones in for TFS objects like Work Items. I'm hoping that others will use this library of visualizers and fork the code and help grow it.
+

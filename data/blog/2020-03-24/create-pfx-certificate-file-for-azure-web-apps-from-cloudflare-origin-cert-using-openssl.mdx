@@ -1,0 +1,104 @@
+﻿---
+title: 'Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl'
+date: 2020-03-24
+tags: ['Security', 'Azure', 'Linux', 'Cloudflare', 'openssl']
+draft: false
+summary: 'Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can''t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I''m going to post the steps so that it''s helpful to others as well as future me.'
+---
+
+
+Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can't use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I'm going to post the steps so that it's helpful to others as well as future me.
+
+
+## Downloading origin certificates from Cloudflare
+
+If you want to have Full strict [end to end encryption using Cloudflare](https://support.cloudflare.com/hc/categories/200276247) you need to install a certificate on your origin server
+
+
+<Figure key="./images/2020-03-24-1-57-06.jpg" src="./images/2020-03-24-1-57-06.jpg" alt="" width="0" height="0" caption="" />
+
+
+To get this certificate is really easy, from the Cloudflare dashboard Click on **SSL/TLS**, **Origin Server** and then **Create Certificate**.
+
+
+<Figure key="./images/2020-03-24-1-06-48.jpg" src="./images/2020-03-24-1-06-48.jpg" alt="" width="0" height="0" caption="" />
+
+
+This will pop a dialog up that will give you some options, Private key type, a list of hostnames that you want the certificate to cover and the certificate Validity for this guide you can leave all the defaults and click **Next**. The reason it's ok to use the 15 year certificate is because this is effectively a self-signed certificate that only the Cloudflare servers are going to trust and is used for the sole purpose of end to end security, traffic should not be hitting this from anywhere else then Cloudflare, if you feel more comfortable selecting a shorter period you can go ahead, just know you will need to cycle the certificate more frequently. The edge certificate shown to your user will still rotate with a shorter validity period
+
+
+<Figure key="./images/2020-03-24-2-06-45.jpg" src="./images/2020-03-24-2-06-45.jpg" alt="" width="0" height="0" caption="" />
+
+
+After having clicked Next you will be presented with the following dialog, create a folder someone easy to navigate to on your machine, I used **C:\\_tmp\certs**
+
+1. Make sure **PEM (Default)** is selected in the droplist
+2. Save the **Origin Certificate** contents as the **certificate.crt** in the folder you created
+3. Save the **Private key** contents as the **privateKey.key** in the folder you created
+4. Click OK
+
+
+<Figure key="./images/2020-03-24-2-08-24.jpg" src="./images/2020-03-24-2-08-24.jpg" alt="" width="0" height="0" caption="" />
+
+
+Now that we have the files on disk we can create our pfx certificate
+
+
+## Installing Ubuntu on Windows
+
+If you are already on linux or already have a flavor of linux installed on your windows machine feel free to skip over this section. The only requirement here is openssl so if you have that through a different way feel free to use that too 😊
+
+Head off to the Windows Store and search for and install the Ubuntu app
+
+
+<Figure key="./images/2020-03-24-1-09-48.jpg" src="./images/2020-03-24-1-09-48.jpg" alt="" width="0" height="0" caption="" />
+
+
+This app will require that you have the Windows Subsystem for Linux enabled in Windows Features, if you have not enabled this yet you will be required to reboot your machine after enabling this feature.
+
+
+<Figure key="./images/2020-03-24-1-12-03.jpg" src="./images/2020-03-24-1-12-03.jpg" alt="" width="0" height="0" caption="" />
+
+
+After a reboot when you open the app you will see it is initializing and after initialization is complete you will be asked to enter a username and password
+
+
+<Figure key="./images/2020-03-24-1-18-00.jpg" src="./images/2020-03-24-1-18-00.jpg" alt="" width="0" height="0" caption="" />
+
+
+<Figure key="./images/2020-03-24-1-20-06.jpg" src="./images/2020-03-24-1-20-06.jpg" alt="" width="0" height="0" caption="" />
+
+
+You are all set to go, let's get moving with the actual reason for needing this installed 😅
+
+
+## Exporting a pfx certificate using openssl
+
+This process is really quick, all that we need to do is navigate in the shell window to where our certificates are on the windows machine, your drives are mapped under the /mnt/ folder as each letter so to get to my folder from above I need to navigate to */mnt/c/\_tmp/certs* and then we can run the opensll command in your shell window run the command below, note that when press enter you will be asked for a password for the pfx file and then asked to confirm the password
+
+
+```shell
+cd /mnt/c/_tmp/certs
+ls
+openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt
+```
+
+
+After this you should be able to run the ls command again and get an output similar to this
+
+
+<Figure key="./images/2020-03-24-1-43-54.jpg" src="./images/2020-03-24-1-43-54.jpg" alt="" width="0" height="0" caption="" />
+
+
+You now have a pfx file that you can upload into Azure or use in IIS or any other server that requires a pfx file with a password
+
+
+<Figure key="./images/2020-03-24-2-39-47.jpg" src="./images/2020-03-24-2-39-47.jpg" alt="" width="0" height="0" caption="" />
+
+
+## Conclusion
+
+Cloudflare is a great platform but when you are not setting up new sites every day or not super familiar with the tools available something as simple as setting up the origin certificate can take slightly longer then what is comfortable so we need cheat sheets like this post 😎
+
+Enjoy and happy encrypted traffic
+

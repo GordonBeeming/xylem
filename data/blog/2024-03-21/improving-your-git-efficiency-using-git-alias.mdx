@@ -1,0 +1,104 @@
+﻿---
+title: 'Improving your git efficiency using git alias'
+date: 2024-03-21
+tags: ['git', 'GitHub', 'Source Control. Git', 'YouTube Videos']
+draft: false
+summary: 'Have you ever felt like typing out git commands requires too much effort, yet you don''t want to switch to a GUI because that brings it''s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I''ve shown many people how I''m using git alias to improve my workflows, if you''re interested in improving your workflow, watch this video 💪😅'
+---
+
+
+<YouTubeEmbed title="YouTube video player" src="https://www.youtube.com/embed/ZE6ts2qtScw?si=yxcJEgHtS-jeT3PI" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" />  
+**Video: Improving your git efficiency using git alias (14 min)**
+
+
+As I mentioned in the video, I've been loving using `git alias` lately... and everyone I've shared it with, seems to love the idea of it at least as well.
+
+My current `.gitconfig` is below, you can find my latest in GitHub in my dotfiles repo [https://github.com/GordonBeeming/dotfiles/blob/main/.gitconfig](https://github.com/GordonBeeming/dotfiles/blob/main/.gitconfig)
+
+
+```ini
+[user]
+	name = xxxxxxx
+	email = xxxxxxx
+	signkey = xxxxxxxxxxx
+[tag]
+	gpgsign = true
+	forceSignAnnotated = true
+[init]
+	defaultbranch = main
+[commit]
+	gpgsign = true
+[push]
+	# gpgsign = true # GitHub doesn't support this yet
+	autoSetupRemote = true
+[safe]
+	directory = /Library/Developer/
+[gpg]
+	program = gpg2
+[pull]
+	rebase = false
+[log]
+	showSignature = true
+[alias]
+	me = !git config --local user.name 'Gordon Beeming' && git config --local user.email 'gpg@gordonbeeming.com' && git config --local gpg.format 'ssh' && git config --local commit.gpgsign 'true' && git config --local user.signingKey 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCsRuWh3kYXQZdqpC6USqMpbAI63lXn85O0jFDcnFdR' && echo 'Switched to "Gordon Beeming [Personal] (SSH)".'
+	ssw = !git config --local user.name 'Gordon Beeming [SSW • Microsoft MVP]' && git config --local user.email 'gordonbeeming@ssw.com.au' && git config --local gpg.format 'ssh' && git config --local commit.gpgsign 'true' && git config --local user.signingKey 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCsRuWh3kYXQZdqpC6USqMpbAI63lXn85O0jFDcnFdR' && echo 'Switched to "Gordon Beeming [SSW • Microsoft MVP] (SSH)".'
+	me2 = !git config --local user.name 'Gordon Beeming' && git config --local user.email 'gpg@gordonbeeming.com' && git config --local commit.gpgsign 'true' && git config --local user.signingKey 'D1C6C5C67ED8589E!' && echo 'Switched to "Gordon Beeming [Personal] (Yubi Key)".'
+	ssw2 = !git config --local user.name 'Gordon Beeming [SSW • Microsoft MVP]' && git config --local user.email 'gordonbeeming@ssw.com.au' && git config --local commit.gpgsign 'true' && git config --local user.signingKey '0DB5A2459ED2BAAF!' && echo 'Switched to "Gordon Beeming [SSW • Microsoft MVP] (Yubi Key)".'
+	nb = !git fetch && git checkout origin/main && git pull origin main && git checkout -b
+	nb2 = !git fetch && git checkout origin/master && git pull origin master && git checkout -b
+	ca = !git add -A && git commit -m
+[gitbutler]
+	gitbutlerCommitter = 1
+	signCommits = true
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[core]
+	autocrlf = input
+```
+
+
+A command that I didn't talk about in the video, but happens to be the alias I used the most every day is my `git nb new-feature`.
+
+I'd use this when I've just commited some changes on a branch, maybe those changes have been squashed into the main/master branch and now I'm ready to make more changes. Before my alias, this is what I would normally do
+
+
+```powershell
+# Switch back to the main branch
+git checkout main
+# Pull the latest changes from the remote origin
+git pull origin main
+# Now that I have the latest changes, I can create my new branch for development
+git checkout -b new-feature
+```
+
+
+It's only a couple of lines but when you are doing it a couple of times a day, it gets a little much. 
+
+So instead of these couple of lines, I can simple type
+
+
+```powershell
+# if the default branch is main
+git nb new-feature
+# if the default branch is master
+git nb2 new-feature
+```
+
+
+If you want to use these aliases yourself, you can grab the config from above and put it in your `.gitconfig`, or you can run the below 2 commands and add them both to your `.gitconfig`.
+
+
+```powershell
+# adds the "new branch" sub command for main
+git config --global alias.nb '!git checkout main && git fetch && git pull && git checkout -b' 
+# adds the "new branch" sub command for master
+git config --global alias.nb2 '!git checkout master && git fetch && git pull && git checkout -b'
+```
+
+
+If you found any of this useful, you can join the conversation on the LinkedIn post or YouTube video
+
+LinkedIn: [https://www.linkedin.com/feed/update/urn:li:activity:7175983551631286272/](https://www.linkedin.com/feed/update/urn:li:activity:7175983551631286272/) 
+
+YouTube: [https://www.youtube.com/watch?v=ZE6ts2qtScw](https://www.youtube.com/watch?v=ZE6ts2qtScw)
+

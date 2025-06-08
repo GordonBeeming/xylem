@@ -1,0 +1,54 @@
+﻿---
+title: 'Getting start with a Team Explorer Plugin for VS 2013 Part 1'
+date: 2014-01-16
+tags: ['Visual Studio', 'Visual Studio Plugin', 'Getting Started', 'Plugins', 'Team Explorer']
+draft: false
+summary: 'In these posts we will be going through creating different elements that can be found in the Team Explorer, the aim is to give you the ground knowledge required to extend Team Explorer your way. For an example of some great Team Explorer plugins that demonstrate how much you can do take a look at Team Rooms for Visual Studio 2013 and News which were created by Utkarsh Shigihalli and Tarun Arora for Team Explorer in Visual Studio 2013.'
+---
+
+
+In these posts we will be going through creating different elements that can be found in the Team Explorer, the aim is to give you the ground knowledge required to extend Team Explorer your way. For an example of some great Team Explorer plugins that demonstrate how much you can do take a look at [Team Rooms for Visual Studio 2013](http://visualstudiogallery.msdn.microsoft.com/c1bf5e4f-5436-465d-87da-09b2f15ff061) and [News](http://visualstudiogallery.msdn.microsoft.com/6c4d14c3-e66f-40d0-8d77-ff7883a40f6a) which were created by [Utkarsh Shigihalli](https://twitter.com/onlyutkarsh) and [Tarun Arora](https://twitter.com/arora_tarun) for Team Explorer in Visual Studio 2013.
+ 
+All sample code that is worked on through out any of the Team Explorer Samples will be hosted on [GitHub](http://github.com) at [https://github.com/Gordon-Beeming/TeamExplorerSamplePlugin](https://github.com/Gordon-Beeming/TeamExplorerSamplePlugin "https://github.com/Gordon-Beeming/TeamExplorerSamplePlugin")**.**
+ 
+## What you'll need
+ 
+- [Visual Studio](http://www.visualstudio.com/) 2013
+- [Visual Studio 2013 SDK](http://www.microsoft.com/en-za/download/details.aspx?id=40758&lrm;)
+
+## Create the a new blank Visual Studio Package
+ 
+Open Up Visual Studio in Administrator mode and create a new Visual Studio Package
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/06598d0d207ccba2e77ecfe502e0e12b8743dd6d/a29a95a6-0c60-4572-9cca-32b9213dfa33.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a47d1ffcd5394c59aad86bf34ddfb3eb7cf96eff/bae363c5-3bd7-4d85-86c2-5f7556238b32.png)
+ 
+Use the following options in the Visual Studio Package Wizard 
+ 
+*Page 1 of 7* - Select your language as Visual C# and Generate a new key file to sign the assembly
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c58a7398ca11562bd6a80262b990597b2601ecc3/b73659d7-f0a5-4c41-afe1-baf0545b67de.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/83fc603ed28a7c46560df3357df94c362b8b5158/8da95f79-ec88-4d4d-8914-8766ba35676c.png)
+ 
+*Page 2 of 7* - Enter the Basic VSPackage Information
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1e336da8d03f9ed5655275132116a30672fa089f/9eeb0b3c-8912-40f6-aa1d-b440039cad26.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/15af0aaebada7788cf6a1f56e3456d8c4d93b999/b046f818-c73f-4882-849e-e250d43ce30e.png)
+ 
+*Page 3 of 7* - leave all unchecked
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/127fdacb2e7230db1f5154720ab7442e893e3238/39f4dc92-6cc8-4ac2-959a-66af0dfac815.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/12719ee23ae1d6c25c7b77aedecfdf1fe04b0a5f/a774950e-ef80-4a9b-ae43-1462621989b9.png)
+ 
+*Page 7 of 7* - You should select Integration Test Project and Unit Test Project but for now deselect these ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f735829db4c84da032583c65d22011fb99cc771a/97208fc7-fc86-4036-b2e0-4cab1e76f284.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f56cbca240aba2d6f685f26139c8d26e07904755/55914a3d-a7ed-4a32-bdcd-bf23a21ec7ec.png)
+ 
+Click Finish, Visual Studio will now crate the base Project for you and automatically open the source.extension.vsixmanifest file. With this file open there is one thing that we are going to want to add. We are going to require the MEF Component Asset. Thanks must go to [Utkarsh Shigihalli](https://twitter.com/onlyutkarsh) for helping with this part ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Switch to the Assets tab and click New, select the options to complete the window as below
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3270df2206562e2c710d6efb431b5312ce24776e/8f7c75f0-5dd8-4437-be5b-674fd2960e8e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e68fff2e0ff0d4f0bc4456a1812513fdd577e76c/709f415c-1fd1-46eb-ab7d-1c0c6eb0e081.png)
+ 
+The last step to setup this solution for our sample plugin is to add a reference to **Microsoft.TeamFoundation.Controls** assembly which can be found by default in the folder *C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ReferenceAssemblies\v4.5\*and **System.ComponentModel.Composition**.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8c8a517eb46687b769fd3486c43559017a53d789/71ce870f-afb4-4f34-b212-eec7a248f8bc.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c479316a0ecbf033b700fe3f87dc5c3b35aa8ef0/db207301-87ab-41bf-ab91-c092e1db8329.png)
+ 
+Your solution is now ready to start adding Team Explorer Extensions.
+ 
+Take a look at [Getting start with a Team Explorer Plugin for VS 2013 Part 2](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2) where we will be adding a new Team Explorer Navigation Item.
+

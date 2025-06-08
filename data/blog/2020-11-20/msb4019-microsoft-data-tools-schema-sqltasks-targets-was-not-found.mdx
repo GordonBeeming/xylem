@@ -1,0 +1,144 @@
+﻿---
+title: 'MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found'
+date: 2020-11-20
+tags: ['Automated Builds', 'dotnet core', 'MSBuild', 'SSDT']
+draft: false
+summary: '.'
+---
+
+
+So dotnet.exe can't find **Microsoft.Data.Tools.Schema.SqlTasks.targets** when you are running your build and you are getting an error similar to this?
+
+
+<Figure key="./images/2021-02-04-3-51-11.jpg" src="./images/2021-02-04-3-51-11.jpg" alt="" width="0" height="0" caption="" />
+
+
+No matter how many times you check your install, you just can't figure out why this doesn't work right? When you run it in Visual Studio everyone works as expected right?
+
+
+<Figure key="./images/2021-02-04-3-00-09.jpg" src="./images/2021-02-04-3-00-09.jpg" alt="" width="0" height="0" caption="" />
+
+
+## So what's going on here, is my install corrupt?
+
+First off don't stress nothing is broken for you 😊.
+
+The SQL Project which SSDT is using isn't a project type that is supported by dotnet core. Instead of just skipping over it and making you believe it's compiling an error is thrown because Microsoft.Data.Tools.Schema.SqlTasks.targets targets file can't be found, SQL projects aren't the only project types that are not supported. If there were to be special logic to know how to say it's ok for some targets to not gets and others not based on what project types are known unsupported types things could get messy.
+
+
+## Work arounds
+
+
+### 1. Compile each csproj file individually 
+
+1 option is for you to compile each csproj file individually from your ci pipeline, this could be achieved either with multiple steps or even running a script that scans for all csproj files and then runs the dotnet build command on each.
+
+This has a couple of side affects,
+
+- Depending on the amount of project files the build time could be quite a lot longer than just compiling the sln file
+- If you have project files you don't want to compile this gets more complicated because you have to manage a blacklist of projects to ignore
+- You could manage a whitelist and only compile those files but still requires more effort than what feels required
+
+
+### 2. Don't compile SQL Projects in the release configuration
+
+Assuming that for some reason (like in my case) you are compiling the sql projects in your solution not through the solution file and directly against the .sqlproj file this option can work for you.
+
+You are going to have to option up the Configuration Manager in Visual Studio
+
+
+<Figure key="./images/2021-02-04-3-55-36.jpg" src="./images/2021-02-04-3-55-36.jpg" alt="" width="0" height="0" caption="" />
+
+
+1. Change the configuration to Release
+2. Untick the Build box for the database project
+3. Click Close
+
+
+<Figure key="./images/2021-02-04-3-57-23.jpg" src="./images/2021-02-04-3-57-23.jpg" alt="" width="0" height="0" caption="" />
+
+
+You can now run your build again and it should work
+
+
+<Figure key="./images/2021-02-04-4-00-34.jpg" src="./images/2021-02-04-4-00-34.jpg" alt="" width="0" height="0" caption="" />
+
+
+The side affect of this way is that you need to find a different way to compile your sql projects and not use the solution file
+
+
+### 3. Create a new solution configuration
+
+Similar to step 2 we are going to exclude the sql projects from a configuration. The benefits of this is you can still use the Release configuration to compile when you need to compile your sql projects
+
+Open the configuration manager again. In the configuration drop list select *&lt;New...&gt;*
+
+
+<Figure key="./images/2021-02-04-4-03-41.jpg" src="./images/2021-02-04-4-03-41.jpg" alt="" width="0" height="0" caption="" />
+
+
+1. Give it a name, I'm going to go with ReleaseWithoutDatabases
+2. Copy settings from the Release configuration
+3. Leave the create new project configuration ticked
+4. Click OK
+
+
+<Figure key="./images/2021-02-04-4-05-19.jpg" src="./images/2021-02-04-4-05-19.jpg" alt="" width="0" height="0" caption="" />
+
+
+Similar to option 2 untick the Build box for the database project and click Close
+
+
+<Figure key="./images/2021-02-04-4-08-16.jpg" src="./images/2021-02-04-4-08-16.jpg" alt="" width="0" height="0" caption="" />
+
+
+Now we'll be able to run the build again, this time pass in the new configuration name and it should just work
+
+
+<Figure key="./images/2021-02-04-4-10-47.jpg" src="./images/2021-02-04-4-10-47.jpg" alt="" width="0" height="0" caption="" />
+
+
+With this method if you are adding specific bits and pieces to your project file to handle the release configuration differently you'd now need to add it for this configuration as well so you could end up forgetting to do it, maybe it's something that's not that important but maybe it is. Just consider the risk of missing something
+
+
+### 4. Switch to MSBuild in your pipeline
+
+The next option is to just switch your compile to use msbuild.exe instead of dotnet.exe. Sure it doesn't feel as cool but you in a sticky place at the moment 😅. If you want to switch to msbuild a basic build would change from
+
+
+```bat
+dotnet build BlogSqlTasksMissing.sln --configuration release
+```
+
+
+to
+
+
+```bat
+msbuild BlogSqlTasksMissing.sln /p:Configuration=Release
+```
+
+
+<Figure key="./images/2021-02-04-4-24-29.jpg" src="./images/2021-02-04-4-24-29.jpg" alt="" width="0" height="0" caption="" />
+
+
+Sure there will be other parameters you'll need to change too but this is probably the last reasonable option
+
+
+### 5. Create another solution file
+
+Your last option really is to create another solution file for the database project. This isn't always a bad thing but if you a fan of 1 solution this just feels dirty 😋.
+
+In your new solution you'd add just your database projects, in the original project you'd generally remove all the sql projects.
+
+ You could also create a solution file that only contains dotnet core projects that you want to compile and keep the original project as 1 like you were using it. Think of this way as being the way to whitelist project files discussed in option 1 🙂
+
+
+## Conclusion
+
+It's not a you problem
+
+There are many ways we can solve this issue, each just has some drawbacks
+
+Enjoy!
+

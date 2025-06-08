@@ -1,0 +1,86 @@
+﻿---
+title: 'How do I fix HTTP Error 502.5 - Process Failure when hosting in IIS with dotnet core'
+date: 2018-05-13
+tags: ['dotnet core', 'Just Coding', 'IIS']
+draft: false
+summary: 'I received a new error today that I haven''t received before when deploying dotnet core apps. It was as the title suggest a "HTTP Error 502.5 - Process Failure" error'
+---
+
+
+I received a new error today that I haven't received before when deploying [dotnet core](https://www.microsoft.com/net/learn/get-started) apps. It was as the title suggest a "HTTP Error 502.5 - Process Failure" error
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a5144d39b1770301216356a02648209c84cb5bcf/a5144d39b1770301216356a02648209c84cb5bcf.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0622b91fff62767bf3863212dea5711b204eadb8/0622b91fff62767bf3863212dea5711b204eadb8.png)
+
+None of the suggestions had any affect and hours of Googling also didn't help either until eventually I came across a solution that worked
+
+## The Solution
+
+I eventually found a solution on the [aspnet / Hosting](https://github.com/aspnet/Hosting) repo on [GitHub](https://github.com)  on issue number [#1234](https://github.com/aspnet/Hosting/issues/1234) (funny enough it feels made up but isn't). [jdownie](https://github.com/jdownie) posts the following solution
+
+
+```javascript
+Man! I finally worked this one out (in my instance) and I found that web.config had 
+processPath="dotnet". I had to go into cmd.exe to run where.exe (because that means 
+something else in powershell now) and located dotnet in C:\Program Files\dotnet\dotnet.exe.
+I then set processPath="C:\Program Files\dotnet\dotnet.exe" and voila! Mind you, I 
+had changed about 500 other things trying to work it out, so there might have been 
+other factors at play. Just posting what I found FWIW.
+```
+
+
+Although that solution worked for me it wasn't good enough. The problem here is that I deploy everything through TFS or VSTS so I couldn't just manually set the value.
+
+## My Solution
+
+Although hacky, my solution works for me. similar to how the solution above worked for jdownie ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). I'm lucky enough to be able to place an agent on my web server so I can run this method otherwise unzipping, hard coding the value from the build server and zipping up the publish package can also work.
+
+Basically what I have done is after I web deploy I have a final phase which checks the machine Paths environment variable and sets the processPath to the first path it finds that contains dotnet.exe in it
+
+
+```javascript
+param([Parameter(Mandatory=$True)][string]$config)
+
+if (-not (Test-Path -LiteralPath $config))
+{
+	Write-Host "##vso[task.logissue type=warning;]No web.config found at '$($config)'."
+}
+else
+{
+	Write-Output "Loading config file from $($config)"
+	$xml = [xml](Get-Content $config)
+    	$Paths = [Environment]::GetEnvironmentVariable("Path","MACHINE").Split(';')
+	$DotNetPath = ""
+	foreach($Path in $Paths)
+	{
+		$DotNetPath = "$($Path)dotnet.exe"
+		if (Test-Path -LiteralPath $DotNetPath)
+		{
+			break
+		}
+	}
+	if (-not (Test-Path -LiteralPath $DotNetPath))
+	{
+		Write-Host "##vso[task.logissue type=error;]can't find dotnet.exe."
+	}
+    	$xml.configuration.'system.webServer'.aspNetCore.SetAttribute("processPath",$DotNetPath)
+	$xml.Save($config)
+}
+```
+
+
+Now on every deploy I have a running site that is guaranteed to have a valid dotnet.exe value
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/619184b731891a8422253fa02de1e4d49c96c72d/619184b731891a8422253fa02de1e4d49c96c72d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1e768577076200e51253bf33be96181f24537cf2/1e768577076200e51253bf33be96181f24537cf2.png)
+
+and I guess more importantly a running site ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/95bbf445a3b2962d289069e4268edd5c85290841/95bbf445a3b2962d289069e4268edd5c85290841.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/dab2dadd017dcc98a8e110acbb9d30305ecf203c/dab2dadd017dcc98a8e110acbb9d30305ecf203c.png)
+
+## Conclusion 
+
+dotet core although getting mature is not quite there in all aspects and you are going to hit some issues with it that you wouldn't expect. 
+
+The great thing about this is the support from the community and Microsoft is brilliant and the decision to go dotnet core would not be a bad one ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+
+It also appears that something was wrong on the server which is why dotnet.exe wasn't being picked up even after a reboot but that's a investigation for another day
+

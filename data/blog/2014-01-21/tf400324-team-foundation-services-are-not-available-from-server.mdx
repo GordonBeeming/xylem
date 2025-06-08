@@ -1,0 +1,42 @@
+﻿---
+title: 'TF400324: Team Foundation services are not available from server...'
+date: 2014-01-21
+tags: ['VSTS / TFS', 'TFS', 'TFS Error Codes', 'Old Blog Posts']
+draft: false
+summary: 'This post was originally found on my old blog at http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/.'
+---
+
+
+This post was originally found on my old blog at [http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/](http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/ "http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/").
+ 
+## Full Error
+ 
+TF400324: Team Foundation services are not available from server &lt;Server/CollectionName&gt;. Technical information (for administrator):   Page not found.
+ 
+## Problem
+ 
+This error could occur if you have moved a collection from one server to another and a client application connects to both servers. In my case this is because I’m running TFS 2012 on one server for production use and have backed up and restored a collection to a newly installed TFS 2013 Preview so that I can configure the process template ([Upgrading to Visual Studio Scrum 3.0 process template in TFS](http://nakedalm.com/upgrading-to-visual-studio-scrum-3-0-process-template-in-tfs-2013/) 2013) to take advantage of the new features in 2013 and test that before moving/upgrading the production server.
+ 
+## Quick Fix
+ 
+As a quick fix you can 
+
+1. Close Visual Studio and related apps
+2. Browse to *%LocalAppData%\Microsoft\Team Foundation\5.0\Cache* and delete all the contents of that folder
+
+This isn’t ideal as you will need to do this for each client and every time you switch between the 2. 
+
+## Better Fix
+ 
+As a better and more user friendly fix, you can
+
+1. Do the Quick Fix
+2. TS to the server where you have The new TFS server with a copy of your collection attached (my TFS 2013 instance)
+3. Open a command line window in Administrator mode
+4. Run cd "C:\Program Files\Microsoft Team Foundation Server 12.0\Tools"
+5. Run tfsconfig ChangeServerID /sqlinstance:&lt;Your Sql Instance Name&gt; /databasename:&lt;Your configuration Database Name&gt; /ProjectCollectionsOnly
+6. This should bring up a message that says "The command ChangeServerId should only be run against a set of Team Foundation Server databases that have no application tiers configured. Do you want to continue with this operation? (Yes/No)"
+7. Type Yes and hit enter
+
+Now you should be fine to use both instances of TFS with the same collection name without issues
+

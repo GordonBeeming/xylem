@@ -1,0 +1,37 @@
+﻿---
+title: 'Visual Studio Hangs + SystemCertificates + Fiddler'
+date: 2014-02-25
+tags: ['Visual Studio', 'Fiddler', 'System Certificates']
+draft: false
+summary: 'For the last while I have been experiencing weird hangs with Visual Studio 2013. To try identify what was causing the hangs or at least where about the problem was I ran ProcMon.exe on devenv.exe and the point where Visual Studio hung I was getting the below output recursively'
+---
+
+
+For the last while I have been experiencing weird hangs with [Visual Studio](http://www.visualstudio.com/) 2013. To try identify what was causing the hangs or at least where about the problem was I ran [ProcMon.exe](http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx) on devenv.exe and the point where Visual Studio hung I was getting the below output recursively 
+ 
+[![clip_image001](https://gordonbeeming.com/blog/image/1000/0/ab5cfd9e-6949-4b0d-a88e-f9160a2d8a47.jpg "clip_image001")](https://gordonbeeming.com/blog/image/1000/0/555f2521-3b0c-4268-b194-ce35b0391780.jpg)
+ 
+This was kind of weird because I'd never seen this before, I logged a [Microsoft connect](https://connect.microsoft.com/) case through Visual Studio's Report a Bug Feature after installing the [Microsoft Visual Studio 2013 Feedback Tool](http://visualstudiogallery.msdn.microsoft.com/563d1003-f0ed-498f-8ef9-f8ee1aac39fe) which allows a more detailed collection of data for your bug.
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7f359a13e26ca0adbd30d78b3a89978b1345e829/e6649b3b-5b6f-4960-b8a8-dd8d9c83f4d6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/05ed211a8970c5150eff73d7616ad6e5d68b77e7/b1fa0359-de63-4138-8ba9-d18be3753bc7.png)
+ 
+After creating this bug I attached a ETL trace using [PerfView](http://www.microsoft.com/en-us/download/details.aspx?id=28567), if you don't know how to use PerfView you can follow the tutorials on [Channel 9](http://channel9.msdn.com/) ([PerfView Tutorial](http://channel9.msdn.com/Series/PerfView-Tutorial)).
+ 
+The ETL Trace showed a large amount of time spent on the Certificates which matched what I found with ProcMon.exe
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b9187f3b5eba3130f56481eeade4772c9a2342d/a29ff667-bdef-46eb-8dd6-4cc07cb9c77d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/80729d4f4f4ea1816480ab7f898a3423e2012e47/80ad4085-b3f2-4de1-b4d9-49eaa6258461.png)
+ 
+At this point it was pointed out that I should look at how many certs were in my SystemCertificates (C:\Users\&lt;username&gt;\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates), I found that I had 2405 certs which was a lot more than usual
+ 
+[![clip_image002](https://gordonbeeming.com/blog/image/1000/0/c70cc3fa-dc51-4d28-8bed-88543e6e1f5e.jpg "clip_image002")](https://gordonbeeming.com/blog/image/1000/0/d2ccb6ab-ccb1-4b2f-aaf6-10eb01338a02.jpg)
+ 
+At this point we still didn't know what was causing so many certs to be generated. I decided to delete all the certs and see what happens. After a reboot everything was working 100% again ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+Later I was playing with Fiddler and saw a weird error talking about certificates, I went to the certs folder and saw that there was more there. I deleted them again, went to a https site and saw certs been generated ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), the reason for so many certs is because I had Decrypt HTTPS traffic option checked
+ 
+[![clip_image002\[5\]](https://gordonbeeming.com/blog/image/1000/0/25578ddc-5dd9-4943-956b-b5115fe819eb.jpg "clip_image002[5]")](https://gordonbeeming.com/blog/image/1000/0/daee8802-7be2-4aac-aef7-d43cd697d789.jpg)
+ 
+Changed this to not have it checked (because I didn't need it) and now I have a low amount of certs in my System Certificates folder again ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+Hope this helps someone else with this random issue ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+

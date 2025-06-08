@@ -1,0 +1,315 @@
+﻿---
+title: 'Building basic Azure infrastructure using Terraform'
+date: 2022-08-04
+tags: ['Azure', 'Terraform', 'IaC']
+draft: false
+summary: 'In this video we''ll take a look at how to build some basic Azure infrastructure using Terraform.'
+---
+
+
+## YouTube Video
+
+In this video we'll take a look at how to build some basic Azure infrastructure using Terraform.
+
+Posted originally on 4 Aug 2022 on the [@gordonbeeming YouTube channel](https://www.youtube.com/@gordonbeeming).
+
+Make sure you take a look in the description of the [video on YouTube](https://www.youtube.com/watch?v=e0Oqy0swR08) for shared links.
+
+<YouTubeEmbed src="//www.youtube.com/embed/e0Oqy0swR08" width="480" height="270"  />
+
+
+All code from this demo can be found on GitHub at [https://github.com/GordonBeeming-org/Building-basic-Azure-infrastructure-using-Terraform.](https://github.com/GordonBeeming-org/Building-basic-Azure-infrastructure-using-Terraform)
+
+Specific snippets created in the demo can also be found below for convenience
+
+
+## storage.tf
+
+
+```json
+
+resource "azurerm_storage_account" "main" {
+  name                            = "demo4${var.environment_name}dso"
+  resource_group_name             = azurerm_resource_group.main.name
+  location                        = azurerm_resource_group.main.location
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  allow_nested_items_to_be_public = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+}
+
+resource "azurerm_storage_container" "appdata" {
+  name                  = "appdata"
+  storage_account_name  = azurerm_storage_account.main.name
+  container_access_type = "private"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "azurerm_role_assignment" "app_mainstorage_access" {
+  scope                = azurerm_storage_account.main.id
+  role_definition_name = "Reader and Data Access"
+  principal_id         = azurerm_user_assigned_identity.app.principal_id
+}
+
+```
+
+
+## network.tf
+
+
+```json
+
+resource "azurerm_virtual_network" "main" {
+  name                = "${var.environment_name}-demo4dso-network"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_subnet" "external" {
+  name                 = "external"
+  virtual_network_name = "${azurerm_virtual_network.main.name}"
+  resource_group_name  = "${azurerm_resource_group.main.name}"
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_public_ip" "pip" {
+  name                = "${var.environment_name}-dso-pip"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  allocation_method   = "Static"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "azurerm_network_security_group" "main-nsg" {
+  name                = "${var.environment_name}-demo4dso-nsg"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  security_rule {
+    access                     = "Deny"
+    direction                  = "Inbound"
+    name                       = "http"
+    priority                   = 150
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "80"
+    destination_address_prefix = azurerm_network_interface.app-external.private_ip_address
+  }
+  
+  security_rule {
+    access                     = "Allow"
+    direction                  = "Inbound"
+    name                       = "https"
+    priority                   = 100
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "443"
+    destination_address_prefix = azurerm_network_interface.app-external.private_ip_address
+  }
+  
+  security_rule {
+    access                     = var.sshAccess
+    direction                  = "Inbound"
+    name                       = "ssh-app"
+    priority                   = 160
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "22"
+    destination_address_prefix = azurerm_network_interface.app-external.private_ip_address
+  }
+  
+}
+
+resource "azurerm_network_interface_security_group_association" "app-external" {
+  network_interface_id      = azurerm_network_interface.app-external.id
+  network_security_group_id = azurerm_network_security_group.main-nsg.id
+}
+
+variable "sshAccess" {
+  type = string
+  default = "Deny"
+}
+
+output "pip" {
+  value = azurerm_public_ip.pip.ip_address
+}
+
+```
+
+
+## identity.tf
+
+
+```json
+
+resource "azuread_application" "main" {
+  display_name = "Demo4-${var.environment_name}"
+}
+
+resource "azuread_service_principal" "main" {
+  application_id = azuread_application.main.application_id
+}
+
+resource "azurerm_role_assignment" "rg-owner" {
+  scope                = azurerm_resource_group.main.id
+  role_definition_name = "Owner"
+  principal_id         = azuread_service_principal.main.object_id
+}
+
+resource "azurerm_user_assigned_identity" "app" {
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+
+  name = "${var.environment_name}-app-user"
+}
+
+output "azure_app" {
+  value = azuread_application.main.display_name
+}
+
+output "client_id" {
+  value = azuread_application.main.application_id
+}
+
+```
+
+
+## vm.tf
+
+
+```json
+
+resource "azurerm_network_interface" "app-external" {
+  name                = "${var.environment_name}-demodso-ext-app-nic"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+
+  ip_configuration {
+    name                          = "app-external"
+    subnet_id                     = azurerm_subnet.external.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.pip.id
+  }
+}
+
+data "template_file" "app-cloud-init" {
+  template = file("vm.sh")
+  vars = {
+    resource_group_name = azurerm_resource_group.main.name
+    storage_account_name = azurerm_storage_account.main.name
+  }
+}
+
+resource "azurerm_linux_virtual_machine" "app" {
+  name                            = "${var.environment_name}-demodso-vm"
+  resource_group_name             = azurerm_resource_group.main.name
+  location                        = azurerm_resource_group.main.location
+  size                            = var.app_vm_size
+  admin_username                  = var.app_admin_user
+  admin_password                  = var.app_admin_password
+  disable_password_authentication = false
+
+  custom_data    = base64encode(data.template_file.app-cloud-init.rendered)
+
+  network_interface_ids = [
+    azurerm_network_interface.app-external.id,
+  ]
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [ azurerm_user_assigned_identity.app.id ]
+  }
+
+  source_image_reference {
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-groovy"
+    sku       = "20_10-gen2"
+    version   = "latest"
+  }
+
+  os_disk {
+    storage_account_type = "StandardSSD_ZRS"
+    caching              = "ReadWrite"
+  }
+}
+
+variable "app_vm_size" {
+  type = string
+}
+variable "app_admin_user" {
+  type = string
+  sensitive = true
+}
+variable "app_admin_password" {
+  type = string
+  sensitive = true
+}
+
+```
+
+
+## vm.sh
+
+
+```bat
+#! /bin/bash
+
+while [ "$(hostname -I)" = "" ]; do
+  echo -e "\e[1A\e[KNo network: $(date)"
+  sleep 1
+done
+echo "I have network";
+
+resource_group_name=${resource_group_name}
+storage_account_name=${storage_account_name}
+
+sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu/ kinetic main restricted'
+sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu/ kinetic-updates main restricted'
+sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu/ kinetic universe'
+sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu/ kinetic-updates universe'
+sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu/ kinetic-backports main restricted universe multiverse'
+
+sudo apt update
+
+echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
+curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+    gpg --dearmor |
+    sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+AZ_REPO="bullseye" # $(lsb_release -cs)
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
+    sudo tee /etc/apt/sources.list.d/azure-cli.list
+sudo apt-get update
+sudo apt-get install -y azure-cli
+
+az extension add --name storage-preview
+
+az login --identity
+
+# app
+sudo mkdir /var/app/
+sudo az storage blob directory download --container "appdata" --account-name $storage_account_name --source-path "*" --destination-path "/var/app/" --recursive
+
+# Debug Things
+# cat /etc/apt/sources.list
+# cat /var/log/cloud-init-output.log
+
+
+```
+

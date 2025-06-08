@@ -1,0 +1,30 @@
+﻿---
+title: 'Blazor Server events not triggering when hosted behind Cloudflare'
+date: 2023-08-15
+tags: ['Cloudflare', 'Blazor', '.NET', 'Blazor Server', 'dotnet']
+draft: false
+summary: 'Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.'
+---
+
+
+## Symptoms
+
+- You are using Blazor Server
+- Hosting your application behind Cloudflare proxied traffic
+- No events are triggering in your blazor app
+
+## Solution
+
+The solution is luckily quite simple (once you know 😅)
+
+
+<Figure key="./images/2023-08-15-18-57-27.png" src="./images/2023-08-15-18-57-27.png" alt="From the Cloudflare dashboard select your domain" width="0" height="0" caption="From the Cloudflare dashboard select your domain" />
+
+
+<Figure key="./images/2023-08-15-19-00-01.png" src="./images/2023-08-15-19-00-01.png" alt="Navigate to Speed | Optimization | Content Optimization | Auto Minify and untick HTML" width="0" height="0" caption="Navigate to Speed | Optimization | Content Optimization | Auto Minify and untick HTML" />
+
+
+Once HTML is switched off for minification, everything should work as expected.
+
+Credit: [Brendan Sluke](https://stackoverflow.com/users/7660196/brendan-sluke) on the StackOverflow post [c# - Blazor onclick event not triggered - Stack Overflow](https://stackoverflow.com/a/69600983/579830)
+

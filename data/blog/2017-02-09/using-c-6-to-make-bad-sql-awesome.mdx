@@ -1,0 +1,93 @@
+﻿---
+title: 'Using C# 6 to make ''bad'' SQL awesome'
+date: 2017-02-09
+tags: ['SQL Injection', 'CSharp-6', 'Just Coding']
+draft: false
+summary: 'I''m busy going through Pluralsight watching Exploring C# 6 with Jon Skeet by Rob Conery. Jon Skeet goes ahead and makes this epic method that looks like it''s so naughty but is pretty cool.'
+---
+
+
+I'm busy going through Pluralsight watching [Exploring C# 6 with Jon Skeet by Rob Conery](https://go.beeming.net/2k7Xlat). [Jon Skeet](https://go.beeming.net/2k830gC) goes ahead and makes this epic method that looks like it's so naughty but is pretty cool.
+ 
+[Follow @jonskeet](https://twitter.com/jonskeet) [Follow @robconery](https://twitter.com/robconery) 
+ 
+## Introduction
+ 
+The reason for saying how to make bad SQL awesome is mainly because is most applications you'd generally want to have your SQL in stored procs and not hard coded into your C# code so that you can do proper t-sqlt tests and other also get other goodness from the sql engine that you wouldn't get executing raw sql all the time.
+ 
+The method that is written helps make a SqlCommand from what looks like a bad coding practice that would generally allow for SQL injection.
+ 
+## The magic method
+ 
+The code that Jon writes look something like below
+
+
+```javascript
+public static SqlCommand ToSqlCommand(FormattableString formattableString, SqlConnection sqlConnection)
+{
+    var args = formattableString.GetArguments();
+    var sql = string.Format(CultureInfo.InvariantCulture, 
+                                formattableString.Format, 
+                                Enumerable.Range(0, args.Length)
+                                            .Select(index => $"@p{index}")
+                                            .ToArray());
+    var command = new SqlCommand(sql, sqlConnection);
+    for(int index = 0; index < args.Length;index++)
+    {
+        command.Parameters.AddWithValue($"@p{index}", args[index]);
+    }
+    return command;
+}
+```
+
+
+It's so simple but so magical. Basically it's just looping though all the locations you have argument placeholders, with string format these would be the {0} parts, in fact before doing the replacement here the *formattableString.Format* properties value shows the {0} placeholders.
+ 
+## Using it in an example
+ 
+Using this code is super simple
+
+
+```javascript
+static void Main(string[] args)
+{
+    // assume these come from inputs to make it scary
+    var name = "Gordon";
+    var surname = "Beeming";
+
+    var sqlConnection = new SqlConnection();
+    var theCommand = ToSqlCommand($@"
+SELECT * 
+FROM dbo.tb_People 
+WHERE Name = {name} AND Surname = {surname}", sqlConnection);
+    Console.WriteLine(theCommand.CommandText);
+    Console.WriteLine();
+    for (int index = 0; index < theCommand.Parameters.Count; index++)
+    {
+        Console.WriteLine($"{theCommand.Parameters[index].ParameterName} = {theCommand.Parameters[index].Value}");
+    }
+    Console.WriteLine();
+}
+```
+
+
+The code looks so clean although every time I look at it I feel dirty like I'm opening the app up for [SQL Injection](https://go.beeming.net/2k8ay2W) but with the magic of C# 6 this code is perfectly safe and will execute with parameters as we'd expect
+ 
+## 
+ 
+## Running the example code
+ 
+Now we aren't actually executing the code in this sample but you can see that from it's output it wouldn't give us any issues when it does execute.
+ 
+[![cmd_2017-02-09_21-43-26](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b5e42396869c9684b1eae1571b21223ba9c78283/b5e42396869c9684b1eae1571b21223ba9c78283.png "cmd_2017-02-09_21-43-26")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8606d93400f774acdd18072387eaa83b55e1b73f/8606d93400f774acdd18072387eaa83b55e1b73f.png)
+ 
+100% legal and safe ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+ 
+## 
+ 
+## Download the sample code
+ 
+The sample project used for this post is in [GitHub](https://go.beeming.net/2k868sZ) if you want it. 
+ 
+Jon also just mentioned that in his [Demo Repo](https://go.beeming.net/2k8j5mw) on GitHub there is a [advanced version of this that handles types](https://go.beeming.net/2k8kpFW) as well ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+

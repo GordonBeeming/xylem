@@ -9,6 +9,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'src/app/tag-data.json'
+import yearData from 'src/app/year-data.json'
 
 interface PaginationProps {
   totalPages: number
@@ -76,6 +77,9 @@ export default function ListLayoutWithTags({
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  const yearCounts = yearData as Record<string, number>
+  const yearKeys = Object.keys(yearCounts)
+  const sortedYears = yearKeys.reverse()
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
@@ -98,6 +102,37 @@ export default function ListLayoutWithTags({
                   className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
                 >
                   All Posts
+                </Link>
+              )}
+              <ul>
+                {sortedYears.map((t) => {
+                  return (
+                    <li key={t} className="my-3">
+                      {decodeURI(pathname.split('/years/')[1]) === slug(t) ? (
+                        <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
+                          {`${t} (${yearCounts[t]})`}
+                        </h3>
+                      ) : (
+                        <Link
+                          href={`/years/${slug(t)}`}
+                          className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
+                          aria-label={`View posts tagged ${t}`}
+                        >
+                          {`${t} (${yearCounts[t]})`}
+                        </Link>
+                      )}
+                    </li>
+                  )
+                })}
+              </ul>
+              {pathname.startsWith('/blog') ? (
+                <h3 className="text-primary-500 font-bold uppercase">Tags</h3>
+              ) : (
+                <Link
+                  href={`/blog`}
+                  className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Tags
                 </Link>
               )}
               <ul>

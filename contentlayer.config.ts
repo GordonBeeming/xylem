@@ -1,5 +1,5 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
-import { writeFileSync } from 'fs'
+import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
@@ -25,6 +25,8 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+
+
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -80,6 +82,25 @@ async function createTagCount(allBlogs) {
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
+async function createYearsCount(allBlogs) {
+  const yearCount: Record<string, number> = {}
+  allBlogs.forEach((file) => {
+    let date = new Date(file.date)
+    if (date && (!isProduction || file.draft !== true)) {
+      const year = date.getFullYear().toString()
+      if (year !== '1970') {
+        if (year in yearCount) {
+          yearCount[year] += 1
+        } else {
+          yearCount[year] = 1
+        }
+      }
+    }
+  })
+  const formatted = await prettier.format(JSON.stringify(yearCount, null, 2), { parser: 'json' })
+  writeFileSync('./src/app/year-data.json', formatted)
+}
+
 function createSearchIndex(allBlogs: any[]): void {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
@@ -91,6 +112,31 @@ function createSearchIndex(allBlogs: any[]): void {
     )
     console.log('Local search index generated...')
   }
+}
+
+function copyImages(allBlogs) {
+  const publicDir = './public/'
+  if (!existsSync(publicDir)) {
+    mkdirSync(publicDir, { recursive: true })
+  }
+
+  allBlogs.forEach((post) => {
+    const sourceImageDir = 'data/' + path.join(post._raw.sourceFileDir, 'images')
+    const destinationImageDir = path.join(publicDir, post._raw.sourceFileDir, 'images')
+    if (!existsSync(destinationImageDir)) {
+      mkdirSync(destinationImageDir, { recursive: true })
+    }
+
+    if (existsSync(sourceImageDir)) {
+      const imageFiles = readdirSync(sourceImageDir)
+      imageFiles.forEach((imageFile) => {
+        const sourcePath = path.join(sourceImageDir, imageFile)
+        const destPath = path.join(destinationImageDir, imageFile)
+        copyFileSync(sourcePath, destPath)
+      })
+    }
+  })
+  console.log('Successfully copied all blog images to public directory.')
 }
 
 export const Blog = defineDocumentType(() => ({
@@ -181,7 +227,9 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    createTagCount(allBlogs)
+    await createTagCount(allBlogs)
+    await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)
+    copyImages(allBlogs)
   },
 })

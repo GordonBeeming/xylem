@@ -1,0 +1,123 @@
+﻿---
+title: 'Pushing a new project to Chocolatey'
+date: 2014-10-28
+tags: ['MyGet', 'Channel 9', 'DotNet Pretty', 'Chocolatey', 'GitHub Projects', 'PowerShell']
+draft: false
+summary: 'Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .'
+---
+
+
+## 
+ 
+## Inspiration 
+ 
+Today my [DotNet Pretty](https://github.com/Gordon-Beeming/DotNet-Pretty) articles were featured on [@coding4fun](https://twitter.com/coding4fun) by [Greg Duncan](https://twitter.com/gduncan411) and one of the comments by [Niner bc3tech](http://channel9.msdn.com/Niners/bc3tech) ([@bc3tech](https://twitter.com/bc3tech)) requested that I share this solution on [Chocolatey](https://chocolatey.org/). I decided that this was a good idea and decided to share my experience ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+## Creating a Chocolatey Account
+ 
+Creating the Chocolatey account was as simple as filling a couple of common fields at [https://chocolatey.org/account/Register](https://chocolatey.org/account/Register "https://chocolatey.org/account/Register").
+ 
+[![2014-10-27_18-28-35](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/13afc4997e4a12268bcc58b0f38e659dd22c444f/3228ca73-2bb0-4d44-b918-5bf0d74ea6c1.png "2014-10-27_18-28-35")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f13579484e436fce9145c85bf1a2a59d5032349e/32f85386-c64a-453e-829e-7bbf72ef85e5.png)
+ 
+In the registration mail you are given a link to [Rules to be observed before publishing packages](https://github.com/chocolatey/chocolatey/wiki/CreatePackages#rules-to-be-observed-before-publishing-packages) which mentions that you can [host your packages with MyGet](https://github.com/chocolatey/chocolatey/wiki/Hosting-Chocolatey-Packages-on-MyGet)
+ 
+[![2014-10-27_18-34-55](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8d252c2df00ff33d8e4e56ee5f65638a3c113f5b/5168e483-9c01-4a1c-b177-a423de7d9df7.png "2014-10-27_18-34-55")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a169d0d5dfd25e2a2b871709dd341b219cda957e/8ae404cc-ac0f-42b5-b360-8687ed32dffe.png)
+ 
+## Creating a MyGet Account
+ 
+Heading over to [MyGet](https://www.myget.org/) I saw that they had a Free subscription
+ 
+[![2014-10-27_18-37-06](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/197a77ab8fc921a976f031488fa3aaba28bb3090/4010ec5d-3560-4925-896b-761bf75e41f1.png "2014-10-27_18-37-06")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9ae41210ff066e02edb83d4d6494d221c1a5dde9/a8a9eaaa-b7a1-4140-b0ee-2ca5a7d883ae.png)
+ 
+But they also have an offer for [MVP](http://mvp.microsoft.com)'s, ASPInsiders, Windows Azure Insiders and ALM Rangers ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Fitting into [2 of these categories](https://gordonbeeming.com/blog/post/one-year-as-alm-ranger-and-first-day-as-alm-mvp) now I decided to head over to [https://www.myget.org/mvp](https://www.myget.org/mvp "https://www.myget.org/mvp") and request a NFR license ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). The extra features available on this subscription made it perfect for my community project (and ones to follow ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)). In no time I had my [DotNet Pretty Package Feed](https://www.myget.org/F/dotnetpretty/) up.
+ 
+## MyGet Build Services
+ 
+The DotNet Pretty project is currently hosted out on [GitHub](http://github.com) and so I decided that I'll try out MyGet's build services which is now in preview. This was as simple as clicking on *BUILD SERVICES* from the menu and then on *Add build sources* and then *from GitHub*.
+ 
+[![2014-10-27_18-47-01](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f348622b7bb1105af186e9870cbe41cd07decfb7/b06572b9-ceb1-40d9-9d66-1cbed2fa1a80.png "2014-10-27_18-47-01")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/337311ba1d5b5f398ef7c86c7a8750c1637de602/6696cbbb-33dc-4507-92cf-4000dfa27131.png)
+ 
+this poped open the *Link build source* dialog where I selected the DotNet Pretty project from the list and clicked *Add.*
+ 
+[![2014-10-27_18-48-37](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c62f584e1486e0585484e33b6d8e6d9dc76ed1dd/881e93e9-1203-48cd-8482-35cc9ef749b3.png "2014-10-27_18-48-37")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4ed46f3518bbf5460a833b9ce416fbb4623b0d3c/78fda80f-3947-42af-903b-5c073ed98b08.png)
+ 
+From here I clicked *Build* and in no time the build completed
+ 
+[![2014-10-27_18-52-16](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/37b36358f3cff759f1356628d1c9790799e2ca1e/20fec883-44dc-4f03-a6e7-e85ba4e16ea4.png "2014-10-27_18-52-16")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b142a6ef0bf0262ad727fcc543c6083b653608ea/8b0a0999-e3d5-4a48-a0a3-130a207f0fce.png)
+ 
+[![2014-10-27_18-54-50](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f7086597e507614c74d4bfdca7b5b1318c403ca4/b8a4a73e-76cc-4ef0-b69f-450f7a5e7341.png "2014-10-27_18-54-50")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/262f0b58a49025125d178109b22f7daa4d402fc9/84d1c670-a76b-454d-a066-338d3d648de8.png) and I had a package hosted in MyGet
+
+[![2014-10-27_18-55-56](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/730143305b2d6d476b5b378cbdace4e9cf4289d1/0f60d2ac-24e9-4e12-8a8c-1c3f4a4c75c6.png "2014-10-27_18-55-56")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b31eafeb00fdee2c8d501d84e56edb2798dd058a/9cf00eff-d75e-461b-87e0-83f819b0cbb7.png)
+ 
+## Updating GitHub project to show MyGet build status
+ 
+From the build services page I was able to click on copy markdown
+ 
+[![2014-10-27_18-58-09](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/26b6fdb030ab876b3772324589cf5cee28bdba88/7ff63bed-29b2-4193-bcc3-76bb8b5809b1.png "2014-10-27_18-58-09")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/05a492a718dc90ce02fe04f6cb384da9fd35dd6d/5411168b-663f-409e-8c07-d8d6ed5e078c.png)
+ 
+which gave me the markdown that I could insert into the readme.md file which I did with my new favorite Markdown editor [MarkdownPad](http://markdownpad.com/) 2
+ 
+[![2014-10-27_18-59-29](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/213d86b22b750f7d6ca2c8eeb26df41e8866be57/24a403a4-2490-45e2-b982-997a066675cd.png "2014-10-27_18-59-29")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0ad8e7f0cec3702d658fdea004bd3b1c830a5f7e/a10f475d-e4b4-4e0f-9d37-2fc037f496d8.png)
+ 
+A [quick commit](https://github.com/Gordon-Beeming/DotNet-Pretty/commit/d572a38dccd8f83b015f39c61c6b77c28ea80c33) added this status to the public project on GitHub
+ 
+[![2014-10-27_19-02-04](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bf3c5849fb08789521f79c49c240ee31e88c3389/303e5656-9a42-4863-86b1-742df61be9a4.png "2014-10-27_19-02-04")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d7e2bfc8346d08aa75458f6d39bcf1d378623cb5/bf4b5c79-5b29-4186-9c02-0f261dc852cf.png)
+ 
+## Pushing the packaged to Chocolatey 
+ 
+The next thing I needed to do was add a new package source to my MyGet package feed Chocolatey. I went over to the *Package Sources* menu and clicked on *Add package source* and the *NuGet feed*.
+ 
+[![2014-10-27_19-24-12](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6f737cc115255cff5822407915bd5646df7bccc9/12c0eef9-51b7-4e96-ab7b-e88f84d72d17.png "2014-10-27_19-24-12")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/94e382b1bd6080ad345b3c1e1e84f2e92ccda3b6/1dee06e6-6456-48a7-aef9-5b796e59edf6.png)
+ 
+The next bit was very simple, I simple clicked on *Presets* and then *Chocolatey*
+ 
+[![2014-10-27_19-25-49](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/054688afb388454a9f0de0c0072fa52c912b0f1e/e89b59ac-b29f-4280-83e7-fd0ed7171d5e.png "2014-10-27_19-25-49")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/36eebf0830c83c8b3921a6417f7c01eb88a1ba9e/bc17690f-f9f1-4d9d-b283-43721dab43f2.png)
+ 
+This then went ahead and filled in the Name and Source for me
+ 
+[![2014-10-27_19-26-42](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ec25b076c04adad79b4eaaa5508182c29c0bcdd4/30d99844-2b4a-4dcb-9d6e-6fa9461237b3.png "2014-10-27_19-26-42")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ca75a7752507038e28fdb232faa26c97410da04a/b81db25f-bfc2-438e-ac8b-e183de75d259.png)
+ 
+All that was left to do was provide my Chocolatey which was my Username, Password and API Key. I also filled in some of the extra meta data for my source
+ 
+[![2014-10-27_19-29-39](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9d2959a7d25feacf0250933af8fd3b05927795ea/af97f195-2216-40d6-8078-8ba1458f7b7a.png "2014-10-27_19-29-39")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/91350f4010a3f3286fda43639ff49eb2fa4e405d/b8b152d1-efe0-4fa9-b342-97bba7f8369f.png)
+ 
+Next I headed over to build services again and clicked on *Push upstream*
+ 
+[![2014-10-27_19-30-34](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/27c203ab7ca92040b2785fbfb60f030e2daf1979/c0a256a5-5f60-414a-ae6d-3cff9b663d9e.png "2014-10-27_19-30-34")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/84a3ca222ee95f1095bcf74e01c4535755846eb3/928bb036-d42f-439b-b595-6c3ad130baf5.png)
+ 
+this presented a window like below
+ 
+[![2014-10-27_19-32-34](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0ca1991ea34db315406764e7ae5fbb95fa492629/3ace5958-e08d-44ea-9373-3f614b47f973.png "2014-10-27_19-32-34")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/61d2528d2d4e2770cc21ef321918a33e0618c181/e68d304a-d346-46f0-9cef-e084e3249812.png)
+ 
+where I just clicked on *Push*
+ 
+[![2014-10-27_19-33-11](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b9f7c07e0f2c15f4d9b836118ead4b19ebaa32b2/65f4f25c-0064-49df-9fa0-ee730d6329aa.png "2014-10-27_19-33-11")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/480ab495523204a2d66f344742f84a7815d399fb/23f886e1-9985-43cf-8627-a9410642384b.png)
+ 
+And received the message saying they on it ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). Headed back over to Chocolatey and my package was in the list
+ 
+[![2014-10-27_19-34-27](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/64557afc348c5696c4f4328f1d5663bf25372015/d81122d6-b91c-4105-9bcb-d6bdf0cd66a3.png "2014-10-27_19-34-27")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b13cae971434955542e0bcc5c11216965f06559a/fa39d377-5b2f-4622-b851-bdbe54a773d8.png)
+ 
+## Installing Chocolatey "Client"
+ 
+On the machine I'm using I didn't have Chocolatey installed so opened up a PowerShell Command Window as Administrator (just for in case ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)) and ran the command
+ 
+iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+
+## Installing my package
+
+To test if my package was installer I ran the command below
+
+choco install DotNetPretty -Pre
+
+which confirmed that my package now now been installed
+
+[![2014-10-27_19-39-35](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d707c54e5edaab21152307a9a812b749f4eaf910/90258446-d95c-4132-84a1-3cccc4cefd47.png "2014-10-27_19-39-35")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4b12883e847ac016c3e30d6d9b0cfa3ed224832b/3b04eaef-69b6-4695-9570-d08e352e8363.png)
+
+At this point my Chocolatey package "installs" by dropping the package contents in the Chocolatey folder
+
+[![2014-10-27_19-46-25](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/01b1ba8b660fc4fed105a926797337be790561ca/0fdc46cd-9fa4-4078-b133-c7cd36a9c6cf.png "2014-10-27_19-46-25")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/93f0de6203bfcc599d9c17dcdeb4abc91badf1de/b7e71160-3a1a-4e8b-87be-4aabd985f97a.png)[![2014-10-27_19-47-17](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8e57baeaaceba825ec29ded643a244dd1f786cb3/ae1b77ff-ae4f-437b-9da2-8a4f1ce80483.png "2014-10-27_19-47-17")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2298e0cb271d2a0d92b284f025fe449fec522e68/1c783f5a-8b14-42fe-b38e-c8398effffd8.png)
+
+In a later post I will share how to configure the installation logic for a Chocolatey script.
+
+Update: The post can be found <a href="https://gordonbeeming.com/blog/post/configuring-a-chocolatey-install" target="_blank">here</a> (<a href="https://gordonbeeming.com/blog/post/configuring-a-chocolatey-install" target="_blank">Configuring a Chocolatey Install</a>).
+

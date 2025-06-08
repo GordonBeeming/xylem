@@ -1,0 +1,69 @@
+﻿---
+title: 'TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration'
+date: 2014-03-27
+tags: ['VSTS / TFS', 'TFS', 'TFS Error Codes', 'TFS 2013']
+draft: false
+summary: 'UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise'
+---
+
+
+**UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise**
+ 
+So if you have a lot customizations in your process template there is a slight chance you would have seen the error below after the upgrade.
+ 
+[![image_thumb1](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/600d8061318ec327e00f9ba425e668ae487cd0b5/5fc77856-6a2e-4d97-ab54-cb0594473d73.png "image_thumb1")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/600d8061318ec327e00f9ba425e668ae487cd0b5/b652b04e-6043-4433-be57-f11756fac97a.png)
+ 
+If you have completed the Configure Features option 
+ 
+[![image_thumb3](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/216e3b37700bb75dc556bf42508acd78bf1dee80/17edff54-003b-438d-9381-5c209e67c071.png "image_thumb3")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/216e3b37700bb75dc556bf42508acd78bf1dee80/c0341df8-ba6f-4071-9b2f-711a164e0ec0.png)
+ 
+and still see the error odds are you have need to follow similar steps to below
+ 
+## Look for the actual exception
+ 
+Take a look at the event log under the Microsoft-Team Foundation Server/Debug section of Applications and Services Log
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c6e6b00016d603046f87a4b08e7c2e1d58efd2f8/e4a481ad-bfb3-48d9-af5b-9f7977090539.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/77694c43b57ecb98535862e78627403c00cc9f7c/9f61bed9-43b6-472f-88b7-aeb22c83f2b2.png)
+ 
+When the error occurs do you see an error? I received the error below that pointed towards something with the add panel being wrong
+ 
+Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.InvalidProjectSettingsException: Object reference not set to an instance of an object. ---&gt; System.NullReferenceException: Object reference not set to an instance of an object.
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.DefaultSettingsValidatorDataProvider.GetFieldType(String workItemTypeName, String fieldReferenceName)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.&lt;&gt;c__DisplayClass4b.&lt;&gt;c__DisplayClass4f.&lt;ValidateAddPanels&gt;b__41(String type)
+   at System.Linq.Enumerable.Any[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.&lt;&gt;c__DisplayClass4b.&lt;ValidateAddPanels&gt;b__40(String refName)
+   at System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.ValidateAddPanels()
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.ValidateContent(OptionalFeatures featuresToValidate)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.Validate(OptionalFeatures featuresToValidate, Boolean validateStructureOnly)
+   --- End of inner exception stack trace ---
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.Validate(OptionalFeatures featuresToValidate, Boolean validateStructureOnly)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProcessSettingsValidator.Validate(TeamFoundationRequestContext requestContext, ProjectProcessConfiguration settings, String projectUri, Boolean correctWarnings, OptionalFeatures featuresToValidate)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProjectConfigurationService.GetProcessSettings(TeamFoundationRequestContext requestContext, String projectUri, Boolean validate, Boolean bypassCache)
+   at Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.ProjectConfigurationService.GetCommonSettings(TeamFoundationRequestContext requestContext, String projectUri, Boolean validateSettings)
+   at Microsoft.TeamFoundation.Server.WebAccess.Agile.AgileAreaRegistration.CanDisplayTiles(TfsWebContext webContext)
+ 
+## Find the problem
+ 
+I went over to the process configuration which seemed to be the logical starting point based off the error on screen and stack trace from the event log. I compared all the customizations I had with what is in the default Scrum 2013.2 template and saw that I had extra fields in one of my Add Panels
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bf711f7d870a910fa0a69da397240fe04d4ec073/7efa0526-5440-4e82-b43e-0341a0bb9965.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/222901aec6486323071618c7e6882596b856e877/bf59b13d-0222-4502-9133-a2182174d632.png)
+ 
+I removed these and imported the ProcessConfiguration.xml using the [witAdmin importprocessconfig](http://msdn.microsoft.com/en-us/library/hh500413.aspx) tool, this worked and the site was working as normal without the error.
+ 
+## Fix the problem
+ 
+Obviously we couldn't just remove the extra fields and be on our way because those were there for a reason. The Add Panel changes were applied for the Requirements Backlog in our case. We took a look at the Categories.xml to verify which the work item types were that were part of the requirements and found the 4 below
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ec9dff17c3fb97322fa2de66e38213a4106f2f85/6d3097bd-599b-49c6-9d22-2d147ae4cf46.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1c947de604b40eb5cc1c7576993be0f6585c599f/77216817-68b2-4fe7-8576-7142e68a2449.png)
+ 
+We currently only use new Product Backlog Items and the other 3 are "old" work item types that are in TFS because we used to use them and don't want to remove them because there are existing work items of this type in our TFS project. So we went to the 3 other WITd and made sure that they each had these 3 fields, we found as we expected that they didn't have each of them. 
+ 
+After adding the fields we re-imported the WITd for all requirement types and then tried to import the ProcessConfiguration.xml and it imported without any issues and our TFS was working again without any errors.
+ 
+## What Happened then?
+ 
+Before the update we were obviously using this template so everything use to work, although I must admit it makes more sense that all WITd's need the fields being displayed in the Add Panel for it's categories, it use to not be the case so after upgrading this was a rather unusual error for us. It could possible have been looked at as a bug here this wasn't required to match. If I find out the reason for the change I'll update here ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+

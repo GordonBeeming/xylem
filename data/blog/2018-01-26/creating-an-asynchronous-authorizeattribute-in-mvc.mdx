@@ -1,0 +1,211 @@
+﻿---
+title: 'Creating an asynchronous AuthorizeAttribute in MVC'
+date: 2018-01-26
+tags: ['async', 'C#', 'MVC', 'Just Coding']
+draft: false
+summary: 'A couple days ago I needed to call a remote web api call in my AuthorizeAttribute sometimes but as mentioned in this (Is it possible to use async/await in MVC 4 AuthorizeAttribute?) StackOverflow question (and other forums) it isn’t supported but is in the newer .net core. Unfortunately the project I needed this on was traditional MVC so I was left still finding a way .'
+---
+
+
+A couple days ago I needed to call a remote web api call in my [AuthorizeAttribute](https://msdn.microsoft.com/en-us/library/system.web.mvc.authorizeattribute%28v=vs.118%29.aspx) sometimes but as mentioned in this ([Is it possible to use async/await in MVC 4 AuthorizeAttribute?](https://stackoverflow.com/questions/23689588/is-it-possible-to-use-async-await-in-mvc-4-authorizeattribute)) [StackOverflow](https://stackoverflow.com/) question (and other forums) it isn’t supported but is in the newer [.net core](https://dot.net). Unfortunately the project I needed this on was traditional MVC so I was left still finding a way ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+
+## Running asynchronous methods in C# synchronous
+
+For the longest time to achieve running async functionality synchronously I've used an async helper class, not sure this is the exact place I found it but [Chris McKee](https://github.com/ChrisMcKee) currently hosts a version on [GitHub gists](https://gist.github.com/ChrisMcKee/6664438) but for convenience and in case it goes away I have hosted it on mine as well as you can see below
+
+
+```javascript
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+
+namespace GordonBeeming.ApiHelpers
+{
+    public static class AsyncHelpers
+    {
+        /// <summary>
+        /// Execute's an async Task<T> method which has a void return value synchronously
+        /// </summary>
+        /// <param name="task">Task<T> method to execute</param>
+        public static void RunSync(Func<Task> task)
+        {
+            var oldContext = SynchronizationContext.Current;
+            var synch = new ExclusiveSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(synch);
+            synch.Post(async _ =>
+            {
+                try
+                {
+                    await task();
+                }
+                catch (Exception e)
+                {
+                    synch.InnerException = e;
+                    throw;
+                }
+                finally
+                {
+                    synch.EndMessageLoop();
+                }
+            }, null);
+            synch.BeginMessageLoop();
+
+            SynchronizationContext.SetSynchronizationContext(oldContext);
+        }
+
+        /// <summary>
+        /// Execute's an async Task<T> method which has a T return type synchronously
+        /// </summary>
+        /// <typeparam name="T">Return Type</typeparam>
+        /// <param name="task">Task<T> method to execute</param>
+        /// <returns></returns>
+        public static T RunSync<T>(Func<Task<T>> task)
+        {
+            var oldContext = SynchronizationContext.Current;
+            var synch = new ExclusiveSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(synch);
+            T ret = default(T);
+            synch.Post(async _ =>
+            {
+                try
+                {
+                    ret = await task();
+                }
+                catch (Exception e)
+                {
+                    synch.InnerException = e;
+                    throw;
+                }
+                finally
+                {
+                    synch.EndMessageLoop();
+                }
+            }, null);
+            synch.BeginMessageLoop();
+            SynchronizationContext.SetSynchronizationContext(oldContext);
+            return ret;
+        }
+
+        private class ExclusiveSynchronizationContext : SynchronizationContext
+        {
+            private bool done;
+            public Exception InnerException { get; set; }
+            readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
+            readonly Queue<Tuple<SendOrPostCallback, object>> items =
+                new Queue<Tuple<SendOrPostCallback, object>>();
+
+            public override void Send(SendOrPostCallback d, object state)
+            {
+                throw new NotSupportedException("We cannot send to our same thread");
+            }
+
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                lock (items)
+                {
+                    items.Enqueue(Tuple.Create(d, state));
+                }
+                workItemsWaiting.Set();
+            }
+
+            public void EndMessageLoop()
+            {
+                Post(_ => done = true, null);
+            }
+
+            public void BeginMessageLoop()
+            {
+                while (!done)
+                {
+                    Tuple<SendOrPostCallback, object> task = null;
+                    lock (items)
+                    {
+                        if (items.Count > 0)
+                        {
+                            task = items.Dequeue();
+                        }
+                    }
+                    if (task != null)
+                    {
+                        task.Item1(task.Item2);
+                        if (InnerException != null) // the method threw an exeption
+                        {
+                            throw new AggregateException("AsyncHelpers.Run method threw an exception.", InnerException);
+                        }
+                    }
+                    else
+                    {
+                        workItemsWaiting.WaitOne();
+                    }
+                }
+            }
+
+            public override SynchronizationContext CreateCopy()
+            {
+                return this;
+            }
+        }
+    }
+}
+```
+
+
+The code allows you to easily wrap up async code and runs it's properly synchronously. A sample of how to do this is below
+
+
+```javascript
+AsyncHelpers.RunSync(MyMethodAsync);
+```
+
+
+Now that we have the utility out the way let's look at what this post is actually solving
+
+## Creating your async AuthorizeAttribute
+
+It's worth know that this bit of *code magic* does work everywhere you need to have async code and isn't specific to auth attribute.
+
+Basically what we need to do is in the standard OnAuthorization override we'll add code like above that will just call an async OnAuthorization method and then dump all our logic in there to keep things cleaner.
+
+
+```csharp
+using nologo.Chassis.Part.Identity;
+using nologo.Common.Core;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http.Controllers;
+using System.Web.Mvc;
+
+namespace GordonBeeming.Attributes
+{
+    public class AuthorizeAsyncAttribute : AuthorizeAttribute
+    {
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            AsyncHelpers.RunSync(() => OnAuthorizationAsync(filterContext));
+        }
+
+        public async Task OnAuthorizationAsync(AuthorizationContext filterContext)
+        {
+            var profile = await ProfileHelper.GetFromApi();
+            
+            // do something with profile
+        }
+
+        public int AllowedRole { get; set; }
+        public int[] AllowedRoles { get; set; }
+    }
+}
+```
+
+
+That's it, with this code you will have no problem calling external api's when trying to call async code would generally cause deadlocks. Your usage of the attribute will be as you would a normal AuthorizeAttribute.
+
+## Conclusion
+
+Some of you might be thinking why is this necessary when you could always just do synchronous api calls in your MVC project, although you aren't wrong in my situation the framework components I was using only supported async so I was forced down this path or re-write the framework component that would probably have taken a lot longer.
+

@@ -1,0 +1,33 @@
+﻿---
+title: 'How to Enforce Check-In Policies'
+date: 2014-01-10
+tags: ['VSTS / TFS', 'Check-In Policies', 'TFS Server Plugins', 'GitHub Projects']
+draft: false
+summary: 'So one of the benefits of using Server side Plugins is that you can''t override them. The problem with this is that the users don''t know that the policy is in place until they check-in their code. Wouldn''t it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.'
+---
+
+
+So one of the benefits of using Server side Plugins is that you can't override them. The problem with this is that the users don't know that the policy is in place until they check-in their code. Wouldn't it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.
+ 
+One way that you could probably achieve this is to create a check-in policy and then create a server plugin with the same logic, this seems like double work and implementing this for each policy will become annoying. What about the policies that you get from [Visual Studio Gallery](http://visualstudiogallery.msdn.microsoft.com/) like the one from [Colin Dembovsky](https://twitter.com/colindembovsky) called [Colin's ALM Checkin Policies for VS 2013](http://visualstudiogallery.msdn.microsoft.com/3bd2115e-9009-414b-bb5b-a0a64e4dad9e), you'd have to request the source code and then each time there is an update you'd have to update your code.
+ 
+A much easier way is to create one simple server plugin that will enforce that any check-in policies are met. To achieve this you can use the source code below as a server plugin
+ 
+```csharp
+namespace TFS.EnforceCheckInPolicies{    using System;    using System.Diagnostics;    using Microsoft.TeamFoundation.Common;    using Microsoft.TeamFoundation.Framework.Server;    using Microsoft.TeamFoundation.VersionControl.Server;    public class EnforceCheckInPoliciesSubscriber : ISubscriber    {        public string Name        {            get            {                return "TFS.EnforceCheckInPolicies";            }        }        public SubscriberPriority Priority        {            get            {                return SubscriberPriority.High;            }        }        public EventNotificationStatus ProcessEvent(TeamFoundationRequestContext requestContext, NotificationType notificationType, object notificationEventArgs, out int statusCode, out string statusMessage, out ExceptionPropertyCollection properties)        {            statusCode = 0;            properties = null;            statusMessage = string.Empty;            try            {                if (notificationType == NotificationType.DecisionPoint &&                    notificationEventArgs is CheckinNotification)                {                    var args = notificationEventArgs as                               CheckinNotification;                    if (args.PolicyOverrideInfo.PolicyFailures.Length > 0)                    {                        statusMessage = "Policy Overriding is not allowed.";                        return EventNotificationStatus.ActionDenied;                    }                }                return EventNotificationStatus.ActionPermitted;            }            catch (Exception ex)            {                // log the error and fail the check in                statusMessage = "Error in plugin '" + this.Name + "', error details: "                                + ex;                EventLog.WriteEntry("TFS Service", statusMessage,                    EventLogEntryType.Error);                return EventNotificationStatus.ActionDenied;            }        }        public Type[] SubscribedTypes()        {            return new[] { typeof(CheckinNotification) };        }    }}
+```
+
+This code sample at the moment will work against any Team Project in the instance you deploy it to. You can add code in if you need it to only work against certain collections or projects.
+
+Basically what will happen now is you will get an error when not doing what is required by the check-in policy and then will have to override it
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c3d4af945b2e88cd197a3be0acbc6b563f45c6b5/48583cf8-209f-4689-91dc-f91a2b354ea9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3c388f763cd3ab93e486f2dad363ebbfa632480b/ad64511d-24eb-4302-9ca8-b6a06c23db9a.png)
+
+Except when you click check In you get another unexpected message
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8025c8e41406fb6a5f382978375380be8d67c011/e4fd0bed-d2da-4d41-8e4d-09b193f31ef0.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2fc017c3ea2c33506094936d5a4cd27d9a27db3c/7a5760ea-6b5c-4b51-b934-b4b4d88628b7.png)
+
+You'll never have to worry about policies being overridden again. Obviously this doesn't allow for the occasions where you would want to allow for overriding but you can build logic in that would then accept the override in certain situations.
+
+You can get the code from [GitHub](http://github.com)  using the url [https://github.com/Gordon-Beeming/TFS.ServerPlugins](https://github.com/Gordon-Beeming/TFS.ServerPlugins "https://github.com/Gordon-Beeming/TFS.ServerPlugins").
+

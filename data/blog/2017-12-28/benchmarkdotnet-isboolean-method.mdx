@@ -1,0 +1,157 @@
+﻿---
+title: 'BenchmarkDotNet: IsBoolean method'
+date: 2017-12-28
+tags: ['BenchmarkDotNet', 'Just Coding']
+draft: false
+summary: 'This post might seem weird and is slightly. It''s really just a pointer as with all my posts to send people to instead of sharing lots of text "on the down low" 😁.'
+---
+
+
+This post might seem weird and is slightly. It's really just a pointer as with all my posts to send people to instead of sharing lots of text "on the down low" 😁.
+
+So this all started because we have a utility lib with lots of the common string extensions like ToInt32, ToDateTime, etc in it and one of the methods is IsBoolean. I decided for the hell of it that I'm going to wrap all the utilities that we have in unit tests. Most of theses are really old, from a time when [writing tests was a waste of time](https://go.beeming.net/2pQ3zPq). During this process I wanted to make sure we had the tests documenting sort of the things that we supported as well and where the boundaries are of what is supported as we use standard .net methods but then also our own logic for defining things like in this case IsBoolean. The rabbit hole today started with Pressing F12 on [bool.TryParse](https://go.beeming.net/2E5d0Oh) which because I have the [ref F12 extension](https://go.beeming.net/2E4YwxL) installed took me straight to the source definition to understand what .net is doing under the covers to know it's boundaries.
+
+## Discovery 1
+
+The first discovery I made which makes sense but I didn't really think of it before is that .net will check for whitespaces for you.
+
+
+```csharp
+// Special case: Trim whitespace as well as null characters.
+value = TrimWhiteSpaceAndNull(value);
+
+if (TrueLiteral.Equals(value, StringComparison.OrdinalIgnoreCase)) {
+    result = true;
+    return true;
+}
+
+if (FalseLiteral.Equals(value,StringComparison.OrdinalIgnoreCase)) {
+    result = false;
+    return true;
+}
+```
+
+
+## More rambling
+
+There has been plenty of occasions in where I have been faced with the problem of "I can optimize that more" and then realized that there isn't really any point in optimizing something that's rarely called for a couple of milliseconds. When I see this code (being the .net framework) there is every little opportunity to optimize even in something like a TryParse method which probably quite core to many other functions in the framework and other systems. The framework basically repeats the same code saying it's going to do a check first ignoring whitespace
+
+
+```csharp
+// Determines whether a String represents true or false.
+// 
+public static Boolean TryParse (String value, out Boolean result) {
+    result = false;
+    if (value==null) {
+        return false;
+    }
+    // For perf reasons, let's first see if they're equal, then do the
+    // trim to get rid of white space, and check again.
+    if (TrueLiteral.Equals(value, StringComparison.OrdinalIgnoreCase)) {
+        result = true;
+        return true;
+    }
+    if (FalseLiteral.Equals(value,StringComparison.OrdinalIgnoreCase)) {
+        result = false;
+        return true;
+    }
+
+    // Special case: Trim whitespace as well as null characters.
+    value = TrimWhiteSpaceAndNull(value);
+
+    if (TrueLiteral.Equals(value, StringComparison.OrdinalIgnoreCase)) {
+        result = true;
+        return true;
+    }
+    
+    if (FalseLiteral.Equals(value,StringComparison.OrdinalIgnoreCase)) {
+        result = false;
+        return true;
+    }
+    
+    return false;
+}
+
+```
+
+
+and you think to yourself is that really going to do much?
+
+## Discovery 2
+
+I often wonder about small things like would testing for to upper case or to lower case be faster than the other, maybe a bad example but you get the point (I hope). In this case something that long ago I wondered which is what is faster, testing True is True faster or False is False faster 😋.
+
+From this test it appears because of the order of the code that testing for True is faster than testing for False, obviously null being checked is still faster. Which makes me wonder if adding a test to check value.Length &lt; 4 return false would add enough performance gain to warrant being added in. In thinking about that I recon if it was thought about it would have been removed as an idea because that would be optimizing for the (hopefully) least used scenario.
+
+## The Test Results
+
+So I used [BenchmarkDotNet](https://go.beeming.net/2pNpc2R) for my speed tests and below is my findings, the code is super simple to test this one which you can find in my [samples repo on GitHub](https://github.com/Gordon-Beeming/dahdah-demos/tree/main/IsBooleanMethod).
+
+
+```javascript
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
+namespace TestingIsBoolean
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var summary = BenchmarkRunner.Run<Tests>();            
+        }
+    }
+
+    public class Tests
+    {
+        [Benchmark]
+        public bool Null()
+        {
+            return IsBool(null);
+        }
+
+        [Benchmark]
+        public bool False()
+        {
+            return IsBool("False");
+        }
+
+        [Benchmark]
+        public bool True()
+        {
+            return IsBool("True");
+        }
+
+        [Benchmark]
+        public bool FalseWithWhitespace()
+        {
+            return IsBool("False ");
+        }
+
+        [Benchmark]
+        public bool TrueWithWhitespace()
+        {
+            return IsBool("True ");
+        }
+
+        private static bool IsBool(string input)
+        {
+            return bool.TryParse(input, out bool obj);
+        }
+    }
+}
+```
+
+
+And after running a couple times just to 100% make sure this is the kind of results I get
+
+
+<Figure key="./images/2021-02-07-20-03-22.jpg" src="./images/2021-02-07-20-03-22.jpg" alt="" width="0" height="0" caption="" />
+
+
+Interesting? I think so 🙂
+
+## Conclusion
+
+I think although this is a small case it highlights the importance of knowing and understanding what the .net framework is doing for you.  I have seen couple code samples and code in live systems that perform a trim on a string before doing the try parse for example when in their case that are doing the whitespace trim work each call of the function where it would be taking care of for them automatically by the framework.
+

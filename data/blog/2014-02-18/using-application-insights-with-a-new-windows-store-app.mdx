@@ -1,0 +1,83 @@
+﻿---
+title: 'Using Application Insights with a new Windows Store App'
+date: 2014-02-18
+tags: ['Azure', 'Application Insights', 'Windows Store App']
+draft: false
+summary: 'If you haven''t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.'
+---
+
+
+If you haven't heard or read about [Application Insights](http://msdn.microsoft.com/en-us/library/dn481095.aspx) you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of [VSO](http://www.visualstudio.com/en-us/products/visual-studio-online-overview-vs.aspx). You can also take a look at the [Channel 9](http://channel9.msdn.com/) series on [Application Insights for Visual Studio Online](http://channel9.msdn.com/Series/Application-Insights-for-Visual-Studio-Online) by [Charles Sterling](https://twitter.com/chass).
+ 
+Also see [Using Application Insights with an existing Windows Store App](https://gordonbeeming.com/blog/post/using-application-insights-with-an-existing-windows-store-app) for an example of adding Application Insights to an existing application that could already be in the store.
+ 
+## Create a new Application
+ 
+If you you have the [Application Insights Tools for Visual Studio](http://visualstudiogallery.msdn.microsoft.com/82367b81-3f97-4de1-bbf1-eaf52ddc635a) installed that [Brian Harry](http://blogs.msdn.com/b/bharry/) mention in one of his [latest blog posts](http://blogs.msdn.com/b/bharry/archive/2014/02/06/application-insights-visual-studio-add-in-preview.aspx) and you are creating a new application, this is much similar for you. Click the Add Application Insights to Project drop down, that will make sure you are authenticated to VSO. 
+ 
+[![image_thumb\[1\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/00ad5c692fb24e4516b85dcbe66a313683e66fa7/07c12f6d-79ee-4640-a302-4e8b03a3ef41.png "image_thumb[1]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/00ad5c692fb24e4516b85dcbe66a313683e66fa7/ee00c3bf-5cc1-462b-844e-5935880839d9.png)
+ 
+Once done you will be able to choose which VSO account you want to connect to and then you can click **Configure** to choose the application name (if you haven't created an application in Application Insights yet just type the name and one will be created for you automatically).
+ 
+[![image_thumb\[3\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3e3b41f6b650dc1d9056531e645996a33e0e9394/5a0cca7f-f5f6-458a-8729-b37a8dff6811.png "image_thumb[3]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3e3b41f6b650dc1d9056531e645996a33e0e9394/93ee2a37-80bd-4878-a3f4-3bce0dad7d73.png)
+ 
+At this point the application is opened in your default browser
+ 
+[![image_thumb\[8\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/50c592677ccf1a87df3587cb645664a73b9306e5/630e5e8a-4312-43c1-b5e9-5de958227d09.png "image_thumb[8]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/50c592677ccf1a87df3587cb645664a73b9306e5/7975254b-df38-46d4-9edf-88d55c0e3684.png)
+ 
+and a solution is created like
+ 
+[![image_thumb\[10\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0095bb28fdfc157dd6a1c588e365ad93882109a/8b53ddfc-951f-4fd8-be64-a44a0ce8b4aa.png "image_thumb[10]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0095bb28fdfc157dd6a1c588e365ad93882109a/82173d94-f8e7-44f6-bdcf-3f64b1c86fd8.png)
+ 
+## Changing App Configuration
+ 
+All applications (at the moment) new or current will get the error below if you haven't already changed the Platform of your store application
+ 
+[![image_thumb\[12\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/ebbedf96-2503-4f7c-b53a-c8e41e1b5a9f.png "image_thumb[12]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/5203f712-a70f-4f5b-aa8b-4bc883ba1fa5.png)
+ 
+To get rid of this message and put Application Insights in a state where you can start logging application usage you will need to change the configuration of your app to not be Any CPU.
+ 
+**Open Configuration Manager**
+ 
+[![image\[29\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/fe189014-62b7-4070-9334-3a5996c5aa2e.png "image[29]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/1cb63d33-a792-476b-8105-2b683d9e8951.png)
+ 
+**Set the platform to x86, x64, or ARM**
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b878383fab08975e7940a9ac63506ef87b6d2466/9bc8d2a8-f527-4d8d-8f60-f810cea4796e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0aad4f3efd7b47df750d6ecc781b49a41b5a0355/be8fd44d-60be-4dbb-91d0-e27f5211411b.png)
+ 
+## Initializing Application Insights
+ 
+Open the **App.xaml.cs** file and at the end of the **App()** method add the following code
+ 
+```csharp
+Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsSession.Default.Start("license key from ApplicationInsights.config");
+```
+
+As the snippet mentions you need to grab the license key (aka: instrumentation key) from the ApplicationInsights.config
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5124b41e7066c58d7a3ca4a1613b4ecaebd9061a/2bfa3325-3f24-466d-a24d-af927f18e8cc.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/44984f6acbf90b8e25de26adbce0ef5ba75f6af3/bab30a80-0203-4d47-9f3a-0369556ee3c4.png)
+
+At this point you can run your application and you will get some basic information like the Operating System, Screen Resolution and a view metrics like session time. You'll need to wait about 15 minutes for the information to display on your dashboard but will look something like below.
+
+[![clip_image002](https://gordonbeeming.com/blog/image/1000/0/1fc1e61c-e2f5-4bf0-80cf-17a6ab38c861.jpg "clip_image002")](https://gordonbeeming.com/blog/image/1000/0/a496db87-ca2a-4044-a111-3cae8c128816.jpg)
+
+To see the data head over to the Usage Tab on VSO Application Insights
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4d26f3a7680be75b11b06a1ef556abc386f13455/cc4b2abd-bb9c-47fb-9bf6-acb07ffe92ca.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/98c133e4de8f6a9245d6d01abe85982a1d9b9b8e/107dd06e-8128-4720-8bb1-f0076f51053d.png)
+
+## Logging app feature usage
+
+Because I am using a new application I will just log which of the groups the user clicks into. To do this (if you are using the Split Page Application) navigate to **ItemsPage.xaml.cs** file and change the ItemView\_ItemClick method to be like below
+
+```csharp
+/// <summary>/// Invoked when an item is clicked./// </summary>/// <param name="sender">The GridView (or ListView when the application is snapped)/// displaying the item clicked.</param>/// <param name="e">Event data that describes the item clicked.</param>void ItemView_ItemClick(object sender, ItemClickEventArgs e){    var properties = new Dictionary<string, object>() {{"Title", ((SampleDataGroup)e.ClickedItem).Title}};    Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsChannel.Default.LogEvent("Store/ItemView", properties);    // Navigate to the appropriate destination page, configuring the new page    // by passing required information as a navigation parameter    var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;    this.Frame.Navigate(typeof(SplitPage), groupId);}
+```
+
+We are simple logging that the Item Click event was fired and logging the title of the group that was clicked. This when you click around in the sample app will log to Application Insights as you click around and generate some data. To see the features that were logged head over to **Event Insights** under the **Features** tab
+
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1ec68698393d554eca025f2ad16564e52af0ad1c/9488ce19-d7cd-404b-bcc7-f70ee03f1ab2.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/04361dcc4ea9c8cc556afb77b1949d67d41557ca/a6c413b4-cc92-40af-bb73-9c6607a388ce.png)
+
+## Conclusion
+
+It's really simple to get started with Application Insights and get that feedback from your application when it's out there in the wild.
+

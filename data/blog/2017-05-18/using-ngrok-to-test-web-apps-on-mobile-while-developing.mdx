@@ -1,0 +1,69 @@
+﻿---
+title: 'Using ngrok to test web apps on mobile while developing'
+date: 2017-05-18
+tags: ['Mobile', 'Visual Studio', 'Just Coding']
+draft: false
+summary: 'I often never really test on mobile properly because most sites are responsive so it''s easier to just resize your browser and test like that. This works great until you trying to get the perfect mobile experience and looking at every element like how drop lists present themselves with different content taking into account how wrapping might happen in mobile browser controls (which is different from web browser, even in chrome ). A long time ago I briefly used ngrok just to test how it works and now I use it constantly for testing apps while they are still in development.'
+---
+
+
+I often never really test on mobile properly because most sites are responsive so it's easier to just resize your browser and test like that. This works great until you trying to get the perfect mobile experience and looking at every element like how drop lists present themselves with different content taking into account how wrapping might happen in mobile browser controls (which is different from web browser, even in chrome ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)). A long time ago I briefly used ngrok just to test how it works and now I use it constantly for testing apps while they are still in development.
+ 
+## Why use ngrok?
+ 
+Lots of developers might ask why use ngrok and not something like the  some of the debug functionality that Android provides for chrome which is a lot more powerful. To that I would say that I didn't need to debug anything ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg), I just want to look how it looks on the device with the device specific controls. Also that solution would work fine for chrome on Android, what about other browsers on other phones like windows phone or even blackberry? Now that solution might work for all devices but figuring that out and connecting the devices to the pc would take time and effort. 
+ 
+Using ngrok is simply and easy so why not save time?
+ 
+## Installing ngrok
+ 
+Installing ngrok is really simple. If you have Chocolatey installed you can simple type the below into a cmd window.
+
+
+```javascript
+choco install ngrok.portable
+```
+
+
+and by the nature of Chocolatey you will now have ngrok installed ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+ 
+Alternatively you can go to the [ngrok website](https://go.beeming.net/2rto6oS) and download it from there
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7b5cd05b5d445d18759db32d359cdd64fdfb9e23/7b5cd05b5d445d18759db32d359cdd64fdfb9e23.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/82f61315b80da1cfc0aa5f81519347bd9ae8dad5/82f61315b80da1cfc0aa5f81519347bd9ae8dad5.png)
+ 
+You can test if it's installed correctly why typing ngrok into a cmd window, you should see a list of available commands come up.
+ 
+## 
+ 
+## Using ngrok
+ 
+This is where the really easy part comes in ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). I created a new .net core project and hit run and it's running on port 32705 locally on my machine
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ebcd0758b5aa81aa2c5d780f04c565dc9ea39abd/ebcd0758b5aa81aa2c5d780f04c565dc9ea39abd.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/cc63c0b87a06a1d5a46be7267eb72eb9fb9a5059/cc63c0b87a06a1d5a46be7267eb72eb9fb9a5059.png)
+ 
+By opening the cmd console typing the below command in
+
+
+```javascript
+ngrok http localhost:32705 --host-header localhost
+```
+
+
+This will go ahead and create a tunnel for you to your local port which is exposed on the internet ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/38620bed349ffee1ff73ffa014ae2b1a9c52e8ae/38620bed349ffee1ff73ffa014ae2b1a9c52e8ae.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c1b95b061787257d93227721f52b70e46c90b594/c1b95b061787257d93227721f52b70e46c90b594.png)
+ 
+Not the forwarding urls, we get a http and https link by default. Browsing to this link from your mobile phone and you should notice all the requests showing up in the console
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d905d86c9e03c7600d1b634f1b01f1d07e38d747/d905d86c9e03c7600d1b634f1b01f1d07e38d747.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/db6381afd0fa96fec7ea479f17221f6d67127102/db6381afd0fa96fec7ea479f17221f6d67127102.png)
+ 
+You can also navigate to [http://localhost:4040/](http://localhost:4040/ "http://localhost:4040/") and get similar information
+ 
+[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bd4e9751967a84cfb647c93ec24593924e51acde/bd4e9751967a84cfb647c93ec24593924e51acde.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/957d4b6910b21d82b961fbde8e32e8eb56e960ef/957d4b6910b21d82b961fbde8e32e8eb56e960ef.png)
+ 
+As you can see this page has more functionality than just streaming requests, you can also dig into headers and replay requests from this page.
+ 
+## Conclusion
+ 
+Everything these days runs on mobile and users rely heavily on their mobile phones so why not take that little extra time testing your apps on mobile especially because it's so easy.
+

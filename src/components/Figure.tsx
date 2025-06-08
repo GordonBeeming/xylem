@@ -1,5 +1,3 @@
-// src/components/Figure.tsx
-
 import React from 'react'
 
 interface FigureProps {
@@ -18,16 +16,18 @@ export const Figure: React.FC<FigureProps> = ({ src, alt, width, height, caption
     loading: 'lazy',
   }
 
-  if (width && width !== 0) {
-    imageProps.width = Number(width)
+  const numericWidth = Number(width)
+  const numericHeight = Number(height)
+
+  // Only add the attribute if the resulting number is actually greater than zero.
+  if (numericWidth > 0) {
+    imageProps.width = numericWidth
   }
-  if (height && height !== 0) {
-    imageProps.height = Number(height)
+  if (numericHeight > 0) {
+    imageProps.height = numericHeight
   }
 
-  // --- THE CHANGE IS HERE ---
-  // We wrap the entire output in a div. This acts as a stable container
-  // during the React hydration process, preventing reordering issues.
+  // The rest of your component remains the same.
   return (
     <div>
       <figure className="figure-container">

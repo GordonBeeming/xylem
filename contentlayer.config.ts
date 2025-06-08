@@ -1,5 +1,5 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
-import { writeFileSync } from 'fs'
+import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
@@ -25,6 +25,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+
 
 
 const root = process.cwd()
@@ -111,6 +112,46 @@ function createSearchIndex(allBlogs: any[]): void {
     )
     console.log('Local search index generated...')
   }
+}
+
+// This function will find and copy all images to the public folder
+function copyImages(allBlogs) {
+  const publicDir = './public/'
+  // Ensure the destination directory exists
+  if (!existsSync(publicDir)) {
+    mkdirSync(publicDir, { recursive: true })
+  }
+
+  allBlogs.forEach((post) => {
+    console.log(`Processing images for post: ${post.slug}`)
+    // `post._raw.sourceFileDir` gives us the directory of the MDX file, e.g., 'data/blog/2024-05-16'
+    const sourceImageDir = 'data/' + path.join(post._raw.sourceFileDir, 'images')
+    console.log(`Source image directory: ${sourceImageDir}`)
+    const destinationImageDir = path.join(publicDir, post._raw.sourceFileDir, 'images')
+    console.log(`Destination image directory: ${destinationImageDir}`)
+    if (!existsSync(destinationImageDir)) {
+      mkdirSync(destinationImageDir, { recursive: true })
+    }
+
+    if (existsSync(sourceImageDir)) {
+      const imageFiles = readdirSync(sourceImageDir)
+      imageFiles.forEach((imageFile) => {
+        console.log(`Found image file: ${imageFile}`)
+        // if (post.description && post.description.includes(imageFile)) {
+        const sourcePath = path.join(sourceImageDir, imageFile)
+        const destPath = path.join(destinationImageDir, imageFile)
+        console.log(`Copying image from ${sourcePath} to ${destPath}`)
+        // The destination filename is now `[slug]-[original-filename]`
+        copyFileSync(sourcePath, destPath)
+        // post.description = post.description.replace(
+        //   imageFile,
+        //   `/images/${post.slug}/${imageFile}`
+        // )
+        // }
+      })
+    }
+  })
+  console.log('Successfully copied all blog images to public directory.')
 }
 
 export const Blog = defineDocumentType(() => ({
@@ -204,5 +245,6 @@ export default makeSource({
     createTagCount(allBlogs)
     createYearsCount(allBlogs)
     createSearchIndex(allBlogs)
+    copyImages(allBlogs)
   },
 })

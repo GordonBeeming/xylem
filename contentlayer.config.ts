@@ -78,7 +78,14 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+  const sortedTags = Object.keys(tagCount).sort()
+  const sortedTagCount = sortedTags.reduce((acc, key) => {
+    acc[key] = tagCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedTagCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
@@ -97,7 +104,14 @@ async function createYearsCount(allBlogs) {
       }
     }
   })
-  const formatted = await prettier.format(JSON.stringify(yearCount, null, 2), { parser: 'json' })
+  const sortedYears = Object.keys(yearCount).sort((a, b) => Number(b) - Number(a))
+  const sortedYearCount = sortedYears.reduce((acc, key) => {
+    acc[key] = yearCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedYearCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/year-data.json', formatted)
 }
 
@@ -226,7 +240,8 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
+    const { allAuthors, allBlogs } = await importData()
+    console.log('All Author slugs found during build:', allAuthors.map(a => a.slug)) // <-- ADD THIS LINE
     await createTagCount(allBlogs)
     await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)

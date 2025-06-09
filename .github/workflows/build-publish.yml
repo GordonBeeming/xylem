@@ -8,6 +8,13 @@ on:
       - "public/**"
       - "src/**"
       - ".github/workflows/build-publish.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/**"
+      - "public/**"
+      - "src/**"
+      - ".github/workflows/build-publish.yml"
 
 env:
   REGISTRY: ghcr.io

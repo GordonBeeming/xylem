@@ -83,15 +83,18 @@ jobs:
     steps:
       - name: Deploy to preview environment
         run: |
-          # The runner executes these commands directly in its shell
+          # FIX: Set the D-Bus address for systemctl to work correctly in a non-interactive session
+          export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+
           IMAGE_TAG=${{ needs.build.outputs.image_tag }}
-          IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # FIX: Force the repository name to lowercase
+          RAW_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          IMAGE_NAME=$(echo "${RAW_IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
 
           echo "--- Deploying image ${IMAGE_NAME}:${IMAGE_TAG} to preview ---"
 
           podman pull "${IMAGE_NAME}:${IMAGE_TAG}"
 
-          # The ~ shortcut will resolve to the home directory of the user running the agent (e.g., /home/podman/)
           sed -i "s|Image=.*|Image=${IMAGE_NAME}:${IMAGE_TAG}|" ~/.config/systemd/user/gordonbeeming-preview.container
 
           systemctl --user daemon-reload
@@ -102,7 +105,7 @@ jobs:
   deploy-production:
     name: 🚀 Deploy to Production
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/gb-branch-1'
     runs-on: self-hosted
     environment:
       name: production
@@ -111,9 +114,13 @@ jobs:
     steps:
       - name: Deploy to production environment
         run: |
-          # The runner executes these commands directly in its shell
+          # FIX: Set the D-Bus address for systemctl to work correctly in a non-interactive session
+          export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+
           IMAGE_TAG=${{ needs.build.outputs.image_tag }}
-          IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # FIX: Force the repository name to lowercase
+          RAW_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          IMAGE_NAME=$(echo "${RAW_IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
 
           echo "--- Deploying image ${IMAGE_NAME}:${IMAGE_TAG} to production ---"
 

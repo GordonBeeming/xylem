@@ -74,7 +74,7 @@ jobs:
   deploy-preview:
     name: 🕵️ Deploy to Preview
     needs: build
-    if: github.ref == 'refs/heads/gb-branch-1'
+    if: github.event_name == 'pull_request'
     runs-on: self-hosted
     environment:
       name: preview
@@ -103,7 +103,7 @@ jobs:
 
   deploy-production:
     name: 🚀 Deploy to Production
-    if: github.ref == 'refs/heads/gb-branch-1'
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: self-hosted
     environment:

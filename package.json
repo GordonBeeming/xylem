@@ -68,7 +68,7 @@
     "check": "npm run build && tsc",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "certs:setup": "scripts/setup-certs.sh",
     "proxy:ssl": "scripts/run-https.sh"
   }

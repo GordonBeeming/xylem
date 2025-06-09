@@ -28,6 +28,8 @@ WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
+
 # Disable telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
 

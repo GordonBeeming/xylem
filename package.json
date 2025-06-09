@@ -65,13 +65,9 @@
   },
   "scripts": {
     "build": "NEXT_PRIVATE_STANDALONE=true next build",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
-    "check": "npm run build && tsc && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
+    "check": "npm run build && tsc",
     "dev": "next dev",
     "lint": "next lint",
-    "postbuild": "opennextjs-cloudflare build -s",
-    "preview": "npm run build && wrangler dev",
     "start": "next start",
     "certs:setup": "scripts/setup-certs.sh",
     "proxy:ssl": "scripts/run-https.sh"

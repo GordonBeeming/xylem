@@ -1,0 +1,50 @@
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+# Git repository files
+.git
+.gitignore
+.gitattributes
+
+# Dependency directory
+# This is the most important one to ignore!
+# Dependencies will be installed inside the container.
+node_modules
+
+# Build artifacts and caches
+# These will be generated inside the container during the build step.
+.next
+.open-next
+.contentlayer
+out
+
+# Environment variables and secrets
+# These should be injected into the container at runtime, not built into the image.
+.env
+.env.local
+.env.development
+.env.production
+.env.*
+
+# Local SSL certificates - DO NOT include these in your image
+*.pem
+
+# Editor and OS-specific files
+.vscode
+.DS_Store
+.editorconfig
+
+# Log files
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Documentation and configuration files not needed in the image
+README.md
+.eslintrc.json
+wrangler.json
+
+# The Dockerfile itself
+Dockerfile

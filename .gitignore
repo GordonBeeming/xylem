@@ -50,6 +50,4 @@ next-env.d.ts
 .env
 
 /public/blog/
-bundled/README.md
-bundled/worker.js
-bundled/worker.js.map
+/bundled/**

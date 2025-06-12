@@ -65,7 +65,7 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 const nextConfig = () => {
   const plugins = [withContentlayer, bundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
-    output,
+    output: 'standalone',
     basePath,
     reactStrictMode: true,
     trailingSlash: false,

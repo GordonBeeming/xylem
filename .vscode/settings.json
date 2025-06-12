@@ -3,11 +3,14 @@
 		"wrangler.json": "jsonc"
 	},
 	"cSpell.words": [
+		"buildx",
 		"contentlayer",
+		"DBUS",
 		"giscus",
 		"gordonbeeming",
 		"headlessui",
 		"notranslate",
-		"opennextjs"
+		"opennextjs",
+		"sigstore"
 	]
 }

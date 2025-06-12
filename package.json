@@ -25,6 +25,7 @@
     "image-size": "^2.0.2",
     "next": "15.3.3",
     "next-contentlayer2": "^0.5.8",
+    "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
     "pliny": "^0.4.1",
     "react": "19.1.0",
@@ -64,14 +65,10 @@
   },
   "scripts": {
     "build": "NEXT_PRIVATE_STANDALONE=true next build",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
-    "check": "npm run build && tsc && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
+    "check": "npm run build && tsc",
     "dev": "next dev",
     "lint": "next lint",
-    "postbuild": "opennextjs-cloudflare build -s",
-    "preview": "npm run build && wrangler dev",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "certs:setup": "scripts/setup-certs.sh",
     "proxy:ssl": "scripts/run-https.sh"
   }

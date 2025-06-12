@@ -25,6 +25,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
 
 
 
@@ -78,7 +79,14 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+  const sortedTags = Object.keys(tagCount).sort()
+  const sortedTagCount = sortedTags.reduce((acc, key) => {
+    acc[key] = tagCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedTagCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
@@ -97,7 +105,14 @@ async function createYearsCount(allBlogs) {
       }
     }
   })
-  const formatted = await prettier.format(JSON.stringify(yearCount, null, 2), { parser: 'json' })
+  const sortedYears = Object.keys(yearCount).sort((a, b) => Number(b) - Number(a))
+  const sortedYearCount = sortedYears.reduce((acc, key) => {
+    acc[key] = yearCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedYearCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/year-data.json', formatted)
 }
 
@@ -193,18 +208,53 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+const remarkFigurePlugin = () => {
+  return (tree, file) => {
+    // Get the directory of the current MDX file, e.g., "blog/2024-05-16"
+    const sourceDir = file.data.rawDocumentData.sourceFileDir
+
+    // Visit every JSX element in the MDX file
+    visit(tree, 'mdxJsxFlowElement', (node) => {
+      // Check if the element is our <Figure> component
+      if (node.name === 'Figure') {
+        // Find the 'src' attribute
+        const srcAttr = node.attributes.find((attr) => attr.name === 'src')
+
+        // Check if the src is a relative path
+        if (srcAttr && typeof srcAttr.value === 'string' && srcAttr.value.startsWith('./')) {
+          // Remove the './' and join it with the source directory
+          const imagePath = srcAttr.value.replace('./', '')
+          const newSrc = path.join('/', sourceDir, imagePath)
+
+          // Update the 'src' attribute with the new absolute path
+          srcAttr.value = newSrc
+          console.log('Updated src attribute:', srcAttr.value)
+
+          // Also update the 'key' prop if it's using the relative path
+          const keyAttr = node.attributes.find((attr) => attr.name === 'key')
+          if (keyAttr && typeof keyAttr.value === 'string' && keyAttr.value.startsWith('./')) {
+            keyAttr.value = newSrc
+          }
+        }
+      }
+    })
+  }
+}
+
+
 export default makeSource({
   contentDirPath: 'data',
   documentTypes: [Blog, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
-      remarkExtractFrontmatter,
-      remarkGfm,
-      remarkCodeTitles,
-      remarkMath,
-      remarkImgToJsx,
-      remarkAlert,
+      // remarkExtractFrontmatter,
+      // remarkFigurePlugin,
+      // remarkGfm,
+      // remarkCodeTitles,
+      // remarkMath,
+      // remarkImgToJsx,
+      // remarkAlert,
     ],
     rehypePlugins: [
       rehypeSlug,
@@ -226,7 +276,7 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
+    const { allAuthors, allBlogs } = await importData()
     await createTagCount(allBlogs)
     await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)

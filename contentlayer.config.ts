@@ -25,6 +25,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
 
 
 
@@ -207,18 +208,53 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+const remarkFigurePlugin = () => {
+  return (tree, file) => {
+    // Get the directory of the current MDX file, e.g., "blog/2024-05-16"
+    const sourceDir = file.data.rawDocumentData.sourceFileDir
+
+    // Visit every JSX element in the MDX file
+    visit(tree, 'mdxJsxFlowElement', (node) => {
+      // Check if the element is our <Figure> component
+      if (node.name === 'Figure') {
+        // Find the 'src' attribute
+        const srcAttr = node.attributes.find((attr) => attr.name === 'src')
+
+        // Check if the src is a relative path
+        if (srcAttr && typeof srcAttr.value === 'string' && srcAttr.value.startsWith('./')) {
+          // Remove the './' and join it with the source directory
+          const imagePath = srcAttr.value.replace('./', '')
+          const newSrc = path.join('/', sourceDir, imagePath)
+
+          // Update the 'src' attribute with the new absolute path
+          srcAttr.value = newSrc
+          console.log('Updated src attribute:', srcAttr.value)
+
+          // Also update the 'key' prop if it's using the relative path
+          const keyAttr = node.attributes.find((attr) => attr.name === 'key')
+          if (keyAttr && typeof keyAttr.value === 'string' && keyAttr.value.startsWith('./')) {
+            keyAttr.value = newSrc
+          }
+        }
+      }
+    })
+  }
+}
+
+
 export default makeSource({
   contentDirPath: 'data',
   documentTypes: [Blog, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
-      remarkExtractFrontmatter,
-      remarkGfm,
-      remarkCodeTitles,
-      remarkMath,
-      remarkImgToJsx,
-      remarkAlert,
+      // remarkExtractFrontmatter,
+      // remarkFigurePlugin,
+      // remarkGfm,
+      // remarkCodeTitles,
+      // remarkMath,
+      // remarkImgToJsx,
+      // remarkAlert,
     ],
     rehypePlugins: [
       rehypeSlug,
@@ -241,7 +277,6 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allAuthors, allBlogs } = await importData()
-    console.log('All Author slugs found during build:', allAuthors.map(a => a.slug)) // <-- ADD THIS LINE
     await createTagCount(allBlogs)
     await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)

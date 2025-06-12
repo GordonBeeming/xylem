@@ -13,7 +13,7 @@ However, if you have to upload the nuget package each time you make any changes 
 
 You may have noticed in the previous post that I specified a GitHub URL already, where I have uploaded the sample code, and I'll continue from that today to add the workflow to publish to nuget.org.
 
-If we look back at the last post, the only work we had to do to get a package was `nuget pack `
+If we look back at the last post, the only work we had to do to get a package was `nuget pack`
 
 
 ```bat
@@ -21,7 +21,7 @@ nuget pack DefaultCSharpRepoFiles.nuspec -NoDefaultExcludes -version 0.0.0.3
 ```
 
 
-In that example, we passed in a version number so that we could control the version of our package without having to edit the nuspec file each time we make a change. 
+In that example, we passed in a version number so that we could control the version of our package without having to edit the nuspec file each time we make a change.
 
 Before creating the workflow to publish our template, we'll need to get an API key from nuget.org. Head over to [NuGet Gallery | API Keys](https://www.nuget.org/account/apikeys) and then Click on **Create**, then there are a couple of settings that you should set for the API key
 

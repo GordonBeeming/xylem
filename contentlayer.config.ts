@@ -20,7 +20,6 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeKatex from 'rehype-katex'
 import rehypeKatexNoTranslate from 'rehype-katex-notranslate'
 import rehypeCitation from 'rehype-citation'
-import rehypePrismPlus from 'rehype-prism-plus'
 import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
@@ -143,7 +142,6 @@ function copyImages(allBlogs) {
     readdirSync(destinationImageDir).forEach((file) => {
       const filePath = path.join(destinationImageDir, file)
       if (existsSync(filePath)) {
-        console.log(`Removing file: ${filePath}`)
         try {
           unlinkSync(filePath)
         } catch (error) {
@@ -254,7 +252,6 @@ export default makeSource({
       rehypeKatex,
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
-      [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,
     ],
   },

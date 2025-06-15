@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
+    "@monaco-editor/react": "^4.7.0",
     "@next/bundle-analyzer": "^15.3.3",
     "body-scroll-lock": "4.0.0-beta.0",
     "contentlayer2": "^0.5.8",
@@ -36,7 +37,6 @@
     "rehype-katex": "^7.0.1",
     "rehype-katex-notranslate": "^1.1.4",
     "rehype-preset-minify": "^7.0.1",
-    "rehype-prism-plus": "^2.0.1",
     "rehype-slug": "^6.0.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",

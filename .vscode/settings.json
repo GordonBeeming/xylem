@@ -12,5 +12,16 @@
 		"notranslate",
 		"opennextjs",
 		"sigstore"
-	]
+	],
+	"markdown.copyFiles.destination": {
+		"**/*": "images/"
+	},
+	// --- Markdown Paste Extension Settings ---
+	"MarkdownPaste.enabledLanguageIds": [
+		"markdown",
+		"mdx"
+	],
+	"MarkdownPaste.path": "${fileDirname}/images/",
+	"MarkdownPaste.nameBase": "${datetime|Y-MM-DD-HH-mm-ss}",
+	"MarkdownPaste.silence": true
 }

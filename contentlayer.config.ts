@@ -1,5 +1,5 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
-import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync } from 'fs'
+import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync, unlinkSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
@@ -134,19 +134,37 @@ function copyImages(allBlogs) {
   if (!existsSync(publicDir)) {
     mkdirSync(publicDir, { recursive: true })
   }
+  const destinationImageDir = path.join(publicDir, 'images')
+  if (!existsSync(destinationImageDir)) {
+    mkdirSync(destinationImageDir, { recursive: true })
+  }
+  else {
+    console.log(`Destination directory already exists: ${destinationImageDir}. Cleaning directory.`)
+    readdirSync(destinationImageDir).forEach((file) => {
+      const filePath = path.join(destinationImageDir, file)
+      if (existsSync(filePath)) {
+        console.log(`Removing file: ${filePath}`)
+        try {
+          unlinkSync(filePath)
+        } catch (error) {
+          console.error(`Error removing file ${filePath}:`, error)
+        }
+      }
+    })
+  }
 
   allBlogs.forEach((post) => {
     const sourceImageDir = 'data/' + path.join(post._raw.sourceFileDir, 'images')
-    const destinationImageDir = path.join(publicDir, post._raw.sourceFileDir, 'images')
-    if (!existsSync(destinationImageDir)) {
-      mkdirSync(destinationImageDir, { recursive: true })
-    }
 
     if (existsSync(sourceImageDir)) {
       const imageFiles = readdirSync(sourceImageDir)
       imageFiles.forEach((imageFile) => {
         const sourcePath = path.join(sourceImageDir, imageFile)
         const destPath = path.join(destinationImageDir, imageFile)
+        if (existsSync(destPath)) {
+          console.error(`File already exists: ${destPath}. Duplicate file names not supported to avoid files being overridden.`)
+          throw new Error(`File already exists: ${destPath}. Duplicate file names not supported to avoid files being overridden.`)
+        }
         copyFileSync(sourcePath, destPath)
       })
     }
@@ -208,53 +226,18 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
-const remarkFigurePlugin = () => {
-  return (tree, file) => {
-    // Get the directory of the current MDX file, e.g., "blog/2024-05-16"
-    const sourceDir = file.data.rawDocumentData.sourceFileDir
-
-    // Visit every JSX element in the MDX file
-    visit(tree, 'mdxJsxFlowElement', (node) => {
-      // Check if the element is our <Figure> component
-      if (node.name === 'Figure') {
-        // Find the 'src' attribute
-        const srcAttr = node.attributes.find((attr) => attr.name === 'src')
-
-        // Check if the src is a relative path
-        if (srcAttr && typeof srcAttr.value === 'string' && srcAttr.value.startsWith('./')) {
-          // Remove the './' and join it with the source directory
-          const imagePath = srcAttr.value.replace('./', '')
-          const newSrc = path.join('/', sourceDir, imagePath)
-
-          // Update the 'src' attribute with the new absolute path
-          srcAttr.value = newSrc
-          console.log('Updated src attribute:', srcAttr.value)
-
-          // Also update the 'key' prop if it's using the relative path
-          const keyAttr = node.attributes.find((attr) => attr.name === 'key')
-          if (keyAttr && typeof keyAttr.value === 'string' && keyAttr.value.startsWith('./')) {
-            keyAttr.value = newSrc
-          }
-        }
-      }
-    })
-  }
-}
-
-
 export default makeSource({
   contentDirPath: 'data',
   documentTypes: [Blog, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
-      // remarkExtractFrontmatter,
-      // remarkFigurePlugin,
-      // remarkGfm,
-      // remarkCodeTitles,
-      // remarkMath,
-      // remarkImgToJsx,
-      // remarkAlert,
+      remarkExtractFrontmatter,
+      remarkGfm,
+      remarkCodeTitles,
+      remarkMath,
+      remarkImgToJsx,
+      remarkAlert,
     ],
     rehypePlugins: [
       rehypeSlug,

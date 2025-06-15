@@ -272,3 +272,32 @@ input:-webkit-autofill:focus {
   width: 100%;
   height: 100%;
 }
+
+/*
+ * ===================================================================
+ * Custom Inline Code Block Styling (GitHub-like)
+ * ===================================================================
+ * This overrides the default pliny/Tailwind typography styles for `code`
+ * elements to be more subtle. It targets inline code and provides
+ * different backgrounds for light and dark modes.
+*/
+
+/* --- Base styles for inline code in both light and dark mode --- */
+.prose a>code,
+/* This targets code inside links */
+.prose code:not(pre > code) {
+  /* This targets all code that is NOT in a <pre> block */
+  @apply rounded-[6px] px-[0.4em] py-[0.2em] text-[85%] font-semibold;
+}
+
+/* --- Light mode specific styles --- */
+.prose a>code,
+.prose code:not(pre > code) {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* --- Dark mode specific styles --- */
+.dark .prose a>code,
+.dark .prose code:not(pre > code) {
+  @apply bg-gray-800 text-gray-200;
+}

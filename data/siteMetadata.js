@@ -1,6 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'xylem',
+  title: 'xylem | Gordon Beeming',
   author: 'Gordon Beeming',
   headerTitle: 'xylem | Gordon Beeming',
   description:

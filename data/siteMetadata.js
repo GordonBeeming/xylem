@@ -4,7 +4,7 @@ const siteMetadata = {
   author: 'Gordon Beeming',
   headerTitle: 'xylem | Gordon Beeming',
   description:
-    'Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect • Microsoft MVP',
+    'Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://gordonbeeming.com',

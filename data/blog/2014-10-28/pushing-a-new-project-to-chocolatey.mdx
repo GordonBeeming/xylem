@@ -17,17 +17,17 @@ Today my [DotNet Pretty](https://github.com/Gordon-Beeming/DotNet-Pretty) articl
  
 Creating the Chocolatey account was as simple as filling a couple of common fields at [https://chocolatey.org/account/Register](https://chocolatey.org/account/Register "https://chocolatey.org/account/Register").
  
-<Figure key="/images/b26b47568ab34ddb856767ba07ba4cb3.png" src="/images/b26b47568ab34ddb856767ba07ba4cb3.png" alt="2014-10-27_18-28-35" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b26b47568ab34ddb856767ba07ba4cb3.png" src="/images/b26b47568ab34ddb856767ba07ba4cb3.png" alt="Chocolatey Registration Page" width="0" height="0" caption="Chocolatey account registration page" />
  
 In the registration mail you are given a link to [Rules to be observed before publishing packages](https://github.com/chocolatey/chocolatey/wiki/CreatePackages#rules-to-be-observed-before-publishing-packages) which mentions that you can [host your packages with MyGet](https://github.com/chocolatey/chocolatey/wiki/Hosting-Chocolatey-Packages-on-MyGet)
  
-<Figure key="/images/bf178f71fa0a40ac92f272656d508965.png" src="/images/bf178f71fa0a40ac92f272656d508965.png" alt="2014-10-27_18-34-55" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bf178f71fa0a40ac92f272656d508965.png" src="/images/bf178f71fa0a40ac92f272656d508965.png" alt="Chocolatey Wiki - Hosting Packages on MyGet" width="0" height="0" caption="Chocolatey Wiki page about hosting packages on MyGet" />
  
 ## Creating a MyGet Account
  
 Heading over to [MyGet](https://www.myget.org/) I saw that they had a Free subscription
  
-<Figure key="/images/4a294a67df2644f79cbeed0b8378109d.png" src="/images/4a294a67df2644f79cbeed0b8378109d.png" alt="2014-10-27_18-37-06" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4a294a67df2644f79cbeed0b8378109d.png" src="/images/4a294a67df2644f79cbeed0b8378109d.png" alt="MyGet Pricing Page" width="0" height="0" caption="MyGet pricing page showing the Free subscription tier" />
  
 But they also have an offer for [MVP](http://mvp.microsoft.com)'s, ASPInsiders, Windows Azure Insiders and ALM Rangers ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Fitting into [2 of these categories](https://gordonbeeming.com/blog/post/one-year-as-alm-ranger-and-first-day-as-alm-mvp) now I decided to head over to [https://www.myget.org/mvp](https://www.myget.org/mvp "https://www.myget.org/mvp") and request a NFR license ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). The extra features available on this subscription made it perfect for my community project (and ones to follow ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)). In no time I had my [DotNet Pretty Package Feed](https://www.myget.org/F/dotnetpretty/) up.
  
@@ -35,67 +35,67 @@ But they also have an offer for [MVP](http://mvp.microsoft.com)'s, ASPInsiders, 
  
 The DotNet Pretty project is currently hosted out on [GitHub](http://github.com) and so I decided that I'll try out MyGet's build services which is now in preview. This was as simple as clicking on *BUILD SERVICES* from the menu and then on *Add build sources* and then *from GitHub*.
  
-<Figure key="/images/a6b9092944e7452989026258d8ebdb1b.png" src="/images/a6b9092944e7452989026258d8ebdb1b.png" alt="2014-10-27_18-47-01" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a6b9092944e7452989026258d8ebdb1b.png" src="/images/a6b9092944e7452989026258d8ebdb1b.png" alt="MyGet Build Services - Add build source from GitHub" width="0" height="0" caption="MyGet Build Services page with option to add build source from GitHub" />
  
 this poped open the *Link build source* dialog where I selected the DotNet Pretty project from the list and clicked *Add.*
  
-<Figure key="/images/a2804cd3750840ba893e23f994d721bc.png" src="/images/a2804cd3750840ba893e23f994d721bc.png" alt="2014-10-27_18-48-37" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a2804cd3750840ba893e23f994d721bc.png" src="/images/a2804cd3750840ba893e23f994d721bc.png" alt="MyGet Link build source dialog" width="0" height="0" caption="MyGet Link build source dialog for selecting GitHub repository" />
  
 From here I clicked *Build* and in no time the build completed
  
-<Figure key="/images/8ce775cf5b5246c383d5a6c337ce89bf.png" src="/images/8ce775cf5b5246c383d5a6c337ce89bf.png" alt="2014-10-27_18-52-16" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8ce775cf5b5246c383d5a6c337ce89bf.png" src="/images/8ce775cf5b5246c383d5a6c337ce89bf.png" alt="MyGet Build Log" width="0" height="0" caption="MyGet build log showing successful build completion" />
  
-<Figure key="/images/c431230a8a3545d5b5a68bc6fdf3b671.png" src="/images/c431230a8a3545d5b5a68bc6fdf3b671.png" alt="2014-10-27_18-54-50" width="0" height="0" caption="FILL THIS IN" /> and I had a package hosted in MyGet
+<Figure key="/images/c431230a8a3545d5b5a68bc6fdf3b671.png" src="/images/c431230a8a3545d5b5a68bc6fdf3b671.png" alt="MyGet Package Feed" width="0" height="0" caption="MyGet package feed showing the newly built DotNet Pretty package" /> and I had a package hosted in MyGet
 
-<Figure key="/images/d2cbe5071c854251b9e1672dcfe0afd2.png" src="/images/d2cbe5071c854251b9e1672dcfe0afd2.png" alt="2014-10-27_18-55-56" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d2cbe5071c854251b9e1672dcfe0afd2.png" src="/images/d2cbe5071c854251b9e1672dcfe0afd2.png" alt="MyGet Package Details" width="0" height="0" caption="MyGet package details page for the DotNet Pretty package" />
  
 ## Updating GitHub project to show MyGet build status
  
 From the build services page I was able to click on copy markdown
  
-<Figure key="/images/0780923737da4e178bbc4d4f05068afd.png" src="/images/0780923737da4e178bbc4d4f05068afd.png" alt="2014-10-27_18-58-09" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0780923737da4e178bbc4d4f05068afd.png" src="/images/0780923737da4e178bbc4d4f05068afd.png" alt="MyGet Build Services - Copy Markdown for Build Status Badge" width="0" height="0" caption="MyGet Build Services page with option to copy Markdown for build status badge" />
  
 which gave me the markdown that I could insert into the readme.md file which I did with my new favorite Markdown editor [MarkdownPad](http://markdownpad.com/) 2
  
-<Figure key="/images/b74b4274a0204114aad07ebe8129af3c.png" src="/images/b74b4274a0204114aad07ebe8129af3c.png" alt="2014-10-27_18-59-29" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b74b4274a0204114aad07ebe8129af3c.png" src="/images/b74b4274a0204114aad07ebe8129af3c.png" alt="MarkdownPad editor showing readme.md with MyGet build status badge" width="0" height="0" caption="MarkdownPad editor showing the readme.md file with the MyGet build status badge added" />
  
 A [quick commit](https://github.com/Gordon-Beeming/DotNet-Pretty/commit/d572a38dccd8f83b015f39c61c6b77c28ea80c33) added this status to the public project on GitHub
  
-<Figure key="/images/a199bc7395f64ebbb7921455276fb20c.png" src="/images/a199bc7395f64ebbb7921455276fb20c.png" alt="2014-10-27_19-02-04" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a199bc7395f64ebbb7921455276fb20c.png" src="/images/a199bc7395f64ebbb7921455276fb20c.png" alt="GitHub project page with MyGet build status badge" width="0" height="0" caption="GitHub project page for DotNet Pretty showing the MyGet build status badge" />
  
 ## Pushing the packaged to Chocolatey 
  
 The next thing I needed to do was add a new package source to my MyGet package feed Chocolatey. I went over to the *Package Sources* menu and clicked on *Add package source* and the *NuGet feed*.
  
-<Figure key="/images/5b7f111a52214bca98c4cacc784ecf91.png" src="/images/5b7f111a52214bca98c4cacc784ecf91.png" alt="2014-10-27_19-24-12" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5b7f111a52214bca98c4cacc784ecf91.png" src="/images/5b7f111a52214bca98c4cacc784ecf91.png" alt="MyGet Package Sources - Add NuGet feed" width="0" height="0" caption="MyGet Package Sources page with option to add a NuGet feed" />
  
 The next bit was very simple, I simple clicked on *Presets* and then *Chocolatey*
  
-<Figure key="/images/f72217ce621a44cb8c735048c77a1782.png" src="/images/f72217ce621a44cb8c735048c77a1782.png" alt="2014-10-27_19-25-49" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f72217ce621a44cb8c735048c77a1782.png" src="/images/f72217ce621a44cb8c735048c77a1782.png" alt="MyGet Add Package Source - Presets for Chocolatey" width="0" height="0" caption="MyGet Add Package Source dialog with Presets option for Chocolatey" />
  
 This then went ahead and filled in the Name and Source for me
  
-<Figure key="/images/d7870b5efa334d138ddb57b24347f024.png" src="/images/d7870b5efa334d138ddb57b24347f024.png" alt="2014-10-27_19-26-42" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d7870b5efa334d138ddb57b24347f024.png" src="/images/d7870b5efa334d138ddb57b24347f024.png" alt="MyGet Add Package Source - Chocolatey preset applied" width="0" height="0" caption="MyGet Add Package Source dialog with Chocolatey preset applied, showing Name and Source fields filled" />
  
 All that was left to do was provide my Chocolatey which was my Username, Password and API Key. I also filled in some of the extra meta data for my source
  
-<Figure key="/images/81e84163ddc74f6f86291cceda556074.png" src="/images/81e84163ddc74f6f86291cceda556074.png" alt="2014-10-27_19-29-39" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/81e84163ddc74f6f86291cceda556074.png" src="/images/81e84163ddc74f6f86291cceda556074.png" alt="MyGet Add Package Source - Chocolatey credentials and metadata" width="0" height="0" caption="MyGet Add Package Source dialog with Chocolatey credentials and metadata filled in" />
  
 Next I headed over to build services again and clicked on *Push upstream*
  
-<Figure key="/images/6de4b4363af644f5adb36c6ceb21f99e.png" src="/images/6de4b4363af644f5adb36c6ceb21f99e.png" alt="2014-10-27_19-30-34" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6de4b4363af644f5adb36c6ceb21f99e.png" src="/images/6de4b4363af644f5adb36c6ceb21f99e.png" alt="MyGet Build Services - Push upstream" width="0" height="0" caption="MyGet Build Services page with Push upstream option" />
  
 this presented a window like below
  
-<Figure key="/images/53875f9c3302400481fd94f855714f35.png" src="/images/53875f9c3302400481fd94f855714f35.png" alt="2014-10-27_19-32-34" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/53875f9c3302400481fd94f855714f35.png" src="/images/53875f9c3302400481fd94f855714f35.png" alt="MyGet Push Package dialog" width="0" height="0" caption="MyGet Push Package dialog for pushing to Chocolatey" />
  
 where I just clicked on *Push*
  
-<Figure key="/images/39178033035042128db8cbd004492213.png" src="/images/39178033035042128db8cbd004492213.png" alt="2014-10-27_19-33-11" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/39178033035042128db8cbd004492213.png" src="/images/39178033035042128db8cbd004492213.png" alt="MyGet Push Package confirmation" width="0" height="0" caption="MyGet Push Package confirmation message after pushing to Chocolatey" />
  
 And received the message saying they on it ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). Headed back over to Chocolatey and my package was in the list
  
-<Figure key="/images/69150c198d304b20a8a8f2eae30fda69.png" src="/images/69150c198d304b20a8a8f2eae30fda69.png" alt="2014-10-27_19-34-27" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/69150c198d304b20a8a8f2eae30fda69.png" src="/images/69150c198d304b20a8a8f2eae30fda69.png" alt="DotNet Pretty package on Chocolatey" width="0" height="0" caption="DotNet Pretty package listed on the Chocolatey website" />
  
 ## Installing Chocolatey "Client"
  
@@ -111,11 +111,11 @@ choco install DotNetPretty -Pre
 
 which confirmed that my package now now been installed
 
-<Figure key="/images/fba12d1df87141eda94e20d9ac9d0f97.png" src="/images/fba12d1df87141eda94e20d9ac9d0f97.png" alt="2014-10-27_19-39-35" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/fba12d1df87141eda94e20d9ac9d0f97.png" src="/images/fba12d1df87141eda94e20d9ac9d0f97.png" alt="Package Installation Confirmation" width="0" height="0" caption="Package installation confirmation message" />
 
 At this point my Chocolatey package "installs" by dropping the package contents in the Chocolatey folder
 
-<Figure key="/images/f5c204b34bfc4542acec7c021367dad3.png" src="/images/f5c204b34bfc4542acec7c021367dad3.png" alt="2014-10-27_19-46-25" width="0" height="0" caption="FILL THIS IN" /><Figure key="/images/0aa66f362ba64aa1ab8af57e6b14b5db.png" src="/images/0aa66f362ba64aa1ab8af57e6b14b5db.png" alt="2014-10-27_19-47-17" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f5c204b34bfc4542acec7c021367dad3.png" src="/images/f5c204b34bfc4542acec7c021367dad3.png" alt="Chocolatey Package Installation" width="0" height="0" caption="Chocolatey package installation process" /><Figure key="/images/0aa66f362ba64aa1ab8af57e6b14b5db.png" src="/images/0aa66f362ba64aa1ab8af57e6b14b5db.png" alt="Chocolatey Package Installation (contd.)" width="0" height="0" caption="Continuation of the Chocolatey package installation process" />
 
 In a later post I will share how to configure the installation logic for a Chocolatey script.
 

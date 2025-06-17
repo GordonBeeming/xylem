@@ -31,10 +31,9 @@ $Subscriptions = Get-AzureRmSubscription
 $Subscriptions | Format-Table
 ```
 
-
 You should see a result similar to the below
 
-<Figure key="/images/c413a7422cae45f691e859efedf6f447.png" src="/images/c413a7422cae45f691e859efedf6f447.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/c413a7422cae45f691e859efedf6f447.png" src="/images/c413a7422cae45f691e859efedf6f447.png" alt="PowerShell output showing list of Azure subscriptions" width="0" height="0" caption="Azure Subscriptions List in PowerShell" /> 
 
 Now we need to set the source and destination subscription id from the list above and then check if the resource type is registered in the destination subscription
 
@@ -57,7 +56,7 @@ $ResourceProviders | Where-Object { $_.ProviderNamespace -eq 'microsoft.insights
 
 If like with me it's not registered 
 
-<Figure key="/images/4168d17c5f96449ea415e871750c51d1.png" src="/images/4168d17c5f96449ea415e871750c51d1.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4168d17c5f96449ea415e871750c51d1.png" src="/images/4168d17c5f96449ea415e871750c51d1.png" alt="PowerShell output showing microsoft.insights provider as NotRegistered" width="0" height="0" caption="microsoft.insights Provider Not Registered" />
 
 you can use the script below to enable the provider
 
@@ -69,7 +68,7 @@ Register-AzureRmResourceProvider -ProviderNamespace microsoft.insights
 
 you should see a message like below saying it's Registering
 
-<Figure key="/images/02004575965f49ae8654593e9ac1bfc5.png" src="/images/02004575965f49ae8654593e9ac1bfc5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/02004575965f49ae8654593e9ac1bfc5.png" src="/images/02004575965f49ae8654593e9ac1bfc5.png" alt="PowerShell output showing registration of microsoft.insights provider" width="0" height="0" caption="Registering microsoft.insights Provider" />
 
 This takes a little while to run sometimes, you can run the last part of the script above every now and then to see when it's registered
 
@@ -79,10 +78,9 @@ $ResourceProviders = Get-AzureRmResourceProvider -ListAvailable
 $ResourceProviders | Where-Object { $_.ProviderNamespace -eq 'microsoft.insights' } | Select-Object ProviderNamespace, RegistrationState
 ```
 
-
 You should see it saying Registered as below when done
 
-<Figure key="/images/eddd96cbf0c44ffbac41a6a65acfc6f4.png" src="/images/eddd96cbf0c44ffbac41a6a65acfc6f4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/eddd96cbf0c44ffbac41a6a65acfc6f4.png" src="/images/eddd96cbf0c44ffbac41a6a65acfc6f4.png" alt="PowerShell output showing microsoft.insights provider as Registered" width="0" height="0" caption="microsoft.insights Provider Registered" />
 
 Before doing the switch we need to make sure we have a resource group in the target subscription to move the resource to, you can create a new resource group like below
 
@@ -111,7 +109,7 @@ This would take a little while to complete usually, when done your resource shou
 
 All that's left now is to go through any dashboards and existing scripts that reference this resource and update them. Because the resource is no longer at it's old location your dashboards will become less 'metricky' ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg) 
 
-<Figure key="/images/80156a0975194a8bb5a7b88a36071698.png" src="/images/80156a0975194a8bb5a7b88a36071698.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/80156a0975194a8bb5a7b88a36071698.png" src="/images/80156a0975194a8bb5a7b88a36071698.png" alt="Azure dashboard showing missing metrics after resource move" width="0" height="0" caption="Azure Dashboard - Missing Metrics" />
 
 ## Full script
 

@@ -15,7 +15,7 @@ Obviously it would be great for everything to run on https, but sometimes you ar
 
 If you try using the PAT token auth you will notice that the agent shouts at you saying PAT auth is only supported on https
 
-<Figure key="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" src="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" src="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" alt="PAT auth only supported on https error" width="0" height="0" caption="Error message: PAT authentication is only supported on HTTPS" />
 
 It feels like you have no options at this point but you do ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
@@ -23,26 +23,26 @@ It feels like you have no options at this point but you do ![Smile](https://gord
 
 If you had to try integrated security from outside the domain you would obviously be told that auth can't happen because the domain joined machine doesn't know who you are
 
-<Figure key="/images/3846fbfb1ab348deafd82b451f2d9930.png" src="/images/3846fbfb1ab348deafd82b451f2d9930.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/3846fbfb1ab348deafd82b451f2d9930.png" src="/images/3846fbfb1ab348deafd82b451f2d9930.png" alt="Integrated security authentication error" width="0" height="0" caption="Error message: Integrated security authentication failed" />
 
 The solution is to use the Windows Credential Manager, go to the start menu and type **windows credential** and select **Manage Windows Credentials**   
-<Figure key="/images/7a6f31babae5460598c03d4bb17c4fa5.png" src="/images/7a6f31babae5460598c03d4bb17c4fa5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7a6f31babae5460598c03d4bb17c4fa5.png" src="/images/7a6f31babae5460598c03d4bb17c4fa5.png" alt="Manage Windows Credentials option in Start Menu" width="0" height="0" caption="Selecting Manage Windows Credentials from the Start Menu" />
 
 In this window you will click **Add a Windows credential**
 
-<Figure key="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" src="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" src="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" alt="Add a Windows credential button" width="0" height="0" caption="Clicking Add a Windows credential in Credential Manager" />
 
 Enter the server name with port
 
-<Figure key="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" src="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" src="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" alt="Entering server name and port for Windows credential" width="0" height="0" caption="Entering the TFS server name and port" />
 
 Click ok
 
-<Figure key="/images/b683d15cdb1542e9aff6058cc5410429.png" src="/images/b683d15cdb1542e9aff6058cc5410429.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b683d15cdb1542e9aff6058cc5410429.png" src="/images/b683d15cdb1542e9aff6058cc5410429.png" alt="Windows credential added successfully" width="0" height="0" caption="Windows credential successfully added" />
 
 Once the credential is in you can now re-try connecting using integrated security and it will work ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" src="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" src="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" alt="Successfully connecting agent using integrated security" width="0" height="0" caption="Agent successfully connected using integrated security" />
 
 Hopefully this helps someone else as well
 

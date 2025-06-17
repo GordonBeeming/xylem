@@ -15,13 +15,13 @@ The reason why I say this was weird was because it was working before I rebooted
  
 So first thing I did was open the project properties, go to the *Signing* Tab and uncheck the *Sign the assembly* checkbox.
  
-<Figure key="/images/7ac4148ac5c643e9b103db1003f03e10.png" src="/images/7ac4148ac5c643e9b103db1003f03e10.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7ac4148ac5c643e9b103db1003f03e10.png" src="/images/7ac4148ac5c643e9b103db1003f03e10.png" alt="Visual Studio project signing properties" width="0" height="0" caption="Visual Studio project signing properties" />
  
 This fixed my issue, but felt wrong and I knew it would bite me later. I thought a bit more about what was different before I rebooted and now and eventually remembered that before I rebooted I was running [Visual Studio](http://www.visualstudio.com/) in Administrator mode before. 
  
 So I re-checked the *Sign the assembly* checkbox closed Visual Studio and then opened the project again with a new instance of Visual Studio that was running in Administrator mode
  
-<Figure key="/images/69b58fe92cac41b285fb2152b8909be2.png" src="/images/69b58fe92cac41b285fb2152b8909be2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/69b58fe92cac41b285fb2152b8909be2.png" src="/images/69b58fe92cac41b285fb2152b8909be2.png" alt="Visual Studio running as administrator" width="0" height="0" caption="Visual Studio running as administrator" />
  
 Rebuilt the solution and everything built as expected
 

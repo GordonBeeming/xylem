@@ -154,11 +154,11 @@ After we have switched to the AzureResourceManager module we are able to use the
 
 This would then return the account added
 
-<Figure key="/images/9eef83312a5349b78143bf920e5a698b.png" src="/images/9eef83312a5349b78143bf920e5a698b.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/9eef83312a5349b78143bf920e5a698b.png" src="/images/9eef83312a5349b78143bf920e5a698b.png" alt="PowerShell output after adding Azure account" width="0" height="0" caption="PowerShell output showing the successfully added Azure account details." />
 
 At this point if you ran Get-AzureAccount it will show you this account and any others you have previously added.
 
-<Figure key="/images/beccbfae32194e6daf525cd62f8df172.png" src="/images/beccbfae32194e6daf525cd62f8df172.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/beccbfae32194e6daf525cd62f8df172.png" src="/images/beccbfae32194e6daf525cd62f8df172.png" alt="PowerShell output of Get-AzureAccount command" width="0" height="0" caption="PowerShell output of the Get-AzureAccount command, listing available Azure accounts." />
 
 ## Step 4
 
@@ -174,7 +174,7 @@ Get-AzureResourceGroupGalleryTemplate
 
 and it will return a list of all the current resources group templates that we can create. For the list at the time of writing this post you can refer to one of my [GitHub](http://github.com) Gists at [https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4](https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4 "https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4"). We are going to be using one of the templates found around line 2220 which is the website and sql database.
 
-<Figure key="/images/e7aaeda582f14a648853eb495d52340a.png" src="/images/e7aaeda582f14a648853eb495d52340a.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/e7aaeda582f14a648853eb495d52340a.png" src="/images/e7aaeda582f14a648853eb495d52340a.png" alt="GitHub Gist showing Azure Resource Group Gallery Templates" width="0" height="0" caption="A GitHub Gist displaying a list of Azure Resource Group Gallery Templates, with the website and SQL database template highlighted." /> 
 
 ### Get a list of Azure Resource Locations
 
@@ -192,7 +192,7 @@ $ResourceManagerTest = "ResourceManagerTest"$AzureDataCenterLocation = "West Eur
 
 This will then go off and create our website and database along with an Application Insights resource that we can use for our website when we deploy it. When the command finishes you should see an output similar to the one below which because we specified the -verbose flag tells us the status of each resource created
 
-<Figure key="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" src="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" src="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" alt="PowerShell verbose output after creating Azure Resource Group" width="0" height="0" caption="PowerShell verbose output detailing the status of each resource created within the new Azure Resource Group." />
 
 At this point we really are finished with what the subject of the blog post is but we'll continue on to explore what we have just created, how we would have had to create it using the Azure Portal and how we can remove the resource group using PowerShell.
 
@@ -200,11 +200,11 @@ At this point we really are finished with what the subject of the blog post is b
 
 Open the Azure Portal. The first thing you should notice is that you already have a notification and when you open that it says that a deployment has succeeded.
 
-<Figure key="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" src="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" src="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" alt="Azure Portal notification of successful deployment" width="0" height="0" caption="Azure Portal notification indicating the successful deployment of the new Resource Group." />
 
 Clicking on the success notification will open that resource group
 
-<Figure key="/images/fa36e6f9233d419aba6011acbe816c01.png" src="/images/fa36e6f9233d419aba6011acbe816c01.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/fa36e6f9233d419aba6011acbe816c01.png" src="/images/fa36e6f9233d419aba6011acbe816c01.png" alt="Azure Portal view of the newly created Resource Group and its resources" width="0" height="0" caption="Azure Portal displaying the newly created Resource Group and the resources within it (website, SQL database, App Insights)." />
 
 From here you can use the resources 100% as if you created them in the portal.
 
@@ -216,25 +216,25 @@ Remove-AzureResourceGroup -Name $ResourceManagerTest -Force -Verbose
 
 this will then proceed to remove the resource group, again because of the -verbose flag we don't get as much info but rather just that it's deleting the resource group and then comes back when it's done.
 
-<Figure key="/images/e11a38eaa7214a56b533958227775021.png" src="/images/e11a38eaa7214a56b533958227775021.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e11a38eaa7214a56b533958227775021.png" src="/images/e11a38eaa7214a56b533958227775021.png" alt="PowerShell output after removing Azure Resource Group" width="0" height="0" caption="PowerShell output confirming the deletion of the Azure Resource Group." />
 
 ## Step 8
 
 The last thing that I'll show on this post is how we would of have to do this manually (or at least where to find template). Back in the Azure Portal click new in the bottom left corner and then click on Everything
 
-<Figure key="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" src="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" src="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" alt="Azure Portal - New resource selection with Everything highlighted" width="0" height="0" caption="Azure Portal: Clicking 'New' and then 'Everything' to browse available resources." />
 
 Next click on the Web category/section and then you'll see the Website + SQL option which is what we created
 
-<Figure key="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" src="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" src="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" alt="Azure Portal - Web category with Website + SQL option highlighted" width="0" height="0" caption="Azure Portal: Selecting the 'Web' category and then the 'Website + SQL' template." />
 
 clicking on that option will give you a little info about the template and from here you'd just click on create
 
-<Figure key="/images/fe417656ddaa4f16baadc41889fe29d8.png" src="/images/fe417656ddaa4f16baadc41889fe29d8.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/fe417656ddaa4f16baadc41889fe29d8.png" src="/images/fe417656ddaa4f16baadc41889fe29d8.png" alt="Azure Portal - Website + SQL template information and Create button" width="0" height="0" caption="Azure Portal: Information about the 'Website + SQL' template with the 'Create' button visible." />
 
 From here you will configure the Resource Group Name, all the settings for your Website resource and SQL resource and then click create.
 
-<Figure key="/images/0bb2ebe0e61746a7bb9abd332838e476.png" src="/images/0bb2ebe0e61746a7bb9abd332838e476.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0bb2ebe0e61746a7bb9abd332838e476.png" src="/images/0bb2ebe0e61746a7bb9abd332838e476.png" alt="Azure Portal - Configuration blade for Website + SQL template" width="0" height="0" caption="Azure Portal: Configuration blade for the 'Website + SQL' template, requiring Resource Group name, website settings, and SQL settings." />
 
 When that process completes you will be in the sample place as that small PowerShell script gets you too ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 

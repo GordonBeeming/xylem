@@ -11,7 +11,7 @@ This post is largely showing off a cool feature of chrome but the core focus is 
 
 Visual Studio Team Services let's you [search across all your code and work items](https://go.beeming.net/2vAYeg7). What's really strange about this is how without this functionality it was harder trying to find work items and code but I used to say it would be nice if we had a better work item search and it would be nice to have a code search instead of having to pull all the code to my machine. I now find my self saying, why isn't it as easy as searching [Google](https://go.beeming.net/2vALian). 
 
-<Figure key="/images/ed9aab6ef2634806bd1caa64e0eb2860.png" src="/images/ed9aab6ef2634806bd1caa64e0eb2860.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ed9aab6ef2634806bd1caa64e0eb2860.png" src="/images/ed9aab6ef2634806bd1caa64e0eb2860.png" alt="VSTS search bar in Chrome" width="0" height="0" caption="VSTS search bar in Chrome" />
 
 Well it is ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg), I don't often notice features like this search because I used to just type what I want in the address bar and hit enter, switching between search engines was a process of copy, navigate to other search engine and paste. One day I saw a friend of mine [Rory Bolle](https://go.beeming.net/2vAu6S7) have a search bar like the image above and my life changed as he showed me this feature ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Part of getting through each day generally has a lot of how can I be more efficient with boring tasks, and although not really a task on it's own browsing to where to search is boring and something you don't have to do ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
 
@@ -19,15 +19,15 @@ Well it is ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open
 
 Chrome supports custom search engines and that's what functionality we going to use now. Open Chrome settings
 
-<Figure key="/images/de875d143a604cb48207384ae57aff8e.png" src="/images/de875d143a604cb48207384ae57aff8e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/de875d143a604cb48207384ae57aff8e.png" src="/images/de875d143a604cb48207384ae57aff8e.png" alt="Chrome settings menu" width="0" height="0" caption="Chrome settings menu" />
 
 Scroll down to the Search engine section and then click on Manage search engines
 
-<Figure key="/images/f61f1edc04a14ec6b49b1dcc773851ff.png" src="/images/f61f1edc04a14ec6b49b1dcc773851ff.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f61f1edc04a14ec6b49b1dcc773851ff.png" src="/images/f61f1edc04a14ec6b49b1dcc773851ff.png" alt="Chrome manage search engines setting" width="0" height="0" caption="Chrome manage search engines setting" />
 
 under the **Other search engines** section click **ADD**
 
-<Figure key="/images/bb6e98abaea24ff1ac7c2279725994a7.png" src="/images/bb6e98abaea24ff1ac7c2279725994a7.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bb6e98abaea24ff1ac7c2279725994a7.png" src="/images/bb6e98abaea24ff1ac7c2279725994a7.png" alt="Chrome add search engine button" width="0" height="0" caption="Chrome add search engine button" />
 
 We are going to add 2 search engines here, first for code search (replace your account name in the url)
 
@@ -41,7 +41,7 @@ Url:
 
 - TFS: https://**&lt;server&gt;:&lt;port&gt;**/tfs/**&lt;team**  **project collection&gt;**/\_search?type=Code&lp=apps-account&text=%s&\_a=contents
 
-<Figure key="/images/4faa283dd19e46ccb87cab907ae77f28.png" src="/images/4faa283dd19e46ccb87cab907ae77f28.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4faa283dd19e46ccb87cab907ae77f28.png" src="/images/4faa283dd19e46ccb87cab907ae77f28.png" alt="Chrome add search engine dialog for TFS Code Search" width="0" height="0" caption="Chrome add search engine dialog for TFS Code Search" />
 
 repeat that process again, this time for work item search
 
@@ -57,23 +57,23 @@ Url:
 
 You should now have these 'search engines' in your list and you can use this in your browser
 
-<Figure key="/images/9448731bc1174fa2ad37476dcf5da758.png" src="/images/9448731bc1174fa2ad37476dcf5da758.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/9448731bc1174fa2ad37476dcf5da758.png" src="/images/9448731bc1174fa2ad37476dcf5da758.png" alt="Chrome search engines list with TFS search engines added" width="0" height="0" caption="Chrome search engines list with TFS search engines added" />
 
 In the browser bar type **tfsw** and then **space bar** and search for something like **test**
 
-<Figure key="/images/bcd14d9a376940caaffbc7c549753cc6.png" src="/images/bcd14d9a376940caaffbc7c549753cc6.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bcd14d9a376940caaffbc7c549753cc6.png" src="/images/bcd14d9a376940caaffbc7c549753cc6.png" alt="Chrome address bar with tfsw keyword for TFS Work Item Search" width="0" height="0" caption="Chrome address bar with tfsw keyword for TFS Work Item Search" />
 
 and press enter
 
-<Figure key="/images/19b20d30bc014c8fb8063f21fcbbbcdb.png" src="/images/19b20d30bc014c8fb8063f21fcbbbcdb.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/19b20d30bc014c8fb8063f21fcbbbcdb.png" src="/images/19b20d30bc014c8fb8063f21fcbbbcdb.png" alt="VSTS work item search results for 'test'" width="0" height="0" caption="VSTS work item search results for 'test'" />
 
 This will go ahead and perform a work item search on your account for the phrase that you typed in. Try the same thing with the tfsc shortcut
 
-<Figure key="/images/88e3afead6184668a2eae69c7bb8da8a.png" src="/images/88e3afead6184668a2eae69c7bb8da8a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/88e3afead6184668a2eae69c7bb8da8a.png" src="/images/88e3afead6184668a2eae69c7bb8da8a.png" alt="Chrome address bar with tfsc keyword for TFS Code Search" width="0" height="0" caption="Chrome address bar with tfsc keyword for TFS Code Search" />
 
 as you can see this then obviously searches your code ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/8d6099673b2b4a5f8d28add735c22e81.png" src="/images/8d6099673b2b4a5f8d28add735c22e81.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8d6099673b2b4a5f8d28add735c22e81.png" src="/images/8d6099673b2b4a5f8d28add735c22e81.png" alt="VSTS code search results for 'test'" width="0" height="0" caption="VSTS code search results for 'test'" />
 
 ## Conclusion
 
@@ -81,11 +81,11 @@ Firstly you don't need to do those extra navigations to get to a page where you 
 
 Secondly, chromes search engines functionality can be used for any site basically just take a url and replace the 'search term' part of the url with %s. For example in my list I generally have the .NET Framework Reference Source ([https://referencesource.microsoft.com/#q=%s](https://referencesource.microsoft.com/#q=%s "https://referencesource.microsoft.com/#q=%s")) to easily find .net source
 
-<Figure key="/images/7d127b2bd0bf4135ae98b43404f1eac0.png" src="/images/7d127b2bd0bf4135ae98b43404f1eac0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7d127b2bd0bf4135ae98b43404f1eac0.png" src="/images/7d127b2bd0bf4135ae98b43404f1eac0.png" alt="Chrome address bar with 'rs' keyword for .NET Reference Source search" width="0" height="0" caption="Chrome address bar with 'rs' keyword for .NET Reference Source search" />
 
 which conveniently brings up 
 
-<Figure key="/images/28b94274e47b4b3fa0ebe0aad818bf44.png" src="/images/28b94274e47b4b3fa0ebe0aad818bf44.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/28b94274e47b4b3fa0ebe0aad818bf44.png" src="/images/28b94274e47b4b3fa0ebe0aad818bf44.png" alt=".NET Reference Source search results for 'httpclient'" width="0" height="0" caption=".NET Reference Source search results for 'httpclient'" />
 
 Cheers and have fun searching ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
 

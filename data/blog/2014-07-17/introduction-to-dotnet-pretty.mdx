@@ -27,15 +27,15 @@ Debugger display attributes allow the developer of the type, who specifies and b
  
 You simple place the [DebuggerDisplay Attribute](http://msdn.microsoft.com/en-us/library/ms228992.aspx) on a class like below
  
-<Figure key="/images/f281d1ae937c4905b2baece8b39f97fe.png" src="/images/f281d1ae937c4905b2baece8b39f97fe.png" alt="2014-07-17_21-10-51" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f281d1ae937c4905b2baece8b39f97fe.png" src="/images/f281d1ae937c4905b2baece8b39f97fe.png" alt="C# code showing DebuggerDisplay attribute on a class" width="0" height="0" caption="Applying the DebuggerDisplay attribute to a C# class." />
  
 When the break point is hit instead of you seeing the objects ToString() implementation of the method as below
  
-<Figure key="/images/a7baa88221c7420b8d1cbd344bdad29c.png" src="/images/a7baa88221c7420b8d1cbd344bdad29c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a7baa88221c7420b8d1cbd344bdad29c.png" src="/images/a7baa88221c7420b8d1cbd344bdad29c.png" alt="Visual Studio debugger showing default object display (ToString() output)" width="0" height="0" caption="Default object display in Visual Studio debugger (ToString() output)." />
  
 which of course you could override to show a nice message if you wanted to, you will get something like below
  
-<Figure key="/images/fb2879a858a4446c84b3b6cd6ff61607.png" src="/images/fb2879a858a4446c84b3b6cd6ff61607.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/fb2879a858a4446c84b3b6cd6ff61607.png" src="/images/fb2879a858a4446c84b3b6cd6ff61607.png" alt="Visual Studio debugger showing object display with DebuggerDisplay attribute" width="0" height="0" caption="Object display in Visual Studio debugger using the DebuggerDisplay attribute." />
  
 It doesn't seem like such a big deal with 1 object but think of how easy it would be to know stuff about objects when they in a list if they each implemented this attribute. Now obviously to use the attribute like this you need to own the object so you can add the attribute and release it.
  
@@ -47,7 +47,7 @@ The first contribution to DotNet Pretty is one that was used in the training whi
  
 This time you specify the target in the attribute like below
  
-<Figure key="/images/4e5f99990f4d42ffb948cd95ed9dcbe7.png" src="/images/4e5f99990f4d42ffb948cd95ed9dcbe7.png" alt="2014-07-17_21-35-39" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4e5f99990f4d42ffb948cd95ed9dcbe7.png" src="/images/4e5f99990f4d42ffb948cd95ed9dcbe7.png" alt="C# code showing DebuggerDisplay attribute targeting a specific type" width="0" height="0" caption="Using DebuggerDisplay attribute to target a specific type for custom display." />
  
 As you can see this is just floating in a random .cs file so it doesn't have to be placed anywhere specific in the code.
  
@@ -55,23 +55,23 @@ As you can see this is just floating in a random .cs file so it doesn't have to 
  
 This time instead of seeing the ToString() method 
  
-<Figure key="/images/df44826a1aad4c55832a4302bbe1e1a2.png" src="/images/df44826a1aad4c55832a4302bbe1e1a2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/df44826a1aad4c55832a4302bbe1e1a2.png" src="/images/df44826a1aad4c55832a4302bbe1e1a2.png" alt="Visual Studio debugger showing default object display for a specific type" width="0" height="0" caption="Default debugger display for a specific type before applying custom visualizer." />
  
 You will see 
  
-<Figure key="/images/c8dc5f33c8a2467a8c672a82f3b3492f.png" src="/images/c8dc5f33c8a2467a8c672a82f3b3492f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c8dc5f33c8a2467a8c672a82f3b3492f.png" src="/images/c8dc5f33c8a2467a8c672a82f3b3492f.png" alt="Visual Studio debugger showing customized object display using DebuggerDisplay attribute targeting a type" width="0" height="0" caption="Customized debugger display for a specific type using DebuggerDisplay attribute." />
        
 ### Deploying Visualizers
  
 Now obviously Visual Studio can't do magic to find out where the visualizers are across your whole machine so to get your custom visualizers to you work you simple need to drop the output assemblies in the path C:\Users\**[username]**\Documents\**[Visual Studio Version]**\Visualizers which in my case is C:\Users\**GordonB**\Documents\**Visual Studio 2013**\Visualizers.
  
-<Figure key="/images/c18bf8842a6744aabd57c2ebf0cd8db7.png" src="/images/c18bf8842a6744aabd57c2ebf0cd8db7.png" alt="2014-07-17_21-43-33" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c18bf8842a6744aabd57c2ebf0cd8db7.png" src="/images/c18bf8842a6744aabd57c2ebf0cd8db7.png" alt="Windows Explorer showing the Visualizers folder for Visual Studio" width="0" height="0" caption="Visual Studio Visualizers folder location in Windows Explorer." />
  
 ## How is the TDL Dataflow visualizer done?
  
 In short the TPL Dataflow visualizer uses the [DebuggerVisualizerAttribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.debuggervisualizerattribute.aspx) which looks something like below
  
-<Figure key="/images/af1a5a9860da4b3cbd4d53961ee0ddcf.png" src="/images/af1a5a9860da4b3cbd4d53961ee0ddcf.png" alt="2014-07-17_21-47-11" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/af1a5a9860da4b3cbd4d53961ee0ddcf.png" src="/images/af1a5a9860da4b3cbd4d53961ee0ddcf.png" alt="C# code showing DebuggerVisualizer attribute" width="0" height="0" caption="Applying the DebuggerVisualizer attribute in C# code." />
   
 I will do a in detail post on [DebuggerVisualizer Attribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.debuggervisualizerattribute.aspx) when I add one to DotNet Pretty. For now though you can browse the [source code of the TPL Dataflow Debugger Visualizer](https://dataflowdebuggerview.codeplex.com/SourceControl/latest) on [CodePlex](http://www.codeplex.com/).
  

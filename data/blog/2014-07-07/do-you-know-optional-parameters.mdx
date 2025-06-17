@@ -9,11 +9,11 @@ summary: 'Up until about an hour ago I thought I knew how optional parameters wo
 
 Up until about an hour ago I thought I knew how optional parameters worked but didn't actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like
  
-<Figure key="/images/f395f9fd376f4bada2c7b0ca28217f6c.png" src="/images/f395f9fd376f4bada2c7b0ca28217f6c.png" alt="2014-07-07_21-38-15" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f395f9fd376f4bada2c7b0ca28217f6c.png" src="/images/f395f9fd376f4bada2c7b0ca28217f6c.png" alt="C# code showing multiple overloads of a GetMessage method" width="0" height="0" caption="Multiple overloads of GetMessage method in C#." />
  
 with code like
  
-<Figure key="/images/bbbef8393e8c41c599297c4d7867ee25.png" src="/images/bbbef8393e8c41c599297c4d7867ee25.png" alt="2014-07-07_21-38-58" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bbbef8393e8c41c599297c4d7867ee25.png" src="/images/bbbef8393e8c41c599297c4d7867ee25.png" alt="C# code showing GetMessage method with optional parameters" width="0" height="0" caption="GetMessage method using optional parameters in C#." />
  
 It's obviously that the second snippet is easier to read but do you know what's actually happening?
  
@@ -21,43 +21,43 @@ It's obviously that the second snippet is easier to read but do you know what's 
  
 See below for a quick example of this. Create a new Console Application and Class Library as below
  
-[<Figure key="/images/a411ffe912e840b0913f05f7c5c5bdd4.png" src="/images/a411ffe912e840b0913f05f7c5c5bdd4.png" alt="MyCalc_-_Microsoft_Visual_Studio_(Administrator)_2014-07-07_21-13-21" width="0" height="0" caption="FILL THIS IN" />_2014-07-07_21-13-21")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b406f1520a862173c24cb3165e4f5981c7e3bad3/63a3bf1b-74c2-45f5-bd12-248ad5715732.png)
+[<Figure key="/images/a411ffe912e840b0913f05f7c5c5bdd4.png" src="/images/a411ffe912e840b0913f05f7c5c5bdd4.png" alt="Visual Studio solution with a Console Application and Class Library" width="0" height="0" caption="Solution setup with Console Application and Class Library." />_2014-07-07_21-13-21")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b406f1520a862173c24cb3165e4f5981c7e3bad3/63a3bf1b-74c2-45f5-bd12-248ad5715732.png)
  
 If you run this you will see in a console window the message Hello with some underscores.
  
-<Figure key="/images/4ccdd0e6b2734942b0faffcaf754f424.png" src="/images/4ccdd0e6b2734942b0faffcaf754f424.png" alt="filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4ccdd0e6b2734942b0faffcaf754f424.png" src="/images/4ccdd0e6b2734942b0faffcaf754f424.png" alt="Console output showing 'Hello _____'" width="0" height="0" caption="Initial console output with default optional parameter value." />
  
 This is what we expect and there is nothing unusual there but what happens if we change the code for the Utils class like below
  
-<Figure key="/images/e529e56037fe4bd28bfd1104f48da145.png" src="/images/e529e56037fe4bd28bfd1104f48da145.png" alt="2014-07-07_21-09-22" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e529e56037fe4bd28bfd1104f48da145.png" src="/images/e529e56037fe4bd28bfd1104f48da145.png" alt="C# code in Utils class with changed optional parameter default value" width="0" height="0" caption="Utils class with modified default value for the optional parameter." />
  
 Now build **only** the class library, copy the output assembly (CalcLibrary.dll) to the console windows output directory and then run the console window from windows explorer
    
-<Figure key="/images/0ca95f3ba6a14340bab7d6553fcb18b1.png" src="/images/0ca95f3ba6a14340bab7d6553fcb18b1.png" alt="CUsersGordonBDocumentsvisual_studio_2013Proj_2014-07-07_21-14-55" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0ca95f3ba6a14340bab7d6553fcb18b1.png" src="/images/0ca95f3ba6a14340bab7d6553fcb18b1.png" alt="Windows Explorer showing CalcLibrary.dll in the console app's output directory" width="0" height="0" caption="Replacing CalcLibrary.dll in the console application's output directory." />
  
 You'll notice that again we see what we expect. Now change your Utils class to have underscores as a default in a name parameter and place that in the return string like this
  
-<Figure key="/images/3839d1a9d77c441fa144a839f7ce7384.png" src="/images/3839d1a9d77c441fa144a839f7ce7384.png" alt="2014-07-07_21-17-36" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/3839d1a9d77c441fa144a839f7ce7384.png" src="/images/3839d1a9d77c441fa144a839f7ce7384.png" alt="C# code in Utils class with a new optional parameter 'name'" width="0" height="0" caption="Utils class with an additional optional parameter 'name'." />
  
 Again if you run this you will get what you expect 
   
-<Figure key="/images/d80149a832f44c1d88a50b89f2b69064.png" src="/images/d80149a832f44c1d88a50b89f2b69064.png" alt="filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d80149a832f44c1d88a50b89f2b69064.png" src="/images/d80149a832f44c1d88a50b89f2b69064.png" alt="Console output showing 'Hello _____' again" width="0" height="0" caption="Console output remains unchanged after adding a new optional parameter with a default value." />
  
 Now lets make that second change we did and replace the underscores with a underscore dash repeated 5 times like so
  
-<Figure key="/images/cbbb6b0fc8aa4604b71567b4d6deef42.png" src="/images/cbbb6b0fc8aa4604b71567b4d6deef42.png" alt="2014-07-07_21-19-21" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/cbbb6b0fc8aa4604b71567b4d6deef42.png" src="/images/cbbb6b0fc8aa4604b71567b4d6deef42.png" alt="C# code in Utils class with modified default value for 'separator' optional parameter" width="0" height="0" caption="Modifying the default value of the 'separator' optional parameter in Utils class." />
  
 Build just the class library, copy the assembly over and run the console app in windows explorer and you'll see that the nothing changed in the console window
  
-<Figure key="/images/22a7fe209ea54964bacbdd51c7234c3e.png" src="/images/22a7fe209ea54964bacbdd51c7234c3e.png" alt="filecusersgordonbdocumentsvisual_studio_2_2014-07-07_21-13-50" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/22a7fe209ea54964bacbdd51c7234c3e.png" src="/images/22a7fe209ea54964bacbdd51c7234c3e.png" alt="Console output still showing 'Hello _____' after changing the class library" width="0" height="0" caption="Console output does not reflect the change in the class library's optional parameter default value without recompiling the console app." />
  
 I recently watch [Bart De Smet](http://pluralsight.com/training/Authors/Details/bart-desmet)'s [Pluralsight](http://pluralsight.com) videos ([C# Language Internals - Part 1](www.pluralsight.com/training/Courses/Description/csharp-language-internals) | [C# Language Internals - Part 2](http://pluralsight.com/training/Courses/TableOfContents/csharp-language-internals-part2)) and one thing I realized is that I thought I knew *stuff* and to almost truly know you should check the IL or view the IL in a nice tool like IL Spy. So I opened the code in IL Spy and took a look at the class library to make sure that it update and as expected it did
  
-<Figure key="/images/bba317cd1e564c01aa9078f1fc5821d1.png" src="/images/bba317cd1e564c01aa9078f1fc5821d1.png" alt="2014-07-07_21-30-54" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bba317cd1e564c01aa9078f1fc5821d1.png" src="/images/bba317cd1e564c01aa9078f1fc5821d1.png" alt="IL Spy showing the decompiled C# code of the updated CalcLibrary.dll" width="0" height="0" caption="IL Spy showing the updated default value in the decompiled CalcLibrary.dll." />
  
 and to then opened the program class in the class library and found that the code that the console app was compiled against had been added to the call to Utils.GetMessage
   
-<Figure key="/images/a559e7155e94433e9060ccf12e64869d.png" src="/images/a559e7155e94433e9060ccf12e64869d.png" alt="2014-07-07_21-32-03" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a559e7155e94433e9060ccf12e64869d.png" src="/images/a559e7155e94433e9060ccf12e64869d.png" alt="IL Spy showing the decompiled C# code of the console application, revealing the old default value is compiled in" width="0" height="0" caption="IL Spy showing the console application's compiled code still using the old default value for the optional parameter." />
  
 In this example there is nothing that could go wrong and you probably would worry about the behavior of the optional parameter but there will be cases in more *important* code where this could be a problem maybe for performance or even security I'm guessing.
 

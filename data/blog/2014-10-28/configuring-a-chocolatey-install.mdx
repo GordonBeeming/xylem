@@ -13,11 +13,11 @@ So yesterday I posted [Pushing a new project to Chocolatey](https://gordonbeemin
  
 The first (only really) step to do this is creating a ChocolateyInstall.ps1 script. From looking at other packages I saw that there was a file like this in a tools folder so I created one for myself in my [DotNet Pretty](https://github.com/Gordon-Beeming/DotNet-Pretty) project
  
-<Figure key="/images/494f680f083a4812bf59128f5aecdfe1.png" src="/images/494f680f083a4812bf59128f5aecdfe1.png" alt="2014-10-28_08-18-26" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/494f680f083a4812bf59128f5aecdfe1.png" src="/images/494f680f083a4812bf59128f5aecdfe1.png" alt="ChocolateyInstall.ps1 in Visual Studio Solution Explorer" width="0" height="0" caption="ChocolateyInstall.ps1 file added to the tools folder in the DotNet Pretty project" />
  
 and set the *Build Action* to Content and *Copy to Output Directory* to Copy Always
  
-<Figure key="/images/17e09796f8294786bf34e6707f40d73c.png" src="/images/17e09796f8294786bf34e6707f40d73c.png" alt="2014-10-28_08-18-52" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/17e09796f8294786bf34e6707f40d73c.png" src="/images/17e09796f8294786bf34e6707f40d73c.png" alt="Properties for ChocolateyInstall.ps1" width="0" height="0" caption="Properties for ChocolateyInstall.ps1 set to Content and Copy Always" />
  
 The contents of the script was as below
  
@@ -35,7 +35,7 @@ choco install dotnetpretty -pre
 
 and then navigated to the Visualizers folder and my new assemblies were there ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/074c7e6d85624b9baee165b78e61f903.png" src="/images/074c7e6d85624b9baee165b78e61f903.png" alt="2014-10-28_08-24-11" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/074c7e6d85624b9baee165b78e61f903.png" src="/images/074c7e6d85624b9baee165b78e61f903.png" alt="Visualizers folder with new assemblies" width="0" height="0" caption="Visualizers folder showing newly copied assemblies after Chocolatey install" /> 
 
 If you have any feedback or a better way to perform this install do let me know ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
 

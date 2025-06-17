@@ -151,10 +151,15 @@ function copyImages(allBlogs) {
     })
   }
 
+  let folderPathsScanned = new Set<string>()
   allBlogs.forEach((post) => {
     const sourceImageDir = 'data/' + path.join(post._raw.sourceFileDir, 'images')
-
     if (existsSync(sourceImageDir)) {
+      if (!folderPathsScanned.has(sourceImageDir)) {
+        folderPathsScanned.add(sourceImageDir)
+      } else {
+        return
+      }
       const imageFiles = readdirSync(sourceImageDir)
       imageFiles.forEach((imageFile) => {
         const sourcePath = path.join(sourceImageDir, imageFile)

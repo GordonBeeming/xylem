@@ -3,31 +3,31 @@ title: 'Setting up TFS Build Agents fast'
 date: 2015-10-16
 tags: ['VSTS / TFS', 'TFS', 'TFS Build']
 draft: false
-summary: 'So you could make a script that can do the bits below but if you don’t here is how you can easily create build agents fast for TFS 2015+ or VSO.'
+summary: 'So you could make a script that can do the bits below but if you don''t here is how you can easily create build agents fast for TFS 2015+ or VSO.'
 ---
 
 
-So you could make a script that can do the bits below but if you don’t here is how you can easily create build agents fast for TFS 2015+ or VSO.
+So you could make a script that can do the bits below but if you don't here is how you can easily create build agents fast for TFS 2015+ or VSO.
  
-Now I’m not saying you should run a million agents of a single machine but this could be applied the same if you switching between multiple TS sessions to configure on multiple servers.
+Now I'm not saying you should run a million agents of a single machine but this could be applied the same if you switching between multiple TS sessions to configure on multiple servers.
  
 ## Download the build agent
  
 Downloading the build agent is really simple. Navigate to your TFS **control panel**, click on **Agent pools** and then **Download agent**.
  
-<Figure key="/images/a5f4e986ee144defacfc8c1eab3010ef.png" src="/images/a5f4e986ee144defacfc8c1eab3010ef.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a5f4e986ee144defacfc8c1eab3010ef.png" src="/images/a5f4e986ee144defacfc8c1eab3010ef.png" alt="TFS Agent Pools download agent" width="0" height="0" caption="TFS Agent Pools download agent" />
  
-This post will assume you have setup your agent pool already but that’s as simple as click **New pool** and giving it a name on the screen above ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+This post will assume you have setup your agent pool already but that's as simple as click **New pool** and giving it a name on the screen above ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
 ## Setup agent file structure
  
 Copy this to your build server and then extract the zip to look like below for example, *create these folders*.
  
-<Figure key="/images/5bb779283fd148aeacdc6da98d3da6dc.png" src="/images/5bb779283fd148aeacdc6da98d3da6dc.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5bb779283fd148aeacdc6da98d3da6dc.png" src="/images/5bb779283fd148aeacdc6da98d3da6dc.png" alt="TFS Build agent folder structure" width="0" height="0" caption="TFS Build agent folder structure" />
  
 then inside each of those folders you place a copy of the extracted zip
  
-<Figure key="/images/97d0e5145bfc433096ffffac0e8f1a27.png" src="/images/97d0e5145bfc433096ffffac0e8f1a27.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/97d0e5145bfc433096ffffac0e8f1a27.png" src="/images/97d0e5145bfc433096ffffac0e8f1a27.png" alt="TFS Build agent folder contents" width="0" height="0" caption="TFS Build agent folder contents" />
 
 ## Get your configuration details
  
@@ -44,29 +44,29 @@ For this step we going option up old trusty notepad. What you are going to need 
 
 this should look something like this
  
-<Figure key="/images/4013dbe6de0e46c59370606ccb8fae08.png" src="/images/4013dbe6de0e46c59370606ccb8fae08.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4013dbe6de0e46c59370606ccb8fae08.png" src="/images/4013dbe6de0e46c59370606ccb8fae08.png" alt="TFS Build agent configuration details in Notepad" width="0" height="0" caption="TFS Build agent configuration details in Notepad" />
  
 ## Setup lots of agents
  
 This part is now fast ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Make sure you in the directory with your **ConfigureAgent.bat** file
  
-<Figure key="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" src="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" src="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" alt="TFS Build agent ConfigureAgent.bat directory" width="0" height="0" caption="TFS Build agent ConfigureAgent.bat directory" />
  
 Run the ConfigureAgent.bat as administrator
  
-<Figure key="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" src="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" src="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" alt="TFS Build agent ConfigureAgent.bat run as administrator" width="0" height="0" caption="TFS Build agent ConfigureAgent.bat run as administrator" />
  
 You should see something like this now
  
-<Figure key="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" src="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" src="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" alt="TFS Build agent configuration command prompt" width="0" height="0" caption="TFS Build agent configuration command prompt" />
  
 Copy everything in your notepad, so you should have all that config with the extra new line at the end. Now right click in cmd and paste
  
-<Figure key="/images/86f86b70f0e64b49a2425784b70a11f1.png" src="/images/86f86b70f0e64b49a2425784b70a11f1.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/86f86b70f0e64b49a2425784b70a11f1.png" src="/images/86f86b70f0e64b49a2425784b70a11f1.png" alt="TFS Build agent pasting configuration into command prompt" width="0" height="0" caption="TFS Build agent pasting configuration into command prompt" />
  
 and that would all work (if you want it to stay open you can open a cmd in admin and then run the bat file from there)
  
-<Figure key="/images/657422daa26f43259036b757921201b0.png" src="/images/657422daa26f43259036b757921201b0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/657422daa26f43259036b757921201b0.png" src="/images/657422daa26f43259036b757921201b0.png" alt="TFS Build agent command prompt after running bat file" width="0" height="0" caption="TFS Build agent command prompt after running bat file" />
  
 Now go to each folders **ConfigureAgent.bat** and run as admin, paste in the same config (changing just the agent name to increment the number at the end)
  
@@ -74,5 +74,5 @@ Now go to each folders **ConfigureAgent.bat** and run as admin, paste in the sam
  
 At this point if you go to your agent pool in TFS you will see they are all setup. 
  
-<Figure key="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" src="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" src="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" alt="TFS Agent Pool with all agents setup" width="0" height="0" caption="TFS Agent Pool with all agents setup" />
 

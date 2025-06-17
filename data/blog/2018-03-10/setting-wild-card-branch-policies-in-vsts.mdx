@@ -3,11 +3,11 @@ title: 'Setting wild card branch policies in @VSTS'
 date: 2018-03-10
 tags: ['VSTS / TFS', 'Source Control. Git']
 draft: false
-summary: 'I’ve probably mentioned it before but keeping up with what’s happening with VSTS is incredible hard with their 3 week cadence and generally huge set of features each 3 weeks. This week at MVP Summit I had what I thought would be a cool request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it’s part of the many benefits of being a MVP .'
+summary: 'I''ve probably mentioned it before but keeping up with what''s happening with VSTS is incredible hard with their 3 week cadence and generally huge set of features each 3 weeks. This week at MVP Summit I had what I thought would be a cool request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it''s part of the many benefits of being a MVP .'
 ---
 
 
-I’ve probably mentioned it before but keeping up with what’s happening with VSTS is incredible hard with their [3 week cadence](https://www.visualstudio.com/learn/moving-cloud-cadence/) and generally huge set of features each 3 weeks. This week at [MVP Summit](https://mvp.microsoft.com/summit) I had what I thought would be a *cool* request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it’s part of the many benefits of [being a MVP](https://mvp.microsoft.com/en-us/overview) ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+I've probably mentioned it before but keeping up with what's happening with VSTS is incredible hard with their [3 week cadence](https://www.visualstudio.com/learn/moving-cloud-cadence/) and generally huge set of features each 3 weeks. This week at [MVP Summit](https://mvp.microsoft.com/summit) I had what I thought would be a *cool* request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it's part of the many benefits of [being a MVP](https://mvp.microsoft.com/en-us/overview) ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
 
 ## The Ask
 
@@ -15,24 +15,25 @@ So the ask is that instead of each time I create a new branch I need to set the 
 
 ## The Solution
 
-As with many other productivity requests I generally have to the individual PM’s I was told by Jeremy Epling that this already exists today. Seems I missed another great feature in VSTS ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). To get started you need to make sure you have a branch under the folder you would like to set the policy, this could mean you [create a temporary branch](https://gordonbeeming.com/blog/vsts-tfs/2018/3/creating-a-new-branch-in-vsts) just to set the branch policy. 
+As with many other productivity requests I generally have to the individual PM's I was told by Jeremy Epling that this already exists today. Seems I missed another great feature in VSTS ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). To get started you need to make sure you have a branch under the folder you would like to set the policy, this could mean you [create a temporary branch](https://gordonbeeming.com/blog/vsts-tfs/2018/3/creating-a-new-branch-in-vsts) just to set the branch policy. 
 
 Once created you can 
 
 1. Click on the ellipse *on the folder* and then
 2. Branch policies
 
-<Figure key="/images/7d855ff18dce420fa9bdc7deeceb4f09.png" src="/images/7d855ff18dce420fa9bdc7deeceb4f09.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7d855ff18dce420fa9bdc7deeceb4f09.png" src="/images/7d855ff18dce420fa9bdc7deeceb4f09.png" alt="Accessing branch policies for a folder in VSTS" width="0" height="0" caption="Accessing branch policies for a folder in VSTS" />
 
-and then you can set the policies for any branches created under this folder, you should notice the /\* in the branch name that you are setting the policies for
 
-<Figure key="/images/f48210e2a1074d1f96d3d83f3501445e.png" src="/images/f48210e2a1074d1f96d3d83f3501445e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+and then you can set the policies for any branches created under this folder, you should notice the /\\* in the branch name that you are setting the policies for
+
+<Figure key="/images/f48210e2a1074d1f96d3d83f3501445e.png" src="/images/f48210e2a1074d1f96d3d83f3501445e.png" alt="Setting wildcard branch policies in VSTS" width="0" height="0" caption="Setting wildcard branch policies for release/\\* branches" />
 
 Once you change the policy you are able to delete the temp branch that has been created and any new branches in this path will automatically inherit the policies created
 
 ## Conclusion
 
-There is a lot of great functionality in VSTS and sometimes if you not following what’s going on properly in the product you just have to try the experience you would like and might find it exists already.
+There is a lot of great functionality in VSTS and sometimes if you not following what's going on properly in the product you just have to try the experience you would like and might find it exists already.
 
 Hope this helps others ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
 

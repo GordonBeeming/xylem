@@ -43,7 +43,7 @@ To get rid of this message and put Application Insights in a state where you can
  
 **Set the platform to x86, x64, or ARM**
  
-<Figure key="/images/f7c1f432bbc14c5591ca252f693cb357.png" src="/images/f7c1f432bbc14c5591ca252f693cb357.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f7c1f432bbc14c5591ca252f693cb357.png" src="/images/f7c1f432bbc14c5591ca252f693cb357.png" alt="Visual Studio Configuration Manager: Setting project platform to x86, x64, or ARM." width="0" height="0" caption="Changing project platform in Visual Studio Configuration Manager for Application Insights compatibility." />
  
 ## Initializing Application Insights
  
@@ -55,7 +55,7 @@ Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsSession.Defa
 
 As the snippet mentions you need to grab the license key (aka: instrumentation key) from the ApplicationInsights.config
 
-<Figure key="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" src="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" src="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" alt="Visual Studio: ApplicationInsights.config file showing the InstrumentationKey." width="0" height="0" caption="Copying the Instrumentation Key from ApplicationInsights.config." />
 
 At this point you can run your application and you will get some basic information like the Operating System, Screen Resolution and a view metrics like session time. You'll need to wait about 15 minutes for the information to display on your dashboard but will look something like below.
 
@@ -63,7 +63,7 @@ At this point you can run your application and you will get some basic informati
 
 To see the data head over to the Usage Tab on VSO Application Insights
 
-<Figure key="/images/29606a92edae40be8d37a84c8f4c524f.png" src="/images/29606a92edae40be8d37a84c8f4c524f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/29606a92edae40be8d37a84c8f4c524f.png" src="/images/29606a92edae40be8d37a84c8f4c524f.png" alt="VSO Application Insights: Usage tab displaying session data." width="0" height="0" caption="Viewing basic usage data in Application Insights Usage tab." />
 
 ## Logging app feature usage
 
@@ -75,7 +75,7 @@ Because I am using a new application I will just log which of the groups the use
 
 We are simple logging that the Item Click event was fired and logging the title of the group that was clicked. This when you click around in the sample app will log to Application Insights as you click around and generate some data. To see the features that were logged head over to **Event Insights** under the **Features** tab
 
-<Figure key="/images/208fc0ec6f5247968935566cdcc6c56c.png" src="/images/208fc0ec6f5247968935566cdcc6c56c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/208fc0ec6f5247968935566cdcc6c56c.png" src="/images/208fc0ec6f5247968935566cdcc6c56c.png" alt="VSO Application Insights: Event Insights under Features tab showing logged custom events." width="0" height="0" caption="Viewing logged custom events in Application Insights Event Insights." />
 
 ## Conclusion
 

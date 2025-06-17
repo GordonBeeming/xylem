@@ -13,11 +13,11 @@ If you've been using [Application Insights](http://msdn.microsoft.com/en-us/libr
  
 First off head over to the [Azure Portal](portal.azure.com) and create a new Application Insights Resource
  
-<Figure key="/images/95f269c2fdb14b328173060ba524d96b.png" src="/images/95f269c2fdb14b328173060ba524d96b.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/95f269c2fdb14b328173060ba524d96b.png" src="/images/95f269c2fdb14b328173060ba524d96b.png" alt="Azure Portal - New Application Insights Resource" width="0" height="0" caption="Azure Portal: Creating a new Application Insights Resource." /> 
  
 Give it a name and choose a Resource Group, It's fine that the Application Type is set to ASP.net web application.
  
-<Figure key="/images/191779d980b04691bd753213012e8e44.png" src="/images/191779d980b04691bd753213012e8e44.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/191779d980b04691bd753213012e8e44.png" src="/images/191779d980b04691bd753213012e8e44.png" alt="Azure Portal - Naming and configuring the new Application Insights Resource" width="0" height="0" caption="Azure Portal: Naming the new Application Insights Resource and selecting a Resource Group." /> 
  
 After the resource has been created you are ready to add AI to your store app in visual studio
  
@@ -25,31 +25,31 @@ After the resource has been created you are ready to add AI to your store app in
  
 Open your store app in visual studio and make sure you have the latest AI SDK installed (2.4 at the moment) and no other AI artifacts left in your project. Right click on the store app solution and click on *Add Application Insights Telemetry...*
  
-<Figure key="/images/912afb3395b9487883ca08d6c3e44bc6.png" src="/images/912afb3395b9487883ca08d6c3e44bc6.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/912afb3395b9487883ca08d6c3e44bc6.png" src="/images/912afb3395b9487883ca08d6c3e44bc6.png" alt="Visual Studio - Add Application Insights Telemetry option for a Windows Store App" width="0" height="0" caption="Visual Studio: Right-clicking the Windows Store App solution and selecting Add Application Insights Telemetry." /> 
 
 At this point if you haven't signed in you will be promoted to sign in, click *Gain insights into your application now* button
  
-<Figure key="/images/606cd1f69ab842acaa5a3a1e1fc75dd9.png" src="/images/606cd1f69ab842acaa5a3a1e1fc75dd9.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/606cd1f69ab842acaa5a3a1e1fc75dd9.png" src="/images/606cd1f69ab842acaa5a3a1e1fc75dd9.png" alt="Visual Studio - Application Insights sign-in prompt" width="0" height="0" caption="Visual Studio: Application Insights sign-in prompt with \'Gain insights into your application now\' button." /> 
  
 After you have signed in you will be presented with the *Add Application Insights to Project* window
  
-<Figure key="/images/6472117ec0174a138ff8f88afc8d95fa.png" src="/images/6472117ec0174a138ff8f88afc8d95fa.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/6472117ec0174a138ff8f88afc8d95fa.png" src="/images/6472117ec0174a138ff8f88afc8d95fa.png" alt="Visual Studio - Add Application Insights to Project window" width="0" height="0" caption="Visual Studio: The Add Application Insights to Project window after signing in." /> 
  
 On this window click on *Use advanced mode*
  
-<Figure key="/images/4e8c2139ddc44379b47e7b29587ff132.png" src="/images/4e8c2139ddc44379b47e7b29587ff132.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/4e8c2139ddc44379b47e7b29587ff132.png" src="/images/4e8c2139ddc44379b47e7b29587ff132.png" alt="Visual Studio - Add Application Insights to Project window with Use advanced mode button" width="0" height="0" caption="Visual Studio: Add Application Insights to Project window with the \'Use advanced mode\' button highlighted." /> 
  
 which will now ask you for all your AI settings
  
-<Figure key="/images/bfbe992c5a1c4562b0fd20759179177f.png" src="/images/bfbe992c5a1c4562b0fd20759179177f.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/bfbe992c5a1c4562b0fd20759179177f.png" src="/images/bfbe992c5a1c4562b0fd20759179177f.png" alt="Visual Studio - Advanced settings for Application Insights" width="0" height="0" caption="Visual Studio: Advanced settings for Application Insights." /> 
  
 We'll get all of these from the portal. Open your AI resource in the portal and click on *Properties*
 
-<Figure key="/images/3e13a011802d40e085cf22aab391f51e.png" src="/images/3e13a011802d40e085cf22aab391f51e.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/3e13a011802d40e085cf22aab391f51e.png" src="/images/3e13a011802d40e085cf22aab391f51e.png" alt="Azure Portal - Application Insights Resource Properties" width="0" height="0" caption="Azure Portal: Application Insights Resource Properties." /> 
  
 This will show you your *Subscription ID, Resource Group*, *Application Insights Resource* (name) and *Instrumentation Key*. Copy these and place them in the window. Once you have filled in all of those fields and clicked *Add Application Insights To Project* you are ready to run your app and see some data.  
  
-<Figure key="/images/577e25c38e2645bd8609d51f0fd240c2.png" src="/images/577e25c38e2645bd8609d51f0fd240c2.png" alt="pastedImage" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/577e25c38e2645bd8609d51f0fd240c2.png" src="/images/577e25c38e2645bd8609d51f0fd240c2.png" alt="Visual Studio - Running the Windows Store App with Application Insights" width="0" height="0" caption="Visual Studio: Running the Windows Store App with Application Insights." /> 
  
 For now it's good enough to see what's happening in your app and some insight is infinity better than no insight =)
 

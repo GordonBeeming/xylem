@@ -13,7 +13,7 @@ At [MVP Summit](https://mvp.microsoft.com/summit) this year one of the valuable 
 
 As mentioned above chrome profiles are great so what's being annoying me a maybe you (if you arrived here from a search ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg))? The problem is that [Visual Studio](https://www.visualstudio.com/vs/) when set to use chrome as the browser does exactly that and uses chrome. 
 
-<Figure key="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" src="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" src="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" alt="Visual Studio browser selection dropdown with Chrome selected" width="0" height="0" caption="Visual Studio browser selection with Chrome as default" />
 
 If you haven't had any issues with this you might not have as many chrome profiles open as I do ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). To explain this a bit better when you close all instances of chrome and then open chrome again the default chrome behavior is to load the last profile you had open. You can change this by pinning specific shortcuts to the profile or having a desktop shortcut to that profile.
 
@@ -31,30 +31,30 @@ The way the shortcut works for chrome is a parameter is passed on load specifyin
 2. Right click on the name of the chrome profile shortcut
 3. Click on Properties
 
-<Figure key="/images/b90276379ac94fe6a6ac1d1fda661a6a.png" src="/images/b90276379ac94fe6a6ac1d1fda661a6a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b90276379ac94fe6a6ac1d1fda661a6a.png" src="/images/b90276379ac94fe6a6ac1d1fda661a6a.png" alt="Accessing Chrome profile shortcut properties" width="0" height="0" caption="Opening properties for a Chrome profile shortcut" />
 
 This will open the properties for the shortcut where you will notice the --profile-directory parameter being passed into the chrome.exe executable. 
 
-<Figure key="/images/6a17221f26484f2cb4f185a60ef6bf45.png" src="/images/6a17221f26484f2cb4f185a60ef6bf45.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6a17221f26484f2cb4f185a60ef6bf45.png" src="/images/6a17221f26484f2cb4f185a60ef6bf45.png" alt="Chrome profile shortcut properties Target field" width="0" height="0" caption="Chrome shortcut properties showing --profile-directory parameter" />
 
 Copy the full target as we'll use both parts next. Open up a web project in Visual Studio and 
 
 1. Click on the little down arrow next to the Start Debugging menu
 2. Click on Browse with...
 
-<Figure key="/images/bb4f291bb9b145e7b3b90640d9d6e7c2.png" src="/images/bb4f291bb9b145e7b3b90640d9d6e7c2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bb4f291bb9b145e7b3b90640d9d6e7c2.png" src="/images/bb4f291bb9b145e7b3b90640d9d6e7c2.png" alt="Visual Studio Browse With option" width="0" height="0" caption="Visual Studio 'Browse with...' option in the debug dropdown" />
 
 This will bring Browse with dialog where we will now click on Add...
 
-<Figure key="/images/78f5410cb05549f59799afe2f5fb7370.png" src="/images/78f5410cb05549f59799afe2f5fb7370.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/78f5410cb05549f59799afe2f5fb7370.png" src="/images/78f5410cb05549f59799afe2f5fb7370.png" alt="Visual Studio Browse With dialog Add button" width="0" height="0" caption="Visual Studio 'Browse With' dialog - Add button" />
 
 In this dialog we are going to paste the Target we copied from the properties window, remove the quotes around the path to chrome.exe and then cut the parameter part to the arguments section and give the *browser* and friendly name and click OK.
 
-<Figure key="/images/b28418ba52e04a379addeab919da3bc0.png" src="/images/b28418ba52e04a379addeab919da3bc0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b28418ba52e04a379addeab919da3bc0.png" src="/images/b28418ba52e04a379addeab919da3bc0.png" alt="Visual Studio Add Program dialog for Chrome profile" width="0" height="0" caption="Adding a specific Chrome profile as a browser in Visual Studio" />
 
 This will add the browser to the overall list of browsers you have, if you are like me and want a consistent feel to launching sites then you'd probably want to make this browser your default
 
-<Figure key="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" src="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" src="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" alt="Setting default browser in Visual Studio Browse With dialog" width="0" height="0" caption="Setting the new Chrome profile configuration as the default browser" />
 
 All set to have a pain free browsing experience when doing your development ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
 
@@ -70,9 +70,9 @@ If you have any other similar or related productivity tips please feel free to s
 
 Happy Chrome profiling ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/23149eaedddc4b45b7d38011d59a8771.png" src="/images/23149eaedddc4b45b7d38011d59a8771.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/23149eaedddc4b45b7d38011d59a8771.png" src="/images/23149eaedddc4b45b7d38011d59a8771.png" alt="Multiple Chrome profile windows open" width="0" height="0" caption="Multiple Chrome profiles in use" />
 
-<Figure key="/images/076a9701830e4b379d694726f7283d4e.png" src="/images/076a9701830e4b379d694726f7283d4e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/076a9701830e4b379d694726f7283d4e.png" src="/images/076a9701830e4b379d694726f7283d4e.png" alt="Chrome profile selection menu" width="0" height="0" caption="Chrome's profile selection menu showing multiple profiles" />
 
 5 'incognito plus' browsers so far ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
 

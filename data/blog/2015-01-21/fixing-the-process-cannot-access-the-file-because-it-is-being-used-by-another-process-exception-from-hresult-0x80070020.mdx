@@ -17,13 +17,13 @@ netstat -aon | find ":80"
 
 With that I would get the output 
 
-<Figure key="/images/2e8a3989c98d4e3bb698c805c0bd9226.png" src="/images/2e8a3989c98d4e3bb698c805c0bd9226.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/2e8a3989c98d4e3bb698c805c0bd9226.png" src="/images/2e8a3989c98d4e3bb698c805c0bd9226.png" alt="Command prompt showing netstat output for port 80" width="0" height="0" caption="Netstat output showing process using port 80" /> 
 
 and from there I needed to take the Process ID (Last Column) and look in Task Manager. When I opened Task Manager I noticed that the process that was using port 80 was [Skype](http://www.skype.com/). After Ending the Skype process and doing an IIS Reset everything was back to normal.
 
 I wanted to find out why Skype would be using port 80 and so I went into the settings and noticed a checkbox that was allowing it to use that port
 
-<Figure key="/images/dd27a6f6c77d4d4687162b967b5bc46d.png" src="/images/dd27a6f6c77d4d4687162b967b5bc46d.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/dd27a6f6c77d4d4687162b967b5bc46d.png" src="/images/dd27a6f6c77d4d4687162b967b5bc46d.png" alt="Skype settings showing 'Use port 80 and 443 as alternatives for incoming connections' checkbox" width="0" height="0" caption="Skype connection settings" /> 
 
 After un-checking this box Skype has not taken control again =).
 

@@ -11,27 +11,27 @@ In my last post ([Introduction to DotNet Pretty](https://gordonbeeming.com/blog/
  
 3 new visualizers were added 2 debugger display visualizers and 1 debugger visualizer. The first is for [Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType](http://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.workitemtracking.client.workitemtype.aspx) and just displays the Name of the Work Item Type 
  
-<Figure key="/images/18613580179846d78637215b85bc2d74.png" src="/images/18613580179846d78637215b85bc2d74.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/18613580179846d78637215b85bc2d74.png" src="/images/18613580179846d78637215b85bc2d74.png" alt="WorkItemType Debugger Display Visualizer" width="0" height="0" caption="WorkItemType Debugger Display Visualizer showing the Name of the Work Item Type" />
  
 The next  one added was for [Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItem](http://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.workitemtracking.client.workitem.aspx) and that displays the Status, Id and Title of a work item which is awesome for viewing the results of a query during debugging ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
  
-<Figure key="/images/27ce64205a6944c484ecdf5dcfdacb59.png" src="/images/27ce64205a6944c484ecdf5dcfdacb59.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/27ce64205a6944c484ecdf5dcfdacb59.png" src="/images/27ce64205a6944c484ecdf5dcfdacb59.png" alt="WorkItem Debugger Display Visualizer" width="0" height="0" caption="WorkItem Debugger Display Visualizer showing Status, Id and Title of a work item" />
  
 Now having the above is very useful but drilling down into fields was a nightmare so I decided to create a nice visualizer for Work Item which would show you the work item on a form as it would be inside [Visual Studio](http://www.visualstudio.com/products/visual-studio-with-msdn-overview-vs). You simple click the little arrow next to the value and then click on View Work Item
  
-<Figure key="/images/ff1761be3eb249c1896ce933da085844.png" src="/images/ff1761be3eb249c1896ce933da085844.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/ff1761be3eb249c1896ce933da085844.png" src="/images/ff1761be3eb249c1896ce933da085844.png" alt="View Work Item Debugger Visualizer" width="0" height="0" caption="View Work Item Debugger Visualizer option in Visual Studio" /> 
  
 and then you will notice that your life has just been changed ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Any links you click on from within this window will open in the web access and not in another dialog as you might expect.
  
-<Figure key="/images/6031f80b90f44ed9afc54eba03e1653f.png" src="/images/6031f80b90f44ed9afc54eba03e1653f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6031f80b90f44ed9afc54eba03e1653f.png" src="/images/6031f80b90f44ed9afc54eba03e1653f.png" alt="Work Item Visualizer Window" width="0" height="0" caption="Work Item Visualizer window displaying a work item form" />
  
 This work item will show as it is at the current point in the code to the best of the visualizers abilities ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), in the case above I altered the title just before I opened the visualizer and it kept it's new value as expected ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). 
  
-<Figure key="/images/db8bb000b5e9437d8d29868af0f3548f.png" src="/images/db8bb000b5e9437d8d29868af0f3548f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/db8bb000b5e9437d8d29868af0f3548f.png" src="/images/db8bb000b5e9437d8d29868af0f3548f.png" alt="Work Item Visualizer with altered title" width="0" height="0" caption="Work Item Visualizer showing an altered title reflecting changes in code" />
  
 I have tested this on both On Premise TFS and Online with [VSO](http://www.visualstudio.com/products/what-is-visual-studio-online-vs). The On Premise version did give an issue about COM which I'm hoping is just an issue on my machine/instance but will investigate anyway
  
-<Figure key="/images/7398d64444ad487a8711f23fc556a8a0.png" src="/images/7398d64444ad487a8711f23fc556a8a0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7398d64444ad487a8711f23fc556a8a0.png" src="/images/7398d64444ad487a8711f23fc556a8a0.png" alt="COM Exception in Work Item Visualizer" width="0" height="0" caption="COM Exception encountered with On Premise TFS in Work Item Visualizer" />
  
 I know this is going to help me speed working with the TFS API and I'm hoping it's useful to others as well ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
 

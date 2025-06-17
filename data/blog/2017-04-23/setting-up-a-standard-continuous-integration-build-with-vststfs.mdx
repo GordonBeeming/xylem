@@ -25,7 +25,7 @@ Open up a TFS, browse to a Team Project and then click on the
 4. Visual Studio template (normally the default)
 5. Next button
 
-<Figure key="/images/0dd0da1a1ad44a95ad9d19c651ad3f5b.png" src="/images/0dd0da1a1ad44a95ad9d19c651ad3f5b.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0dd0da1a1ad44a95ad9d19c651ad3f5b.png" src="/images/0dd0da1a1ad44a95ad9d19c651ad3f5b.png" alt="VSTS/TFS: Creating a new build definition using the Visual Studio template." width="0" height="0" caption="Selecting the Visual Studio template for a new build definition in VSTS/TFS." />
  
 The most common things you'd change on the next part of the dialog is 
 
@@ -33,7 +33,7 @@ The most common things you'd change on the next part of the dialog is
 2. Ticking the Continuous integration checkbox
 3. Click Create
 
-<Figure key="/images/a5e5b733c3604cb19860a7314f4c8e30.png" src="/images/a5e5b733c3604cb19860a7314f4c8e30.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a5e5b733c3604cb19860a7314f4c8e30.png" src="/images/a5e5b733c3604cb19860a7314f4c8e30.png" alt="VSTS/TFS: Configuring repository and enabling Continuous Integration for the new build definition." width="0" height="0" caption="Setting repository and enabling Continuous Integration for the build." />
  
 Next 
 
@@ -41,15 +41,15 @@ Next
 2. Enter a Name for this definition
 3. Click OK
 
-<Figure key="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" src="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" src="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" alt="VSTS/TFS: Saving the new build definition with a specified name." width="0" height="0" caption="Saving the newly created build definition." />
  
 You have now created a successfully continuous integration build. Click the *Queue new build* button, click *OK* and watch all this hard work pay off ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
  
-<Figure key="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" src="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" src="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" alt="VSTS/TFS: Queuing a new build from the build definition page." width="0" height="0" caption="Queuing the first build for the new CI definition." />
  
 Now that wasn't that hard was it? In a small while depending on the size of your project you should see your project has successfully built
  
-<Figure key="/images/8a1d0645b4024f5ea1bc021050d556f4.png" src="/images/8a1d0645b4024f5ea1bc021050d556f4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8a1d0645b4024f5ea1bc021050d556f4.png" src="/images/8a1d0645b4024f5ea1bc021050d556f4.png" alt="VSTS/TFS: Successful build summary." width="0" height="0" caption="The initial CI build completed successfully." />
  
 Now although we have done what we wanted there is a couple extra things I like doing to try get more value out of the build system in order to help understand where we make mistakes and to try cover a larger surface area with the build
  
@@ -66,7 +66,7 @@ The extra value we are going to add is
 
 Start off by editing the build definition
  
-<Figure key="/images/e82eeff513aa44948487e6e689405d2c.png" src="/images/e82eeff513aa44948487e6e689405d2c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e82eeff513aa44948487e6e689405d2c.png" src="/images/e82eeff513aa44948487e6e689405d2c.png" alt="VSTS/TFS: Edit build definition button." width="0" height="0" caption="Editing the existing build definition to add more features." />
  
 Let's get started
  
@@ -77,7 +77,7 @@ Developers often use [pragma](https://www.google.co.za/search?q=C%23+pragmas&amp
 1. Going to the Variables tab
 2. For the BuildConfiguration variable enter debug,release
 
-<Figure key="/images/e5c26a17e10b4384bfc25bf49e2186ac.png" src="/images/e5c26a17e10b4384bfc25bf49e2186ac.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e5c26a17e10b4384bfc25bf49e2186ac.png" src="/images/e5c26a17e10b4384bfc25bf49e2186ac.png" alt="VSTS/TFS build definition variables: Setting BuildConfiguration to 'debug,release'." width="0" height="0" caption="Configuring the build to run for both debug and release configurations." />
  
 Now we just need to tell the build system to use this variable to build multiple times
 
@@ -86,7 +86,7 @@ Now we just need to tell the build system to use this variable to build multiple
 3. In the Multipliers enter BuildConfiguration
 4. Check the Parallel checkbox
 
-<Figure key="/images/98a00f2d1b15478aa4a8c952f7757d2e.png" src="/images/98a00f2d1b15478aa4a8c952f7757d2e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/98a00f2d1b15478aa4a8c952f7757d2e.png" src="/images/98a00f2d1b15478aa4a8c952f7757d2e.png" alt="VSTS/TFS build definition options: Enabling multi-configuration build with 'BuildConfiguration' multiplier." width="0" height="0" caption="Enabling parallel multi-configuration builds based on the BuildConfiguration variable." />
  
 So what we've done now is told the build system that we want 2 builds to run each time this build is triggered, once for the debug configuration and once for release and we want to run the builds in Parallel to take less time. Let's try our changes out
 
@@ -95,11 +95,11 @@ So what we've done now is told the build system that we want 2 builds to run eac
 3. Notice we have both configurations showing here now
 4. Click OK
 
-<Figure key="/images/569bb17e1ae142ae99e7374e40936933.png" src="/images/569bb17e1ae142ae99e7374e40936933.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/569bb17e1ae142ae99e7374e40936933.png" src="/images/569bb17e1ae142ae99e7374e40936933.png" alt="VSTS/TFS: Queue new build dialog showing debug and release configurations." width="0" height="0" caption="Queuing a new build with both debug and release configurations selected." />
           
  You should see both configurations are running and that they hopefully will both pass ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
-<Figure key="/images/fb02b658e46946f4b7f33dcdd80b6989.png" src="/images/fb02b658e46946f4b7f33dcdd80b6989.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/fb02b658e46946f4b7f33dcdd80b6989.png" src="/images/fb02b658e46946f4b7f33dcdd80b6989.png" alt="VSTS/TFS build summary: Both debug and release configurations built successfully." width="0" height="0" caption="Successful parallel execution of debug and release build configurations." />
  
 That's all to get both configurations to run
  
@@ -115,7 +115,7 @@ Again we are going to edit the build definition and head over to the Options tab
 4. For the first field, we'll add "System.Tags" with a value of "Build failed,$(Build.SourceBranch)"
 5. Add another field, this time around we'll add "System.Title" with a value of "Blog Demo Build $(Build.BuildNumber) failed"
 
-<Figure key="/images/0922762711cf4727b0bb9a5281a80a3a.png" src="/images/0922762711cf4727b0bb9a5281a80a3a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0922762711cf4727b0bb9a5281a80a3a.png" src="/images/0922762711cf4727b0bb9a5281a80a3a.png" alt="VSTS/TFS build definition options: Configuring automatic bug creation on failure with custom title and tags." width="0" height="0" caption="Setting up automatic bug creation on build failure with dynamic title and tags." />
  
 What this is going to do is when the build fails create a new Bug, assign it to the person who manually kicked off the build or whoever checked in the code to make the build fail setting the title and tags for us.
  
@@ -123,11 +123,11 @@ Click Save as we did earlier and lets test the change. Because this is a CI Buil
  
 So in a Todo controller that I have, I decide that when we running in DEBUG configuration I don't want to place the code in a Try catch so that we can see the exceptions that occur instead. Notice how this method expects a return string which we forgot to put in 
  
-<Figure key="/images/25716ee749de4199a5fefee1345e971c.png" src="/images/25716ee749de4199a5fefee1345e971c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/25716ee749de4199a5fefee1345e971c.png" src="/images/25716ee749de4199a5fefee1345e971c.png" alt="Visual Studio: C# code in TodoController with a missing return statement in a DEBUG block." width="0" height="0" caption="Introducing a deliberate error in the TodoController for DEBUG configuration." />
  
 Being a 'bad developer' I'll just go and check this in without testing it.
- 
-<Figure key="/images/e5986985afbf40628fa6f7302d80b8ae.png" src="/images/e5986985afbf40628fa6f7302d80b8ae.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+
+<Figure key="/images/e5986985afbf40628fa6f7302d80b8ae.png" src="/images/e5986985afbf40628fa6f7302d80b8ae.png" alt="Visual Studio Team Explorer: Checking in the erroneous code." width="0" height="0" caption="Checking in the code with the intentional bug." />
      
 Now we should get an email from TFS telling us we have a new bug assigned to us, opening that up we can see
 
@@ -135,11 +135,11 @@ Now we should get an email from TFS telling us we have a new bug assigned to us,
 2. Tags are set showing Build failed as well as the branch we broke
 3. A link has been added to the failing build
 
-<Figure key="/images/e4bfc780c69143ce916a120fcbbc24d0.png" src="/images/e4bfc780c69143ce916a120fcbbc24d0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e4bfc780c69143ce916a120fcbbc24d0.png" src="/images/e4bfc780c69143ce916a120fcbbc24d0.png" alt="VSTS/TFS: Bug work item created automatically for the failed build, showing title, tags, and build link." width="0" height="0" caption="Automatically created bug work item detailing the build failure." />
  
 If we open up the build we can see that the release build went through 100% and only the debug build broke. If we weren't building all our configurations we would not have noticed this ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
-<Figure key="/images/d31eb2bcccc548a28965874e9fccc120.png" src="/images/d31eb2bcccc548a28965874e9fccc120.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d31eb2bcccc548a28965874e9fccc120.png" src="/images/d31eb2bcccc548a28965874e9fccc120.png" alt="VSTS/TFS build summary: Release build successful, debug build failed." width="0" height="0" caption="Build summary showing the debug configuration failure and release configuration success." />
  
 Job Done ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). I'm also going to fix that bug for the rest of the post.
    
@@ -153,7 +153,7 @@ Again let's edit the build definition, this time we are going to
 2. Change the Clean option to true
 3. Clean options to All build directories
 
-<Figure key="/images/a03607a5c97f48c5b9c41a732d68f833.png" src="/images/a03607a5c97f48c5b9c41a732d68f833.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a03607a5c97f48c5b9c41a732d68f833.png" src="/images/a03607a5c97f48c5b9c41a732d68f833.png" alt="VSTS/TFS build definition repository settings: Clean set to true, Clean options set to 'All build directories'." width="0" height="0" caption="Configuring the build to clean all build directories before execution." />
  
 Click Save to keep these changes. You do have to realize that you are sacrificing build time/speed for accuracy here, on bigger builds you may want to be more specific about what you clean up.
  
@@ -167,19 +167,19 @@ Earlier we added an option to tag which branch breaks our builds and currently w
 4. Add an Exclude filter
 5. Enter users/\* as that filter
 
-<Figure key="/images/0b7e9a4fd30f4fba99f0fb5bcb365e07.png" src="/images/0b7e9a4fd30f4fba99f0fb5bcb365e07.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0b7e9a4fd30f4fba99f0fb5bcb365e07.png" src="/images/0b7e9a4fd30f4fba99f0fb5bcb365e07.png" alt="VSTS/TFS build definition triggers: Branch filter including all branches (*) and excluding user branches (users/*)." width="0" height="0" caption="Setting up build triggers for all branches except user-specific branches." />
  
 Click Save. What we have done now is say that we want to trigger off any branch that a check-in takes place for although if there is a users branch we'll ignore those because we understand that guys do commit builds into branches tagged with their own name that could have bugs as that prototype things
  
-<Figure key="/images/78f4b2f26b5a429596128cf86a051529.png" src="/images/78f4b2f26b5a429596128cf86a051529.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/78f4b2f26b5a429596128cf86a051529.png" src="/images/78f4b2f26b5a429596128cf86a051529.png" alt="Visual Studio Team Explorer: Branch structure showing main and user branches." width="0" height="0" caption="Example branch structure with main and user branches." />
  
 Note that when you manually queue a build you can still select to queue for the user branch
  
-<Figure key="/images/4e12b9e7e8d745ff84d8993a8bca69bd.png" src="/images/4e12b9e7e8d745ff84d8993a8bca69bd.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4e12b9e7e8d745ff84d8993a8bca69bd.png" src="/images/4e12b9e7e8d745ff84d8993a8bca69bd.png" alt="VSTS/TFS: Queue new build dialog with a user branch selected." width="0" height="0" caption="Manually queuing a build for a user branch is still possible." />
  
 It will build as normal (including creating bugs when the build breaks).
  
-<Figure key="/images/f9860e8fcf6c426ca9951791f63073b6.png" src="/images/f9860e8fcf6c426ca9951791f63073b6.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f9860e8fcf6c426ca9951791f63073b6.png" src="/images/f9860e8fcf6c426ca9951791f63073b6.png" alt="VSTS/TFS build summary: Successful build for a user branch." width="0" height="0" caption="Successful build execution for a manually queued user branch." />
    
 We all done. Builds will now trigger for any branch except those under a users path.
   
@@ -190,21 +190,21 @@ Another thing I really like doing, especially in this days fast paces world of r
 1. Go to the General tab
 2. Change the Build number format to "$(date:yyyy.MM.dd)$(rev:.r)", basically just adding a period (.) between the year, month and day part of should already exist.
 
-<Figure key="/images/a08b81eeccaf46e8a0120955ad1831c7.png" src="/images/a08b81eeccaf46e8a0120955ad1831c7.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a08b81eeccaf46e8a0120955ad1831c7.png" src="/images/a08b81eeccaf46e8a0120955ad1831c7.png" alt="VSTS/TFS build definition general settings: Build number format set to '$(date:yyyy.MM.dd)$(rev:.r)'." width="0" height="0" caption="Customizing the build number format for better versioning." />
  
 Click Save. This alone doesn't do much for us but gives us a build number that can be used for a assembly version number.
  
 For this next part you'll need to install a extension from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/) which I use to [Update AssemblyInfo](https://marketplace.visualstudio.com/items?itemName=sebastianlux.UpdateAssemblyInfo)
  
-<Figure key="/images/39b531b91ab44cf18227d9b1086517d8.png" src="/images/39b531b91ab44cf18227d9b1086517d8.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/39b531b91ab44cf18227d9b1086517d8.png" src="/images/39b531b91ab44cf18227d9b1086517d8.png" alt="Visual Studio Marketplace: Update AssemblyInfo extension page." width="0" height="0" caption="Update AssemblyInfo extension on the Visual Studio Marketplace." />
  
 After that is installed go back to your build definition and edit it again. Add a new task Update AssemblyInfo
  
-<Figure key="/images/d1ac4e134413448d96bdf07c321831e2.png" src="/images/d1ac4e134413448d96bdf07c321831e2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d1ac4e134413448d96bdf07c321831e2.png" src="/images/d1ac4e134413448d96bdf07c321831e2.png" alt="VSTS/TFS build definition tasks: Adding Update AssemblyInfo task." width="0" height="0" caption="Adding the Update AssemblyInfo task to the build definition." />
  
 and place it as the first step in your build
  
-<Figure key="/images/8dcdda43d07c41cc8b9b9b2ec1293225.png" src="/images/8dcdda43d07c41cc8b9b9b2ec1293225.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8dcdda43d07c41cc8b9b9b2ec1293225.png" src="/images/8dcdda43d07c41cc8b9b9b2ec1293225.png" alt="VSTS/TFS build definition: Update AssemblyInfo task as the first step." width="0" height="0" caption="Reordering the build steps to include Update AssemblyInfo first." />
  
 Under the properties you can choose what to fill in but I generally enter 
 
@@ -213,33 +213,33 @@ Under the properties you can choose what to fill in but I generally enter
 2. Configuration I set to the configuration and then generally in the source I set this value to something like "Dev Build?" so we can see if we do really bad things ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
 3. Set the Version, File version and Information version to "$(Build.BuildNumber)"
 
-<Figure key="/images/79c638dafda7412f9624fe9b79a4dcba.png" src="/images/79c638dafda7412f9624fe9b79a4dcba.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/79c638dafda7412f9624fe9b79a4dcba.png" src="/images/79c638dafda7412f9624fe9b79a4dcba.png" alt="VSTS/TFS build definition: Assembly versioning settings." width="0" height="0" caption="Configuring assembly versioning based on the build number." />
  
 Now if you kick off a build you'll see this information get stamped into your binary. 
  
-<Figure key="/images/f337f4b26e3e4715994cf29f1d05376d.png" src="/images/f337f4b26e3e4715994cf29f1d05376d.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f337f4b26e3e4715994cf29f1d05376d.png" src="/images/f337f4b26e3e4715994cf29f1d05376d.png" alt="AssemblyInfo.cs: Assembly attributes updated with build information." width="0" height="0" caption="Assembly attributes updated with build details." />
  
 I then also like having this exposed from the apps themselves something like below
  
-<Figure key="/images/7a028bf748564b5ba07bb9ead54e08d4.png" src="/images/7a028bf748564b5ba07bb9ead54e08d4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7a028bf748564b5ba07bb9ead54e08d4.png" src="/images/7a028bf748564b5ba07bb9ead54e08d4.png" alt="ASP.NET MVC View: Displaying assembly information." width="0" height="0" caption="Displaying assembly information in the application." />
  
 code in [GitHub Gist](https://gist.github.com/Gordon-Beeming/2d3747d186d5b263e95183b559f8376c).
  
 This code relies on you mapping MVC attribute routes
  
-<Figure key="/images/b5d0987353dc447bade02227b5c1c5a2.png" src="/images/b5d0987353dc447bade02227b5c1c5a2.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/b5d0987353dc447bade02227b5c1c5a2.png" src="/images/b5d0987353dc447bade02227b5c1c5a2.png" alt="ASP.NET MVC: Route configuration for attribute routing." width="0" height="0" caption="Configuring attribute routing in MVC." /> 
  
 If we have to build and deploy this code we should see all the info as we added it to the description
  
-<Figure key="/images/e422c0db52874bef8ae27967fd7e224e.png" src="/images/e422c0db52874bef8ae27967fd7e224e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e422c0db52874bef8ae27967fd7e224e.png" src="/images/e422c0db52874bef8ae27967fd7e224e.png" alt="ASP.NET MVC: Displaying detailed assembly information." width="0" height="0" caption="Displaying detailed assembly information in the application." />
     
 running this from a our local build would show Dev Build?
  
-<Figure key="/images/f96087008c774596984303d4788c8f1a.png" src="/images/f96087008c774596984303d4788c8f1a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f96087008c774596984303d4788c8f1a.png" src="/images/f96087008c774596984303d4788c8f1a.png" alt="Local build: Displaying assembly information in the console." width="0" height="0" caption="Displaying assembly information from a local build." />
  
 In my example here the deploy was just pulling the binary out of TFS of build and dropping it onto my dev machine to get the compiled info but as you can see we can trace this back to a specific branch, commit and build in TFS now. After we get the Build.Reason in TFS we will know some extra info like who kicked off the build (below screenshot from the build variables docs)
  
-<Figure key="/images/df57447a317f4fdab504b7f8d0df4bc0.png" src="/images/df57447a317f4fdab504b7f8d0df4bc0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/df57447a317f4fdab504b7f8d0df4bc0.png" src="/images/df57447a317f4fdab504b7f8d0df4bc0.png" alt="VSTS/TFS: Build variables available after the build is triggered." width="0" height="0" caption="Available build variables after a build is triggered." />
    
 When we get this extra info this becomes that little bit more powerful ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
@@ -251,7 +251,7 @@ The last thing I usually do is label sources. For this edit the build definition
 2. Change the Label sources to On successful build
 3. Enter the label format as $(Build.BuildNumber)
 
-<Figure key="/images/264d472777ae4399a63596de94257ea2.png" src="/images/264d472777ae4399a63596de94257ea2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/264d472777ae4399a63596de94257ea2.png" src="/images/264d472777ae4399a63596de94257ea2.png" alt="VSTS/TFS build definition repository settings: Label sources set to 'On successful build' with format '$(Build.BuildNumber)'." width="0" height="0" caption="Configuring source labeling on successful build." />
  
 This will now generate a lot of labels as you could expect so I normally adjust the Retention policy to remove this. 
 
@@ -259,13 +259,13 @@ This will now generate a lot of labels as you could expect so I normally adjust 
 2. Check the Delete source label
 3. and change the branch filter to Include \*
 
-<Figure key="/images/664584bcaece421486e63298c109fdea.png" src="/images/664584bcaece421486e63298c109fdea.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/664584bcaece421486e63298c109fdea.png" src="/images/664584bcaece421486e63298c109fdea.png" alt="VSTS/TFS retention settings: Deleting source labels and including all branches." width="0" height="0" caption="Adjusting retention policy to delete source labels for all branches." />
  
 This works quite well if you are using Release Manager in TFS/VSTS as well as the policy on the releases is usually set to keep the builds around that are being used so you will always have the tags  if needed for any builds actually used in your release process. 
  
 Click Save and run your build, after it's successfully run go to the code tab and you should see your new tag added
  
-<Figure key="/images/9ba6d88f6d9d451d895900d194ea248a.png" src="/images/9ba6d88f6d9d451d895900d194ea248a.png" alt="SNAGHTML11c35e86" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/9ba6d88f6d9d451d895900d194ea248a.png" src="/images/9ba6d88f6d9d451d895900d194ea248a.png" alt="VSTS/TFS: New tag added to the code repository after a successful build." width="0" height="0" caption="New tag added to the repository after the build." />
  
 Tagging can be really useful for a couple of reasons like debugging production issues as you can check the code as of that exact build.
    

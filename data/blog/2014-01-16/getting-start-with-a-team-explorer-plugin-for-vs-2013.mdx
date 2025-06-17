@@ -20,35 +20,35 @@ All sample code that is worked on through out any of the Team Explorer Samples w
  
 Open Up Visual Studio in Administrator mode and create a new Visual Studio Package
  
-<Figure key="/images/d80c41df286a4355a1535f7c793ba354.png" src="/images/d80c41df286a4355a1535f7c793ba354.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d80c41df286a4355a1535f7c793ba354.png" src="/images/d80c41df286a4355a1535f7c793ba354.png" alt="New Visual Studio Package project template" width="0" height="0" caption="Creating a new Visual Studio Package project" />
  
-Use the following options in the Visual Studio Package Wizard 
+ Use the following options in the Visual Studio Package Wizard 
  
 *Page 1 of 7* - Select your language as Visual C# and Generate a new key file to sign the assembly
  
-<Figure key="/images/325624185efc4a198a740b137f679232.png" src="/images/325624185efc4a198a740b137f679232.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/325624185efc4a198a740b137f679232.png" src="/images/325624185efc4a198a740b137f679232.png" alt="Visual Studio Package Wizard - Page 1" width="0" height="0" caption="Package Wizard - Language and key file selection" />
  
 *Page 2 of 7* - Enter the Basic VSPackage Information
  
-<Figure key="/images/5adc942ff02348fa8ab0e6a437c54d1c.png" src="/images/5adc942ff02348fa8ab0e6a437c54d1c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5adc942ff02348fa8ab0e6a437c54d1c.png" src="/images/5adc942ff02348fa8ab0e6a437c54d1c.png" alt="Visual Studio Package Wizard - Page 2" width="0" height="0" caption="Package Wizard - Basic VSPackage Information" />
  
 *Page 3 of 7* - leave all unchecked
  
-<Figure key="/images/381999a3d06a4caebb2f9ad2f682b746.png" src="/images/381999a3d06a4caebb2f9ad2f682b746.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/381999a3d06a4caebb2f9ad2f682b746.png" src="/images/381999a3d06a4caebb2f9ad2f682b746.png" alt="Visual Studio Package Wizard - Page 3" width="0" height="0" caption="Package Wizard - VSPackage Options (unchecked)" />
  
 *Page 7 of 7* - You should select Integration Test Project and Unit Test Project but for now deselect these ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
-<Figure key="/images/1a2c3ac7e20c45539d8d60fe44ed211b.png" src="/images/1a2c3ac7e20c45539d8d60fe44ed211b.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/1a2c3ac7e20c45539d8d60fe44ed211b.png" src="/images/1a2c3ac7e20c45539d8d60fe44ed211b.png" alt="Visual Studio Package Wizard - Page 7" width="0" height="0" caption="Package Wizard - Test Project selection (deselected)" />
  
 Click Finish, Visual Studio will now crate the base Project for you and automatically open the source.extension.vsixmanifest file. With this file open there is one thing that we are going to want to add. We are going to require the MEF Component Asset. Thanks must go to [Utkarsh Shigihalli](https://twitter.com/onlyutkarsh) for helping with this part ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Switch to the Assets tab and click New, select the options to complete the window as below
  
-<Figure key="/images/e9d2be9852934473a9184e13ae20f0dd.png" src="/images/e9d2be9852934473a9184e13ae20f0dd.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e9d2be9852934473a9184e13ae20f0dd.png" src="/images/e9d2be9852934473a9184e13ae20f0dd.png" alt="Adding MEF Component Asset in VSIX Manifest" width="0" height="0" caption="VSIX Manifest - Adding a MEF Component Asset" />
  
-The last step to setup this solution for our sample plugin is to add a reference to **Microsoft.TeamFoundation.Controls** assembly which can be found by default in the folder *C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ReferenceAssemblies\v4.5\*and **System.ComponentModel.Composition**.
+ The last step to setup this solution for our sample plugin is to add a reference to **Microsoft.TeamFoundation.Controls** assembly which can be found by default in the folder *C:\\\\Program Files (x86)\\\\Microsoft Visual Studio 12.0\\\\Common7\\\\IDE\\\\ReferenceAssemblies\\\\v4.5\\\\*and **System.ComponentModel.Composition**.
  
-<Figure key="/images/585281f14a694acbb367310cc556b870.png" src="/images/585281f14a694acbb367310cc556b870.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/585281f14a694acbb367310cc556b870.png" src="/images/585281f14a694acbb367310cc556b870.png" alt="Adding references to Microsoft.TeamFoundation.Controls and System.ComponentModel.Composition" width="0" height="0" caption="Adding necessary assembly references" />
  
-Your solution is now ready to start adding Team Explorer Extensions.
+ Your solution is now ready to start adding Team Explorer Extensions.
  
 Take a look at [Getting start with a Team Explorer Plugin for VS 2013 Part 2](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2) where we will be adding a new Team Explorer Navigation Item.
 

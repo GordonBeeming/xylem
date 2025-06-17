@@ -29,7 +29,7 @@ and by the nature of Chocolatey you will now have ngrok installed ![Smile](https
  
 Alternatively you can go to the [ngrok website](https://go.beeming.net/2rto6oS) and download it from there
  
-<Figure key="/images/47c154f9bd174589a06972d336d639af.png" src="/images/47c154f9bd174589a06972d336d639af.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/47c154f9bd174589a06972d336d639af.png" src="/images/47c154f9bd174589a06972d336d639af.png" alt="ngrok website download page" width="0" height="0" caption="Downloading ngrok from the official website." />
  
 You can test if it's installed correctly why typing ngrok into a cmd window, you should see a list of available commands come up.
  
@@ -39,7 +39,7 @@ You can test if it's installed correctly why typing ngrok into a cmd window, you
  
 This is where the really easy part comes in ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). I created a new .net core project and hit run and it's running on port 32705 locally on my machine
  
-<Figure key="/images/83e1c8d1a3f844a687d4a9da3de0ae76.png" src="/images/83e1c8d1a3f844a687d4a9da3de0ae76.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/83e1c8d1a3f844a687d4a9da3de0ae76.png" src="/images/83e1c8d1a3f844a687d4a9da3de0ae76.png" alt=".NET Core application running locally on port 32705" width="0" height="0" caption=".NET Core application running locally." />
  
 By opening the cmd console typing the below command in
 
@@ -51,15 +51,15 @@ ngrok http localhost:32705 --host-header localhost
 
 This will go ahead and create a tunnel for you to your local port which is exposed on the internet ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  
-<Figure key="/images/2dd915df323a40a39eeba4d01b663569.png" src="/images/2dd915df323a40a39eeba4d01b663569.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/2dd915df323a40a39eeba4d01b663569.png" src="/images/2dd915df323a40a39eeba4d01b663569.png" alt="ngrok console showing active tunnel with forwarding URLs" width="0" height="0" caption="ngrok console displaying the active tunnel and forwarding URLs." />
  
 Not the forwarding urls, we get a http and https link by default. Browsing to this link from your mobile phone and you should notice all the requests showing up in the console
  
-<Figure key="/images/5d430610765c4d1f8d74f8843ef206bb.png" src="/images/5d430610765c4d1f8d74f8843ef206bb.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5d430610765c4d1f8d74f8843ef206bb.png" src="/images/5d430610765c4d1f8d74f8843ef206bb.png" alt="ngrok console showing incoming requests from a mobile device" width="0" height="0" caption="ngrok console logging requests from a connected mobile device." />
  
 You can also navigate to [http://localhost:4040/](http://localhost:4040/ "http://localhost:4040/") and get similar information
  
-<Figure key="/images/90d29c63ac79455fb0427a18eca0a1bd.png" src="/images/90d29c63ac79455fb0427a18eca0a1bd.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/90d29c63ac79455fb0427a18eca0a1bd.png" src="/images/90d29c63ac79455fb0427a18eca0a1bd.png" alt="ngrok web interface showing request details" width="0" height="0" caption="ngrok web interface providing detailed request information." />
  
 As you can see this page has more functionality than just streaming requests, you can also dig into headers and replay requests from this page.
  

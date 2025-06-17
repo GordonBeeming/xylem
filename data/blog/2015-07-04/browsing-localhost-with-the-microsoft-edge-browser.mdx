@@ -9,23 +9,23 @@ summary: 'So if you using windows 10 and doing some web development you would pr
 
 So if you using [windows 10](http://blogs.windows.com/bloggingwindows/2015/07/02/windows-10-preparing-to-upgrade-one-billion-devices/) and doing some web development you would probably have noticed that you can't browse localhost for some reason. And there is a couple of feedback items for it in the Windows Feedback app.
  
-<Figure key="/images/a07ce37bfa5a451f91942ffcc3c1d2ae.png" src="/images/a07ce37bfa5a451f91942ffcc3c1d2ae.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/a07ce37bfa5a451f91942ffcc3c1d2ae.png" src="/images/a07ce37bfa5a451f91942ffcc3c1d2ae.png" alt="Windows Feedback app showing items related to localhost browsing issues" width="0" height="0" caption="Windows Feedback app with entries about localhost browsing problems in Edge" /> 
  
 I'm currently trying to use Microsoft Edge for some screenshots of something (watch this space =D), and keep getting a message saying that the page is not available 
  
-<Figure key="/images/d526884829c84654aa92eedca02ecbb2.png" src="/images/d526884829c84654aa92eedca02ecbb2.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/d526884829c84654aa92eedca02ecbb2.png" src="/images/d526884829c84654aa92eedca02ecbb2.png" alt="Microsoft Edge error: Hmm, we can't reach this page" width="0" height="0" caption="Microsoft Edge displaying 'Hmm, we can\'t reach this page' for a localhost address" /> 
  
 I did a quick search to try find any solutions and couldn't find anything. So I turned to the tool that does magical things for me with the internet. I opened [Fiddler](http://www.telerik.com/fiddler) =). Fiddler has a small feature that you can use when you want to debug network traffic for Windows Store apps. You can open that app by clicking on the *WinConfig* button in the main toolbar of Fiddler.
  
-<Figure key="/images/7890672a0c45490bb4db0a6033ba7a3a.png" src="/images/7890672a0c45490bb4db0a6033ba7a3a.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/7890672a0c45490bb4db0a6033ba7a3a.png" src="/images/7890672a0c45490bb4db0a6033ba7a3a.png" alt="Fiddler toolbar with WinConfig button highlighted" width="0" height="0" caption="Fiddler's main toolbar showing the WinConfig button for AppContainer Loopback Exemption Utility" /> 
  
 This will launch the AppContainer Loopback Exemption Utility. 
  
-<Figure key="/images/6a206b5b1d394659a4565a4fc1205f99.png" src="/images/6a206b5b1d394659a4565a4fc1205f99.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/6a206b5b1d394659a4565a4fc1205f99.png" src="/images/6a206b5b1d394659a4565a4fc1205f99.png" alt="AppContainer Loopback Exemption Utility window" width="0" height="0" caption="The AppContainer Loopback Exemption Utility window listing applications" /> 
  
 Find and check the Microsoft Edge app in the list
  
-<Figure key="/images/557f121f727f483ebd4a581616dcf1ac.png" src="/images/557f121f727f483ebd4a581616dcf1ac.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/557f121f727f483ebd4a581616dcf1ac.png" src="/images/557f121f727f483ebd4a581616dcf1ac.png" alt="Microsoft Edge selected in AppContainer Loopback Exemption Utility" width="0" height="0" caption="Microsoft Edge checkbox selected in the AppContainer Loopback Exemption Utility" /> 
  
 and then click Save Changes 
  
@@ -33,11 +33,11 @@ and then click Save Changes
  
 You will see at the bottom of the window a message specifying that the update was successful. 
  
-<Figure key="/images/ebbb0c0165a94cdf8e2e4a368c574243.png" src="/images/ebbb0c0165a94cdf8e2e4a368c574243.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/ebbb0c0165a94cdf8e2e4a368c574243.png" src="/images/ebbb0c0165a94cdf8e2e4a368c574243.png" alt="AppContainer Loopback Exemption Utility success message" width="0" height="0" caption="Success message in AppContainer Loopback Exemption Utility after saving changes" /> 
  
 Now go back to Microsoft Edge and refresh the site that previously didn't load.
  
-<Figure key="/images/8978d4d82c744388ba9f642d2840f3ad.png" src="/images/8978d4d82c744388ba9f642d2840f3ad.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/8978d4d82c744388ba9f642d2840f3ad.png" src="/images/8978d4d82c744388ba9f642d2840f3ad.png" alt="Localhost site successfully loaded in Microsoft Edge" width="0" height="0" caption="Microsoft Edge successfully loading a localhost website after applying Fiddler exemption" /> 
  
 And you are now able to browse localhost sites using Microsoft Edge. After your site has loaded for the first time it's usually ok to close Fiddler and Edge will continue to work as it should do =D
 

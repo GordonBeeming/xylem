@@ -38,11 +38,11 @@ So although as mentioned I generally just put all the binaries in the root of th
 
 When packing this you do get a warning that you doing bad things but if it works it works right ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg) (I am joking ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)).
 
-<Figure key="/images/49d9a86b3ac14c679189813f51f10e09.png" src="/images/49d9a86b3ac14c679189813f51f10e09.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/49d9a86b3ac14c679189813f51f10e09.png" src="/images/49d9a86b3ac14c679189813f51f10e09.png" alt="NuGet pack warning for incorrect lib folder structure" width="0" height="0" caption="NuGet pack warning: \'Add lib or ref assemblies for the netcoreapp2.1 target framework\'" />
 
 and inside our package we see the contents in the lib folder
 
-<Figure key="/images/5afda91d7b8848d2a57482e18ab47b7f.png" src="/images/5afda91d7b8848d2a57482e18ab47b7f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5afda91d7b8848d2a57482e18ab47b7f.png" src="/images/5afda91d7b8848d2a57482e18ab47b7f.png" alt="NuGet package structure with binaries in root of lib folder" width="0" height="0" caption="Incorrect NuGet package structure with binaries directly in the lib folder" />
 
 ## Fixing our nuspec file
 
@@ -71,11 +71,11 @@ To fix this nuspec file all we need to do is place the binaries in the correct f
 
 With this the warning goes away
 
-<Figure key="/images/92e9e286d4164f9ba0943755b90b52e6.png" src="/images/92e9e286d4164f9ba0943755b90b52e6.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/92e9e286d4164f9ba0943755b90b52e6.png" src="/images/92e9e286d4164f9ba0943755b90b52e6.png" alt="NuGet pack output with no warnings" width="0" height="0" caption="Successful NuGet pack output with no warnings after fixing the nuspec file" />
 
 and the package now has your binaries in the correct lib folder like you should be building your libraries
 
-<Figure key="/images/ed61de64462d4ee584bbabbf8c2f7df1.png" src="/images/ed61de64462d4ee584bbabbf8c2f7df1.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ed61de64462d4ee584bbabbf8c2f7df1.png" src="/images/ed61de64462d4ee584bbabbf8c2f7df1.png" alt="Correct NuGet package structure with binaries in framework-specific lib folder" width="0" height="0" caption="Correct NuGet package structure with binaries in the lib/netcoreapp2.1 folder" />
 
 Now you get no more warnings or *strange* behavior like saying my .net core class library needed to be added as a 4.6.2 reference. This leads to another problem which is that we have issues using this lib targeting other frameworks like aspnet core 2.0 for example so how do we solve this?
 
@@ -103,7 +103,7 @@ to using *TargetFrameworks*
 
 When saved unlike most other parameters that don't affect VS anymore you will be asked to reload the solution, just click Reload All
 
-<Figure key="/images/5a9c568df27641b4a1a4b513d4d3b0f8.png" src="/images/5a9c568df27641b4a1a4b513d4d3b0f8.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5a9c568df27641b4a1a4b513d4d3b0f8.png" src="/images/5a9c568df27641b4a1a4b513d4d3b0f8.png" alt="Visual Studio reload solution dialog" width="0" height="0" caption="Visual Studio dialog prompting to reload solution after changing TargetFrameworks" />
 
 You are now free to add more frameworks separated by semi colon like below
 
@@ -117,11 +117,11 @@ You are now free to add more frameworks separated by semi colon like below
 
 and [Visual Studio](https://www.visualstudio.com/vs/) will react by showing you multiple frameworks under Dependencies 
 
-<Figure key="/images/7125606c8cea44b3b1cc75271c5d851a.png" src="/images/7125606c8cea44b3b1cc75271c5d851a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7125606c8cea44b3b1cc75271c5d851a.png" src="/images/7125606c8cea44b3b1cc75271c5d851a.png" alt="Visual Studio Solution Explorer showing multiple target frameworks" width="0" height="0" caption="Visual Studio Solution Explorer displaying netcoreapp2.0 and netcoreapp2.1 under Dependencies" />
 
 When you compile Visual Studio will now compile against both frameworks and you will therefore have 2 folders in your configuration specific build folder
 
-<Figure key="/images/f7a17b30dfc54762a09de6367d5da4ec.png" src="/images/f7a17b30dfc54762a09de6367d5da4ec.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f7a17b30dfc54762a09de6367d5da4ec.png" src="/images/f7a17b30dfc54762a09de6367d5da4ec.png" alt="Build output folders for multiple target frameworks" width="0" height="0" caption="Build output showing separate folders for netcoreapp2.0 and netcoreapp2.1" />
 
 From here you can alter your nuspec file to just reference both (all) sets of binaries like so
 
@@ -149,15 +149,15 @@ From here you can alter your nuspec file to just reference both (all) sets of bi
 
 When packed you get the same warning(less) output and the nuget package now contains a binary specific to aspnet core 2.0 and 2.1.
 
-<Figure key="/images/f6d596c04d934fa984174ee7457b8ccb.png" src="/images/f6d596c04d934fa984174ee7457b8ccb.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f6d596c04d934fa984174ee7457b8ccb.png" src="/images/f6d596c04d934fa984174ee7457b8ccb.png" alt="NuGet package structure with binaries for multiple frameworks" width="0" height="0" caption="NuGet package explorer showing binaries for netcoreapp2.0 and netcoreapp2.1" />
 
 This can obvious be whatever you want to target, in my example I just happen to be targeting aspnet core. If you get some strange compile warnings/errors just delete the *bin* and *obj* folders and this will allow for a nice clean local build.
 
-<Figure key="/images/6ef83c93cb5d40c79644c794bb87337f.png" src="/images/6ef83c93cb5d40c79644c794bb87337f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6ef83c93cb5d40c79644c794bb87337f.png" src="/images/6ef83c93cb5d40c79644c794bb87337f.png" alt="Visual Studio build error related to duplicate attributes" width="0" height="0" caption="Visual Studio build error: CS0579: Duplicate \'System.Reflection.AssemblyCompanyAttribute\' attribute" />
 
 Removing the bin and obj and then running a resore (for the next error, below ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)) folder fixes the above
 
-<Figure key="/images/9fcf9da910e54daf9312c78581058826.png" src="/images/9fcf9da910e54daf9312c78581058826.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/9fcf9da910e54daf9312c78581058826.png" src="/images/9fcf9da910e54daf9312c78581058826.png" alt="Visual Studio build error after restoring packages" width="0" height="0" caption="Visual Studio build error after restoring packages" />
 
 Should be all set now.
 
@@ -201,7 +201,7 @@ and when you open the nupkg file you'd notice that the version number we used in
 
 I love VSTS and TFS because there is so much traceability that's baked in. I use versioning tasks to stamp build information into my binaries and thought why not do the same with packages. For this I have a Task Group which I use to do my *nuget pack* and it looks like below
 
-<Figure key="/images/c9c470d912e1464492786e323645d165.png" src="/images/c9c470d912e1464492786e323645d165.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/c9c470d912e1464492786e323645d165.png" src="/images/c9c470d912e1464492786e323645d165.png" alt="VSTS Task Group for NuGet pack" width="0" height="0" caption="VSTS Task Group for automating NuGet pack with build information" />
 
 So I just make sure the version of NuGet I am currently using is installed, I then run pack with the command like the previous section but I put the below in the Arguments field
 
@@ -223,7 +223,7 @@ pack $(NuspecPath) -NonInteractive
 
 I've split the lines for ease of reading in the post but you should. There is a couple parameters in here that I have generally either as variables or set by other parts the build process but these are them if you replicating this
 
-<Figure key="/images/8fed628f2b2145cc86f8e2a63ee697eb.png" src="/images/8fed628f2b2145cc86f8e2a63ee697eb.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8fed628f2b2145cc86f8e2a63ee697eb.png" src="/images/8fed628f2b2145cc86f8e2a63ee697eb.png" alt="VSTS Task Group parameters for NuGet pack" width="0" height="0" caption="Parameters used in VSTS Task Group for NuGet pack" />
 
 If you want to grab the task group for this you can save the below json to disk and import it to VSTS.
 
@@ -402,7 +402,7 @@ If you want to grab the task group for this you can save the below json to disk 
 
 The nupkg that is generated looks like below when opened
 
-<Figure key="/images/06697f1aa8c1464aaee0f7a05be511ad.png" src="/images/06697f1aa8c1464aaee0f7a05be511ad.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/06697f1aa8c1464aaee0f7a05be511ad.png" src="/images/06697f1aa8c1464aaee0f7a05be511ad.png" alt="NuGet package contents" width="0" height="0" caption="Contents of the generated NuGet package" />
 
 You can see the description on the left has all the info detailed how this package was made and from where. As mentioned a little while earlier I build up some parameters during build so for example NuGetVersion reads and is adjusted from a file on disk generally but you could just pass in the build number if you wanted to. Lastly if you using yaml in VSTS you can use the snippet below (with some fixing) to add the 2 steps if the above isn't working out for some reason
 
@@ -414,10 +414,10 @@ queue:
   demands: Cmd
 
 
-#Your build pipeline references an undefined variable named ‘NuGetExeToolPath’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+#Your build pipeline references an undefined variable named 'NuGetExeToolPath'. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references the 'BuildConfiguration' variable, which you've selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+#Your build pipeline references the 'BuildConfiguration' variable, which you've selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+#Your build pipeline references the 'BuildPlatform' variable, which you've selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
 variables:
   NuspecPath: '$(ProjectRoot)\TargetMultipleFrameworksForLib.nuspec'
   NuPkgOutputDirectory: '$(build.artifactstagingdirectory)/packages'

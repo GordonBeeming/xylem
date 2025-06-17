@@ -13,15 +13,15 @@ You might be wondering after recently posting [Setting up a standard continuous 
  
 So we going to need a sample project for this, I'm going to create a standard .net core web project
  
-<Figure key="/images/62cebe41ee654ab8a0e7d26130cf4091.png" src="/images/62cebe41ee654ab8a0e7d26130cf4091.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/62cebe41ee654ab8a0e7d26130cf4091.png" src="/images/62cebe41ee654ab8a0e7d26130cf4091.png" alt="Visual Studio New Project dialog: Selecting ASP.NET Core Web Application template." width="0" height="0" caption="Creating a new ASP.NET Core Web Application in Visual Studio." />
  
 using asp.net core 1.1 as a Web Application
  
-<Figure key="/images/1007438bee184c0aa2f3a43c8145d620.png" src="/images/1007438bee184c0aa2f3a43c8145d620.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/1007438bee184c0aa2f3a43c8145d620.png" src="/images/1007438bee184c0aa2f3a43c8145d620.png" alt="Visual Studio: Selecting ASP.NET Core 1.1 Web Application template." width="0" height="0" caption="Choosing the ASP.NET Core 1.1 Web Application template." />
  
 We also going to add another project using the *Unit Test Project (.NET Core)* template
  
-<Figure key="/images/56cecb64efa948499dc324513de5726f.png" src="/images/56cecb64efa948499dc324513de5726f.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/56cecb64efa948499dc324513de5726f.png" src="/images/56cecb64efa948499dc324513de5726f.png" alt="Visual Studio New Project dialog: Selecting Unit Test Project (.NET Core) template." width="0" height="0" caption="Adding a Unit Test Project (.NET Core) to the solution." />
  
 We now need to add the MVC nuget reference to this test project. Open manage Nuget reference for solution
  
@@ -30,7 +30,7 @@ We now need to add the MVC nuget reference to this test project. Open manage Nug
 3. Check the test project
 4. Click Install
 
-<Figure key="/images/a4bae0a65b844ce297104a5329430293.png" src="/images/a4bae0a65b844ce297104a5329430293.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a4bae0a65b844ce297104a5329430293.png" src="/images/a4bae0a65b844ce297104a5329430293.png" alt="Visual Studio Manage NuGet Packages: Installing Microsoft.AspNetCore.Mvc for the test project." width="0" height="0" caption="Installing Microsoft.AspNetCore.Mvc NuGet package for the unit test project." />
  
 Next we'll 
 
@@ -39,11 +39,11 @@ Next we'll
 3. Rename the test class to "HomeControllerTests"
 4. Add a About Test Method which you can find in my [GitHub Gists](https://gist.github.com/Gordon-Beeming/15b859d2d5c49a924cc28e08bca56045)
 
-<Figure key="/images/26ec5c039867456483f8dde9251058ab.png" src="/images/26ec5c039867456483f8dde9251058ab.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/26ec5c039867456483f8dde9251058ab.png" src="/images/26ec5c039867456483f8dde9251058ab.png" alt="Visual Studio: HomeControllerTests.cs with About test method and reference to web project." width="0" height="0" caption="Setting up HomeControllerTests with a reference to the web project and an About test method." />
  
 That should be all we need to demonstrate CI being harder for .net core ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Check this code into TFS and we all set to get started
  
-<Figure key="/images/112a057081934debb43eac985e4b01a0.png" src="/images/112a057081934debb43eac985e4b01a0.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/112a057081934debb43eac985e4b01a0.png" src="/images/112a057081934debb43eac985e4b01a0.png" alt="Visual Studio Team Explorer: Checking in code changes to TFS." width="0" height="0" caption="Checking the sample project code into TFS." />
  
 Let's start off by creating a standard build how explained in the last post I did [Setting up a standard continuous integration build with VSTS/TFS](https://gordonbeeming.com/blog/Post/2017/4/setting-up-a-standard-continuous-integration-build-with-vststfs), I only did the first section with non of the extra *fluff ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)*. 
  
@@ -55,27 +55,27 @@ The first thing you will notice if you just try run the build it will break
  
 So our first set of errors is that the build can't find a bunch of references even though the restore step ran through.
  
-<Figure key="/images/482e0bbd4e064478b598de12e56c30df.png" src="/images/482e0bbd4e064478b598de12e56c30df.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/482e0bbd4e064478b598de12e56c30df.png" src="/images/482e0bbd4e064478b598de12e56c30df.png" alt="VSTS/TFS build log: Errors indicating missing references after package restore." width="0" height="0" caption="Build errors due to missing .NET Core package references." />
  
 This is because we need to do our restore a different way using the .net core restore. Let's fix this by adding the .NET Core (PREVIEW) task to our build
  
-<Figure key="/images/2b117104bfec4a4789f37099820b071b.png" src="/images/2b117104bfec4a4789f37099820b071b.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/2b117104bfec4a4789f37099820b071b.png" src="/images/2b117104bfec4a4789f37099820b071b.png" alt="VSTS/TFS build definition: Adding the .NET Core (PREVIEW) task." width="0" height="0" caption="Adding the .NET Core task to the build definition for package restore." />
  
 Next we need to
 
 1. Place this task first in the list of tasks
 2. Change the Command to restore
-3. Set the Project(s) to "\*\*\\*.sln"
+3. Set the Project(s) to \"\\*\\*\\\\*.sln\"
 
-<Figure key="/images/908cb629dddb477094fd701c3bb7d43d.png" src="/images/908cb629dddb477094fd701c3bb7d43d.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/908cb629dddb477094fd701c3bb7d43d.png" src="/images/908cb629dddb477094fd701c3bb7d43d.png" alt="VSTS/TFS build definition: .NET Core task configured for restore command on the solution file." width="0" height="0" caption="Configuring the .NET Core task to restore packages for the solution." />
  
 Click Save. Run your build. This time our build runs through but is partially succeeded. 
  
-<Figure key="/images/505b1f1f8aa743f59b69c278f867d9b4.png" src="/images/505b1f1f8aa743f59b69c278f867d9b4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/505b1f1f8aa743f59b69c278f867d9b4.png" src="/images/505b1f1f8aa743f59b69c278f867d9b4.png" alt="VSTS/TFS build summary: Build partially succeeded." width="0" height="0" caption="Build summary indicating a partially successful build after adding .NET Core restore." />
  
 We going to remove the Publish symbols path step from our build because we aren't going to need it
  
-<Figure key="/images/46590c20df81452d9bb6a81451fc4d41.png" src="/images/46590c20df81452d9bb6a81451fc4d41.png" alt="SNAGHTML12c92962" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/46590c20df81452d9bb6a81451fc4d41.png" src="/images/46590c20df81452d9bb6a81451fc4d41.png" alt="VSTS/TFS build definition: Removing the 'Publish symbols path' task." width="0" height="0" caption="Removing the unnecessary 'Publish symbols path' task from the build definition." />
  
 Click Save after removing this and run your build so we can confirm everything is green before continuing on.
  
@@ -83,7 +83,7 @@ Click Save after removing this and run your build so we can confirm everything i
  
 If you looked at your build after it ran you would have noticed that there is no test results
  
-<Figure key="/images/b2eaff83ee5c43fb8669bd1e8588ffa2.png" src="/images/b2eaff83ee5c43fb8669bd1e8588ffa2.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b2eaff83ee5c43fb8669bd1e8588ffa2.png" src="/images/b2eaff83ee5c43fb8669bd1e8588ffa2.png" alt="VSTS/TFS build summary: No test results reported." width="0" height="0" caption="Build summary showing no test results before adding .NET Core test task." />
  
 We know that we have a test and that we are running tests in the build so what's going on here?
  
@@ -91,48 +91,48 @@ Well you probably guessed it but we need to add the .NET Core (PREVIEW) step aga
 
 1. Place the step after the Build solution step
 2. Change the Command to test
-3. Set the Project(s) to "\*\*\\*.Tests.csproj"
-4. Set the Arguments to "--no-build --logger:trx --configuration $(BuildConfiguration)"
+3. Set the Project(s) to \"\\*\\*\\\\*.Tests.csproj\"
+4. Set the Arguments to \"--no-build --logger:trx --configuration $(BuildConfiguration)\"
 
-<Figure key="/images/639fd59b0a93462b8e4b258e70eb4a7a.png" src="/images/639fd59b0a93462b8e4b258e70eb4a7a.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/639fd59b0a93462b8e4b258e70eb4a7a.png" src="/images/639fd59b0a93462b8e4b258e70eb4a7a.png" alt="VSTS/TFS build definition: .NET Core task configured to run tests for .Tests.csproj projects." width="0" height="0" caption="Configuring the .NET Core task to run unit tests." />
  
-What we are doing now is using .net core's test capabilities, telling the running we want to log the results using the trx format and that we want to run the BuildConfiguration that the build is running under.
+What we are doing now is using .net core\'s test capabilities, telling the running we want to log the results using the trx format and that we want to run the BuildConfiguration that the build is running under.
  
 Click Save. Run the build. You will notice that there is still no test results showing up and this is because we need to tell the build system to publish these results. Add the Publish Test Results task
  
-<Figure key="/images/7e0a73bd26014a7e8e78bc208be6e159.png" src="/images/7e0a73bd26014a7e8e78bc208be6e159.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7e0a73bd26014a7e8e78bc208be6e159.png" src="/images/7e0a73bd26014a7e8e78bc208be6e159.png" alt="VSTS/TFS build definition: Adding the 'Publish Test Results' task." width="0" height="0" caption="Adding the 'Publish Test Results' task to the build definition." />
  
 Next we'll
 
 1. Make sure we place that task after the dotnet test task
 2. Set the Test Result Format to VSTest
-3. Set the Test Results Files to "\*\*/TestResults/\*.trx"
+3. Set the Test Results Files to \"\\*\\*/TestResults/\\*.trx\"
 4. Check the Merge Test Results checkbox
-5. Open the Advanced section and set the Configuration to "$(BuildConfiguration)"
+5. Open the Advanced section and set the Configuration to \"$(BuildConfiguration)\"
 6. Check the Always run (we want to publish results if test fail ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg), thank you [Mikael Krief](https://twitter.com/mikaelkrief))
 
-<Figure key="/images/90e7de94493342f7b861bf76c8c39bbf.png" src="/images/90e7de94493342f7b861bf76c8c39bbf.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/90e7de94493342f7b861bf76c8c39bbf.png" src="/images/90e7de94493342f7b861bf76c8c39bbf.png" alt="VSTS/TFS build definition: 'Publish Test Results' task configured for VSTest format and .trx files." width="0" height="0" caption="Configuring the 'Publish Test Results' task." />
  
 Click Save. Run the build. This time when the build has run if you go to the Summary you will notice 2 weird things
 
 1. We have 2 tests found (but only building 1 configuration)
 2. The build says there is no tests found
 
-<Figure key="/images/8ab981b9bc1b428c8e8d9e1b7c7c5f9e.png" src="/images/8ab981b9bc1b428c8e8d9e1b7c7c5f9e.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8ab981b9bc1b428c8e8d9e1b7c7c5f9e.png" src="/images/8ab981b9bc1b428c8e8d9e1b7c7c5f9e.png" alt="VSTS/TFS build summary: Discrepancy in test reporting - 2 tests found but also 'no tests found' message." width="0" height="0" caption="Build summary showing conflicting test result information." />
  
-The 2nd issue is easy to fix, if you don't expect to have regular .net tests in the solution remove the standard test step to get rid of this warning
+The 2nd issue is easy to fix, if you don\'t expect to have regular .net tests in the solution remove the standard test step to get rid of this warning
  
-<Figure key="/images/74383edbb2d34d13879a9db6257f7bdb.png" src="/images/74383edbb2d34d13879a9db6257f7bdb.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/74383edbb2d34d13879a9db6257f7bdb.png" src="/images/74383edbb2d34d13879a9db6257f7bdb.png" alt="VSTS/TFS build definition: Removing the standard 'Visual Studio Test' task." width="0" height="0" caption="Removing the standard test step to resolve conflicting test reports." />
  
 The 1st issue is because we are running the tests but not cleaning up the test results after the builds test results after they have generated or before we generate them in the build. The easiest way to fix this is to Clean all build directories before starting your build as I mentioned in the standard CI process blog mentioned multiple times in this post
  
-<Figure key="/images/3da00e66c4904ca48533598f4a57c476.png" src="/images/3da00e66c4904ca48533598f4a57c476.png" alt="SNAGHTML12df5ea0" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/3da00e66c4904ca48533598f4a57c476.png" src="/images/3da00e66c4904ca48533598f4a57c476.png" alt="VSTS/TFS build definition: Repository tab, Clean option set to 'All build directories'." width="0" height="0" caption="Setting the build to clean all build directories to ensure accurate test counts." />
  
-If you don't want to do this you can look at adding in a delete task before your run tests step to remove all trx files.
+If you don\'t want to do this you can look at adding in a delete task before your run tests step to remove all trx files.
  
-If we make either change, save and run the build. We'll notice that we have 1 test result. Note you may not have seen this experience if your build was running on a different agent each time but when it did run on the same agent again you would have seen this behavior
+If we make either change, save and run the build. We\'ll notice that we have 1 test result. Note you may not have seen this experience if your build was running on a different agent each time but when it did run on the same agent again you would have seen this behavior
  
-<Figure key="/images/56539c67850a467e8a30fdf0180f3517.png" src="/images/56539c67850a467e8a30fdf0180f3517.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/56539c67850a467e8a30fdf0180f3517.png" src="/images/56539c67850a467e8a30fdf0180f3517.png" alt="VSTS/TFS build summary: 1 test result reported correctly." width="0" height="0" caption="Build summary showing the correct count of 1 test result after cleaning build directories." />
  
 Now our CI process is behaving like normal ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  

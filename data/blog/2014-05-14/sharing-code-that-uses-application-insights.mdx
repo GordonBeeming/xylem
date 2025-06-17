@@ -19,11 +19,11 @@ Something that you don't want to do is share your code without removing some of 
  
 The first way is to simple delete the Application.config and publish the source code. 
  
-<Figure key="/images/8909a789a3a24d328f4ddaf89d952d60.png" src="/images/8909a789a3a24d328f4ddaf89d952d60.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8909a789a3a24d328f4ddaf89d952d60.png" src="/images/8909a789a3a24d328f4ddaf89d952d60.png" alt="Solution Explorer showing ApplicationInsights.config file" width="0" height="0" caption="ApplicationInsights.config in Solution Explorer" />
  
 This will mean that when somebody that downloads your code wants to run it and use the Application Insights bits they will need to add new Application Insights configuration
  
-<Figure key="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" src="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" src="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" alt="Visual Studio menu to add Application Insights telemetry" width="0" height="0" caption="Adding Application Insights Telemetry" />
  
 After they have done that they can use your solution with Application Insights no problem
  
@@ -33,7 +33,7 @@ After they have done that they can use your solution with Application Insights n
  
 You could for example specify that for the Development Profile you don't want to collection user and machine names.
  
-<Figure key="/images/028a549cde924283a6bd3c1f208ebb5c.png" src="/images/028a549cde924283a6bd3c1f208ebb5c.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/028a549cde924283a6bd3c1f208ebb5c.png" src="/images/028a549cde924283a6bd3c1f208ebb5c.png" alt="ApplicationInsights.config showing DevelopmentMode settings" width="0" height="0" caption="ApplicationInsights.config - DevelopmentMode Settings" />
  
 The pieces you will want to blank out or token are below
  
@@ -44,7 +44,7 @@ The pieces you will want to blank out or token are below
 - ComponentSettings\AccountId
 - ComponentSettings\LicenseKey
 
-<Figure key="/images/70d9a30ef02c4c0d8321b72791795917.png" src="/images/70d9a30ef02c4c0d8321b72791795917.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/70d9a30ef02c4c0d8321b72791795917.png" src="/images/70d9a30ef02c4c0d8321b72791795917.png" alt="ApplicationInsights.config with sensitive values blanked out" width="0" height="0" caption="ApplicationInsights.config - Blanked Out Values" />
  
 After you have done this you are good to share your code ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
  

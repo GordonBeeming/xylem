@@ -11,11 +11,11 @@ summary: 'UPDATE: This has been identified as a bug and will be fixed in the nex
  
 So if you have a lot customizations in your process template there is a slight chance you would have seen the error below after the upgrade.
  
-<Figure key="/images/462e64d6b3064429b12e8e0bc529bc2d.png" src="/images/462e64d6b3064429b12e8e0bc529bc2d.png" alt="image_thumb1" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/462e64d6b3064429b12e8e0bc529bc2d.png" src="/images/462e64d6b3064429b12e8e0bc529bc2d.png" alt="TF400917 Error in TFS Web Access" width="0" height="0" caption="TF400917 Error: The current configuration is not valid for this feature." />
  
 If you have completed the Configure Features option 
  
-<Figure key="/images/ce88845f0c034279b8eff5e4662f0ac9.png" src="/images/ce88845f0c034279b8eff5e4662f0ac9.png" alt="image_thumb3" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ce88845f0c034279b8eff5e4662f0ac9.png" src="/images/ce88845f0c034279b8eff5e4662f0ac9.png" alt="Configure Features option in TFS" width="0" height="0" caption="Configure Features option in Team Foundation Server Administration Console" />
  
 and still see the error odds are you have need to follow similar steps to below
  
@@ -23,7 +23,7 @@ and still see the error odds are you have need to follow similar steps to below
  
 Take a look at the event log under the Microsoft-Team Foundation Server/Debug section of Applications and Services Log
  
-<Figure key="/images/25de7c2c50bd408095498f521ee0d822.png" src="/images/25de7c2c50bd408095498f521ee0d822.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/25de7c2c50bd408095498f521ee0d822.png" src="/images/25de7c2c50bd408095498f521ee0d822.png" alt="Event Log showing TFS Debug information" width="0" height="0" caption="Event Log showing Microsoft-Team Foundation Server/Debug section" />
  
 When the error occurs do you see an error? I received the error below that pointed towards something with the add panel being wrong
  
@@ -49,7 +49,7 @@ Microsoft.TeamFoundation.Server.WebAccess.WorkItemTracking.Common.InvalidProject
  
 I went over to the process configuration which seemed to be the logical starting point based off the error on screen and stack trace from the event log. I compared all the customizations I had with what is in the default Scrum 2013.2 template and saw that I had extra fields in one of my Add Panels
  
-<Figure key="/images/f038a999aae84a4793a6004deb693571.png" src="/images/f038a999aae84a4793a6004deb693571.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f038a999aae84a4793a6004deb693571.png" src="/images/f038a999aae84a4793a6004deb693571.png" alt="ProcessConfiguration.xml with extra fields in Add Panel" width="0" height="0" caption="ProcessConfiguration.xml showing extra fields in the Add Panel for Requirements Backlog" />
  
 I removed these and imported the ProcessConfiguration.xml using the [witAdmin importprocessconfig](http://msdn.microsoft.com/en-us/library/hh500413.aspx) tool, this worked and the site was working as normal without the error.
  
@@ -57,7 +57,7 @@ I removed these and imported the ProcessConfiguration.xml using the [witAdmin im
  
 Obviously we couldn't just remove the extra fields and be on our way because those were there for a reason. The Add Panel changes were applied for the Requirements Backlog in our case. We took a look at the Categories.xml to verify which the work item types were that were part of the requirements and found the 4 below
  
-<Figure key="/images/04dc89e3c945453883f55ef275c7ea54.png" src="/images/04dc89e3c945453883f55ef275c7ea54.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/04dc89e3c945453883f55ef275c7ea54.png" src="/images/04dc89e3c945453883f55ef275c7ea54.png" alt="Categories.xml showing work item types for Requirements" width="0" height="0" caption="Categories.xml defining work item types for the Requirements category" />
  
 We currently only use new Product Backlog Items and the other 3 are "old" work item types that are in TFS because we used to use them and don't want to remove them because there are existing work items of this type in our TFS project. So we went to the 3 other WITd and made sure that they each had these 3 fields, we found as we expected that they didn't have each of them. 
  

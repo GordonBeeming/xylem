@@ -19,21 +19,21 @@ The easiest way to get a basic something in VSO is to just create a new project.
  
 We are going to create a new [Type Script](http://www.typescriptlang.org/) project
  
- <Figure key="/images/a3092e7d6cf54b31b74298fb5af49446.png" src="/images/a3092e7d6cf54b31b74298fb5af49446.png" alt="New_Project_2015-06-18_20-08-23" width="0" height="0" caption="FILL THIS IN" />
+ <Figure key="/images/a3092e7d6cf54b31b74298fb5af49446.png" src="/images/a3092e7d6cf54b31b74298fb5af49446.png" alt="New Project dialog in Visual Studio with TypeScript selected" width="0" height="0" caption="Visual Studio New Project dialog with HTML Application with TypeScript selected." />
  
 You should have something like below now
  
-<Figure key="/images/406e4dd257e54abab446ead5f1bdef48.png" src="/images/406e4dd257e54abab446ead5f1bdef48.png" alt="2015-06-18_20-09-35" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/406e4dd257e54abab446ead5f1bdef48.png" src="/images/406e4dd257e54abab446ead5f1bdef48.png" alt="Newly created VSO Time Ticker project in Visual Studio Solution Explorer" width="0" height="0" caption="Visual Studio Solution Explorer showing the newly created VSO Time Ticker project." />
  
 ### Configure SSL in IIS Express
  
 When you have the *VSO Time Ticker* project selected head over to the properties window
  
-<Figure key="/images/cc92a645ba6b4de887c2ca5bfd7c3cd6.png" src="/images/cc92a645ba6b4de887c2ca5bfd7c3cd6.png" alt="2015-06-18_20-17-56" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/cc92a645ba6b4de887c2ca5bfd7c3cd6.png" src="/images/cc92a645ba6b4de887c2ca5bfd7c3cd6.png" alt="Visual Studio Properties window for the VSO Time Ticker project" width="0" height="0" caption="Visual Studio Properties window highlighting SSL Enabled property for the VSO Time Ticker project." />
  
 Change **SSL Enabled** to True
  
-<Figure key="/images/68feae74fbf8436295a29587660628d3.png" src="/images/68feae74fbf8436295a29587660628d3.png" alt="2015-06-18_20-18-36" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/68feae74fbf8436295a29587660628d3.png" src="/images/68feae74fbf8436295a29587660628d3.png" alt="Visual Studio Properties window with SSL Enabled set to True and SSL URL shown" width="0" height="0" caption="Visual Studio Properties window with SSL Enabled set to True and the SSL URL displayed." />
  
 Take note of the SSL Url that is now available to you.
  
@@ -41,7 +41,7 @@ Take note of the SSL Url that is now available to you.
  
 Let's add a [extensions.json manifest](https://www.visualstudio.com/integrate/extensions/reference/manifest) file that will be used to inform VSO what our projects actually about
  
-<Figure key="/images/7ff90557535d4cd7ae33b815c84516b2.png" src="/images/7ff90557535d4cd7ae33b815c84516b2.png" alt="Add_New_Item_-_VSO_Time_Ticker_2015-06-18_20-11-47" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7ff90557535d4cd7ae33b815c84516b2.png" src="/images/7ff90557535d4cd7ae33b815c84516b2.png" alt="Visual Studio Add New Item dialog with JSON file selected" width="0" height="0" caption="Visual Studio Add New Item dialog for adding the extensions.json manifest file." />
  
 and drop in the content below, replace the **baseUri** property to include the port you have been assigned for SSL for the project.
 
@@ -53,17 +53,17 @@ and drop in the content below, replace the **baseUri** property to include the p
 
 Navigate to GitHub to the samples project and grab the [VSS.SDK.js](https://github.com/Microsoft/vso-extension-samples/blob/master/build-inspector/sdk/scripts/VSS.SDK.js) file. Save a copy of that to a scripts folder inside a sdk folder and add it to your project.
 
-<Figure key="/images/048e97b94f7f4282aa3ec6608f20f4a0.png" src="/images/048e97b94f7f4282aa3ec6608f20f4a0.png" alt="2015-06-18_20-27-15" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/048e97b94f7f4282aa3ec6608f20f4a0.png" src="/images/048e97b94f7f4282aa3ec6608f20f4a0.png" alt="Visual Studio Solution Explorer showing VSS.SDK.js file in sdk/scripts folder" width="0" height="0" caption="Visual Studio Solution Explorer showing the VSS.SDK.js file added to the project under sdk/scripts." />
 
 ### Include our App js files
 
 While we here let's build the project, show hidden folders and add the app.js and app.js.map files to the project
 
-<Figure key="/images/4409a86d5e3142a2b8abe0a751bcbff2.png" src="/images/4409a86d5e3142a2b8abe0a751bcbff2.png" alt="2015-06-18_20-29-04" width="0" height="0" caption="FILL THIS IN" /><Figure key="/images/f83b9c7dddd3494099bef650463de413.png" src="/images/f83b9c7dddd3494099bef650463de413.png" alt="2015-06-18_20-29-58" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4409a86d5e3142a2b8abe0a751bcbff2.png" src="/images/4409a86d5e3142a2b8abe0a751bcbff2.png" alt="Visual Studio Solution Explorer with Show All Files enabled, showing app.js and app.js.map" width="0" height="0" caption="Visual Studio Solution Explorer with Show All Files enabled, displaying app.js and app.js.map." /><Figure key="/images/f83b9c7dddd3494099bef650463de413.png" src="/images/f83b9c7dddd3494099bef650463de413.png" alt="Visual Studio Solution Explorer after including app.js and app.js.map in the project" width="0" height="0" caption="Visual Studio Solution Explorer after including app.js and app.js.map in the project." />
 
 If you are using source control you should also at this point undo those files being added source control and then also add them to be excluded otherwise you may get a weird error when it comes time to build your project on a build server ([TypeScript : Emit Error: Write to file failed..](https://gordonbeeming.com/blog/post/typescript--emit-error-write-to-file-failed).).
 
-<Figure key="/images/ec5ddb41695949209b1c981964e38e48.png" src="/images/ec5ddb41695949209b1c981964e38e48.png" alt="2015-06-18_20-33-15" width="0" height="0" caption="FILL THIS IN" /><Figure key="/images/b6ec1595d1574f5d9fe638269c01b239.png" src="/images/b6ec1595d1574f5d9fe638269c01b239.png" alt="2015-06-18_20-33-49" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/ec5ddb41695949209b1c981964e38e48.png" src="/images/ec5ddb41695949209b1c981964e38e48.png" alt="Visual Studio Team Explorer - Pending Changes window showing app.js and app.js.map" width="0" height="0" caption="Visual Studio Team Explorer - Pending Changes window showing app.js and app.js.map files to be excluded from source control." /><Figure key="/images/b6ec1595d1574f5d9fe638269c01b239.png" src="/images/b6ec1595d1574f5d9fe638269c01b239.png" alt="Visual Studio .tfignore file editor" width="0" height="0" caption="Visual Studio .tfignore file editor, for excluding files from source control." />
 
 The reason we want these as part of the solution is so that when we do web deploy later they are deployed as well ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
 
@@ -71,19 +71,19 @@ The reason we want these as part of the solution is so that when we do web deplo
 
 Make a images folder and add a image called some-icon.png to it
 
-<Figure key="/images/7474344e59ca4802bff68e268143de0b.png" src="/images/7474344e59ca4802bff68e268143de0b.png" alt="2015-06-18_20-44-48" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7474344e59ca4802bff68e268143de0b.png" src="/images/7474344e59ca4802bff68e268143de0b.png" alt="Visual Studio Solution Explorer showing some-icon.png in the images folder" width="0" height="0" caption="Visual Studio Solution Explorer showing the some-icon.png file added to the images folder." />
 
 ### Move App js file
 
 Move your App.ts, App.js and App.js.map into a scripts folder. If you have source you might need to re undo and ignore those extra files.
 
-<Figure key="/images/e7c7364d0b1043bdbf90c558e6543daf.png" src="/images/e7c7364d0b1043bdbf90c558e6543daf.png" alt="2015-06-18_20-51-48" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/e7c7364d0b1043bdbf90c558e6543daf.png" src="/images/e7c7364d0b1043bdbf90c558e6543daf.png" alt="Visual Studio Solution Explorer showing App.ts, App.js and App.js.map moved to the scripts folder" width="0" height="0" caption="Visual Studio Solution Explorer after moving App.ts, App.js, and App.js.map to the scripts folder." />
 
 ### Setup index.html
 
 This is a rather simple step, replace the reference to *app.js* with one to *sdk/Scripts/VSS.SDK.js* so it will look something like
 
-<Figure key="/images/90cb100a76af40de9aceeedd76de47db.png" src="/images/90cb100a76af40de9aceeedd76de47db.png" alt="2015-06-18_20-49-40" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/90cb100a76af40de9aceeedd76de47db.png" src="/images/90cb100a76af40de9aceeedd76de47db.png" alt="index.html showing VSS.SDK.js script reference" width="0" height="0" caption="Updated index.html with VSS.SDK.js script reference." />
 
 Add the following script just inside your body tag
 
@@ -111,11 +111,11 @@ class Greeter {    element: HTMLElement;    span: HTMLElement;    timerToken: nu
 
 Running your app with ctrl + F5 you will get a blank app that does nothing ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/a53a1011c72446e89519a50fdc9df52d.png" src="/images/a53a1011c72446e89519a50fdc9df52d.png" alt="TypeScript_HTML_App_-_Internet_Explorer_2015-06-18_20-57-12" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a53a1011c72446e89519a50fdc9df52d.png" src="/images/a53a1011c72446e89519a50fdc9df52d.png" alt="Blank app running in Internet Explorer" width="0" height="0" caption="The initial blank app running in Internet Explorer." />
 
 Changed the url to point to the SSL version of your site just to make sure everything is working
 
-<Figure key="/images/75862badbace4828be829fe84aa3360b.png" src="/images/75862badbace4828be829fe84aa3360b.png" alt="2015-06-18_20-59-24" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/75862badbace4828be829fe84aa3360b.png" src="/images/75862badbace4828be829fe84aa3360b.png" alt="App running with SSL in Internet Explorer" width="0" height="0" caption="App successfully running with SSL in Internet Explorer." />
 
 Our App is now complete ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
 
@@ -123,32 +123,32 @@ Our App is now complete ![Open-mouthed smile](https://gordonbeeming.com/images/e
 
 If you have signed up for the private preview you should see a tab in the admin section of your account called **Extensions** like so
 
-<Figure key="/images/7efe187c34d745edb8fd0b29105b744d.png" src="/images/7efe187c34d745edb8fd0b29105b744d.png" alt="2015-06-18_21-01-57" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/7efe187c34d745edb8fd0b29105b744d.png" src="/images/7efe187c34d745edb8fd0b29105b744d.png" alt="VSTS admin section showing Extensions tab" width="0" height="0" caption="VSTS admin section with the Extensions tab visible." />
 
 Click **Install**, and then **Browse** 
 
-<Figure key="/images/24434bc1972140b69fd88af4da13cd8f.png" src="/images/24434bc1972140b69fd88af4da13cd8f.png" alt="2015-06-18_21-06-49" width="0" height="0" caption="FILL THIS IN" />  
+<Figure key="/images/24434bc1972140b69fd88af4da13cd8f.png" src="/images/24434bc1972140b69fd88af4da13cd8f.png" alt="Install extension dialog in VSTS" width="0" height="0" caption="Install extension dialog in VSTS." />  
 browse for your *extension.json* file
 
-<Figure key="/images/4636772c4a484616a1f8797be447e519.png" src="/images/4636772c4a484616a1f8797be447e519.png" alt="Open_2015-06-18_21-07-59" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/4636772c4a484616a1f8797be447e519.png" src="/images/4636772c4a484616a1f8797be447e519.png" alt="File open dialog browsing for extension.json" width="0" height="0" caption="File open dialog to select the extension.json manifest file." />
 
 Click **Open** and then **OK**
 
-<Figure key="/images/d306a972fad34ae4b70f8d1e91a63aba.png" src="/images/d306a972fad34ae4b70f8d1e91a63aba.png" alt="2015-06-18_21-11-56" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d306a972fad34ae4b70f8d1e91a63aba.png" src="/images/d306a972fad34ae4b70f8d1e91a63aba.png" alt="Confirming extension installation in VSTS" width="0" height="0" caption="Confirming the extension installation in VSTS." />
 
 Your extension is now installed
 
-<Figure key="/images/6157bb7e94454fd3a46d2dd8bfdee6ba.png" src="/images/6157bb7e94454fd3a46d2dd8bfdee6ba.png" alt="2015-06-18_21-17-24" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6157bb7e94454fd3a46d2dd8bfdee6ba.png" src="/images/6157bb7e94454fd3a46d2dd8bfdee6ba.png" alt="VSTS Extensions tab showing installed Time Ticker extension" width="0" height="0" caption="VSTS Extensions tab showing the newly installed Time Ticker extension." />
 
 ## View it on VSO
 
 Go to a team project home page and you should now see a Time hub, click on it
 
-<Figure key="/images/56d81fbae90844648c79197cdba0ac34.png" src="/images/56d81fbae90844648c79197cdba0ac34.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/56d81fbae90844648c79197cdba0ac34.png" src="/images/56d81fbae90844648c79197cdba0ac34.png" alt="VSTS project home page with Time hub" width="0" height="0" caption="VSTS project home page displaying the new Time hub." />
 
 Once you land here you will the time ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/3ee644ac806b4f25b8cfee9bcbe47ca5.png" src="/images/3ee644ac806b4f25b8cfee9bcbe47ca5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/3ee644ac806b4f25b8cfee9bcbe47ca5.png" src="/images/3ee644ac806b4f25b8cfee9bcbe47ca5.png" alt="Time Ticker extension displaying the current time in VSTS" width="0" height="0" caption="Time Ticker extension displaying the current time within VSTS." />
 
 That's 1 extension in the bag but having this run on your local machine is probable not want you would want because nobody else can see it.
 
@@ -158,35 +158,35 @@ That's 1 extension in the bag but having this run on your local machine is proba
 
 You could buy an SSL certification but that costs a lot and most people don't have that kind of money laying around for fun apps and extensions so we'll turn to [Azure](http://azure.microsoft.com/). We will now right click on our project and click publish
 
-<Figure key="/images/d9726be4189842ffa13d1b8e747044c8.png" src="/images/d9726be4189842ffa13d1b8e747044c8.png" alt="2015-06-18_21-45-47" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d9726be4189842ffa13d1b8e747044c8.png" src="/images/d9726be4189842ffa13d1b8e747044c8.png" alt="Visual Studio right-click context menu with Publish option" width="0" height="0" caption="Visual Studio right-click context menu on the project, with the Publish option highlighted." />
 
 If you setup an Azure site already you can import the publish settings but I haven't so I'm going to click on **Microsoft Azure Web Apps**
 
-<Figure key="/images/0fe0e32ef0834975aa3afcf5fbf00b3e.png" src="/images/0fe0e32ef0834975aa3afcf5fbf00b3e.png" alt="Publish_Web_2015-06-18_21-46-16" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0fe0e32ef0834975aa3afcf5fbf00b3e.png" src="/images/0fe0e32ef0834975aa3afcf5fbf00b3e.png" alt="Visual Studio Publish Web dialog" width="0" height="0" caption="Visual Studio Publish Web dialog with Microsoft Azure Web Apps selected." />
 
 and then click on New (again if you have a site already you can select it in this list)
 
-<Figure key="/images/bd602f955cf24b808639b4f0cf3dea94.png" src="/images/bd602f955cf24b808639b4f0cf3dea94.png" alt="Select_Existing_Web_App_2015-06-18_21-47-26" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/bd602f955cf24b808639b4f0cf3dea94.png" src="/images/bd602f955cf24b808639b4f0cf3dea94.png" alt="Visual Studio Select Existing Web App dialog" width="0" height="0" caption="Visual Studio Select Existing Web App dialog with New button highlighted." />
 
 Select a *name* and click **Create**
 
-<Figure key="/images/22aa8593d2c94d5cbe98bdc99f97acab.png" src="/images/22aa8593d2c94d5cbe98bdc99f97acab.png" alt="Create_Web_App_on_Microsoft_Azure_2015-06-18_21-48-31" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/22aa8593d2c94d5cbe98bdc99f97acab.png" src="/images/22aa8593d2c94d5cbe98bdc99f97acab.png" alt="Visual Studio Create Web App on Microsoft Azure dialog" width="0" height="0" caption="Visual Studio Create Web App on Microsoft Azure dialog, ready to create the new web app." />
 
 it will now take a small bit to setup your azure resource
 
-<Figure key="/images/2af5ea6f2d84456881d69e83ff92bda1.png" src="/images/2af5ea6f2d84456881d69e83ff92bda1.png" alt="Create_Web_App_on_Microsoft_Azure_2015-06-18_21-49-28" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/2af5ea6f2d84456881d69e83ff92bda1.png" src="/images/2af5ea6f2d84456881d69e83ff92bda1.png" alt="Visual Studio Create Web App on Microsoft Azure progress dialog" width="0" height="0" caption="Visual Studio Create Web App on Microsoft Azure progress dialog." />
 
 and then auto magically configure everything you need ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), click **Publish**
 
-<Figure key="/images/5367e0e4bee645bab92e7693f7d9546d.png" src="/images/5367e0e4bee645bab92e7693f7d9546d.png" alt="Publish_Web_2015-06-18_21-49-58" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5367e0e4bee645bab92e7693f7d9546d.png" src="/images/5367e0e4bee645bab92e7693f7d9546d.png" alt="Visual Studio Publish Web dialog after Azure setup" width="0" height="0" caption="Visual Studio Publish Web dialog after Azure Web App setup, ready to publish." />
 
 After the publish is finish your site will launch
 
-<Figure key="/images/d9c35818ddd345839b7885153d550421.png" src="/images/d9c35818ddd345839b7885153d550421.png" alt="TypeScript_HTML_App_-_Internet_Explorer_2015-06-18_21-51-30" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d9c35818ddd345839b7885153d550421.png" src="/images/d9c35818ddd345839b7885153d550421.png" alt="Published app running in Internet Explorer via HTTP" width="0" height="0" caption="The published app running in Internet Explorer, accessed via HTTP." />
 
 Something that you will notice is that this is http but and not https as we said earlier we require. So let's see what happens if we add a s in there ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 
-<Figure key="/images/0c3779e391e5437390be729751c599c9.png" src="/images/0c3779e391e5437390be729751c599c9.png" alt="TypeScript_HTML_App_-_Internet_Explorer_2015-06-18_21-53-07" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/0c3779e391e5437390be729751c599c9.png" src="/images/0c3779e391e5437390be729751c599c9.png" alt="Published app running in Internet Explorer via HTTPS" width="0" height="0" caption="The published app successfully running in Internet Explorer, accessed via HTTPS." />
 
 Everything still works ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg). 
 
@@ -200,11 +200,11 @@ Now that we have a publicly accessible website running on https (for FREE) we ca
 
 Re-install your extension
 
-<Figure key="/images/8093d2ccca334c29876f029c6013b54d.png" src="/images/8093d2ccca334c29876f029c6013b54d.png" alt="2015-06-18_21-56-38" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8093d2ccca334c29876f029c6013b54d.png" src="/images/8093d2ccca334c29876f029c6013b54d.png" alt="VSTS Extensions tab after re-installing Time Ticker extension" width="0" height="0" caption="VSTS Extensions tab showing the Time Ticker extension after re-installation with the updated manifest." />
 
 and refresh your extension in VSO
 
-<Figure key="/images/964e56710dc04a67bd2b3081f28ac8fa.png" src="/images/964e56710dc04a67bd2b3081f28ac8fa.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/964e56710dc04a67bd2b3081f28ac8fa.png" src="/images/964e56710dc04a67bd2b3081f28ac8fa.png" alt="Time Ticker extension running in VSTS, now served from Azure" width="0" height="0" caption="Time Ticker extension running in VSTS, successfully served from the Azure Web App." />
 
 You will notice now that it obviously still works ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), if you close Visual Studio and it still works you know it working ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg) and I suppose you can check fiddler for where it's reading the files from.
 

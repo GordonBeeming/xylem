@@ -3,45 +3,45 @@ title: 'Load testing using Azure'
 date: 2015-10-08
 tags: ['Azure', 'Load Testing', 'Visual Studio Team Services']
 draft: false
-summary: 'So everyone wants to have the ultimate system that never breaks can handle ‘all’ the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what’s the odds of that happening. The other option is to have a bank account that is never ending and throw ‘all’ the hardware at your application to make sure it doesn’t ever have a slow day but then how are you making your money, how do you know when ‘all’ the hardware isn’t enough.'
+summary: 'So everyone wants to have the ultimate system that never breaks can handle ''all'' the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what''s the odds of that happening. The other option is to have a bank account that is never ending and throw ''all'' the hardware at your application to make sure it doesn''t ever have a slow day but then how are you making your money, how do you know when ''all'' the hardware isn''t enough.'
 ---
 
 
-So everyone wants to have the ultimate system that never breaks can handle ‘all’ the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what’s the odds of that happening. The other option is to have a bank account that is never ending and throw ‘all’ the hardware at your application to make sure it doesn’t ever have a slow day but then how are you making your money, how do you know when ‘all’ the hardware isn’t enough. 
+So everyone wants to have the ultimate system that never breaks can handle 'all' the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what's the odds of that happening. The other option is to have a bank account that is never ending and throw 'all' the hardware at your application to make sure it doesn't ever have a slow day but then how are you making your money, how do you know when 'all' the hardware isn't enough. 
  
-You need to know how much load you can handle and it’s not ideal to figure out this limit when customers are browsing your site. I have read about a lot of stories lately where rather popular and big online sales companies have amazing specials for a limited time only where some of them even doubled there on-premise hardware to *hopefully* manage with the load that they were expecting they could get.
+You need to know how much load you can handle and it's not ideal to figure out this limit when customers are browsing your site. I have read about a lot of stories lately where rather popular and big online sales companies have amazing specials for a limited time only where some of them even doubled there on-premise hardware to *hopefully* manage with the load that they were expecting they could get.
  
-Load testing is an important part of running any online system because you need to know where your limits are before customers help you find them. Lots of companies for various reasons including legal can’t run their systems in the cloud and so what they usually do is run a lot more hardware than what is required because auto scaling hardware on-premise is not as easy as in the cloud. Load testing could help you figure out how much load you can handle with your current system and then help make hardware purchases for hardware that is required and not for hardware that you think you may need. 
+Load testing is an important part of running any online system because you need to know where your limits are before customers help you find them. Lots of companies for various reasons including legal can't run their systems in the cloud and so what they usually do is run a lot more hardware than what is required because auto scaling hardware on-premise is not as easy as in the cloud. Load testing could help you figure out how much load you can handle with your current system and then help make hardware purchases for hardware that is required and not for hardware that you think you may need. 
  
 One way to load test could be to use the Load Testing tools in Visual Studio but then without using the cloud you can only generate as much traffic as the machine running that test can output. This is where you can benefit from running load tests in [Azure](https://go.beeming.net/1N1UuVA) because you can choose how much load you want to generate and Azure would spin up as much hardware that is required to meet your requirements, hardware that you would have to additionally purchase if you did this on-premise.
  
-Let’s run through how this works today in Azure.
+Let's run through how this works today in Azure.
  
 ## Linking your VSO account
  
-So first off to use this functionality you need to have a [Visual Studio Online](https://go.beeming.net/1N1UsNi) account. Luckily linking this is very easy and is part of the flow of setting up the load testing. Let’s navigate to a website that we want load test and click on **Tools**, in my case I’m going to choose my blog.
+So first off to use this functionality you need to have a [Visual Studio Online](https://go.beeming.net/1N1UsNi) account. Luckily linking this is very easy and is part of the flow of setting up the load testing. Let's navigate to a website that we want load test and click on **Tools**, in my case I'm going to choose my blog.
  
-<Figure key="/images/b480e778fd0c484192eb2e636a798ca1.png" src="/images/b480e778fd0c484192eb2e636a798ca1.png" alt="2015-10-08_18-52-01" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/b480e778fd0c484192eb2e636a798ca1.png" src="/images/b480e778fd0c484192eb2e636a798ca1.png" alt="Azure portal with Tools highlighted for a website" width="0" height="0" caption="Azure portal with Tools highlighted for a website" />
  
 In the develop section you will notice a **Performance Test** link, click on that link
  
-<Figure key="/images/8ce39125ebf54852bab516a38ebc5bd4.png" src="/images/8ce39125ebf54852bab516a38ebc5bd4.png" alt="2015-10-08_18-54-13" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8ce39125ebf54852bab516a38ebc5bd4.png" src="/images/8ce39125ebf54852bab516a38ebc5bd4.png" alt="Azure portal Develop section with Performance Test highlighted" width="0" height="0" caption="Azure portal Develop section with Performance Test highlighted" />
  
-You will now be taken to the Performance tests blade, as you will notice if you haven’t been hear before you need to link a VSO account before you can get started.
+You will now be taken to the Performance tests blade, as you will notice if you haven't been hear before you need to link a VSO account before you can get started.
   
-<Figure key="/images/d5b87475bef948088f65791ed89de0f4.png" src="/images/d5b87475bef948088f65791ed89de0f4.png" alt="2015-10-08_18-57-31" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d5b87475bef948088f65791ed89de0f4.png" src="/images/d5b87475bef948088f65791ed89de0f4.png" alt="Azure portal Performance tests blade prompting to link a VSO account" width="0" height="0" caption="Azure portal Performance tests blade prompting to link a VSO account" />
  
 Click on the **Set Account** button in the toolbar
  
 [![2015-10-08_19-00-31](https://gordonbeeming.com/blog/binaries/stream/image-png/image/1000/0/cb465867920bf95d6f0450de025d0507cf5b574b/93a10b63-4299-401c-b613-277def1b494e.png "2015-10-08_19-00-31")](https://gordonbeeming.com/blog/binaries/stream/image-png/image/1000/0/b1b771774838b3bb28818b9991aef6e5dfa2eaf4/51b3b84b-9fd9-4ac5-8550-afcb2a5d761b.png)
  
-This will open the **Account Settings** blade, go through this blade as you would any other settings blade selecting an option from each of the options on the blade. Note if you don’t have a VSO account you can also easily create one from here using the **Or Create New** link
+This will open the **Account Settings** blade, go through this blade as you would any other settings blade selecting an option from each of the options on the blade. Note if you don't have a VSO account you can also easily create one from here using the **Or Create New** link
   
-<Figure key="/images/2b4bdd3b86f44d23b20d30a0dbaaeff4.png" src="/images/2b4bdd3b86f44d23b20d30a0dbaaeff4.png" alt="2015-10-08_19-01-36" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/2b4bdd3b86f44d23b20d30a0dbaaeff4.png" src="/images/2b4bdd3b86f44d23b20d30a0dbaaeff4.png" alt="Azure portal Account Settings blade for Performance tests" width="0" height="0" caption="Azure portal Account Settings blade for Performance tests" />
  
 After you have selected your account you will see that the Subscription and location should auto fill for you, the Subscription should come from the current subscription you have selected in the azure portal at the current time. The location will be locked down to North Central US, this is probably because the feature is still in preview. Click ok at the bottom of the blade to make this VSO account be the selected account
  
-<Figure key="/images/d9f3f3181b7845ad89f56c0fff5e9b64.png" src="/images/d9f3f3181b7845ad89f56c0fff5e9b64.png" alt="2015-10-08_19-03-59" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/d9f3f3181b7845ad89f56c0fff5e9b64.png" src="/images/d9f3f3181b7845ad89f56c0fff5e9b64.png" alt="Azure portal Account Settings blade with VSO account selected" width="0" height="0" caption="Azure portal Account Settings blade with VSO account selected" />
  
 This will now show that you have no performance tests yet and you are now able to create your first performance test.
  
@@ -49,23 +49,23 @@ This will now show that you have no performance tests yet and you are now able t
  
 At this stage we have our VSO account linked and can now click the **New** button to get started
  
-<Figure key="/images/84f41dde67a84f76aec270b704c41e38.png" src="/images/84f41dde67a84f76aec270b704c41e38.png" alt="2015-10-08_19-06-55" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/84f41dde67a84f76aec270b704c41e38.png" src="/images/84f41dde67a84f76aec270b704c41e38.png" alt="Azure portal Performance tests blade with New button highlighted" width="0" height="0" caption="Azure portal Performance tests blade with New button highlighted" />
  
 You will now be asked a could things in order to create your load test
  
-<Figure key="/images/3bedd317b6974c10ade5acb69a0845bf.png" src="/images/3bedd317b6974c10ade5acb69a0845bf.png" alt="2015-10-08_19-21-48" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/3bedd317b6974c10ade5acb69a0845bf.png" src="/images/3bedd317b6974c10ade5acb69a0845bf.png" alt="Azure portal New performance test blade" width="0" height="0" caption="Azure portal New performance test blade" />
  
 Firstly you need to give the url to the page to put under load and a name for this load test. You then will need to select the location to generate tests from, note you are shown where your app is currently running in the list of locations
  
-<Figure key="/images/f3323ba333a6494187be9ecd3e2f7154.png" src="/images/f3323ba333a6494187be9ecd3e2f7154.png" alt="2015-10-08_19-28-40" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/f3323ba333a6494187be9ecd3e2f7154.png" src="/images/f3323ba333a6494187be9ecd3e2f7154.png" alt="Azure portal New performance test blade location selection" width="0" height="0" caption="Azure portal New performance test blade location selection" />
  
 You will then need to specify the virtual user load to generate
  
-<Figure key="/images/6de21b2f8999435db718494117b0666c.png" src="/images/6de21b2f8999435db718494117b0666c.png" alt="2015-10-08_19-31-48" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/6de21b2f8999435db718494117b0666c.png" src="/images/6de21b2f8999435db718494117b0666c.png" alt="Azure portal New performance test blade user load selection" width="0" height="0" caption="Azure portal New performance test blade user load selection" />
  
 and then lastly you select the amount of minutes to run your test for
  
-<Figure key="/images/e27c5656157d44bb9cbd246bf48f8163.png" src="/images/e27c5656157d44bb9cbd246bf48f8163.png" alt="2015-10-08_19-32-34" width="0" height="0" caption="FILL THIS IN" /> 
+<Figure key="/images/e27c5656157d44bb9cbd246bf48f8163.png" src="/images/e27c5656157d44bb9cbd246bf48f8163.png" alt="Azure portal New performance test blade duration selection" width="0" height="0" caption="Azure portal New performance test blade duration selection" /> 
  
 Now all that is left to do is click **Run test** at the bottom of the blade
  
@@ -75,33 +75,33 @@ Now all that is left to do is click **Run test** at the bottom of the blade
  
 You should see the following happening, your test should show in the Recent runs as **Queued**
  
-<Figure key="/images/a1783eeb65cd4710ab2d286435a6ba5b.png" src="/images/a1783eeb65cd4710ab2d286435a6ba5b.png" alt="2015-10-08_19-34-01" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/a1783eeb65cd4710ab2d286435a6ba5b.png" src="/images/a1783eeb65cd4710ab2d286435a6ba5b.png" alt="Azure portal Performance tests blade with test queued" width="0" height="0" caption="Azure portal Performance tests blade with test queued" />
  
 After a small bit you should see a **start time** being populated 
  
-<Figure key="/images/8dff2113652f43cd8ade4ae0ff59a6ef.png" src="/images/8dff2113652f43cd8ade4ae0ff59a6ef.png" alt="2015-10-08_19-34-17" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/8dff2113652f43cd8ade4ae0ff59a6ef.png" src="/images/8dff2113652f43cd8ade4ae0ff59a6ef.png" alt="Azure portal Performance tests blade with test start time populated" width="0" height="0" caption="Azure portal Performance tests blade with test start time populated" />
  
 And then very shortly later you will see the progress change to **InProgress** and at this point your  load test is under way 
  
-<Figure key="/images/759dec3ee4134b04bedb1a5746c85bd9.png" src="/images/759dec3ee4134b04bedb1a5746c85bd9.png" alt="2015-10-08_19-34-33" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/759dec3ee4134b04bedb1a5746c85bd9.png" src="/images/759dec3ee4134b04bedb1a5746c85bd9.png" alt="Azure portal Performance tests blade with test in progress" width="0" height="0" caption="Azure portal Performance tests blade with test in progress" />
  
 And then lastly it would switch to Completed and you would see the Average Response Time in seconds
  
-<Figure key="/images/5f7f5e5dd37548ac88ceff430bdfb741.png" src="/images/5f7f5e5dd37548ac88ceff430bdfb741.png" alt="2015-10-08_19-40-34" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/5f7f5e5dd37548ac88ceff430bdfb741.png" src="/images/5f7f5e5dd37548ac88ceff430bdfb741.png" alt="Azure portal Performance tests blade with test completed" width="0" height="0" caption="Azure portal Performance tests blade with test completed" />
  
 While the test is running you are able to click on the test row and see the results which looks like the image below 
  
-<Figure key="/images/9557a5ccfca04a30ae4cf0a641579210.png" src="/images/9557a5ccfca04a30ae4cf0a641579210.png" alt="2015-10-08_19-41-52" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/9557a5ccfca04a30ae4cf0a641579210.png" src="/images/9557a5ccfca04a30ae4cf0a641579210.png" alt="Azure portal Performance test results graph" width="0" height="0" caption="Azure portal Performance test results graph" />
  
 You can hover your mouse over the graph to get information on what the values were at certain times in the test run
  
-<Figure key="/images/808a1b2d77df4c6b8bbc54822294acae.png" src="/images/808a1b2d77df4c6b8bbc54822294acae.png" alt="2015-10-08_19-46-27" width="0" height="0" caption="FILL THIS IN" />
+<Figure key="/images/808a1b2d77df4c6b8bbc54822294acae.png" src="/images/808a1b2d77df4c6b8bbc54822294acae.png" alt="Azure portal Performance test results graph with tooltip" width="0" height="0" caption="Azure portal Performance test results graph with tooltip showing data for a specific time" />
  
 As you can see I have some work that I need to do ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), or increase my scaling in Azure ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
  
 ## More info about load testing in Azure
  
-A nice touch that I haven’t noticed before with other services (and it could have just been a coincidence) is that when I started my load test I received a mail from Microsoft giving me more links and information about this new functionality in Azure. Some links are below
+A nice touch that I haven't noticed before with other services (and it could have just been a coincidence) is that when I started my load test I received a mail from Microsoft giving me more links and information about this new functionality in Azure. Some links are below
  
 - [Get started guide](https://go.beeming.net/1N20o92)
 - [Testing your app that is behind the firewall](https://go.beeming.net/1N20opG)

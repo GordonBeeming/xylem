@@ -13,13 +13,13 @@ For the last while I have been experiencing weird hangs with [Visual Studio](htt
  
 This was kind of weird because I'd never seen this before, I logged a [Microsoft connect](https://connect.microsoft.com/) case through Visual Studio's Report a Bug Feature after installing the [Microsoft Visual Studio 2013 Feedback Tool](http://visualstudiogallery.msdn.microsoft.com/563d1003-f0ed-498f-8ef9-f8ee1aac39fe) which allows a more detailed collection of data for your bug.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7f359a13e26ca0adbd30d78b3a89978b1345e829/e6649b3b-5b6f-4960-b8a8-dd8d9c83f4d6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/05ed211a8970c5150eff73d7616ad6e5d68b77e7/b1fa0359-de63-4138-8ba9-d18be3753bc7.png)
+<Figure key="/images/1767e00c5367439cb6a97704946a5cf4.png" src="/images/1767e00c5367439cb6a97704946a5cf4.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 After creating this bug I attached a ETL trace using [PerfView](http://www.microsoft.com/en-us/download/details.aspx?id=28567), if you don't know how to use PerfView you can follow the tutorials on [Channel 9](http://channel9.msdn.com/) ([PerfView Tutorial](http://channel9.msdn.com/Series/PerfView-Tutorial)).
  
 The ETL Trace showed a large amount of time spent on the Certificates which matched what I found with ProcMon.exe
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b9187f3b5eba3130f56481eeade4772c9a2342d/a29ff667-bdef-46eb-8dd6-4cc07cb9c77d.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/80729d4f4f4ea1816480ab7f898a3423e2012e47/80ad4085-b3f2-4de1-b4d9-49eaa6258461.png)
+<Figure key="/images/c200f41380044e699e806bdbb8c08b46.png" src="/images/c200f41380044e699e806bdbb8c08b46.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 At this point it was pointed out that I should look at how many certs were in my SystemCertificates (C:\Users\&lt;username&gt;\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates), I found that I had 2405 certs which was a lot more than usual
  

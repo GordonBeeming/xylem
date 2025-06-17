@@ -154,11 +154,11 @@ After we have switched to the AzureResourceManager module we are able to use the
 
 This would then return the account added
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/412a445a42deda5434763da45a3fb3eaa5023b0e/bb04ba9e-7a7f-43c6-92fa-feac4d0d597c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fe5807debd830b18196e1a3902b932d1e0b42b87/c113098e-cd29-4363-88ff-434801c16a04.png)
+<Figure key="/images/9eef83312a5349b78143bf920e5a698b.png" src="/images/9eef83312a5349b78143bf920e5a698b.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 At this point if you ran Get-AzureAccount it will show you this account and any others you have previously added.
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f9b1bf92abab97013eb03deed9086cc49af94e5d/362d2963-77ee-400f-b414-93e3fca01ae6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3654cc38c7f74b08feb84c01ff71facd9cd13164/18a18571-6497-46c7-9922-d01a5437222e.png)
+<Figure key="/images/beccbfae32194e6daf525cd62f8df172.png" src="/images/beccbfae32194e6daf525cd62f8df172.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 ## Step 4
 
@@ -174,7 +174,7 @@ Get-AzureResourceGroupGalleryTemplate
 
 and it will return a list of all the current resources group templates that we can create. For the list at the time of writing this post you can refer to one of my [GitHub](http://github.com) Gists at [https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4](https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4 "https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4"). We are going to be using one of the templates found around line 2220 which is the website and sql database.
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f57b04c7b828429de9aa52a15f53157adcd6bf66/6d139c78-4d22-4d8e-b1d5-10286c110c00.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fe0ca0a946803e6f9261ba206e1a01bf7cdc55b6/a6489048-c54a-415a-a891-89ca37aedbf5.png) 
+<Figure key="/images/e7aaeda582f14a648853eb495d52340a.png" src="/images/e7aaeda582f14a648853eb495d52340a.png" alt="image" width="0" height="0" caption="FILL THIS IN" /> 
 
 ### Get a list of Azure Resource Locations
 
@@ -192,7 +192,7 @@ $ResourceManagerTest = "ResourceManagerTest"$AzureDataCenterLocation = "West Eur
 
 This will then go off and create our website and database along with an Application Insights resource that we can use for our website when we deploy it. When the command finishes you should see an output similar to the one below which because we specified the -verbose flag tells us the status of each resource created
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b2589c8b2609d3e522da339ec70e82f74b71ff09/599da4ee-61de-473e-b3f7-b5424d053439.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4abd1f212399f0ab8f8d57d67b9c299440078a76/41b95e80-0711-4b5a-aa4c-7e9d4a9050bb.png)
+<Figure key="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" src="/images/238967f8d0f6433c89bcc0ee5cf7c9db.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 At this point we really are finished with what the subject of the blog post is but we'll continue on to explore what we have just created, how we would have had to create it using the Azure Portal and how we can remove the resource group using PowerShell.
 
@@ -200,11 +200,11 @@ At this point we really are finished with what the subject of the blog post is b
 
 Open the Azure Portal. The first thing you should notice is that you already have a notification and when you open that it says that a deployment has succeeded.
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/18a0c9a6d38eefd4a5e276e407ce7aec7422fd89/eead9f51-919b-4c2b-bdf3-b9032f620e50.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ec1de898a376359c7c1339e3070aedeabc839fc1/79961bbc-4812-43d4-ae24-5d8274f420db.png)
+<Figure key="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" src="/images/db8a8b544a424ef4a4b15b78ac51d0c3.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 Clicking on the success notification will open that resource group
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d82bdc0b1f1ab5470d18ae75422da146ad8c8ff1/cb674115-da32-480a-9eae-74bf1ff3dfd1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4928217b2d6aba621c11816fc316f8f95c7860e7/f7b680b3-88d4-4f49-9ccb-065424ef2782.png)
+<Figure key="/images/fa36e6f9233d419aba6011acbe816c01.png" src="/images/fa36e6f9233d419aba6011acbe816c01.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 From here you can use the resources 100% as if you created them in the portal.
 
@@ -216,25 +216,25 @@ Remove-AzureResourceGroup -Name $ResourceManagerTest -Force -Verbose
 
 this will then proceed to remove the resource group, again because of the -verbose flag we don't get as much info but rather just that it's deleting the resource group and then comes back when it's done.
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ea125ed53954cfb61bb1d11df623e4489abe2fb9/a92edd54-adc5-42e4-943e-a4b965c5cdb0.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2ad0adec7ae45c718d95bcf56dcb118b3aed7747/f1659e96-2357-4958-8f2a-2fca13474f30.png)
+<Figure key="/images/e11a38eaa7214a56b533958227775021.png" src="/images/e11a38eaa7214a56b533958227775021.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 ## Step 8
 
 The last thing that I'll show on this post is how we would of have to do this manually (or at least where to find template). Back in the Azure Portal click new in the bottom left corner and then click on Everything
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/98cc4c72597c7105dcdfddbe7953196969148553/06e2e7b9-6b89-4673-a4a0-883c2807fd13.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bf31d4b9f9e36d0956c1eb90ff3e8ebf41173355/42ad4e6d-5cf0-43c3-90b3-e828b54b706d.png)
+<Figure key="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" src="/images/7e610f68dae14218b39bdf9c6d4b06e1.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 Next click on the Web category/section and then you'll see the Website + SQL option which is what we created
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/df4add6dfa8b38e9f83a53c55ff9660fe3c0134e/9da548b9-cded-43dd-a95b-3d5b54507e56.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8869aa6a23e39017c848f117f23abaf5b7d44614/9d1b728b-d599-4037-a694-b16f58280e80.png)
+<Figure key="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" src="/images/be8e1b50a5b943fa818b9dcea256bcd5.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 clicking on that option will give you a little info about the template and from here you'd just click on create
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e9c971a7e986cd9d2ebf0157d69ddbc250cec0c6/bc7fc5a1-0ec6-41dc-a0a7-3c2a1309a6b2.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/26451589b50ff1cd71abb82986e6a2c69514ec18/fe3bcacf-1fcf-4875-a454-bde77fe330fd.png)
+<Figure key="/images/fe417656ddaa4f16baadc41889fe29d8.png" src="/images/fe417656ddaa4f16baadc41889fe29d8.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 From here you will configure the Resource Group Name, all the settings for your Website resource and SQL resource and then click create.
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/085979b8b1fbe4a8eea5510916176cd7b19cca2a/3bf2c1a8-e9ef-4c0b-ab48-50d6b8fca82c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/411ab130215b3c23ce8c7d94ed02ae235ac90a46/52b2ddb7-df55-4e43-8423-6bee1ce84e90.png)
+<Figure key="/images/0bb2ebe0e61746a7bb9abd332838e476.png" src="/images/0bb2ebe0e61746a7bb9abd332838e476.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
 
 When that process completes you will be in the sample place as that small PowerShell script gets you too ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
 

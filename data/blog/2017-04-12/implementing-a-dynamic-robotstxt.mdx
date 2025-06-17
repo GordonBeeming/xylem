@@ -20,13 +20,13 @@ To implement a dynamic robots.txt is very simple, we just need a couple componen
 
 Our sample code starts off with a brand new MVC web application with no other alterations.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3203625c541ae034ec34a7f0e2181a88704f6151/3203625c541ae034ec34a7f0e2181a88704f6151.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/43113e229adbc034b9977a9a376ae7aa912866d7/43113e229adbc034b9977a9a376ae7aa912866d7.png)
+<Figure key="/images/0bd6327f4ba140aea19fdb1bfaa10411.png" src="/images/0bd6327f4ba140aea19fdb1bfaa10411.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 ### Creating a controller.
  
 We are going to create a standard MVC controller called RobotsTxtController
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/174d63ee35273e6626e53ebd7047cd331e888ddb/174d63ee35273e6626e53ebd7047cd331e888ddb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3d94c6c6a42c4301fa12302e5ca21574972befa5/3d94c6c6a42c4301fa12302e5ca21574972befa5.png)
+<Figure key="/images/da0ab18acf994c4a86a4be39b24d5a89.png" src="/images/da0ab18acf994c4a86a4be39b24d5a89.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 Replace the contents of the Index action like with the below
 
@@ -82,7 +82,7 @@ We'll need to navigate over to the *RouteConfig* in the *App\_Start* folder. Add
  
 This will now route requests to /robots.txt to our new controller. However if we browse to our robots.txt file you'll notice that it returns a 404 even thought we'd expect it to show the robots.txt content
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2a9fc79a938729a3a1e6fbb6f7f14ec2bf0ca09a/2a9fc79a938729a3a1e6fbb6f7f14ec2bf0ca09a.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3952c9199cdf9c5771712a196cdb4c86609b6787/3952c9199cdf9c5771712a196cdb4c86609b6787.png)
+<Figure key="/images/dd96459dd2bc446aadc47a21b1a39a11.png" src="/images/dd96459dd2bc446aadc47a21b1a39a11.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 The reason for this is that we aren't telling the asp.net pipeline that we want to handle all requests including those that are generally extensions of static files like .txt. 
  
@@ -90,11 +90,11 @@ The reason for this is that we aren't telling the asp.net pipeline that we want 
  
 Luckily for us handling all requests is as simple as adding a new attribute in the web.config. Navigate to the *system.webServer/modules* node and add the attribute *runAllManagedModulesForAllRequests* with a value of *true*.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/efcfa52dcb5907576c0c1084566f824df8e702b1/efcfa52dcb5907576c0c1084566f824df8e702b1.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e645df394f1c2e6a6e1acd1237c3a8134cf5d975/e645df394f1c2e6a6e1acd1237c3a8134cf5d975.png)
+<Figure key="/images/e88f227697334449b49a08ba07c95991.png" src="/images/e88f227697334449b49a08ba07c95991.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 Now if we navigate to our robots.txt file we'll see the expected content
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/21d365fefecc92aa6923d060eb17cd9c550a2c06/21d365fefecc92aa6923d060eb17cd9c550a2c06.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a9ca11766a6d61ec427fb015692d109520eb4722/a9ca11766a6d61ec427fb015692d109520eb4722.png)
+<Figure key="/images/490a0f0825fb423a942b35bd8bffc827.png" src="/images/490a0f0825fb423a942b35bd8bffc827.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 switching the bool field to say we don't want to show our production robots.txt
 
@@ -106,7 +106,7 @@ var useStandardRobotsTxt = false;
 
 and check the robots.txt again after compiling
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/797caa3be795fe0ff519f3556baa486833e53f39/797caa3be795fe0ff519f3556baa486833e53f39.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ba772deb0728d6c6992c53a17644729c74d5836d/ba772deb0728d6c6992c53a17644729c74d5836d.png)
+<Figure key="/images/bfaae311f89149c1be5b76f408b4094d.png" src="/images/bfaae311f89149c1be5b76f408b4094d.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 Obviously changing the bool field between environments is not an option as it would require a recompile of our code.
  
@@ -138,11 +138,11 @@ Now although we have a way in our code to show which robots.txt to show we still
  
 Lucky for us Azure deployment slots lets us set slot specific settings which we'll make use of. Start off by setting the appSetting value for *config:UseStandardRobotsTxt* to 0. This will ensure that we show the deny robots.txt by default. Navigate to your production deployment slot in Azure and open the Application settings blade.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ed5696af1909d9381bdba6f549db0e829d12c300/ed5696af1909d9381bdba6f549db0e829d12c300.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5e379086779be964eab73d0d623d0adcc0850c13/5e379086779be964eab73d0d623d0adcc0850c13.png)
+<Figure key="/images/3c7e0ac3cf314e7a9a8e4bf12725db98.png" src="/images/3c7e0ac3cf314e7a9a8e4bf12725db98.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 Scroll down to the App settings section and add a new app setting value matching what you have in your web.config's app settings, set the value to 1 and tick the *Slot setting* checkbox and click *save*.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/38ebc1cdb1477488818f21c48ac789fdb635c95e/38ebc1cdb1477488818f21c48ac789fdb635c95e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/360e4cab3024f45c35db833927d8ea546d821fd4/360e4cab3024f45c35db833927d8ea546d821fd4.png)
+<Figure key="/images/985ee9e30938420092bb96610a35e280.png" src="/images/985ee9e30938420092bb96610a35e280.png" alt="image" width="0" height="0" caption="FILL THIS IN" />
  
 Your application will now show the deny robots.txt for all slots except the ones where this value is added and set to 1 ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
 

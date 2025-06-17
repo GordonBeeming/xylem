@@ -7,7 +7,7 @@ summary: 'In Getting start with a Team Explorer Plugin for VS 2013 Part 2 we cre
 ---
 
 
-In [Getting start with a Team Explorer Plugin for VS 2013 Part 2](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2) we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.
+In [Getting start with a Team Explorer Plugin for VS 2013 Part 2](/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2) we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.
  
 ## Creating a Team Explorer Page
  
@@ -29,7 +29,7 @@ Note how we used the GuidList.sampleTeamExplorerPage guid string that we created
 
 Add a new user control to your project called SamplePageControl.xaml
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e7105ed46da746d014a7c13f0e0bc5ec6f402da2/383977f2-3f2a-4958-95b3-afaeee9377be.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ca7a46d7fe863775dcea59bb4570ae7061208865/ffa27309-650d-43fe-8921-b88d63a1c9d7.png)
+<Figure key="/images/a91c49e935dc4481b6507b47b1520b83.png" src="/images/a91c49e935dc4481b6507b47b1520b83.png" alt="Adding new User Control in Visual Studio" width="0" height="0" caption="Adding SamplePageControl.xaml User Control to the project." />
 
 We will not be adding anything fancy to this control, just add a TextBlock and set the Text property so that we are able to see that it is loaded, below is a sample of this
 
@@ -65,9 +65,9 @@ public void Execute(){    var service = this.GetService<ITeamExplorer>();    if 
 
 You'll notice now if you run the project that when you click on the sample button you are taken through to our new page and the page content is visible
 
- [![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a8377ac10f94a18bf4e4dc3f2c44d0913bc08d0c/4019be8e-c02c-404c-94a6-54723fbb688a.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/537045c9baf981df822eca7847bc6ea3866b6fad/8f7f833e-979f-41f0-af70-78c6c439b258.png)
+ <Figure key="/images/897e63e4c98f4de0a621cfbf763c2747.png" src="/images/897e63e4c98f4de0a621cfbf763c2747.png" alt="Sample Team Explorer Page with content in Visual Studio" width="0" height="0" caption="The Sample Team Explorer Page displaying 'Sample Page Content' within Visual Studio." />
 
-That's all that was required to create a Team Explorer Page with Content ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+That's all that was required to create a Team Explorer Page with Content 🙂.
 
-In the [Getting start with a Team Explorer Plugin for VS 2013 Part 4](https://gordonbeeming.com/blog/post/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4) we will be creating a new Team Explorer Section and then making some contents in the section content link through to this page.
+In the [Getting start with a Team Explorer Plugin for VS 2013 Part 4](/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4) we will be creating a new Team Explorer Section and then making some contents in the section content link through to this page.
 

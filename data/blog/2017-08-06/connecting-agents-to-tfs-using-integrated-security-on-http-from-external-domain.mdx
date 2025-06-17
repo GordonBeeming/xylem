@@ -15,34 +15,34 @@ Obviously it would be great for everything to run on https, but sometimes you ar
 
 If you try using the PAT token auth you will notice that the agent shouts at you saying PAT auth is only supported on https
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/48ca7ec7f3a3be919c24c6630ed225ad5a6df18c/48ca7ec7f3a3be919c24c6630ed225ad5a6df18c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e79ff0451e25e7915f103d89aece5e5617f252a2/e79ff0451e25e7915f103d89aece5e5617f252a2.png)
+<Figure key="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" src="/images/c6110f3f5c1049cdb82e22ac0c43e7a9.png" alt="PAT auth only supported on https error" width="0" height="0" caption="Error message: PAT authentication is only supported on HTTPS" />
 
-It feels like you have no options at this point but you do ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+It feels like you have no options at this point but you do 🙂
 
 ## Integrated security from outside the domain
 
 If you had to try integrated security from outside the domain you would obviously be told that auth can't happen because the domain joined machine doesn't know who you are
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4304ef4ef50fe13c46b3828d2af536c664be12c7/4304ef4ef50fe13c46b3828d2af536c664be12c7.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b9b7c98570a472a7a27b1fe0def53b805e67331c/b9b7c98570a472a7a27b1fe0def53b805e67331c.png)
+<Figure key="/images/3846fbfb1ab348deafd82b451f2d9930.png" src="/images/3846fbfb1ab348deafd82b451f2d9930.png" alt="Integrated security authentication error" width="0" height="0" caption="Error message: Integrated security authentication failed" />
 
 The solution is to use the Windows Credential Manager, go to the start menu and type **windows credential** and select **Manage Windows Credentials**   
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/31849602e7548d941321856315e0cc575459c61a/31849602e7548d941321856315e0cc575459c61a.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5239e91aa739c2840044e2792471576843fb4c32/5239e91aa739c2840044e2792471576843fb4c32.png)
+<Figure key="/images/7a6f31babae5460598c03d4bb17c4fa5.png" src="/images/7a6f31babae5460598c03d4bb17c4fa5.png" alt="Manage Windows Credentials option in Start Menu" width="0" height="0" caption="Selecting Manage Windows Credentials from the Start Menu" />
 
 In this window you will click **Add a Windows credential**
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4a07439aaa9f1604395b05f42202a930b53b5ddb/4a07439aaa9f1604395b05f42202a930b53b5ddb.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fb2e7ca3cbc0fa60f7ab72c324939b6946d98c65/fb2e7ca3cbc0fa60f7ab72c324939b6946d98c65.png)
+<Figure key="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" src="/images/68d4b530e46e4eb39108d47c69ef9ebd.png" alt="Add a Windows credential button" width="0" height="0" caption="Clicking Add a Windows credential in Credential Manager" />
 
 Enter the server name with port
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e9ad2daa257c074711a806511857d333c8517a35/e9ad2daa257c074711a806511857d333c8517a35.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/de017d264efc40ee7e577fe7d4249f96ac127e9d/de017d264efc40ee7e577fe7d4249f96ac127e9d.png)
+<Figure key="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" src="/images/4094754cb3b44dcbb4a2d01b6d02e152.png" alt="Entering server name and port for Windows credential" width="0" height="0" caption="Entering the TFS server name and port" />
 
 Click ok
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/e87d4b27063c24f5c3de0b1522e7b10c9b19ad43/e87d4b27063c24f5c3de0b1522e7b10c9b19ad43.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/750d4a9a70cf1e6dd9c51c6a9ef34919901f6566/750d4a9a70cf1e6dd9c51c6a9ef34919901f6566.png)
+<Figure key="/images/b683d15cdb1542e9aff6058cc5410429.png" src="/images/b683d15cdb1542e9aff6058cc5410429.png" alt="Windows credential added successfully" width="0" height="0" caption="Windows credential successfully added" />
 
-Once the credential is in you can now re-try connecting using integrated security and it will work ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+Once the credential is in you can now re-try connecting using integrated security and it will work 🙂
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2db6978554d72d6f339166bd8e621eb25446e53b/2db6978554d72d6f339166bd8e621eb25446e53b.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1c5a5aff7e458a4eff11af7b5830ac72f0fffb72/1c5a5aff7e458a4eff11af7b5830ac72f0fffb72.png)
+<Figure key="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" src="/images/d089eee1f23c42f4a31f8a29d7d67d51.png" alt="Successfully connecting agent using integrated security" width="0" height="0" caption="Agent successfully connected using integrated security" />
 
 Hopefully this helps someone else as well
 

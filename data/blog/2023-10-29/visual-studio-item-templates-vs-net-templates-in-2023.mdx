@@ -12,16 +12,16 @@ summary: 'Long ago, one of the ways we''d get some reuse out of standard and uti
 Let's start by looking at what the process looked like to export an Item Project template in Visual Studio.
 
 
-<Figure key="./images/2023-10-29-23-22-44.jpg" src="./images/2023-10-29-23-22-44.jpg" alt="In Visual Studio, go to Project | Export Template..." width="0" height="0" caption="In Visual Studio, go to Project | Export Template..." />
+<Figure key="/images/2023-10-29-23-22-44.jpg" src="/images/2023-10-29-23-22-44.jpg" alt="In Visual Studio, go to Project | Export Template..." width="0" height="0" caption="In Visual Studio, go to Project | Export Template..." />
 
 
 Next, a dialog will come up asking you some info like which file you want to export, which references are essential for the item to work as expected, and some metadata for the item template
 
 
-<Figure key="./images/2023-10-29-23-31-13.gif" src="./images/2023-10-29-23-31-13.gif" alt="The Export Template Wizzard will guide you through the information needed to create the Item Project template" width="0" height="0" caption="The Export Template Wizzard will guide you through the information needed to create the Item Project template" />
+<Figure key="/images/2023-10-29-23-31-13.gif" src="/images/2023-10-29-23-31-13.gif" alt="The Export Template Wizzard will guide you through the information needed to create the Item Project template" width="0" height="0" caption="The Export Template Wizzard will guide you through the information needed to create the Item Project template" />
 
 
-<Figure key="./images/2023-10-29-23-33-39.jpg" src="./images/2023-10-29-23-33-39.jpg" alt="Windows Explorer will open showing you the file" width="0" height="0" caption="Windows Explorer will open showing you the file" />
+<Figure key="/images/2023-10-29-23-33-39.jpg" src="/images/2023-10-29-23-33-39.jpg" alt="Windows Explorer will open showing you the file" width="0" height="0" caption="Windows Explorer will open showing you the file" />
 
 
 ⚠️ WARNING: Make sure you backup this file to use on other machines or share it with your friends
@@ -29,7 +29,7 @@ Next, a dialog will come up asking you some info like which file you want to exp
 Reusing this file is simple. All you need to do is copy the file into the My Exported Templates folder (you will need to create this folder if it does not exist) on another computer.
 
 
-<Figure key="./images/2023-10-29-23-43-04.jpg" src="./images/2023-10-29-23-43-04.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2023-10-29-23-43-04.jpg" src="/images/2023-10-29-23-43-04.jpg" alt="" width="0" height="0" caption="" />
 
 
 ### Pros and Cons
@@ -66,7 +66,7 @@ There are a couple of files that we'll need to create in a folder. I've publishe
 `└───README.md`
 
 
-<Figure key="./images/2023-10-30-00-39-45.jpg" src="./images/2023-10-30-00-39-45.jpg" alt="This icon is used to represent the nuget package once we publish it" width="0" height="0" caption="This icon is used to represent the nuget package once we publish it" />
+<Figure key="/images/2023-10-30-00-39-45.jpg" src="/images/2023-10-30-00-39-45.jpg" alt="This icon is used to represent the nuget package once we publish it" width="0" height="0" caption="This icon is used to represent the nuget package once we publish it" />
 
 
 The text files have this content in them
@@ -231,10 +231,10 @@ Run the below to pack the nuget package so it can be uploaded to nuget.org
 and this will create a `nupkg` file (note you need a copy of nuget.exe globally to just pack directly like this)
 
 
-<Figure key="./images/2023-10-30-01-59-44.jpg" src="./images/2023-10-30-01-59-44.jpg" alt="Once uploaded you will see all the information for the package, click Submit" width="0" height="0" caption="Once uploaded you will see all the information for the package, click Submit" />
+<Figure key="/images/2023-10-30-01-59-44.jpg" src="/images/2023-10-30-01-59-44.jpg" alt="Once uploaded you will see all the information for the package, click Submit" width="0" height="0" caption="Once uploaded you will see all the information for the package, click Submit" />
 
 
-<Figure key="./images/2023-10-30-02-04-28.jpg" src="./images/2023-10-30-02-04-28.jpg" alt="After clicking Submit, you will see that the page is uploaded with couple of warnings informing you that the page will take a bit to validate and index" width="0" height="0" caption="After clicking Submit, you will see that the page is uploaded with couple of warnings informing you that the page will take a bit to validate and index" />
+<Figure key="/images/2023-10-30-02-04-28.jpg" src="/images/2023-10-30-02-04-28.jpg" alt="After clicking Submit, you will see that the page is uploaded with couple of warnings informing you that the page will take a bit to validate and index" width="0" height="0" caption="After clicking Submit, you will see that the page is uploaded with couple of warnings informing you that the page will take a bit to validate and index" />
 
 
 Once the validation and indexing process is completed, you can install the template and use it using the commands below
@@ -290,5 +290,5 @@ Let's look at the pros and cons of creating a .NET template
 
 The newer, preferred approach to creating item-type templates has changed significantly but has many advantages over the previous item-based templates. There is tons of documentation on how dotnet templates work and how you can customize them
 
-If you want to see how to automate the publish to nuget.org, take a look at the next post [Deploying .NET templates using GitHub Actions - Gordon Beeming](https://gordonbeeming.com/blog/deploying-net-templates-using-github-actions)
+If you want to see how to automate the publish to nuget.org, take a look at the next post [Deploying .NET templates using GitHub Actions - Gordon Beeming](/blog/2023-11-05/deploying-net-templates-using-github-actions)
 

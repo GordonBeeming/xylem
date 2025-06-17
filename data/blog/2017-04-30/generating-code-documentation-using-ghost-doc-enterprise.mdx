@@ -43,25 +43,25 @@ public static long Add(long number1, long number2)
 ```
 
 
-As you can see the default comments are very readable so in this case I'll use that comment as is ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+As you can see the default comments are very readable so in this case I'll use that comment as is 🙂.
  
 ### Spell Check
  
 Ghost doc also installs with a spell checker which I love because my spelling is terrible at the best of times. Other spell checkers that I've used in the past in Visual Studio only check obvious things like string literals but Ghost Doc checks a whole lot more for example in variable names
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fd39033dc086529a884ab3569cb9d410ed5b3448/fd39033dc086529a884ab3569cb9d410ed5b3448.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/a299f348b7248458cb99efd50e5d1bcf557ae55c/a299f348b7248458cb99efd50e5d1bcf557ae55c.png)
+<Figure key="/images/844d7addc8f84666b9a842bf72c4482a.png" src="/images/844d7addc8f84666b9a842bf72c4482a.png" alt="Ghost Doc spell check suggesting a correction for a typo in a variable name" width="0" height="0" caption="Ghost Doc spell checker identifying a typo in a variable name and suggesting a correction." />
  
-Note how it splits the casing on the variable to know where each word is and you can correct your spelling with a single click on the mouse ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). You can configure what you want the spell check to work for in the options menu
+Note how it splits the casing on the variable to know where each word is and you can correct your spelling with a single click on the mouse 🙂. You can configure what you want the spell check to work for in the options menu
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/61d4544dfe9144bd5a643add98b723fbf405640e/61d4544dfe9144bd5a643add98b723fbf405640e.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2777f9b4ff55e65ad044f16376ed74de54c6b59f/2777f9b4ff55e65ad044f16376ed74de54c6b59f.png)
+<Figure key="/images/d525ca772f624368a587e5e70e4aab39.png" src="/images/d525ca772f624368a587e5e70e4aab39.png" alt="Ghost Doc spell checker options in Visual Studio" width="0" height="0" caption="Visual Studio options dialog showing configurable spell check settings for Ghost Doc." />
  
-With this extension installed opening other peoples code you very quickly notice typos that you would normally not ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+With this extension installed opening other peoples code you very quickly notice typos that you would normally not 🙂.
  
 ## Generating documentation with Ghost Doc
  
-So this posts primary focus is on how to generate documentation with Ghost Doc so let's see how that works. First off you'll need to have Ghost Doc installed obviously ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). Next open a cmd window and change directory to the directory where you have a solution with existing xml comments 
+So this posts primary focus is on how to generate documentation with Ghost Doc so let's see how that works. First off you'll need to have Ghost Doc installed obviously 😜. Next open a cmd window and change directory to the directory where you have a solution with existing xml comments 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/af64ebc23808d728c24496c9a928f2847ea1e237/af64ebc23808d728c24496c9a928f2847ea1e237.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/202e537bde4180c9f494a9715a6ec4b81e082e41/202e537bde4180c9f494a9715a6ec4b81e082e41.png)
+<Figure key="/images/f724f1067b64463891b1760c289ef0c5.png" src="/images/f724f1067b64463891b1760c289ef0c5.png" alt="Command prompt window showing the directory of the solution with XML comments" width="0" height="0" caption="Command prompt window navigated to the solution directory containing XML comments." />
  
 Now all you have to do is run the cmd tool, passing in the solution file and a couple of other parameters
 
@@ -126,11 +126,6 @@ Info: CopyFromIndexComponent: Indexed 8 elements in 1 files.
 Info: CopyFromIndexComponent: Loaded 0 copy components.
 Info: CopyFromIndexComponent: Instantiating component.
 Info: CopyFromIndexComponent: Loaded 0 copy components.
-Info: ForEachComponent: Instantiating component.
-Info: ForEachComponent: Loading subcomponents.
-Info: CopyFromIndexComponent: Instantiating component.
-Info: CopyFromIndexComponent: Loaded 0 copy components.
-Info: ForEachComponent: Loaded 1 subcomponents.
 Info: ForEachComponent: Instantiating component.
 Info: ForEachComponent: Loading subcomponents.
 Info: CopyFromIndexComponent: Instantiating component.
@@ -275,37 +270,37 @@ M:\_code\random\BasicCalc>
  
 Now that will create a Help folder and inside it a .chm file
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8a5075d93437d391f1572b0c3a0bb7af7e8de8e6/8a5075d93437d391f1572b0c3a0bb7af7e8de8e6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fb32a24f3be5d8a49a1b15f2bd2209cc2cfbd832/fb32a24f3be5d8a49a1b15f2bd2209cc2cfbd832.png)
+<Figure key="/images/c7dec847b890461ab6c90f611d56699c.png" src="/images/c7dec847b890461ab6c90f611d56699c.png" alt="File explorer showing the generated .chm help file in the Help folder" width="0" height="0" caption="File explorer displaying the .chm help file generated by Ghost Doc in the Help folder." />
  
 We can open that file and you will notice that all our comments have been formatted nicely into what looks like the old msdn style documentation 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/21b8620107be08c84cadca5c42dd017c4ac68289/21b8620107be08c84cadca5c42dd017c4ac68289.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b12254952ab51fd6262e4d71cc683da22f41310b/b12254952ab51fd6262e4d71cc683da22f41310b.png)
+<Figure key="/images/ed94c4ad3b1e4770a7969d1967cd7f51.png" src="/images/ed94c4ad3b1e4770a7969d1967cd7f51.png" alt="Generated CHM help file displaying formatted code comments" width="0" height="0" caption="The generated CHM help file, showcasing nicely formatted code documentation similar to old MSDN style." />
  
-Ghost Doc generates to other formats as well as you would see on their [editions compare page](https://go.beeming.net/2pv5W6F) ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+Ghost Doc generates to other formats as well as you would see on their [editions compare page](https://go.beeming.net/2pv5W6F) 🙂
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6cf9bba3beaa5675a6181a4c32f4bbcab7075416/6cf9bba3beaa5675a6181a4c32f4bbcab7075416.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9f10e49e6c5522dc3a44db43a27879c1402d5a8c/9f10e49e6c5522dc3a44db43a27879c1402d5a8c.png)
+<Figure key="/images/beb9d867b2df4f439f4b1a711c475119.png" src="/images/beb9d867b2df4f439f4b1a711c475119.png" alt="Ghost Doc editions comparison page highlighting different output formats" width="0" height="0" caption="Ghost Doc editions comparison page, indicating support for various documentation output formats." />
  
-We now have a chm that we can distribute with our source ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+We now have a chm that we can distribute with our source 🙂.
  
 ## Adding this to our CI
  
-Generating docs from your machine is ok but then you have to remember to do it and what's worse is that you'll have to check that file into source control (Emphasis on the **Source** in source control ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)) which wouldn't be great. So naturally as [Donovan Brown](https://go.beeming.net/2pveWIL) reminds us "anything you can do on a command line you can do in VSTS or TFS" ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+Generating docs from your machine is ok but then you have to remember to do it and what's worse is that you'll have to check that file into source control (Emphasis on the **Source** in source control 🙂) which wouldn't be great. So naturally as [Donovan Brown](https://go.beeming.net/2pveWIL) reminds us "anything you can do on a command line you can do in VSTS or TFS" 😁.
  
 I've gone ahead and setup a standard CI build using the built in Visual Studio template.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/bd9894a54ddf48ddf4fc154653f605db440e9b59/bd9894a54ddf48ddf4fc154653f605db440e9b59.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2b934c51a0112f155e3201a1419501cca81ab681/2b934c51a0112f155e3201a1419501cca81ab681.png)
+<Figure key="/images/ddcc318b92ed4abb9aea55c1fe907f3d.png" src="/images/ddcc318b92ed4abb9aea55c1fe907f3d.png" alt="VSTS/TFS build definition using the Visual Studio template" width="0" height="0" caption="VSTS/TFS build definition configured with the standard Visual Studio template." />
  
 If we look at the current build artifacts you will notice that only our class library and pdb is being published
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6ca03c98b25deb4a107f402d7e78cb5e876b2b37/6ca03c98b25deb4a107f402d7e78cb5e876b2b37.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/14e5ca0618f65ee8e51437fdb2ddabd6c3c143be/14e5ca0618f65ee8e51437fdb2ddabd6c3c143be.png)
+<Figure key="/images/2d715933b4a143c5b142091d36a3f73b.png" src="/images/2d715933b4a143c5b142091d36a3f73b.png" alt="VSTS/TFS build artifacts showing only the class library and PDB files" width="0" height="0" caption="VSTS/TFS build artifacts, currently publishing only the class library and PDB files." />
  
 To add the help file to this we are going to do a couple steps. First add Command Line task 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ee961e6deb49ddd015d27d3738d239759db3c4f5/ee961e6deb49ddd015d27d3738d239759db3c4f5.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/813a1d451ab49c3cc074d8985494dedde6965df1/813a1d451ab49c3cc074d8985494dedde6965df1.png)
+<Figure key="/images/60989716f6114b3ba4e1740bfa85d408.png" src="/images/60989716f6114b3ba4e1740bfa85d408.png" alt="Adding a Command Line task to the VSTS/TFS build definition" width="0" height="0" caption="Adding a Command Line task to the VSTS/TFS build definition to generate documentation." />
     
 and place it before the *Copy Files to: $(build.artifactstagingdirectory)* task
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b49c785397009c90991e2321d5ddd1cde70c9fd9/b49c785397009c90991e2321d5ddd1cde70c9fd9.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/283d261fa98e7736f75bc45b12d23fd896572a0c/283d261fa98e7736f75bc45b12d23fd896572a0c.png)
+<Figure key="/images/60792a49269e45c2a6903168f07b5765.png" src="/images/60792a49269e45c2a6903168f07b5765.png" alt="VSTS/TFS build definition with the Command Line task placed before the Copy Files task" width="0" height="0" caption="VSTS/TFS build definition showing the Command Line task positioned before the Copy Files task." />
  
 Now we need to update a couple values for the task
  
@@ -314,15 +309,15 @@ Now we need to update a couple values for the task
     - Note that we are specifying $(BuildConfiguration) as the configuration so docs are generated for the configuration we are specifically building
 3. Check the Fail on Standard Error checkbox
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/256910708574992ea77e833affc4edd5e9148ebf/256910708574992ea77e833affc4edd5e9148ebf.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d99a5ae0c61449f778d972b2b510374b915e351d/d99a5ae0c61449f778d972b2b510374b915e351d.png)
+<Figure key="/images/3241e2f196a94468b8f35f497f35fdfa.png" src="/images/3241e2f196a94468b8f35f497f35fdfa.png" alt="Configuring the Command Line task in VSTS/TFS to run Ghost Doc" width="0" height="0" caption="Configuring the Command Line task in VSTS/TFS with the Ghost Doc executable path and arguments." />
  
 Now add a Copy Files task
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b91d987a38ff008bf85519d7368ad8b63add28c3/b91d987a38ff008bf85519d7368ad8b63add28c3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/15b1e6522b7d73e9f645d01e799823212368e6a2/15b1e6522b7d73e9f645d01e799823212368e6a2.png)
+<Figure key="/images/d91e75e88ea44655af21f0dc38d13772.png" src="/images/d91e75e88ea44655af21f0dc38d13772.png" alt="VSTS/TFS build definition showing the addition of a Copy Files task" width="0" height="0" caption="Adding a Copy Files task to the VSTS/TFS build definition to copy the generated help file." />
  
 and add this below the Command Line task
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4f116086dd74a1dc7605f186d787d7ee0f518e23/4f116086dd74a1dc7605f186d787d7ee0f518e23.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c8db2f81743d0f2bb8694a7cd73b2173bad07129/c8db2f81743d0f2bb8694a7cd73b2173bad07129.png)
+<Figure key="/images/8c4074093be546b3bccc29cd56a2ce95.png" src="/images/8c4074093be546b3bccc29cd56a2ce95.png" alt="VSTS/TFS build definition showing the configuration of the Copy Files task" width="0" height="0" caption="Configuring the Copy Files task in VSTS/TFS to copy the help file to the desired location." />
  
 and now Set 
 
@@ -331,11 +326,11 @@ and now Set
 3. Target Folder to "BasicCalc\bin\$(BuildConfiguration)\"
 4. And Check the Overwrite checkbox
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/46bf70eef6196f19376ee6793299a42d3ed63f6c/46bf70eef6196f19376ee6793299a42d3ed63f6c.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/667c78dc948d585885279a4ac6c6be7f131c5938/667c78dc948d585885279a4ac6c6be7f131c5938.png)
+<Figure key="/images/1747cc9235b24cc0bd676239cbf7f5dd.png" src="/images/1747cc9235b24cc0bd676239cbf7f5dd.png" alt="VSTS/TFS build definition showing the final configuration of the build tasks" width="0" height="0" caption="Final configuration of the VSTS/TFS build definition showing all tasks in place." />
  
-If we click Save and run this build you will notice that after the build runs we have our help file in the drop ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+If we click Save and run this build you will notice that after the build runs we have our help file in the drop 🙂
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0dca50466f9c69b6bddb5592b261d2c3e2d810d3/0dca50466f9c69b6bddb5592b261d2c3e2d810d3.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/615b0fb26c7deb32d1abaae866cba05a7310e4a3/615b0fb26c7deb32d1abaae866cba05a7310e4a3.png)
+<Figure key="/images/a399a692d9c74c64a6a4b13492eb69ec.png" src="/images/a399a692d9c74c64a6a4b13492eb69ec.png" alt="Build output showing the generated help file in the drop location" width="0" height="0" caption="Build output indicating the successful generation and placement of the help file." />
  
 We are not guaranteed to always have up to date source documentation with our build outputs. 
  
@@ -343,5 +338,5 @@ We are not guaranteed to always have up to date source documentation with our bu
  
 If you write libraries either for internal or external use using the xml comments I'd highly recommend you take a look at Ghost Doc as it makes your life really easy. Also with the very powerful Visual Studio integration developers will be a lot more productive and really have no excuse not to generate meaningful documentation for your class libraries. 
  
-Happy documenting ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+Happy documenting 😁
 

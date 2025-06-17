@@ -28,7 +28,7 @@ Downloading a publish profile is really easy, navigate to a Azure Web App. Once 
 The publish profile file contains secrets that can be used to publish to this side, make sure you keep the contents of the file save and if you suspect the information might be leaked you can always come back to the portal and click the Reset publish profile button next to download to generate new publish profile credentials and invalidate the old profile.
 
 
-<Figure key="./images/2020-03-24-0-51-34.jpg" src="./images/2020-03-24-0-51-34.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-51-34.jpg" src="/images/2020-03-24-0-51-34.jpg" alt="Azure Web App Get publish profile button" width="0" height="0" caption="Azure Web App Get publish profile button" />
 
 
 We are going to use the contents of that Publish.Settings file in the next section
@@ -41,13 +41,13 @@ With a lot of projects being open source in GitHub and all actions being in sour
 Well conveniently GitHub supports Secrets 😃, navigate to the **Settings** tab, click on **Secrets** and then Click on **Add a new secret**.
 
 
-<Figure key="./images/2020-03-24-0-44-12.jpg" src="./images/2020-03-24-0-44-12.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-44-12.jpg" src="/images/2020-03-24-0-44-12.jpg" alt="GitHub Secrets page with Add a new secret button" width="0" height="0" caption="GitHub Secrets page with Add a new secret button" />
 
 
-Name the secret **AZURE\_WEBAPP\_PUBLISH\_PROFILE**, paste in the contents of the publish profile we downloaded earlier from Azure and then Click on **Add secret**.
+Name the secret **AZURE\\_WEBAPP\\_PUBLISH\\_PROFILE**, paste in the contents of the publish profile we downloaded earlier from Azure and then Click on **Add secret**.
 
 
-<Figure key="./images/2020-03-24-0-45-47.jpg" src="./images/2020-03-24-0-45-47.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-45-47.jpg" src="/images/2020-03-24-0-45-47.jpg" alt="GitHub Add new secret dialog" width="0" height="0" caption="GitHub Add new secret dialog with secret name and value" />
 
 
 You'll see that your secret has been added and you only have the option to Remove the secret or Add new secrets. If you ever want to replace the secret you can just remove it and add it again using the same name.
@@ -58,7 +58,7 @@ You'll see that your secret has been added and you only have the option to Remov
 From your repo click on the **Actions** tab, you'll now notice a long list of starter templates that you can use to get started but we are going to just click on **Set up a workflow yourself**.
 
 
-<Figure key="./images/2020-03-24-0-09-30.jpg" src="./images/2020-03-24-0-09-30.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-09-30.jpg" src="/images/2020-03-24-0-09-30.jpg" alt="GitHub Actions tab with Set up a workflow yourself button" width="0" height="0" caption="GitHub Actions tab with Set up a workflow yourself button" />
 
 
 You'll now be taken to the Actions workflow editing screen.
@@ -66,7 +66,7 @@ You'll now be taken to the Actions workflow editing screen.
 Firstly you should name this workflow, I called mine *publish-site-changes.yml*. You will see on the right hand side the marketplace that contains tasks that you can use to build your workflow with, we are not going to cover using those tasks in this post and will skip to adding the workflow code into the **Edit file** section as below
 
 
-<Figure key="./images/2020-03-24-0-15-01.jpg" src="./images/2020-03-24-0-15-01.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-15-01.jpg" src="/images/2020-03-24-0-15-01.jpg" alt="GitHub Actions workflow editor" width="0" height="0" caption="GitHub Actions workflow editor with Edit file section" />
 
 
 See below the code snippet to use, the only part you might need to change is making sure the netcore version matches what you used in your project
@@ -126,13 +126,13 @@ Now that you have added that you can
 5. Click Commit changes
 
 
-<Figure key="./images/2020-03-24-0-26-47.jpg" src="./images/2020-03-24-0-26-47.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-26-47.jpg" src="/images/2020-03-24-0-26-47.jpg" alt="GitHub commit changes dialog for workflow" width="0" height="0" caption="GitHub commit changes dialog for workflow" />
 
 
 If you left the workflow as in the example and committed to master you should see in the actions that a run has started and if you click into it you'll see the output in your browser and should land up being successful like below
 
 
-<Figure key="./images/2020-03-24-0-33-44.jpg" src="./images/2020-03-24-0-33-44.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-0-33-44.jpg" src="/images/2020-03-24-0-33-44.jpg" alt="Successful GitHub Actions run" width="0" height="0" caption="Successful GitHub Actions run output" />
 
 
 ## Conclusion
@@ -142,7 +142,7 @@ Actions are really easy to use and you can [trigger them](https://help.github.co
 The code that I was publishing above can be found in [GitHub in my GuidDotEmpty project](https://github.com/Gordon-Beeming/GuidDotEmpty) and the published site is at [https://00000000-0000-0000-0000-000000000000.xyz/](https://00000000-0000-0000-0000-000000000000.xyz/).
 
 
-<Figure key="./images/2020-03-24-1-48-20.jpg" src="./images/2020-03-24-1-48-20.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-48-20.jpg" src="/images/2020-03-24-1-48-20.jpg" alt="Guid.Empty website screenshot" width="0" height="0" caption="Screenshot of the deployed Guid.Empty website" />
 
 
 Have you been playing with Actions? Have any feedback or have you done any interesting things with it? Share with me on Twitter [@GordonBeeming](https://twitter.com/GordonBeeming) or below in the comments 😁

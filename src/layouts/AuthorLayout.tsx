@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function AuthorLayout({ children, content }: Props) {
-  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github } = content
+  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, company_logo_dark, company_logo_light, company_website } = content
 
   return (
     <>
@@ -40,6 +40,31 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="x" href={twitter} />
               <SocialIcon kind="bluesky" href={bluesky} />
             </div>
+            <a
+              href={company_website}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${company} Website`}
+            >
+              <div className="pt-8">
+                {/* Light Theme Logo */}
+                <Image
+                  src={company_logo_light}
+                  alt={`${company} Logo Light`}
+                  width={200}
+                  height={120}
+                  className="dark:hidden"
+                />
+                {/* Dark Theme Logo */}
+                <Image
+                  src={company_logo_dark}
+                  alt={`${company} Logo Dark`}
+                  width={200}
+                  height={120}
+                  className="hidden dark:block"
+                />
+              </div>
+            </a>
           </div>
           <div className="prose dark:prose-invert max-w-none pt-8 pb-8 xl:col-span-2">
             {children}

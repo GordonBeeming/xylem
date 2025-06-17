@@ -15,13 +15,13 @@ The reason why I say this was weird was because it was working before I rebooted
  
 So first thing I did was open the project properties, go to the *Signing* Tab and uncheck the *Sign the assembly* checkbox.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c35c7d9f13695c984189d847298fc47910194151/099fb8b6-4d68-4651-a240-c4472bc0c550.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d91752e3ca9579d3c7755aaa75c139d6db53b403/4ca2dcd7-c1cb-4146-a55b-c9d69b2a6892.png)
+<Figure key="/images/7ac4148ac5c643e9b103db1003f03e10.png" src="/images/7ac4148ac5c643e9b103db1003f03e10.png" alt="Visual Studio project signing properties" width="0" height="0" caption="Visual Studio project signing properties" />
  
 This fixed my issue, but felt wrong and I knew it would bite me later. I thought a bit more about what was different before I rebooted and now and eventually remembered that before I rebooted I was running [Visual Studio](http://www.visualstudio.com/) in Administrator mode before. 
  
 So I re-checked the *Sign the assembly* checkbox closed Visual Studio and then opened the project again with a new instance of Visual Studio that was running in Administrator mode
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3d1539aef87516840d743246fb619b36b097a5fa/e7191678-9fbe-42d1-bdbe-a2e5fbed8edc.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/48e4ae3c9687ee924804646f27f5ce0b4e8a502b/2ebbb4b1-6cb6-415b-88b9-6b732da3d24f.png)
+<Figure key="/images/69b58fe92cac41b285fb2152b8909be2.png" src="/images/69b58fe92cac41b285fb2152b8909be2.png" alt="Visual Studio running as administrator" width="0" height="0" caption="Visual Studio running as administrator" />
  
 Rebuilt the solution and everything built as expected
 

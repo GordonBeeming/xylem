@@ -8,7 +8,7 @@ const bundleAnalyzer = withBundleAnalyzer({
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
@@ -65,7 +65,7 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 const nextConfig = () => {
   const plugins = [withContentlayer, bundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
-    output,
+    output: 'standalone',
     basePath,
     reactStrictMode: true,
     trailingSlash: false,

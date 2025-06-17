@@ -15,13 +15,13 @@ Whenever you take out an Azure VM you generally get a single disk which is not t
 At the moment what we have is a brand new virtual machine created using the **SQL Server 2019 Web on Windows Server 2019 - Gen1** image
 
 
-<Figure key="./images/2020-03-26-19-45-17.jpg" src="./images/2020-03-26-19-45-17.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-26-19-45-17.jpg" src="/images/2020-03-26-19-45-17.jpg" alt="Azure VM creation screen showing SQL Server 2019 Web on Windows Server 2019 image" width="0" height="0" caption="Azure VM creation using SQL Server 2019 Web on Windows Server 2019 image." />
 
 
 with a default setup using managed disks you get a 1TB Standard SSD which you need to pay for the full usage of each month which if you not using it all is costly (considering you are paying monthly and not using it 😀)
 
 
-<Figure key="./images/2020-03-26-19-40-35.jpg" src="./images/2020-03-26-19-40-35.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-26-19-40-35.jpg" src="/images/2020-03-26-19-40-35.jpg" alt="Azure VM disk configuration showing 1TB Standard SSD" width="0" height="0" caption="Default 1TB Standard SSD for SQL Server VM." />
 
 
 So how do we make this cheaper?
@@ -29,7 +29,7 @@ So how do we make this cheaper?
 
 ## Lowering the cost of a managed disk in Azure
 
-In order for us to achieve this we need to make the disk smaller, making the disk smaller is not super straight forward because you can't shrink a disk but once you know how it’s easy enough to do 😊. So what we are going to need to do is
+In order for us to achieve this we need to make the disk smaller, making the disk smaller is not super straight forward because you can't shrink a disk but once you know how it's easy enough to do 😊. So what we are going to need to do is
 
 1. Add a new managed disk to the virtual machine
 2. Copy data across
@@ -38,18 +38,18 @@ In order for us to achieve this we need to make the disk smaller, making the dis
 5. Power the machine back on
 6. Change the disk letter of the disk we added earlier
 
-So let’s go 😊
+So let's go 😊
 
 From the Azure Portal navigate to your machine and click **Disks**, then **Add data disk**, open the name drop list and then **Create disk**
 
 
-<Figure key="./images/2020-03-27-19-29-18.jpg" src="./images/2020-03-27-19-29-18.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-19-29-18.jpg" src="/images/2020-03-27-19-29-18.jpg" alt="Azure VM Disks settings - Add data disk and Create disk buttons highlighted" width="0" height="0" caption="Adding a new data disk in Azure VM settings." />
 
 
 Enter a name for the new data disk, the resource group should already be selected, click on **Change size** and select a new data disk size. Remember that you are able to extend a data disk so if you select something too small you can always expand it later. Click **OK** and then **Create**
 
 
-<Figure key="./images/2020-03-27-19-46-02.jpg" src="./images/2020-03-27-19-46-02.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-19-46-02.jpg" src="/images/2020-03-27-19-46-02.jpg" alt="Azure Create managed disk dialog with name, resource group, and size options" width="0" height="0" caption="Creating a new managed disk with specified size." />
 
 
 Click **Save**
@@ -58,19 +58,19 @@ Click **Save**
 Back in the virtual machine open up Disk Manager by right clicking on the windows button and then Disk Management
 
 
-<Figure key="./images/2020-03-27-20-13-59.jpg" src="./images/2020-03-27-20-13-59.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-20-13-59.jpg" src="/images/2020-03-27-20-13-59.jpg" alt="Windows Start menu with Disk Management option highlighted" width="0" height="0" caption="Opening Disk Management in Windows." />
 
 
 When disk management opens click **OK** on the *Initialize Disk* window
 
 
-<Figure key="./images/2020-03-27-20-22-18.jpg" src="./images/2020-03-27-20-22-18.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-20-22-18.jpg" src="/images/2020-03-27-20-22-18.jpg" alt="Windows Disk Management - Initialize Disk dialog" width="0" height="0" caption="Initializing the new disk in Disk Management." />
 
 
 Right click on the new disk and click **New Simple Volume...**
 
 
-<Figure key="./images/2020-03-27-20-26-20.jpg" src="./images/2020-03-27-20-26-20.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-20-26-20.jpg" src="/images/2020-03-27-20-26-20.jpg" alt="Windows Disk Management - New Simple Volume option for the new disk" width="0" height="0" caption="Creating a new simple volume on the new disk." />
 
 
 You can configure specifics if you have for the new disk, but **Next, Next, Next, Next, Finish** should be 100% fine 😀.
@@ -141,37 +141,37 @@ C:\Users\TsAdmin>robocopy F:\ E:\ *.* /j /e /sec /Xo /Xd "System Volume Informat
 At this point we can head to the Azure Portal and stop the virtual machine so we can remove the extra disk, when asked if you want to stop the machine click yes
 
 
-<Figure key="./images/2020-03-27-22-12-04.jpg" src="./images/2020-03-27-22-12-04.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-12-04.jpg" src="/images/2020-03-27-22-12-04.jpg" alt="Azure VM Overview page with Stop button highlighted" width="0" height="0" caption="Stopping the Azure VM from the portal." />
 
 
 On the **Disks** section click **Edit**
 
 
-<Figure key="./images/2020-03-27-22-14-36.jpg" src="./images/2020-03-27-22-14-36.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-14-36.jpg" src="/images/2020-03-27-22-14-36.jpg" alt="Azure VM Disks settings with Edit button highlighted" width="0" height="0" caption="Editing disk configuration for the Azure VM." />
 
 
 Click the ellipse on the old disk and then click **Detach** and **Save**
 
 
-<Figure key="./images/2020-03-27-22-19-05.jpg" src="./images/2020-03-27-22-19-05.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-19-05.jpg" src="/images/2020-03-27-22-19-05.jpg" alt="Azure VM Disks settings - Detach option for the old disk" width="0" height="0" caption="Detaching the old 1TB disk." />
 
 
 Back on the **Overview** tab click **Start** to start the machine back up
 
 
-<Figure key="./images/2020-03-27-22-23-59.jpg" src="./images/2020-03-27-22-23-59.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-23-59.jpg" src="/images/2020-03-27-22-23-59.jpg" alt="Azure VM Overview page with Start button highlighted" width="0" height="0" caption="Starting the Azure VM after detaching the old disk." />
 
 
 Connect back to your virtual machine and open Disk Management again. Right click on the drive and then click on **Change Drive Letter and Paths...**
 
 
-<Figure key="./images/2020-03-27-22-38-32.jpg" src="./images/2020-03-27-22-38-32.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-38-32.jpg" src="/images/2020-03-27-22-38-32.jpg" alt="Windows Disk Management - Change Drive Letter and Paths option for the new disk" width="0" height="0" caption="Changing drive letter for the new disk in Disk Management." />
 
 
 Click the **Change** button, Change the drive letter to **F** (this was the drive of the previous drive), Click **OK** and then when you ask if you are sure because some apps may break, click **Yes**
 
 
-<Figure key="./images/2020-03-27-22-47-52.jpg" src="./images/2020-03-27-22-47-52.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-27-22-47-52.jpg" src="/images/2020-03-27-22-47-52.jpg" alt="Windows Disk Management - Change Drive Letter dialog, setting new drive to F" width="0" height="0" caption="Assigning drive letter F to the new disk." />
 
 
 Things are all ready to go now. Open and admin CMD window again and run the script below

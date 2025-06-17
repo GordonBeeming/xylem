@@ -19,11 +19,11 @@ Something that you don't want to do is share your code without removing some of 
  
 The first way is to simple delete the Application.config and publish the source code. 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/48ad1c18c133fa72155659a54bc8b4d7010d1858/f590c7da-6ad2-43d4-8b7c-f4268bb76d77.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d8d5a2c95b4c933a6fb7c9c5ba26e286d7c590d7/8a8ed185-f644-46f8-afb1-bda121bd7634.png)
+<Figure key="/images/8909a789a3a24d328f4ddaf89d952d60.png" src="/images/8909a789a3a24d328f4ddaf89d952d60.png" alt="Solution Explorer showing ApplicationInsights.config file" width="0" height="0" caption="ApplicationInsights.config in Solution Explorer" />
  
 This will mean that when somebody that downloads your code wants to run it and use the Application Insights bits they will need to add new Application Insights configuration
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/0e9c3ae31641e8f5ed38fce20b7b21f74dce8d96/e392ecec-b68e-458e-ba9f-c565434c0c88.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/155141827e26acd38721cbad81c9f675a7fdeedd/891a5927-26bb-44ae-b1df-c0be06a41559.png)
+<Figure key="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" src="/images/cc6b7a5bc5c44a049c63207239f8fd44.png" alt="Visual Studio menu to add Application Insights telemetry" width="0" height="0" caption="Adding Application Insights Telemetry" />
  
 After they have done that they can use your solution with Application Insights no problem
  
@@ -33,7 +33,7 @@ After they have done that they can use your solution with Application Insights n
  
 You could for example specify that for the Development Profile you don't want to collection user and machine names.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/db4f4b1bdd4586282d176d294ffec1b6011eb9c3/029f881e-9d9d-432e-a270-2498f2e40fa7.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c4a39a805fe3068a357d6599fd7e2ed984c2a973/c9c4e60a-7011-4335-81f4-700aeff67f90.png)
+<Figure key="/images/028a549cde924283a6bd3c1f208ebb5c.png" src="/images/028a549cde924283a6bd3c1f208ebb5c.png" alt="ApplicationInsights.config showing DevelopmentMode settings" width="0" height="0" caption="ApplicationInsights.config - DevelopmentMode Settings" />
  
 The pieces you will want to blank out or token are below
  
@@ -44,15 +44,15 @@ The pieces you will want to blank out or token are below
 - ComponentSettings\AccountId
 - ComponentSettings\LicenseKey
 
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4c954c350d6d61fe1302fb00f6f60fdbba376a14/5bfd9550-53f9-4eb4-a4e3-08436e909485.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/7bc26c22d53a491ad04236f926760ea15a84015d/2d1e63e6-bb17-4622-acd6-fa80368ada96.png)
+<Figure key="/images/70d9a30ef02c4c0d8321b72791795917.png" src="/images/70d9a30ef02c4c0d8321b72791795917.png" alt="ApplicationInsights.config with sensitive values blanked out" width="0" height="0" caption="ApplicationInsights.config - Blanked Out Values" />
  
-After you have done this you are good to share your code ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+After you have done this you are good to share your code 🙂
  
 ## 3.) Split source control
  
 **When:** You want to share the code but also want to use the application for "real", i.e.: Windows Store Application
  
-What I have started doing for applications that I want to share the source for but also want to use the app in the real world is connecting to a public source control like CodePlex or GitHub and then also to private source control like VSO. The way I do it is to have a public GitHub repo that contains all the logic for my app, this repo is then pushed into a VSO repo as well where I do all my Application Insights stuff. Using this method allows me to work on my app normally as I would with source control and allows the community to be evolved as well with them having to worry about App Insights configuration (sometimes you would want them to be adding App Insights to the code as they add it in which case you will just keep the config separate) and then for when I publish to the store I don't have to have to add a bunch of App Insights code everywhere and keep it out of source control. All I need to do is push to my VSO account, merge any conflicts (which shouldn't happen if I'm just doing App Insights in VSO) and then possible add any additional telemetry that I want and then finally I publish to the store and everything is awesome ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+What I have started doing for applications that I want to share the source for but also want to use the app in the real world is connecting to a public source control like CodePlex or GitHub and then also to private source control like VSO. The way I do it is to have a public GitHub repo that contains all the logic for my app, this repo is then pushed into a VSO repo as well where I do all my Application Insights stuff. Using this method allows me to work on my app normally as I would with source control and allows the community to be evolved as well with them having to worry about App Insights configuration (sometimes you would want them to be adding App Insights to the code as they add it in which case you will just keep the config separate) and then for when I publish to the store I don't have to have to add a bunch of App Insights code everywhere and keep it out of source control. All I need to do is push to my VSO account, merge any conflicts (which shouldn't happen if I'm just doing App Insights in VSO) and then possible add any additional telemetry that I want and then finally I publish to the store and everything is awesome 😁.
  
 ## 
  
@@ -60,5 +60,5 @@ What I have started doing for applications that I want to share the source for b
  
 These are just my thoughts and there are probably other ways that people currently do it. One thing you don't want to do is share you keys because then you need to reset them and then update all applications in the wild connected to your account. 
  
-if you have other ways of handling this today give me a shout at [@GordonBeeming](https://twitter.com/GordonBeeming) with some details ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+if you have other ways of handling this today give me a shout at [@GordonBeeming](https://twitter.com/GordonBeeming) with some details 🙂
 

@@ -9,7 +9,7 @@ summary: 'Did you hear? Somasegarblogged that Team Foundation Server 2013 RC is 
 
 Did you hear? [Somasegar](http://blogs.msdn.com/b/somasegar/) [blogged](http://blogs.msdn.com/b/somasegar/archive/2014/02/25/visual-studio-2013-update-2-ctp2.aspx) that [Team Foundation Server 2013 RC](http://go.microsoft.com/fwlink/?LinkId=390521) is a go-live release. What does that mean for you and your customers? One word
  
-AWESOMENESS ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+AWESOMENESS 🙂
  
 You might be wonder why I'm so excited about this release. One of the many reasons why I'm so excited about this release is because [Work Item Charting](http://channel9.msdn.com/Events/Visual-Studio/Launch-2013/AT107) which was [announced last September](http://blogs.msdn.com/b/bharry/archive/2013/09/09/team-foundation-service-update-sept-9.aspx) and then updated in [VSO](http://www.visualstudio.com/en-us/products/visual-studio-online-overview-vs.aspx) with the [November service updates](http://www.visualstudio.com/en-us/news/2013-nov-8-vso.aspx) to support Chart Pinning, and now this feature has made it's way to on premise with TFS 2013 Update 2. 
  
@@ -19,21 +19,21 @@ Although this was released for on premise 3 weeks ago in the [CTP release](http:
  
 After upgrading to TFS 2013 Update 2 your pinned items would look something like below.  This information is very useful for your team as it allows you to easily see bugs from your 2 main product sprints with a 3rd tile telling you other bugs that exist across other products. You are also able to see defects which are the bugs that exist out in the real work in builds that have already been deployed. 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/20ceef0325e9f389e1ccf15717ae671b099367c3/d35751f8-2759-443b-b058-02d52f3e3496.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6ddb5ddf0dcf13be0852d9d6ce62c6a55d52bd7c/23db90ff-6af8-4c1e-9bbc-d41ee5b69501.png)
+<Figure key="/images/d6575834332d41ba93068430d490363a.png" src="/images/d6575834332d41ba93068430d490363a.png" alt="TFS Dashboard with pinned work item queries" width="0" height="0" caption="TFS Dashboard showing pinned work item queries" />
  
 Getting any value of this is possible but probably a lot more effort at times with all these numbers staring at you. What if you could represent all 7 of these tiles in a way that is easy to take in with a quick glance and at the same time extend on the information about what the other product sprints are that contain bugs.
  
 **Enter Chart Pinning**, transforming these tiles is as easily as [creating a chart](http://channel9.msdn.com/Events/Visual-Studio/Launch-2013/AT107) for the work item query Open Defects and creating a new query that includes all bugs and not just specific products. Next you pin those charts to your dashboard using the Pin to homepage button
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8e98c43ba63cc9d2a55116faa5ee056c1165edd8/08ca1c50-1bc2-4bc4-ae48-561d17c0eda6.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/9be5dc3bf5d2cb71214042546ab21fba48db2edc/f5d556d7-b953-4d70-8bd0-bcc02769b9e5.png)
+<Figure key="/images/fc7d57a89d794fadb1c41d67c0bf7b0b.png" src="/images/fc7d57a89d794fadb1c41d67c0bf7b0b.png" alt="Pin to homepage button for work item charts" width="0" height="0" caption="Pin to homepage button in TFS work item charting" />
  
 and then also unpin the 7 tiles that we are replacing. With the current library being used for the home page grid you will notice that if you place a chart in the second or third column that it leaves empty spaces to it's left if you have regular queries pinned, for that reason I'd recommend moving the pinned charts to the first and second position on your dashboard and you get something like below which is a lot more meaning full the team to glance at as the are passing the home page
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5dd9d2c364fd0a6074afb937358cab9fbd7693eb/c779380b-3bf2-4253-86ab-48096e738841.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/ccec03533d44ea7dde2a97d0e645746d5faa4c0f/46e70052-f85c-4784-b860-8f508d1ec023.png)
+<Figure key="/images/4452e178ef7a47e9acb0f1164ec78ff6.png" src="/images/4452e178ef7a47e9acb0f1164ec78ff6.png" alt="TFS Dashboard with pinned charts" width="0" height="0" caption="TFS Dashboard with pinned work item charts for better visibility" />
  
-As you can see pinning charts can provide a lot of extra value to your work item data. But let's see how easy it is to dig deeper if you wanted to, we will go through to the Bugs Not Done chart by clicking on the chart (yes the charts work the same way as the tiles do with clicking to go through the query ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)). We'll add a new chart using the Pivot table chart with a row of our team name and have the columns as the product sprint name and change the Sort to label. Click OK and you have the same chart that you would usually only get by exporting your work item results to excel (pre charts) and then need some complicated manual morphing to see the same thing as below
+As you can see pinning charts can provide a lot of extra value to your work item data. But let's see how easy it is to dig deeper if you wanted to, we will go through to the Bugs Not Done chart by clicking on the chart (yes the charts work the same way as the tiles do with clicking to go through the query 🙂). We'll add a new chart using the Pivot table chart with a row of our team name and have the columns as the product sprint name and change the Sort to label. Click OK and you have the same chart that you would usually only get by exporting your work item results to excel (pre charts) and then need some complicated manual morphing to see the same thing as below
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3f23461c31c3d00048fec6e083fc398482495c96/a93040e9-44ce-4791-a2cf-7d0bc7f7b769.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f206d90461fd9618dc0d7cb72bdc18b250fcb228/836c93a2-e723-4086-b012-339a3ed43f74.png)
+<Figure key="/images/af7d0d3b07d24ef79708129e65ff9fec.png" src="/images/af7d0d3b07d24ef79708129e65ff9fec.png" alt="Pivot table chart for work items in TFS" width="0" height="0" caption="TFS work item pivot table chart showing bugs by team and sprint" />
  
-Hopefully you are preparing to upgrade to TFS 2013 Update 2 and if you weren't before reading this you are now planning to upgrade really soon ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+Hopefully you are preparing to upgrade to TFS 2013 Update 2 and if you weren't before reading this you are now planning to upgrade really soon 🙂.
 

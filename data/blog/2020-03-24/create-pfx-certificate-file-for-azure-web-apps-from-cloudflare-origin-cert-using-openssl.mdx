@@ -15,22 +15,22 @@ Every time I create a new project using Azure Web Apps or even IIS and I need to
 If you want to have Full strict [end to end encryption using Cloudflare](https://support.cloudflare.com/hc/categories/200276247) you need to install a certificate on your origin server
 
 
-<Figure key="./images/2020-03-24-1-57-06.jpg" src="./images/2020-03-24-1-57-06.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-57-06.jpg" src="/images/2020-03-24-1-57-06.jpg" alt="Cloudflare SSL/TLS settings page" width="0" height="0" caption="Cloudflare SSL/TLS settings page showing Full (strict) encryption mode" />
 
 
 To get this certificate is really easy, from the Cloudflare dashboard Click on **SSL/TLS**, **Origin Server** and then **Create Certificate**.
 
 
-<Figure key="./images/2020-03-24-1-06-48.jpg" src="./images/2020-03-24-1-06-48.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-06-48.jpg" src="/images/2020-03-24-1-06-48.jpg" alt="Cloudflare SSL/TLS Origin Server tab with Create Certificate button" width="0" height="0" caption="Cloudflare SSL/TLS Origin Server tab with Create Certificate button highlighted" />
 
 
 This will pop a dialog up that will give you some options, Private key type, a list of hostnames that you want the certificate to cover and the certificate Validity for this guide you can leave all the defaults and click **Next**. The reason it's ok to use the 15 year certificate is because this is effectively a self-signed certificate that only the Cloudflare servers are going to trust and is used for the sole purpose of end to end security, traffic should not be hitting this from anywhere else then Cloudflare, if you feel more comfortable selecting a shorter period you can go ahead, just know you will need to cycle the certificate more frequently. The edge certificate shown to your user will still rotate with a shorter validity period
 
 
-<Figure key="./images/2020-03-24-2-06-45.jpg" src="./images/2020-03-24-2-06-45.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-2-06-45.jpg" src="/images/2020-03-24-2-06-45.jpg" alt="Cloudflare Create Certificate dialog with default options" width="0" height="0" caption="Cloudflare Create Certificate dialog with default options selected" />
 
 
-After having clicked Next you will be presented with the following dialog, create a folder someone easy to navigate to on your machine, I used **C:\\_tmp\certs**
+After having clicked Next you will be presented with the following dialog, create a folder someone easy to navigate to on your machine, I used **C:\\\\_tmp\\certs**
 
 1. Make sure **PEM (Default)** is selected in the droplist
 2. Save the **Origin Certificate** contents as the **certificate.crt** in the folder you created
@@ -38,7 +38,7 @@ After having clicked Next you will be presented with the following dialog, creat
 4. Click OK
 
 
-<Figure key="./images/2020-03-24-2-08-24.jpg" src="./images/2020-03-24-2-08-24.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-2-08-24.jpg" src="/images/2020-03-24-2-08-24.jpg" alt="Cloudflare Origin Certificate and Private Key dialog" width="0" height="0" caption="Cloudflare dialog displaying Origin Certificate and Private Key for download" />
 
 
 Now that we have the files on disk we can create our pfx certificate
@@ -51,22 +51,22 @@ If you are already on linux or already have a flavor of linux installed on your 
 Head off to the Windows Store and search for and install the Ubuntu app
 
 
-<Figure key="./images/2020-03-24-1-09-48.jpg" src="./images/2020-03-24-1-09-48.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-09-48.jpg" src="/images/2020-03-24-1-09-48.jpg" alt="Ubuntu app in Windows Store" width="0" height="0" caption="Ubuntu app available for installation in the Windows Store" />
 
 
 This app will require that you have the Windows Subsystem for Linux enabled in Windows Features, if you have not enabled this yet you will be required to reboot your machine after enabling this feature.
 
 
-<Figure key="./images/2020-03-24-1-12-03.jpg" src="./images/2020-03-24-1-12-03.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-12-03.jpg" src="/images/2020-03-24-1-12-03.jpg" alt="Windows Features dialog with Windows Subsystem for Linux enabled" width="0" height="0" caption="Windows Features dialog showing Windows Subsystem for Linux checkbox enabled" />
 
 
 After a reboot when you open the app you will see it is initializing and after initialization is complete you will be asked to enter a username and password
 
 
-<Figure key="./images/2020-03-24-1-18-00.jpg" src="./images/2020-03-24-1-18-00.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-18-00.jpg" src="/images/2020-03-24-1-18-00.jpg" alt="Ubuntu initialization in Windows Terminal" width="0" height="0" caption="Ubuntu terminal showing initialization process after installation" />
 
 
-<Figure key="./images/2020-03-24-1-20-06.jpg" src="./images/2020-03-24-1-20-06.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-20-06.jpg" src="/images/2020-03-24-1-20-06.jpg" alt="Ubuntu username and password prompt in terminal" width="0" height="0" caption="Ubuntu terminal prompting for new UNIX username and password" />
 
 
 You are all set to go, let's get moving with the actual reason for needing this installed 😅
@@ -74,7 +74,7 @@ You are all set to go, let's get moving with the actual reason for needing this 
 
 ## Exporting a pfx certificate using openssl
 
-This process is really quick, all that we need to do is navigate in the shell window to where our certificates are on the windows machine, your drives are mapped under the /mnt/ folder as each letter so to get to my folder from above I need to navigate to */mnt/c/\_tmp/certs* and then we can run the opensll command in your shell window run the command below, note that when press enter you will be asked for a password for the pfx file and then asked to confirm the password
+This process is really quick, all that we need to do is navigate in the shell window to where our certificates are on the windows machine, your drives are mapped under the /mnt/ folder as each letter so to get to my folder from above I need to navigate to */mnt/c/\\_tmp/certs* and then we can run the opensll command in your shell window run the command below, note that when press enter you will be asked for a password for the pfx file and then asked to confirm the password
 
 
 ```shell
@@ -87,13 +87,13 @@ openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificat
 After this you should be able to run the ls command again and get an output similar to this
 
 
-<Figure key="./images/2020-03-24-1-43-54.jpg" src="./images/2020-03-24-1-43-54.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-1-43-54.jpg" src="/images/2020-03-24-1-43-54.jpg" alt="OpenSSL command output showing created PFX file" width="0" height="0" caption="Terminal output after running OpenSSL command, showing the newly created certificate.pfx file" />
 
 
 You now have a pfx file that you can upload into Azure or use in IIS or any other server that requires a pfx file with a password
 
 
-<Figure key="./images/2020-03-24-2-39-47.jpg" src="./images/2020-03-24-2-39-47.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2020-03-24-2-39-47.jpg" src="/images/2020-03-24-2-39-47.jpg" alt="Azure Web App SSL settings with PFX certificate uploaded" width="0" height="0" caption="Azure Web App SSL settings showing the uploaded PFX certificate" />
 
 
 ## Conclusion

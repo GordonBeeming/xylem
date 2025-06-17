@@ -3,31 +3,31 @@ title: 'Setting up TFS Build Agents fast'
 date: 2015-10-16
 tags: ['VSTS / TFS', 'TFS', 'TFS Build']
 draft: false
-summary: 'So you could make a script that can do the bits below but if you don’t here is how you can easily create build agents fast for TFS 2015+ or VSO.'
+summary: 'So you could make a script that can do the bits below but if you don''t here is how you can easily create build agents fast for TFS 2015+ or VSO.'
 ---
 
 
-So you could make a script that can do the bits below but if you don’t here is how you can easily create build agents fast for TFS 2015+ or VSO.
+So you could make a script that can do the bits below but if you don't here is how you can easily create build agents fast for TFS 2015+ or VSO.
  
-Now I’m not saying you should run a million agents of a single machine but this could be applied the same if you switching between multiple TS sessions to configure on multiple servers.
+Now I'm not saying you should run a million agents of a single machine but this could be applied the same if you switching between multiple TS sessions to configure on multiple servers.
  
 ## Download the build agent
  
 Downloading the build agent is really simple. Navigate to your TFS **control panel**, click on **Agent pools** and then **Download agent**.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4b66e883486853d527e0ec84f2fb2822ddadf8e0/e5490974-b508-4625-b86b-7b81d1c081d2.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/822913d95c715db94b376f7bb69128f9c133793a/2011d467-de13-4c87-be99-c62c84084a2e.png)
+<Figure key="/images/a5f4e986ee144defacfc8c1eab3010ef.png" src="/images/a5f4e986ee144defacfc8c1eab3010ef.png" alt="TFS Agent Pools download agent" width="0" height="0" caption="TFS Agent Pools download agent" />
  
-This post will assume you have setup your agent pool already but that’s as simple as click **New pool** and giving it a name on the screen above ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+This post will assume you have setup your agent pool already but that's as simple as click **New pool** and giving it a name on the screen above 🙂
  
 ## Setup agent file structure
  
 Copy this to your build server and then extract the zip to look like below for example, *create these folders*.
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/f09b4b10354aa4bb072561d7244c88e8a34df213/461ce39b-ce6a-478a-a6c7-2d9c31b59d04.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/585915a1a42d41f6e711af27a618c7052887a4ec/3024ff57-3d22-406b-90dd-76662a54b2f3.png)
+<Figure key="/images/5bb779283fd148aeacdc6da98d3da6dc.png" src="/images/5bb779283fd148aeacdc6da98d3da6dc.png" alt="TFS Build agent folder structure" width="0" height="0" caption="TFS Build agent folder structure" />
  
 then inside each of those folders you place a copy of the extracted zip
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1fc6ac32cb58069c1d8f8a48f140ce73ef9bb26a/5274a029-76aa-4004-ac52-3a027254c159.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/749bde0511d0ff3e1330651cbc680bb0a6ea75ac/de9aa814-85b6-45a7-af6b-604e2cb38390.png)
+<Figure key="/images/97d0e5145bfc433096ffffac0e8f1a27.png" src="/images/97d0e5145bfc433096ffffac0e8f1a27.png" alt="TFS Build agent folder contents" width="0" height="0" caption="TFS Build agent folder contents" />
 
 ## Get your configuration details
  
@@ -44,29 +44,29 @@ For this step we going option up old trusty notepad. What you are going to need 
 
 this should look something like this
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/fa1acbe54d5e526d2d8358bb7d0f0858320c5da6/8e83f164-fcc8-4c9c-9677-bacbefba0a30.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/63f8dc6879e7bada83bba28c3c4ec290d858eeb0/e44b6b4a-16b2-4ebb-be8f-e518fd7da2a0.png)
+<Figure key="/images/4013dbe6de0e46c59370606ccb8fae08.png" src="/images/4013dbe6de0e46c59370606ccb8fae08.png" alt="TFS Build agent configuration details in Notepad" width="0" height="0" caption="TFS Build agent configuration details in Notepad" />
  
 ## Setup lots of agents
  
-This part is now fast ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Make sure you in the directory with your **ConfigureAgent.bat** file
+This part is now fast 🙂. Make sure you in the directory with your **ConfigureAgent.bat** file
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1fc6ac32cb58069c1d8f8a48f140ce73ef9bb26a/e93040fd-fe7d-4f16-8ec4-5b5e74f094f7.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/749bde0511d0ff3e1330651cbc680bb0a6ea75ac/a869e01e-7eef-4bd5-b945-cb61ef201f0d.png)
+<Figure key="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" src="/images/97c45ae24b084f55adc89fd43b9a0fa5.png" alt="TFS Build agent ConfigureAgent.bat directory" width="0" height="0" caption="TFS Build agent ConfigureAgent.bat directory" />
  
 Run the ConfigureAgent.bat as administrator
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/911d5dd0cc797d7c2a1530f4e29bd2fbbe7f0349/0a3c8cf5-c8e1-4e3f-b917-85e0c160a4b8.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/6c8720b051a602464bd62f274f7d93c3a8f2a335/bde18b0d-2428-444e-bfd5-0e380caff27c.png)
+<Figure key="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" src="/images/c4542f3bf0ca4816a9a06ced3738d4ef.png" alt="TFS Build agent ConfigureAgent.bat run as administrator" width="0" height="0" caption="TFS Build agent ConfigureAgent.bat run as administrator" />
  
 You should see something like this now
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0e204561364b8fe3dc5d236935ddadb1e6d596d/d6411d39-2aea-4b46-a086-16760c957bba.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/614672cbf41329493f74e29b817cdcfae8f7e447/4fc79ad9-8640-4511-a10d-f729d3e347cd.png)
+<Figure key="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" src="/images/6398e1e4783146f3bcc9b5f6c5d05aab.png" alt="TFS Build agent configuration command prompt" width="0" height="0" caption="TFS Build agent configuration command prompt" />
  
 Copy everything in your notepad, so you should have all that config with the extra new line at the end. Now right click in cmd and paste
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/c8e656ddbf36158db439ea2334e579c4e8742d8e/c66a8959-1a58-4789-81b0-837285c8a49f.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8750b54e31eb204cd553ed2694152598e3fcdc62/83457dae-ce3e-4fea-98f3-9f3274f34fee.png)
+<Figure key="/images/86f86b70f0e64b49a2425784b70a11f1.png" src="/images/86f86b70f0e64b49a2425784b70a11f1.png" alt="TFS Build agent pasting configuration into command prompt" width="0" height="0" caption="TFS Build agent pasting configuration into command prompt" />
  
 and that would all work (if you want it to stay open you can open a cmd in admin and then run the bat file from there)
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/06150b4e17c821dcee3d66df4975861d4747772f/3ddc8fba-c042-4549-b44d-2147db1c8561.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/8c2599ad7397dac3d64d744614ff797c860537ad/476c7412-82b3-4c7d-9132-bdadf9eadf3b.png)
+<Figure key="/images/657422daa26f43259036b757921201b0.png" src="/images/657422daa26f43259036b757921201b0.png" alt="TFS Build agent command prompt after running bat file" width="0" height="0" caption="TFS Build agent command prompt after running bat file" />
  
 Now go to each folders **ConfigureAgent.bat** and run as admin, paste in the same config (changing just the agent name to increment the number at the end)
  
@@ -74,5 +74,5 @@ Now go to each folders **ConfigureAgent.bat** and run as admin, paste in the sam
  
 At this point if you go to your agent pool in TFS you will see they are all setup. 
  
-[![image](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4bac61a952622b6cda7b1ad57fa239dd5518854e/fac74a7c-4039-470a-886f-69e1cf99ae57.png "image")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/5429a863eb2bdaa469b11ab1f88a6d200dfb40fe/64e59e3f-aec0-4321-b030-d4363e23bb99.png)
+<Figure key="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" src="/images/6fe4b9ecfc634d299ae26d2d6a5100b2.png" alt="TFS Agent Pool with all agents setup" width="0" height="0" caption="TFS Agent Pool with all agents setup" />
 

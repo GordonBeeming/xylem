@@ -1,5 +1,5 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
-import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync } from 'fs'
+import { writeFileSync, mkdirSync, existsSync, readdirSync, copyFileSync, unlinkSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
@@ -20,11 +20,11 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeKatex from 'rehype-katex'
 import rehypeKatexNoTranslate from 'rehype-katex-notranslate'
 import rehypeCitation from 'rehype-citation'
-import rehypePrismPlus from 'rehype-prism-plus'
 import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
 
 
 
@@ -78,7 +78,14 @@ async function createTagCount(allBlogs) {
       })
     }
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+  const sortedTags = Object.keys(tagCount).sort()
+  const sortedTagCount = sortedTags.reduce((acc, key) => {
+    acc[key] = tagCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedTagCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
@@ -97,7 +104,14 @@ async function createYearsCount(allBlogs) {
       }
     }
   })
-  const formatted = await prettier.format(JSON.stringify(yearCount, null, 2), { parser: 'json' })
+  const sortedYears = Object.keys(yearCount).sort((a, b) => Number(b) - Number(a))
+  const sortedYearCount = sortedYears.reduce((acc, key) => {
+    acc[key] = yearCount[key]
+    return acc
+  }, {})
+  const formatted = await prettier.format(JSON.stringify(sortedYearCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./src/app/year-data.json', formatted)
 }
 
@@ -119,19 +133,41 @@ function copyImages(allBlogs) {
   if (!existsSync(publicDir)) {
     mkdirSync(publicDir, { recursive: true })
   }
+  const destinationImageDir = path.join(publicDir, 'images')
+  if (!existsSync(destinationImageDir)) {
+    mkdirSync(destinationImageDir, { recursive: true })
+  }
+  else {
+    console.log(`Destination directory already exists: ${destinationImageDir}. Cleaning directory.`)
+    readdirSync(destinationImageDir).forEach((file) => {
+      const filePath = path.join(destinationImageDir, file)
+      if (existsSync(filePath)) {
+        try {
+          unlinkSync(filePath)
+        } catch (error) {
+          console.error(`Error removing file ${filePath}:`, error)
+        }
+      }
+    })
+  }
 
+  let folderPathsScanned = new Set<string>()
   allBlogs.forEach((post) => {
     const sourceImageDir = 'data/' + path.join(post._raw.sourceFileDir, 'images')
-    const destinationImageDir = path.join(publicDir, post._raw.sourceFileDir, 'images')
-    if (!existsSync(destinationImageDir)) {
-      mkdirSync(destinationImageDir, { recursive: true })
-    }
-
     if (existsSync(sourceImageDir)) {
+      if (!folderPathsScanned.has(sourceImageDir)) {
+        folderPathsScanned.add(sourceImageDir)
+      } else {
+        return
+      }
       const imageFiles = readdirSync(sourceImageDir)
       imageFiles.forEach((imageFile) => {
         const sourcePath = path.join(sourceImageDir, imageFile)
         const destPath = path.join(destinationImageDir, imageFile)
+        if (existsSync(destPath)) {
+          console.error(`File already exists: ${destPath}. Duplicate file names not supported to avoid files being overridden.`)
+          throw new Error(`File already exists: ${destPath}. Duplicate file names not supported to avoid files being overridden.`)
+        }
         copyFileSync(sourcePath, destPath)
       })
     }
@@ -183,6 +219,9 @@ export const Authors = defineDocumentType(() => ({
     avatar: { type: 'string' },
     occupation: { type: 'string' },
     company: { type: 'string' },
+    company_website: { type: 'string' },
+    company_logo_dark: { type: 'string' },
+    company_logo_light: { type: 'string' },
     email: { type: 'string' },
     twitter: { type: 'string' },
     bluesky: { type: 'string' },
@@ -221,12 +260,11 @@ export default makeSource({
       rehypeKatex,
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
-      [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
+    const { allAuthors, allBlogs } = await importData()
     await createTagCount(allBlogs)
     await createYearsCount(allBlogs)
     createSearchIndex(allBlogs)

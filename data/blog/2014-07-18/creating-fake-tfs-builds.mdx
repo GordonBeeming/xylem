@@ -9,11 +9,11 @@ summary: 'This post has been ported from https://gbeeming.wordpress.com/2013/10/
 
 This post has been ported from [https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/](https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/ "https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/").
 
-Sometimes you can’t always use the tools you want to use. This is especially true when there is already a bunch of stuff setup around existing tools. Lets say for example that you have an existing application doing your builds, for everything you need around TFS you can do it from within the Web Access although this is all fine and works well, when you want to see how the builds are running you need to go out to another tool to see this information.
+Sometimes you can't always use the tools you want to use. This is especially true when there is already a bunch of stuff setup around existing tools. Lets say for example that you have an existing application doing your builds, for everything you need around TFS you can do it from within the Web Access although this is all fine and works well, when you want to see how the builds are running you need to go out to another tool to see this information.
 
-Today I’m going to help you setup your builds external to TFS to send build information to TFS so that you can see this info in TFS, the purpose of this is just to give you visibility from TFS and is a very basic introduction that can be extended on a lot with bigger builds.
+Today I'm going to help you setup your builds external to TFS to send build information to TFS so that you can see this info in TFS, the purpose of this is just to give you visibility from TFS and is a very basic introduction that can be extended on a lot with bigger builds.
 
-Before we dig into any code, you will need to [create a Build Definition](http://msdn.microsoft.com/en-us/library/ms181716.aspx) that we will use for our fake builds, if you don’t currently have any controllers setup for you specific collection you will need to create one, after you create the build definition you will be able to de register this build controller as it’s not needed for the manually builds which we will be using.
+Before we dig into any code, you will need to [create a Build Definition](http://msdn.microsoft.com/en-us/library/ms181716.aspx) that we will use for our fake builds, if you don't currently have any controllers setup for you specific collection you will need to create one, after you create the build definition you will be able to de register this build controller as it's not needed for the manually builds which we will be using.
 
 What we had initially was a **build.bat** file that has the basics in it (build the build.proj file and log to different files for multiple levels of logging and dumps the latest build in a folder) that our current build server would run that looked like below
 
@@ -83,17 +83,17 @@ next we opened the build.proj file and added the line below above the target DoB
 
 and for the last piece we duplicated the build.bat file so that full builds on dev machines would not log to TFS, all that we changed in that build.bat file was the target that we use with the msdbuild command to EndTfsBuild.
 
-Any finally we could stay in TFS for build info once again and we got all the info you see below ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Hope this helps somebody else as well.
+Any finally we could stay in TFS for build info once again and we got all the info you see below 🙂. Hope this helps somebody else as well.
 
 
-<Figure key="./images/1.jpg" src="./images/1.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/1.jpg" src="/images/1.jpg" alt="TFS Build Summary" width="0" height="0" caption="TFS Build Summary showing the status of the fake build" />
 
 
-<Figure key="./images/2.jpg" src="./images/2.jpg" alt="" width="0" height="0" caption="" />
+<Figure key="/images/2.jpg" src="/images/2.jpg" alt="TFS Build Log" width="0" height="0" caption="TFS Build Log showing messages from the fake build" />
 
 
-<Figure key="./images/3.png" src="./images/3.png" alt="" width="0" height="0" caption="" />
+<Figure key="/images/3.png" src="/images/3.png" alt="TFS Build Details" width="0" height="0" caption="TFS Build Details showing information about the fake build" />
 
 
-<Figure key="./images/4.png" src="./images/4.png" alt="" width="0" height="0" caption="" />
+<Figure key="/images/4.png" src="/images/4.png" alt="TFS Build External Links" width="0" height="0" caption="TFS Build External Links pointing to log files from the fake build" />
 

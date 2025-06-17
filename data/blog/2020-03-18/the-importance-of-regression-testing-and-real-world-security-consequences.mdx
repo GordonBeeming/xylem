@@ -11,9 +11,9 @@ summary: 'Organizations often put a lot of effort around testing their products,
 
 Earlier this year I was watching a keynote called [Hack to the Future](https://www.youtube.com/watch?v=qCOefMiakps) by [Troy Hunt](https://www.troyhunt.com/). I was at that point considering getting 2 devices for my kids and was interested on if that vulnerability still existed in the product.
 
-Unfortunately, when I looked into it I found that the vulnerability still existed in the product. Doing some more reading I noticed that it was mentioned in a couple of articles including Troy’s [blog post](https://www.troyhunt.com/how-to-track-your-kids-and-other-peoples-kids-with-the-tictoctrack-watch/) that his issue was fixed.
+Unfortunately, when I looked into it I found that the vulnerability still existed in the product. Doing some more reading I noticed that it was mentioned in a couple of articles including Troy's [blog post](https://www.troyhunt.com/how-to-track-your-kids-and-other-peoples-kids-with-the-tictoctrack-watch/) that his issue was fixed.
 
-I reached out to Troy showing that I was able to see more then just my own data. He gets a lot of spam in this way with individuals saying they found a security vulnerability when they don’t really or don’t at least have enough info to prove that there is a vulnerability. He had done tests when he discovered this so asked me to send him his records as prove that I am able to gain access to the data. I sent his data through and the disclosure process started with [TicTocTrack](https://www.tictoctrack.com.au/). After a couple weeks I was asked to check again if there were any issues still and they had been patched so everything is all good now.
+I reached out to Troy showing that I was able to see more then just my own data. He gets a lot of spam in this way with individuals saying they found a security vulnerability when they don't really or don't at least have enough info to prove that there is a vulnerability. He had done tests when he discovered this so asked me to send him his records as prove that I am able to gain access to the data. I sent his data through and the disclosure process started with [TicTocTrack](https://www.tictoctrack.com.au/). After a couple weeks I was asked to check again if there were any issues still and they had been patched so everything is all good now.
 
 
 ## So what was the vulnerability?
@@ -68,7 +68,7 @@ at this point I noticed the odata.metadata property in the response and thought 
 
 The original posts around the vulnerability mentioned the ability to loop through the identities and slowly pull the data of all the users. Knowing that the metadata is exposed and seeing 1 of the containers mentioned being Users which is what the snippets above show I thought what happens if I browse directly to that container without any filter, this pulled to my browser every user in their system. Using this I was able to give Troy his data along with looking at the 2 other containers being able to get his daughters device information.
 
-Reading data is bad and this is all at the moment data being leaked out the system. It doesn't feel that bad until you read into what they were able to do with this the first time around which I didn't dig into with my testing. In short using this same issue they were able to change the device location to make it look like his daughter was in a location she wasn't as well as change who her parent was so they could make phone calls to her device. If you are interested in the details, then you can view [Troy’s post](https://www.troyhunt.com/how-to-track-your-kids-and-other-peoples-kids-with-the-tictoctrack-watch/) or watch the keynote I mentioned above that has some more info in it or search more on Google 😊.
+Reading data is bad and this is all at the moment data being leaked out the system. It doesn't feel that bad until you read into what they were able to do with this the first time around which I didn't dig into with my testing. In short using this same issue they were able to change the device location to make it look like his daughter was in a location she wasn't as well as change who her parent was so they could make phone calls to her device. If you are interested in the details, then you can view [Troy's post](https://www.troyhunt.com/how-to-track-your-kids-and-other-peoples-kids-with-the-tictoctrack-watch/) or watch the keynote I mentioned above that has some more info in it or search more on Google 😊.
 
 
 ## Back to the topic of regression testing
@@ -77,22 +77,22 @@ This is the part of the post that largely comes down to my views and feel free t
 
 Whenever you do any kind of testing there is different approaches you can take and lots of the time unfortunately the testing procedure is looked at as something that is 2^nd^ class in the development lifecycle. Initially there is the biggest plans to automate all the things with 100% test coverage but what does that actually mean in reality?
 
-The reality is that automating everything isn’t something that can be done because it shouldn’t be because you should be targeting value as your metric which means the 100% coverage sort of goes out the door as well.
+The reality is that automating everything isn't something that can be done because it shouldn't be because you should be targeting value as your metric which means the 100% coverage sort of goes out the door as well.
 
 **Question:** If we think of testing at its core what are we trying to do?  
 **Answer:** Make sure something works as expected.
 
-Now say we have a very flexible sdk into our system but on way that’s supported for using our product we don’t use 30% of it.
+Now say we have a very flexible sdk into our system but on way that's supported for using our product we don't use 30% of it.
 
 1. Is there value in throwing testing effort around that 30%
-2. Should you spend development effort making sure people can’t use that 30% of unsupported sdk
+2. Should you spend development effort making sure people can't use that 30% of unsupported sdk
 3. Should you just leave it as is and know that in the future you can now easily support that part of the sdk without more code changes
 
-Let’s be honest wrapping tests around something that is not going to be used is soul draining.  Doing development to make sure you can’t use those parts will require testing right? In most cases and yes the maturity of the team and the environment is something that would play a huge roles here but the outcome is going to just be 3, for the main reason that it saves time. Another solution would be to delete the extra sdk portions but maybe the support is something that is there because of the very flexible way it was written so you can’t just do that. There’s always a right or more right way to do something but if we always had to do something right right most teams wouldn’t release software because it would never be perfect.
+Let's be honest wrapping tests around something that is not going to be used is soul draining.  Doing development to make sure you can't use those parts will require testing right? In most cases and yes the maturity of the team and the environment is something that would play a huge roles here but the outcome is going to just be 3, for the main reason that it saves time. Another solution would be to delete the extra sdk portions but maybe the support is something that is there because of the very flexible way it was written so you can't just do that. There's always a right or more right way to do something but if we always had to do something right right most teams wouldn't release software because it would never be perfect.
 
-Let’s say as our testing approach we did something simple like unit test complex business logic in any layer to make sure that was solid and then do integration testing for either the UI or APIs for sensitive or points that indicated system general health. That would be a much lower automated testing effort so against the unobtainable goal of automate all the things. What we have done though is lay down where we feel the value is in our testing efforts, valuable testing areas are different for every system.
+Let's say as our testing approach we did something simple like unit test complex business logic in any layer to make sure that was solid and then do integration testing for either the UI or APIs for sensitive or points that indicated system general health. That would be a much lower automated testing effort so against the unobtainable goal of automate all the things. What we have done though is lay down where we feel the value is in our testing efforts, valuable testing areas are different for every system.
 
-How this links to regression testing is that as part of your framework you should look at writing a test to verify you have a bug (similar to TDD I guess), this way it’s reproducible and more importantly when you fix that bug and the test is now green you have piece of mind that it’s never going to happen again. There could be a variant of it that could occur but hopefully when you discover a bug and have a test that checks the breaking point of the system you also at that point look at what else could break in a similar way around that point and add tests for it as well.
+How this links to regression testing is that as part of your framework you should look at writing a test to verify you have a bug (similar to TDD I guess), this way it's reproducible and more importantly when you fix that bug and the test is now green you have piece of mind that it's never going to happen again. There could be a variant of it that could occur but hopefully when you discover a bug and have a test that checks the breaking point of the system you also at that point look at what else could break in a similar way around that point and add tests for it as well.
 
 
 ## Include a security.txt
@@ -118,7 +118,7 @@ this then lets someone know that he'd like to be contacted using that email addr
 
 Everyone can agree that testing is important, lots of teams have members that focus 100% on testing. As we drive developers to grow their testing abilities lets help and encourage our testing team to do the same.
 
-Testers should be driving strategy around testing and making sure that valuable testing is taking place in systems. We can't rely on manual testing for everything because we can’t *trust* automated tests or they *take too long* to write. We also can’t make developers *own testing* by giving them all the automation to do, yes they are able to write automation tests but you need to ask yourself if they think like a tester or not.
+Testers should be driving strategy around testing and making sure that valuable testing is taking place in systems. We can't rely on manual testing for everything because we can't *trust* automated tests or they *take too long* to write. We also can't make developers *own testing* by giving them all the automation to do, yes they are able to write automation tests but you need to ask yourself if they think like a tester or not.
 
-We’ve discussed that writing tests is expensive so plan your strategy for what automated tests you need up front and how you plan on evolving them as your system evolves to add the most value without compromising on quality for lack of tests.
+We've discussed that writing tests is expensive so plan your strategy for what automated tests you need up front and how you plan on evolving them as your system evolves to add the most value without compromising on quality for lack of tests.
 

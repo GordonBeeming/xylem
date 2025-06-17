@@ -7,7 +7,7 @@ summary: 'With the rate that the VSTS team releases with all the features they r
 ---
 
 
-With the rate that the VSTS team releases with all the [features they releasing](https://www.visualstudio.com/en-us/articles/news/features-timeline) it's hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+With the rate that the VSTS team releases with all the [features they releasing](https://www.visualstudio.com/en-us/articles/news/features-timeline) it's hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours 🙂.
 
 I'll take you through all the steps I performed to get to the very quick method but obviously you can skip to the bottom if you don't care much for the other details.
 
@@ -15,7 +15,7 @@ In this post the aim is to move all repos from a collection called DefaultCollec
 
 ## Creating a new git repo
 
-I'm dropping this in here because in 2 of the sections we'll need to do this so felt right to just through it out there ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). I'm going to head over to the code hub in the team project testtp
+I'm dropping this in here because in 2 of the sections we'll need to do this so felt right to just through it out there 🙂. I'm going to head over to the code hub in the team project testtp
 
 <Figure key="/images/0bb0a3d83d684616977f3f9f7da278e0.png" src="/images/0bb0a3d83d684616977f3f9f7da278e0.png" alt="VSTS Code Hub" width="0" height="0" caption="VSTS Code Hub" />
 
@@ -40,7 +40,7 @@ That's all to create a repo, let's move on
 
 ## Creating a PAT token
 
-Also not strictly part of what's required and should be it's own post but doesn't really have 'enough' steps so just adding it in here ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). 
+Also not strictly part of what's required and should be it's own post but doesn't really have 'enough' steps so just adding it in here 🙂. 
 
 1. Hover your profile picture
 2. Click on security
@@ -118,7 +118,7 @@ That method is quiet long and I'd only recommend you do that if your TFS server 
 
 ## VSTS Import repository
 
-For some reason [this is the feature](https://www.visualstudio.com/en-us/docs/git/import-git-repository) that I didn't know about and didn't stay long enough on the start page to read ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+For some reason [this is the feature](https://www.visualstudio.com/en-us/docs/git/import-git-repository) that I didn't know about and didn't stay long enough on the start page to read 🙂.
 
 <Figure key="/images/24db4c74c0394637aa9a661f54e01219.png" src="/images/24db4c74c0394637aa9a661f54e01219.png" alt="VSTS Import Repository button" width="0" height="0" caption="VSTS Import Repository button" />
 
@@ -140,7 +140,7 @@ and then it's all complete
 
 And checking the branches again would show that all branches exist.
 
-**Update:** So adding this to the end of this section but the PM pointed out to me as I published this article (but I haven't been able to update it since ![Sad smile](https://gordonbeeming.com/images/emoticons/sad.svg)) that it's actually simpler then what I have above, in the context menu there is an import repository button which I have in another screenshot and didn't even notice ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+**Update:** So adding this to the end of this section but the PM pointed out to me as I published this article (but I haven't been able to update it since ![Sad smile](https://gordonbeeming.com/images/emoticons/sad.svg)) that it's actually simpler then what I have above, in the context menu there is an import repository button which I have in another screenshot and didn't even notice 😜
 
 <Figure key="/images/56fcd06dd5e3446890fd0faa84226352.png" src="/images/56fcd06dd5e3446890fd0faa84226352.png" alt="VSTS Import Repository context menu button" width="0" height="0" caption="VSTS Import Repository context menu button" />
 
@@ -166,7 +166,7 @@ Next download this sample project from [GitHub](https://go.beeming.net/1PnPzPb) 
 
 <Figure key="/images/c52c03fee7f9429b9272d0c3cdd38814.png" src="/images/c52c03fee7f9429b9272d0c3cdd38814.png" alt="VSTS REST API response showing Team Project ID" width="0" height="0" caption="VSTS REST API response showing Team Project ID" />
 
-This code assumes that you are cloning the code within the same TFS account but you can modify it to clone across 2 separate servers or 2 different VSTS accounts or even TFS to VSTS, you get the picture ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). Around line 20 set the BaseUri assuming you not modifying the code for now.
+This code assumes that you are cloning the code within the same TFS account but you can modify it to clone across 2 separate servers or 2 different VSTS accounts or even TFS to VSTS, you get the picture 🙂. Around line 20 set the BaseUri assuming you not modifying the code for now.
 
 <Figure key="/images/8406ecc64c1247eda8c719d1f40ba7f0.png" src="/images/8406ecc64c1247eda8c719d1f40ba7f0.png" alt="C# code showing BaseUri for VSTS REST API calls" width="0" height="0" caption="C# code showing BaseUri for VSTS REST API calls" />
 
@@ -198,7 +198,7 @@ comment out the WriteSampleImportFile() method again and uncomment the ImportRep
 
 <Figure key="/images/f2a15f1b8beb47b1aff95e5471c5f085.png" src="/images/f2a15f1b8beb47b1aff95e5471c5f085.png" alt="C# code showing ImportReposFromFile method" width="0" height="0" caption="C# code showing ImportReposFromFile method" />
 
-If you see red like above it generally means that that repo is empty in the source collection so comment those out in your import file maybe before running the app ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+If you see red like above it generally means that that repo is empty in the source collection so comment those out in your import file maybe before running the app 🙂.
 
 <Figure key="/images/ad70aa6fa473432cb88aa32c7f60225e.png" src="/images/ad70aa6fa473432cb88aa32c7f60225e.png" alt="Example of import file with commented out empty repositories" width="0" height="0" caption="Example of import file with commented out empty repositories" />
 
@@ -214,7 +214,7 @@ It's normal to see other end points in this list that didn't fail, those repos a
 
 ## What's happening under the cover?
 
-If you interested you can of course go through the code but a little blurb here will tell you as well ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+If you interested you can of course go through the code but a little blurb here will tell you as well 🙂.
 
 We get the source url (left side of the input.txt) and new repo name (right side of input.txt) from each line in input.txt, we exclude empty lines and lines that start with a #.
 
@@ -226,5 +226,5 @@ From what I can tell this is the same steps VSTS follows when you use the dialog
 
 ## Conclusion
 
-The VSTS team makes api's for everything and then use those apis for themselves as well. Odds are if you need to automate a couple manual tasks that you perform in VSTS or TFS that the API's are documented ([REST API Overview for Visual Studio Team Services and Team Foundation Server](https://www.visualstudio.com/en-us/docs/integrate/api/overview)) and you can very easily create gems like the one described in this post ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+The VSTS team makes api's for everything and then use those apis for themselves as well. Odds are if you need to automate a couple manual tasks that you perform in VSTS or TFS that the API's are documented ([REST API Overview for Visual Studio Team Services and Team Foundation Server](https://www.visualstudio.com/en-us/docs/integrate/api/overview)) and you can very easily create gems like the one described in this post 🙂.
 

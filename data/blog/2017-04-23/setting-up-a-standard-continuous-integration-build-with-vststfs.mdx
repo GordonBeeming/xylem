@@ -7,7 +7,7 @@ summary: 'If you do a quick Google for pros of setting up continuous integration
 ---
 
 
-If you do a quick Google for [pros of setting up continuous integration](https://www.google.co.za/search?q=pros+of+setting+up+continuous+integration&amp;ie=&amp;oe=#spf=1) you'll come across a lot of articles about how good setting up continuous integration (CI) is compared to googling [cons of setting up continuous integration](https://www.google.co.za/search?q=cons+of+setting+up+continuous+integration&amp;ie=&amp;oe=#spf=1) which basically gives you the same posts of the the pros search so we won't dig too much into that now ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+If you do a quick Google for [pros of setting up continuous integration](https://www.google.co.za/search?q=pros+of+setting+up+continuous+integration&amp;ie=&amp;oe=#spf=1) you'll come across a lot of articles about how good setting up continuous integration (CI) is compared to googling [cons of setting up continuous integration](https://www.google.co.za/search?q=cons+of+setting+up+continuous+integration&amp;ie=&amp;oe=#spf=1) which basically gives you the same posts of the the pros search so we won't dig too much into that now 🙂.
  
 How many times have you checked in your code, a couple hours later you get a call from someone at the office saying the code doesn't compile on their machine because there is a file missing from source control that is added to the solution? I know before we started putting every project (no mater how big or small) in a CI build this happened often to teams I worked with. Part of the reason we didn't setup CI builds was because it was this scary thing that [developers didn't need to know anything about](https://www.google.co.za/search?q=should+developers+care+about+continuous+integration&amp;ie=&amp;oe=#spf=1), that was someone else's job right.
  
@@ -43,7 +43,7 @@ Next
 
 <Figure key="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" src="/images/c9fd01a3f08145ebb3c28c6e2e2d0f50.png" alt="VSTS/TFS: Saving the new build definition with a specified name." width="0" height="0" caption="Saving the newly created build definition." />
  
-You have now created a successfully continuous integration build. Click the *Queue new build* button, click *OK* and watch all this hard work pay off ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+You have now created a successfully continuous integration build. Click the *Queue new build* button, click *OK* and watch all this hard work pay off 😜
  
 <Figure key="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" src="/images/ad7fb3a57b6b462ca74ef40a62bc47e2.png" alt="VSTS/TFS: Queuing a new build from the build definition page." width="0" height="0" caption="Queuing the first build for the new CI definition." />
  
@@ -97,7 +97,7 @@ So what we've done now is told the build system that we want 2 builds to run eac
 
 <Figure key="/images/569bb17e1ae142ae99e7374e40936933.png" src="/images/569bb17e1ae142ae99e7374e40936933.png" alt="VSTS/TFS: Queue new build dialog showing debug and release configurations." width="0" height="0" caption="Queuing a new build with both debug and release configurations selected." />
           
- You should see both configurations are running and that they hopefully will both pass ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+ You should see both configurations are running and that they hopefully will both pass 🙂
  
 <Figure key="/images/fb02b658e46946f4b7f33dcdd80b6989.png" src="/images/fb02b658e46946f4b7f33dcdd80b6989.png" alt="VSTS/TFS build summary: Both debug and release configurations built successfully." width="0" height="0" caption="Successful parallel execution of debug and release build configurations." />
  
@@ -119,7 +119,7 @@ Again we are going to edit the build definition and head over to the Options tab
  
 What this is going to do is when the build fails create a new Bug, assign it to the person who manually kicked off the build or whoever checked in the code to make the build fail setting the title and tags for us.
  
-Click Save as we did earlier and lets test the change. Because this is a CI Build lets find the code we are building and go make some changes to that code ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+Click Save as we did earlier and lets test the change. Because this is a CI Build lets find the code we are building and go make some changes to that code 🙂.
  
 So in a Todo controller that I have, I decide that when we running in DEBUG configuration I don't want to place the code in a Try catch so that we can see the exceptions that occur instead. Notice how this method expects a return string which we forgot to put in 
  
@@ -137,7 +137,7 @@ Now we should get an email from TFS telling us we have a new bug assigned to us,
 
 <Figure key="/images/e4bfc780c69143ce916a120fcbbc24d0.png" src="/images/e4bfc780c69143ce916a120fcbbc24d0.png" alt="VSTS/TFS: Bug work item created automatically for the failed build, showing title, tags, and build link." width="0" height="0" caption="Automatically created bug work item detailing the build failure." />
  
-If we open up the build we can see that the release build went through 100% and only the debug build broke. If we weren't building all our configurations we would not have noticed this ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+If we open up the build we can see that the release build went through 100% and only the debug build broke. If we weren't building all our configurations we would not have noticed this 🙂
  
 <Figure key="/images/d31eb2bcccc548a28965874e9fccc120.png" src="/images/d31eb2bcccc548a28965874e9fccc120.png" alt="VSTS/TFS build summary: Release build successful, debug build failed." width="0" height="0" caption="Build summary showing the debug configuration failure and release configuration success." />
  
@@ -145,7 +145,7 @@ Job Done ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-m
    
 ### Clean before building
  
-This step you could argue has less value although I have had it with a couple of builds where artifacts left behind from a previous build cause us to see strange things, especially with a post coming up soon where I'll highlight this ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg). 
+This step you could argue has less value although I have had it with a couple of builds where artifacts left behind from a previous build cause us to see strange things, especially with a post coming up soon where I'll highlight this 🙂. 
  
 Again let's edit the build definition, this time we are going to 
 
@@ -210,7 +210,7 @@ Under the properties you can choose what to fill in but I generally enter
 
 1. A very verbose description, here it's set to "Reason:$(Build.Reason); Branch: $(Build.SourceBranch); Configuration: $(BuildConfiguration); BuildPlatform: $(BuildPlatform); Build Number: $(Build.BuildNumber); Commit Id: $(Build.SourceVersion)"
     - Note that Build.Reason is currently only supported by VSTS but will hopefully make it down to on-premises in the next version. You can see what variables are available on the [docs page for variables](https://www.visualstudio.com/en-us/docs/build/define/variables).
-2. Configuration I set to the configuration and then generally in the source I set this value to something like "Dev Build?" so we can see if we do really bad things ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+2. Configuration I set to the configuration and then generally in the source I set this value to something like "Dev Build?" so we can see if we do really bad things 😜
 3. Set the Version, File version and Information version to "$(Build.BuildNumber)"
 
 <Figure key="/images/79c638dafda7412f9624fe9b79a4dcba.png" src="/images/79c638dafda7412f9624fe9b79a4dcba.png" alt="VSTS/TFS build definition: Assembly versioning settings." width="0" height="0" caption="Configuring assembly versioning based on the build number." />
@@ -241,7 +241,7 @@ In my example here the deploy was just pulling the binary out of TFS of build an
  
 <Figure key="/images/df57447a317f4fdab504b7f8d0df4bc0.png" src="/images/df57447a317f4fdab504b7f8d0df4bc0.png" alt="VSTS/TFS: Build variables available after the build is triggered." width="0" height="0" caption="Available build variables after a build is triggered." />
    
-When we get this extra info this becomes that little bit more powerful ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+When we get this extra info this becomes that little bit more powerful 🙂
  
 ### Label sources
  

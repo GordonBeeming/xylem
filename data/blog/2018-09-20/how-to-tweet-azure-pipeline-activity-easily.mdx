@@ -7,9 +7,9 @@ summary: 'A while back I created a service linked to Twitter that tweets when yo
 ---
 
 
-A while back I created a service linked to Twitter that tweets when your pipeline has completed in [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/). This post is going to show you how you can easily tweet when your builds complete ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+A while back I created a service linked to Twitter that tweets when your pipeline has completed in [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/). This post is going to show you how you can easily tweet when your builds complete 🙂.
 
-Before I get started with the how, let's discuss the why ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+Before I get started with the how, let's discuss the why 🙂
 
 ## Why did I create this service?
 
@@ -19,7 +19,7 @@ With the announcement of unlimited build minutes and 10 parallel pipelines for o
 > [@GordonBeeming](https://twitter.com/GordonBeeming?ref_src=twsrc%5Etfw) BeemingBlogCore - WebApp - CD: Deployment of release Release-89 on stage PROD succeeded. Time to deploy: 00:00:52. [https://t.co/8tMe50NiMt](https://t.co/8tMe50NiMt)
 > — My Pipelines (@MyPipelines) [September 19, 2018](https://twitter.com/MyPipelines/status/1042525842704949253?ref_src=twsrc%5Etfw)
 
-It would be great if this service is used by a lot of projects but I guess we'll see how that goes ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), worst case I've got my projects and it was a good experiment.
+It would be great if this service is used by a lot of projects but I guess we'll see how that goes 🙂, worst case I've got my projects and it was a good experiment.
 
 ## Creating an API Key
 
@@ -45,7 +45,7 @@ Once logged in you can click create
 Enter the form fields
 
 1. Comment - This is just for your reference and doesn't get used
-2. Handle - Yours or your projects Twitter handle, if you don't want to me mentioned you can leave it blank ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+2. Handle - Yours or your projects Twitter handle, if you don't want to me mentioned you can leave it blank 🙂
 3. Tags - What tags do you want to use when tweeting that a build or release has completed
 4. Expire Date - How long do you want this key to be valid for, by default it uses 3 months but you can make that as long as you'd like
 5. Click Create
@@ -56,7 +56,7 @@ Now you'll be redirected to the Edit view. Copy the api key, it's important. Bec
 
 <Figure key="/images/d63fab6cf35d4c86a18ae58ccb799259.png" src="/images/d63fab6cf35d4c86a18ae58ccb799259.png" alt="Edit API Key page with API key visible" width="0" height="0" caption="Edit API Key page with API key visible" />
 
-That's all for creating a key ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+That's all for creating a key 🙂
 
 ## Creating web hooks in Azure DevOps
 
@@ -89,7 +89,7 @@ In the Action window enter the Url as [https://gordonbeeming.com/blog/api/azure-
 
 <Figure key="/images/31123f340cf547d3b232dc03531cbd22.png" src="/images/31123f340cf547d3b232dc03531cbd22.png" alt="Azure DevOps Web Hook action settings for build completed" width="0" height="0" caption="Azure DevOps Web Hook action settings for build completed" />
 
-After that is al set you can go ahead and click Test. The dialog will think for a bit and then should show succeeded ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+After that is al set you can go ahead and click Test. The dialog will think for a bit and then should show succeeded 🙂
 
 <Figure key="/images/8e4fd7ccd01a4839a50419666043b217.png" src="/images/8e4fd7ccd01a4839a50419666043b217.png" alt="Azure DevOps Web Hook test successful" width="0" height="0" caption="Azure DevOps Web Hook test successful" /><Figure key="/images/dc1f9d2c7c134b909d3164b665409777.png" src="/images/dc1f9d2c7c134b909d3164b665409777.png" alt="Tweet from MyPipelines bot showing successful build" width="0" height="0" caption="Tweet from MyPipelines bot showing successful build" />
 
@@ -125,5 +125,5 @@ Your release web hook is now created and when it runs for matching criteria in y
 
 I'm thinking that if this is a useful service and widely used I'll mature the setup to Azure Functions and probably allow users to bring their own AppId and AppSecrets to be able to Tweet as their own account, who knows I might need to introduce that feature due to abuse on this one. Another idea is support more web hook triggers if that's something people want.
 
-Let's see how it goes and feedback and ideas is very welcome ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+Let's see how it goes and feedback and ideas is very welcome 🙂.
 

@@ -9,7 +9,7 @@ summary: 'For the last while I have been experiencing weird hangs with Visual St
 
 For the last while I have been experiencing weird hangs with [Visual Studio](http://www.visualstudio.com/) 2013. To try identify what was causing the hangs or at least where about the problem was I ran [ProcMon.exe](http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx) on devenv.exe and the point where Visual Studio hung I was getting the below output recursively 
  
-[![clip_image001](https://gordonbeeming.com/blog/image/1000/0/ab5cfd9e-6949-4b0d-a88e-f9160a2d8a47.jpg "clip_image001")](https://gordonbeeming.com/blog/image/1000/0/555f2521-3b0c-4268-b194-ce35b0391780.jpg)
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
  
 This was kind of weird because I'd never seen this before, I logged a [Microsoft connect](https://connect.microsoft.com/) case through Visual Studio's Report a Bug Feature after installing the [Microsoft Visual Studio 2013 Feedback Tool](http://visualstudiogallery.msdn.microsoft.com/563d1003-f0ed-498f-8ef9-f8ee1aac39fe) which allows a more detailed collection of data for your bug.
  
@@ -23,15 +23,15 @@ The ETL Trace showed a large amount of time spent on the Certificates which matc
  
 At this point it was pointed out that I should look at how many certs were in my SystemCertificates (C:\Users\&lt;username&gt;\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates), I found that I had 2405 certs which was a lot more than usual
  
-[![clip_image002](https://gordonbeeming.com/blog/image/1000/0/c70cc3fa-dc51-4d28-8bed-88543e6e1f5e.jpg "clip_image002")](https://gordonbeeming.com/blog/image/1000/0/d2ccb6ab-ccb1-4b2f-aaf6-10eb01338a02.jpg)
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
  
-At this point we still didn't know what was causing so many certs to be generated. I decided to delete all the certs and see what happens. After a reboot everything was working 100% again ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+At this point we still didn't know what was causing so many certs to be generated. I decided to delete all the certs and see what happens. After a reboot everything was working 100% again 🙂
  
-Later I was playing with Fiddler and saw a weird error talking about certificates, I went to the certs folder and saw that there was more there. I deleted them again, went to a https site and saw certs been generated ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg), the reason for so many certs is because I had Decrypt HTTPS traffic option checked
+Later I was playing with Fiddler and saw a weird error talking about certificates, I went to the certs folder and saw that there was more there. I deleted them again, went to a https site and saw certs been generated 🙂, the reason for so many certs is because I had Decrypt HTTPS traffic option checked
  
-[![clip_image002\[5\]](https://gordonbeeming.com/blog/image/1000/0/25578ddc-5dd9-4943-956b-b5115fe819eb.jpg "clip_image002[5]")](https://gordonbeeming.com/blog/image/1000/0/daee8802-7be2-4aac-aef7-d43cd697d789.jpg)
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
  
-Changed this to not have it checked (because I didn't need it) and now I have a low amount of certs in my System Certificates folder again ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+Changed this to not have it checked (because I didn't need it) and now I have a low amount of certs in my System Certificates folder again 🙂.
  
 Hope this helps someone else with this random issue ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
 

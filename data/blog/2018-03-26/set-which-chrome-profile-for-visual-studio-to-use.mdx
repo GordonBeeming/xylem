@@ -7,19 +7,19 @@ summary: 'At MVP Summit this year one of the valuable things I learnt (which I c
 ---
 
 
-At [MVP Summit](https://mvp.microsoft.com/summit) this year one of the valuable things I learnt (which I can share ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)) was from [Colin Dembovsky](http://www.colinsalmcorner.com/) (ALM MVP) which was [Using Chrome to Solve Identity Hell](http://www.colinsalmcorner.com/post/using-chrome-to-solve-identity-hell). Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn't that great. Not going to talk much about that here, you can read his post to find out more.
+At [MVP Summit](https://mvp.microsoft.com/summit) this year one of the valuable things I learnt (which I can share 😜) was from [Colin Dembovsky](http://www.colinsalmcorner.com/) (ALM MVP) which was [Using Chrome to Solve Identity Hell](http://www.colinsalmcorner.com/post/using-chrome-to-solve-identity-hell). Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn't that great. Not going to talk much about that here, you can read his post to find out more.
 
 ## So chrome profiles are great, what are we trying to fix?
 
-As mentioned above chrome profiles are great so what's being annoying me a maybe you (if you arrived here from a search ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg))? The problem is that [Visual Studio](https://www.visualstudio.com/vs/) when set to use chrome as the browser does exactly that and uses chrome. 
+As mentioned above chrome profiles are great so what's being annoying me a maybe you (if you arrived here from a search 🙂)? The problem is that [Visual Studio](https://www.visualstudio.com/vs/) when set to use chrome as the browser does exactly that and uses chrome. 
 
 <Figure key="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" src="/images/ffd7637a26df4d3eb0c76eac9b25e53c.png" alt="Visual Studio browser selection dropdown with Chrome selected" width="0" height="0" caption="Visual Studio browser selection with Chrome as default" />
 
-If you haven't had any issues with this you might not have as many chrome profiles open as I do ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). To explain this a bit better when you close all instances of chrome and then open chrome again the default chrome behavior is to load the last profile you had open. You can change this by pinning specific shortcuts to the profile or having a desktop shortcut to that profile.
+If you haven't had any issues with this you might not have as many chrome profiles open as I do 😜. To explain this a bit better when you close all instances of chrome and then open chrome again the default chrome behavior is to load the last profile you had open. You can change this by pinning specific shortcuts to the profile or having a desktop shortcut to that profile.
 
 ## Why is this frustrating?
 
-Before it wasn't annoying because I always had auth issues so I would launch the project ctrl + F5 and then immediately go into in-private mode (I know F5 gives you a similar experience but not always the desired running state ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg) or I would just log out of the accounts I usually use and then do some dev logging into test Microsoft accounts if need be and then later log myself out of there and back into my regular accounts. As you can imagine this is slightly painful.
+Before it wasn't annoying because I always had auth issues so I would launch the project ctrl + F5 and then immediately go into in-private mode (I know F5 gives you a similar experience but not always the desired running state 🙂 or I would just log out of the accounts I usually use and then do some dev logging into test Microsoft accounts if need be and then later log myself out of there and back into my regular accounts. As you can imagine this is slightly painful.
 
 Now that I have the magic of profiles I would launch the app and it would open default chrome which would open my last active profile which could land me in a similar space as before where I'm using my real MSA for example. At this point I'd change the chrome profile back to *First User* and then either re-browse to the app or go back to VS and ctrl + F5 and this would then use the First user profile to do my dev but still felt a little clunky.
 
@@ -56,7 +56,7 @@ This will add the browser to the overall list of browsers you have, if you are l
 
 <Figure key="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" src="/images/5dd9ecab6af942fcbe0a05b33a1512d4.png" alt="Setting default browser in Visual Studio Browse With dialog" width="0" height="0" caption="Setting the new Chrome profile configuration as the default browser" />
 
-All set to have a pain free browsing experience when doing your development ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg).
+All set to have a pain free browsing experience when doing your development 🙂.
 
 This now means that I can log into this dev profile that I have created and that account will always be logged in, if I have a Twitter, Facebook, MSA, anything account the cookies and all settings extensions are saved to that profile. You can roam this by signing into chrome with a development Google account if you want to make your config, remembered uris and passwords (not generally a good idea but love this for dev environments roam to all your machines easier. 
 
@@ -64,15 +64,15 @@ Most importantly each time I launch from VS now I know what environment state I'
 
 ## Conclusion
 
-Visual Studio and a lot of other tools like chrome (yes the browser is a dev tool too ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)) have a lot of features that are less commonly used that can make your development experience less frustrating and ultimately more productive. You just need to look for them sometimes and think a little outside the box on how you can use them ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
+Visual Studio and a lot of other tools like chrome (yes the browser is a dev tool too 🙂) have a lot of features that are less commonly used that can make your development experience less frustrating and ultimately more productive. You just need to look for them sometimes and think a little outside the box on how you can use them ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg).
 
 If you have any other similar or related productivity tips please feel free to share them.
 
-Happy Chrome profiling ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+Happy Chrome profiling 🙂
 
 <Figure key="/images/23149eaedddc4b45b7d38011d59a8771.png" src="/images/23149eaedddc4b45b7d38011d59a8771.png" alt="Multiple Chrome profile windows open" width="0" height="0" caption="Multiple Chrome profiles in use" />
 
 <Figure key="/images/076a9701830e4b379d694726f7283d4e.png" src="/images/076a9701830e4b379d694726f7283d4e.png" alt="Chrome profile selection menu" width="0" height="0" caption="Chrome's profile selection menu showing multiple profiles" />
 
-5 'incognito plus' browsers so far ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)
+5 'incognito plus' browsers so far 😜
 

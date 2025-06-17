@@ -13,7 +13,7 @@ I've generally built libraries wrong by placing all binaries in the root and it'
 
 ## What Changed?
 
-So although as mentioned I generally just put all the binaries in the root of the package, for Full Framework this worked 100% but for [.net core](https://dot.net) apps I received a message saying that the library referenced was added as a 4.6.2 reference because it was not able to determine the correct framework version. Now although the code in the libs worked this made me feel bad inside ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg). Before I show how this get's fixed let's take a look at what an example of the nuspec would have looked like
+So although as mentioned I generally just put all the binaries in the root of the package, for Full Framework this worked 100% but for [.net core](https://dot.net) apps I received a message saying that the library referenced was added as a 4.6.2 reference because it was not able to determine the correct framework version. Now although the code in the libs worked this made me feel bad inside 😜. Before I show how this get's fixed let's take a look at what an example of the nuspec would have looked like
 
 
 ```javascript
@@ -36,7 +36,7 @@ So although as mentioned I generally just put all the binaries in the root of th
 ```
 
 
-When packing this you do get a warning that you doing bad things but if it works it works right ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg) (I am joking ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)).
+When packing this you do get a warning that you doing bad things but if it works it works right ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg) (I am joking 😜).
 
 <Figure key="/images/49d9a86b3ac14c679189813f51f10e09.png" src="/images/49d9a86b3ac14c679189813f51f10e09.png" alt="NuGet pack warning for incorrect lib folder structure" width="0" height="0" caption="NuGet pack warning: \'Add lib or ref assemblies for the netcoreapp2.1 target framework\'" />
 
@@ -155,7 +155,7 @@ This can obvious be whatever you want to target, in my example I just happen to 
 
 <Figure key="/images/6ef83c93cb5d40c79644c794bb87337f.png" src="/images/6ef83c93cb5d40c79644c794bb87337f.png" alt="Visual Studio build error related to duplicate attributes" width="0" height="0" caption="Visual Studio build error: CS0579: Duplicate \'System.Reflection.AssemblyCompanyAttribute\' attribute" />
 
-Removing the bin and obj and then running a resore (for the next error, below ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)) folder fixes the above
+Removing the bin and obj and then running a resore (for the next error, below 😜) folder fixes the above
 
 <Figure key="/images/9fcf9da910e54daf9312c78581058826.png" src="/images/9fcf9da910e54daf9312c78581058826.png" alt="Visual Studio build error after restoring packages" width="0" height="0" caption="Visual Studio build error after restoring packages" />
 

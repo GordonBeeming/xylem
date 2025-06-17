@@ -7,7 +7,7 @@ summary: 'So yesterday I posted Pushing a new project to Chocolatey and I said I
 ---
 
 
-So yesterday I posted [Pushing a new project to Chocolatey](https://gordonbeeming.com/blog/post/pushing-a-new-project-to-chocolatey) and I said I would create another post showing how to configure how the [Chocolatey](https://chocolatey.org/) install runs and [this](https://gordonbeeming.com/blog/post/configuring-a-chocolatey-install) is that post ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg).
+So yesterday I posted [Pushing a new project to Chocolatey](https://gordonbeeming.com/blog/post/pushing-a-new-project-to-chocolatey) and I said I would create another post showing how to configure how the [Chocolatey](https://chocolatey.org/) install runs and [this](https://gordonbeeming.com/blog/post/configuring-a-chocolatey-install) is that post 😜.
  
 ## ChocolateyInstall.ps1
  
@@ -27,13 +27,13 @@ The contents of the script was as below
 
 Basically doing the exact same thing as what I was doing with the DEBUG post build event in the project settings
 
-I checked that in (over a couple of commits because I didn't get it right the first time ![Smile with tongue out](https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg)). [MyGet](https://www.myget.org/) picked up the new commit and performed a build for me. Instead of waiting for my hourly push of packages to Chocolatey from MyGet I just pushed the package as I did in the previous post. I then ran the Chocolatey install for my package
+I checked that in (over a couple of commits because I didn't get it right the first time 😜). [MyGet](https://www.myget.org/) picked up the new commit and performed a build for me. Instead of waiting for my hourly push of packages to Chocolatey from MyGet I just pushed the package as I did in the previous post. I then ran the Chocolatey install for my package
 
 ```powershell
 choco install dotnetpretty -pre
 ```
 
-and then navigated to the Visualizers folder and my new assemblies were there ![Smile](https://gordonbeeming.com/images/emoticons/smile.svg)
+and then navigated to the Visualizers folder and my new assemblies were there 🙂
 
 <Figure key="/images/074c7e6d85624b9baee165b78e61f903.png" src="/images/074c7e6d85624b9baee165b78e61f903.png" alt="Visualizers folder with new assemblies" width="0" height="0" caption="Visualizers folder showing newly copied assemblies after Chocolatey install" /> 
 

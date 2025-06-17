@@ -138,7 +138,7 @@ Open and sign in to the [Azure Portal](http://portal.azure.com/) ([http://portal
 
 ## Step 1
 
-Let's start by getting the Azure Management Portal pieces out the way. In the Azure Management Portal we will just be creating a new AAD user that we can use to automatically login through PowerShell. If you want to use a MSA just leave the credentials bit off in Step 3 and you will receive a prompt for credentials at which time you can use MSA or AAD credentials and you can now move to step 2. If you want to create the new user follow my other post [Creating a new Azure Active Directory User](https://gordonbeeming.com/blog/post/creating-a-new-azure-active-directory-user) to create a user for this demo.
+Let's start by getting the Azure Management Portal pieces out the way. In the Azure Management Portal we will just be creating a new AAD user that we can use to automatically login through PowerShell. If you want to use a MSA just leave the credentials bit off in Step 3 and you will receive a prompt for credentials at which time you can use MSA or AAD credentials and you can now move to step 2. If you want to create the new user follow my other post [Creating a new Azure Active Directory User](/blog/2014-12-17/creating-a-new-azure-active-directory-user) to create a user for this demo.
 
 ## Step 2
 
@@ -172,7 +172,7 @@ We can run the command
 
 Get-AzureResourceGroupGalleryTemplate
 
-and it will return a list of all the current resources group templates that we can create. For the list at the time of writing this post you can refer to one of my [GitHub](http://github.com) Gists at [https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4](https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4 "https://gordonbeeming.com/blog/gist/ea0884f5ba00c62a83e4"). We are going to be using one of the templates found around line 2220 which is the website and sql database.
+and it will return a list of all the current resources group templates that we can create. For the list at the time of writing this post you can refer to one of my [GitHub](http://github.com) Gists at "code snippet missing 😓". We are going to be using one of the templates found around line 2220 which is the website and sql database.
 
 <Figure key="/images/e7aaeda582f14a648853eb495d52340a.png" src="/images/e7aaeda582f14a648853eb495d52340a.png" alt="GitHub Gist showing Azure Resource Group Gallery Templates" width="0" height="0" caption="A GitHub Gist displaying a list of Azure Resource Group Gallery Templates, with the website and SQL database template highlighted." /> 
 
@@ -182,7 +182,7 @@ When creating Azure Resources you need to specify were those resources are locat
 
 Get-AzureLocation
 
-which will return you a list of every location that every resource is available in. This list as with the one above can be found as one of my GitHub Gists at [https://gordonbeeming.com/blog/gist/87aad8bfbbbcd7421b83](https://gordonbeeming.com/blog/gist/87aad8bfbbbcd7421b83 "https://gordonbeeming.com/blog/gist/87aad8bfbbbcd7421b83"). From the long list of locations we are just going to use West Europe for all our resources
+which will return you a list of every location that every resource is available in. This list as with the one above can be found as one of my GitHub Gists at "code snippet missing 😓". From the long list of locations we are just going to use West Europe for all our resources
 
 ## Step 5
 

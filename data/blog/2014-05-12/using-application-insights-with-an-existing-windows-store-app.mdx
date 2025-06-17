@@ -9,7 +9,7 @@ summary: 'If you haven''t heard or read about Application Insights you should go
 
 If you haven't heard or read about [Application Insights](http://msdn.microsoft.com/en-us/library/dn481095.aspx) you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of [VSO](http://www.visualstudio.com/en-us/products/visual-studio-online-overview-vs.aspx). You can also take a look at the [Channel 9](http://channel9.msdn.com/) series on [Application Insights for Visual Studio Online](http://channel9.msdn.com/Series/Application-Insights-for-Visual-Studio-Online) by [Charles Sterling](https://twitter.com/chass).
  
-Also see [Using Application Insights with a new Windows Store App](https://gordonbeeming.com/blog/post/using-application-insights-with-a-new-windows-store-app) for an example of adding Application Insights from the creation of a new project.
+Also see [Using Application Insights with a new Windows Store App](/blog/2014-02-18/using-application-insights-with-a-new-windows-store-app) for an example of adding Application Insights from the creation of a new project.
  
 ## Installing Application Insights from NuGet
  
@@ -45,17 +45,17 @@ From here on it's the same as if you started with a clean application and opted 
  
 All applications (at the moment) new or current will get the error below if you haven't already changed the Platform of your store application
  
-[![image_thumb\[12\]_thumb](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/7ac3319b-b8a8-4db5-bec8-4408fb8d3395.png "image_thumb[12]_thumb")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/57f847ac-1a36-4840-a0cc-aa621a537d76.png)
+<Figure key="/images/342a06c162f046c1828897ed3b50c905.png" src="/images/342a06c162f046c1828897ed3b50c905.png" alt="image_thumb\[12\]_thumb" width="0" height="0" caption="FILL THIS IN" />
  
 To get rid of this message and put Application Insights in a state where you can start logging application usage you will need to change the configuration of your app to not be Any CPU.
  
 **Open Configuration Manager**
  
-[![image\[29\]_thumb](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/8cbb2533-47a5-45f5-b427-c806b055fd3a.png "image[29]_thumb")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/7d6d5166-e81c-4ad5-91cf-34418f4f46e3.png)
+<Figure key="/images/ea8686d816404a75b18e2fc938ad41a5.png" src="/images/ea8686d816404a75b18e2fc938ad41a5.png" alt="image\[29\]_thumb" width="0" height="0" caption="FILL THIS IN" />
  
 **Set the platform to x86, x64, or ARM**
  
-[![image_thumb\[2\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b878383fab08975e7940a9ac63506ef87b6d2466/156a8287-7f37-4e16-ac9f-c39b79233d5f.png "image_thumb[2]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/b878383fab08975e7940a9ac63506ef87b6d2466/f08919f2-ad77-4ac2-9362-a9aea05224b1.png)
+<Figure key="/images/177fb2ec76ab425fbc355f56f1b0bd47.png" src="/images/177fb2ec76ab425fbc355f56f1b0bd47.png" alt="image_thumb\[2\]" width="0" height="0" caption="FILL THIS IN" />
  
 ## Initializing Application Insights
  
@@ -67,11 +67,11 @@ Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsSession.Defa
 
 At this point you can run your application and you will get some basic information like the Operating System, Screen Resolution and a view metrics like session time. You'll need to wait about 15 minutes for the information to display on your dashboard but will look something like below.
 
-[![clip_image002_thumb\[1\]](https://gordonbeeming.com/blog/image/1000/0/71a72df1-3034-4ebc-b4e7-20e631b674e3.jpg "clip_image002_thumb[1]")](https://gordonbeeming.com/blog/image/1000/0/1fb3b713-9fc6-4717-875a-1ce6e1a5d34d.jpg)
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
 
 To see the data head over to the Usage Tab on VSO Application Insights
 
-[![image_thumb\[7\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4d26f3a7680be75b11b06a1ef556abc386f13455/dc89a450-cb06-4350-a881-e9b7e4c195bb.png "image_thumb[7]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/4d26f3a7680be75b11b06a1ef556abc386f13455/0bee5956-947e-4475-8c95-fee6ef5cea40.png)
+<Figure key="/images/cf75a617ca2846d781f483d8ab0dcaec.png" src="/images/cf75a617ca2846d781f483d8ab0dcaec.png" alt="image_thumb\[7\]" width="0" height="0" caption="FILL THIS IN" />
 
 ## Logging app feature usage
 
@@ -83,7 +83,7 @@ My existing application happens to be an empty Split Page application so I will 
 
 We are simple logging that the Item Click event was fired and logging the title of the group that was clicked. This when you click around in the sample app will log to Application Insights as you click around and generate some data. To see the features that were logged head over to **Event Insights** under the **Features** tab
 
-[![image_thumb\[11\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1ec68698393d554eca025f2ad16564e52af0ad1c/ea8197b5-e813-440e-99fb-725fac87c90b.png "image_thumb[11]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/1ec68698393d554eca025f2ad16564e52af0ad1c/fbbe984a-f909-4b27-8ce9-65d1da83a13b.png)
+<Figure key="/images/817b8fa395fd48669c721dfca2db75d3.png" src="/images/817b8fa395fd48669c721dfca2db75d3.png" alt="image_thumb\[11\]" width="0" height="0" caption="FILL THIS IN" />
 
 ## Conclusion
 

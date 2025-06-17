@@ -130,7 +130,7 @@ basically in this scenario you click the import button above and then
 
 <Figure key="/images/5aeb1574ba184f0e89567556c0ffb583.png" src="/images/5aeb1574ba184f0e89567556c0ffb583.png" alt="VSTS Import Repository dialog" width="0" height="0" caption="VSTS Import Repository dialog" />
 
-Shortly you will be shown the busy screen where the delivery van of amazingness allows me to have coffee instead of checkout branches ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+Shortly you will be shown the busy screen where the delivery van of amazingness allows me to have coffee instead of checkout branches 😁
 
 <Figure key="/images/0b0668f2929c4126af0a9e680bf6b479.png" src="/images/0b0668f2929c4126af0a9e680bf6b479.png" alt="VSTS Importing Repository progress indicator" width="0" height="0" caption="VSTS Importing Repository progress indicator" />
 
@@ -140,7 +140,7 @@ and then it's all complete
 
 And checking the branches again would show that all branches exist.
 
-**Update:** So adding this to the end of this section but the PM pointed out to me as I published this article (but I haven't been able to update it since ![Sad smile](https://gordonbeeming.com/images/emoticons/sad.svg)) that it's actually simpler then what I have above, in the context menu there is an import repository button which I have in another screenshot and didn't even notice 😜
+**Update:** So adding this to the end of this section but the PM pointed out to me as I published this article (but I haven't been able to update it since ☹️) that it's actually simpler then what I have above, in the context menu there is an import repository button which I have in another screenshot and didn't even notice 😜
 
 <Figure key="/images/56fcd06dd5e3446890fd0faa84226352.png" src="/images/56fcd06dd5e3446890fd0faa84226352.png" alt="VSTS Import Repository context menu button" width="0" height="0" caption="VSTS Import Repository context menu button" />
 
@@ -154,7 +154,7 @@ I guess habit and routine makes you blind.
 
 This method admittedly takes a lot more upfront time if you me because I had to write the code and get the right apis from the [VSTS REST API Overview](https://www.visualstudio.com/en-us/docs/integrate/api/overview) docs site, but for you it's where it's slightly longer than the import a single repo of effort but then a whole bunch of coffee while magic happens.
 
-Next download this sample project from [GitHub](https://go.beeming.net/1PnPzPb) ([Gordon-Beeming/Import-Multiple-GitRepos-In-Vsts](https://go.beeming.net/2uuPyXZ)). In program.cs there is a couple constants to replace (yes this can be made into an amazing utility but for now it's an MVP ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)).
+Next download this sample project from [GitHub](https://go.beeming.net/1PnPzPb) ([Gordon-Beeming/Import-Multiple-GitRepos-In-Vsts](https://go.beeming.net/2uuPyXZ)). In program.cs there is a couple constants to replace (yes this can be made into an amazing utility but for now it's an MVP 😁).
 
 <Figure key="/images/f62f0c47e1114b3686728864ef61a6d4.png" src="/images/f62f0c47e1114b3686728864ef61a6d4.png" alt="C# code showing constants for VSTS REST API calls" width="0" height="0" caption="C# code showing constants for VSTS REST API calls" />
 
@@ -222,7 +222,7 @@ We get the source url (left side of the input.txt) and new repo name (right side
 2. We then create a new service end point of type git where we specify the authentication type is username and password and we use the PAT token provided in the console input as the password for this service end point. The url is specified as the source url. For this we use the [Create a service endpoint](https://www.visualstudio.com/en-us/docs/integrate/api/endpoints/endpoints) api
 3. Lastly we use the [Create a request to import a repository](https://www.visualstudio.com/en-us/docs/integrate/api/git/import-requests) api to queue the soruce url repo to be imported into the target team project to the new repo we created in step 1
 
-From what I can tell this is the same steps VSTS follows when you use the dialog, we are just able to do it in bulk using code ![Open-mouthed smile](https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg)
+From what I can tell this is the same steps VSTS follows when you use the dialog, we are just able to do it in bulk using code 😁
 
 ## Conclusion
 

@@ -9,37 +9,37 @@ summary: 'If you haven''t heard or read about Application Insights you should go
 
 If you haven't heard or read about [Application Insights](http://msdn.microsoft.com/en-us/library/dn481095.aspx) you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of [VSO](http://www.visualstudio.com/en-us/products/visual-studio-online-overview-vs.aspx). You can also take a look at the [Channel 9](http://channel9.msdn.com/) series on [Application Insights for Visual Studio Online](http://channel9.msdn.com/Series/Application-Insights-for-Visual-Studio-Online) by [Charles Sterling](https://twitter.com/chass).
  
-Also see [Using Application Insights with an existing Windows Store App](https://gordonbeeming.com/blog/post/using-application-insights-with-an-existing-windows-store-app) for an example of adding Application Insights to an existing application that could already be in the store.
+Also see [Using Application Insights with an existing Windows Store App](/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app) for an example of adding Application Insights to an existing application that could already be in the store.
  
 ## Create a new Application
  
 If you you have the [Application Insights Tools for Visual Studio](http://visualstudiogallery.msdn.microsoft.com/82367b81-3f97-4de1-bbf1-eaf52ddc635a) installed that [Brian Harry](http://blogs.msdn.com/b/bharry/) mention in one of his [latest blog posts](http://blogs.msdn.com/b/bharry/archive/2014/02/06/application-insights-visual-studio-add-in-preview.aspx) and you are creating a new application, this is much similar for you. Click the Add Application Insights to Project drop down, that will make sure you are authenticated to VSO. 
  
-[![image_thumb\[1\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/00ad5c692fb24e4516b85dcbe66a313683e66fa7/07c12f6d-79ee-4640-a302-4e8b03a3ef41.png "image_thumb[1]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/00ad5c692fb24e4516b85dcbe66a313683e66fa7/ee00c3bf-5cc1-462b-844e-5935880839d9.png)
+<Figure key="/images/4b32f0fe352343fd98274a4d29854ff1.png" src="/images/4b32f0fe352343fd98274a4d29854ff1.png" alt="image_thumb\[1\]" width="0" height="0" caption="FILL THIS IN" />
  
 Once done you will be able to choose which VSO account you want to connect to and then you can click **Configure** to choose the application name (if you haven't created an application in Application Insights yet just type the name and one will be created for you automatically).
  
-[![image_thumb\[3\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3e3b41f6b650dc1d9056531e645996a33e0e9394/5a0cca7f-f5f6-458a-8729-b37a8dff6811.png "image_thumb[3]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/3e3b41f6b650dc1d9056531e645996a33e0e9394/93ee2a37-80bd-4878-a3f4-3bce0dad7d73.png)
+<Figure key="/images/05b5e5b1a3964dd8b05105e239b2e31a.png" src="/images/05b5e5b1a3964dd8b05105e239b2e31a.png" alt="image_thumb\[3\]" width="0" height="0" caption="FILL THIS IN" />
  
 At this point the application is opened in your default browser
  
-[![image_thumb\[8\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/50c592677ccf1a87df3587cb645664a73b9306e5/630e5e8a-4312-43c1-b5e9-5de958227d09.png "image_thumb[8]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/50c592677ccf1a87df3587cb645664a73b9306e5/7975254b-df38-46d4-9edf-88d55c0e3684.png)
+<Figure key="/images/1f36edc8289349138878ba35428943fd.png" src="/images/1f36edc8289349138878ba35428943fd.png" alt="image_thumb\[8\]" width="0" height="0" caption="FILL THIS IN" />
  
 and a solution is created like
  
-[![image_thumb\[10\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0095bb28fdfc157dd6a1c588e365ad93882109a/8b53ddfc-951f-4fd8-be64-a44a0ce8b4aa.png "image_thumb[10]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/d0095bb28fdfc157dd6a1c588e365ad93882109a/82173d94-f8e7-44f6-bdcf-3f64b1c86fd8.png)
+<Figure key="/images/b21a25360c164a81853b755ef8406cab.png" src="/images/b21a25360c164a81853b755ef8406cab.png" alt="image_thumb\[10\]" width="0" height="0" caption="FILL THIS IN" />
  
 ## Changing App Configuration
  
 All applications (at the moment) new or current will get the error below if you haven't already changed the Platform of your store application
  
-[![image_thumb\[12\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/ebbedf96-2503-4f7c-b53a-c8e41e1b5a9f.png "image_thumb[12]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/59ae1eaf45e0f7578cf9e734fe53cd359853c480/5203f712-a70f-4f5b-aa8b-4bc883ba1fa5.png)
+<Figure key="/images/04f8c819c22047eda665c8d8624f0e6b.png" src="/images/04f8c819c22047eda665c8d8624f0e6b.png" alt="image_thumb\[12\]" width="0" height="0" caption="FILL THIS IN" />
  
 To get rid of this message and put Application Insights in a state where you can start logging application usage you will need to change the configuration of your app to not be Any CPU.
  
 **Open Configuration Manager**
  
-[![image\[29\]](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/fe189014-62b7-4070-9334-3a5996c5aa2e.png "image[29]")](https://gordonbeeming.com/blog/binaries/stream/image-jpg/image/1000/0/2238453aa7085cdcd08712bc67529ad37d53d7ed/1cb63d33-a792-476b-8105-2b683d9e8951.png)
+<Figure key="/images/741d33ce9e82485e8c989417c320a32d.png" src="/images/741d33ce9e82485e8c989417c320a32d.png" alt="image\[29\]" width="0" height="0" caption="FILL THIS IN" />
  
 **Set the platform to x86, x64, or ARM**
  

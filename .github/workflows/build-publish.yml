@@ -2,7 +2,7 @@ name: 😱 Build, Publish & Deploy
 
 on:
   push:
-    branches: ["main", "gb-branch-1"]
+    branches: ["main"]
     paths:
       - "data/**"
       - "public/**"
@@ -80,7 +80,7 @@ jobs:
   deploy-preview:
     name: 🕵️ Deploy to Preview
     needs: build
-    if: github.ref == 'refs/heads/gb-branch-1'
+    if: github.ref == 'refs/heads/main'
     runs-on: self-hosted
     environment:
       name: preview

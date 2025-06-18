@@ -1,0 +1,54 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Tue, 23 Sep 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/productivity/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</guid>
+    <title>SQL Prompt 6.4 Release</title>
+    <link>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</link>
+    <description>I used to highlight a bunch of text (a couple of statements) then press F5 to execute that statement. With this new release you are able to easily execute the current statement by pressing Shift + F5.</description>
+    <pubDate>Tue, 23 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>SQL Prompt</category><category>Product Release</category><category>Productivity</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-03-26/set-which-chrome-profile-for-visual-studio-to-use</guid>
+    <title>Set which chrome profile for Visual Studio to use</title>
+    <link>https://gordonbeeming.com/blog/2018-03-26/set-which-chrome-profile-for-visual-studio-to-use</link>
+    <description>At MVP Summit this year one of the valuable things I learnt (which I can share ) was from Colin Dembovsky (ALM MVP) which was Using Chrome to Solve Identity Hell. Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn&#39;t that great. Not going to talk much about that here, you can read his post to find out more.</description>
+    <pubDate>Mon, 26 Mar 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Productivity</category><category>Chrome</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</guid>
+    <title>GitHub Projects and Issues</title>
+    <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
+    <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
+    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2024-05-16/goodbye-microsoft-teams-bar-hello-productivity</guid>
+    <title>Goodbye Microsoft Teams bar... Hello Productivity</title>
+    <link>https://gordonbeeming.com/blog/2024-05-16/goodbye-microsoft-teams-bar-hello-productivity</link>
+    <description>We&#39;ve all been there, you&#39;re in a meeting, you start sharing your screen and things are going great... next up you need to do something at the top of your screen and you can&#39;t because the Microsoft Teams bar is in the way. You can&#39;t move it, you can&#39;t hide it, you can&#39;t do anything about it.  Or can you?</description>
+    <pubDate>Thu, 16 May 2024 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Collaboration</category><category>Productivity</category><category>Microsoft Teams</category>
+  </item>
+
+    </channel>
+  </rss>

@@ -1,0 +1,74 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 14 May 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/rangers-research/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
+    <title>Sharing code that uses Application Insights</title>
+    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
+    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
+    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</guid>
+    <title>Using Application Insights with an existing Windows Store App</title>
+    <link>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</link>
+    <description>If you haven&#39;t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.</description>
+    <pubDate>Mon, 12 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Rangers Research</category><category>Application Insights</category><category>Windows Store App</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</guid>
+    <title>Upgrade/Publish TFS 2013 Process Templates with PowerShell</title>
+    <link>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</link>
+    <description>I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.</description>
+    <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-10/application-insights-for-windows-store-apps-in-azure-portal</guid>
+    <title>Application Insights for Windows Store Apps in Azure Portal</title>
+    <link>https://gordonbeeming.com/blog/2014-12-10/application-insights-for-windows-store-apps-in-azure-portal</link>
+    <description>If you&#39;ve been using Application Insights for a while now you would have noticed that with recent Visual Updates the Application Insights SDK had been updated to use a new version that logs AI data into the new Azure Portal. From this if you use Windows Store Apps you would probably have noticed that if you instrument a Windows Store application with the new SDK that you can&#39;t actually find your data anywhere although you can see it being logged from the Visual Studio Output window and using Fiddler. The good news is that you will soon be able to have a great experience with the new AI SDK for Windows Store apps as you do for your currently for your web applications, the better news is that below you&#39;ll see how to use the new SDK for your Store Apps and see the data in the Azure Portal.</description>
+    <pubDate>Wed, 10 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Adoption Blockers</category><category>Rangers Research</category><category>Application Insights</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</guid>
+    <title>Using Azure Resource Manager</title>
+    <link>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</link>
+    <description>In the new Azure Portal you create all your resources in Resource Groups, there is also as part of the Azure SDK&#39;s a module called AzureResourceManager by default the module loaded for the Azure SDK is AzureServiceManagement. A blurb from one of the Azure documentation page reads</description>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Azure Resource Manager</category><category>Rangers Research</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</guid>
+    <title>A &#39;Hello World&#39; for VSTS Extensions</title>
+    <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
+    <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
+    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
+  </item>
+
+    </channel>
+  </rss>

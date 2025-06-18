@@ -1,0 +1,34 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 21 Jan 2015 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/iis/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-21/fixing-the-process-cannot-access-the-file-because-it-is-being-used-by-another-process-exception-from-hresult-0x80070020</guid>
+    <title>Fixing The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)</title>
+    <link>https://gordonbeeming.com/blog/2015-01-21/fixing-the-process-cannot-access-the-file-because-it-is-being-used-by-another-process-exception-from-hresult-0x80070020</link>
+    <description>I had some &quot;Weird&quot; things happening with IIS on one of my developer machines. After trouble shooting for a while I decided that was definitely not winning and removed all features from my pc that were even the slightest related to IIS, my pc required a restart so I did. When it came back I re-enabled all the features as I would normally do and then attempted to put my dev site in IIS. For some reason all the sites were stopped and when trying to start them I received the message</description>
+    <pubDate>Wed, 21 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>IIS</category><category>Skype</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-05-13/how-do-i-fix-http-error-5025-process-failure-when-hosting-in-iis-with-dotnet-core</guid>
+    <title>How do I fix HTTP Error 502.5 - Process Failure when hosting in IIS with dotnet core</title>
+    <link>https://gordonbeeming.com/blog/2018-05-13/how-do-i-fix-http-error-5025-process-failure-when-hosting-in-iis-with-dotnet-core</link>
+    <description>I received a new error today that I haven&#39;t received before when deploying dotnet core apps. It was as the title suggest a &quot;HTTP Error 502.5 - Process Failure&quot; error</description>
+    <pubDate>Sun, 13 May 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>dotnet core</category><category>Just Coding</category><category>IIS</category>
+  </item>
+
+    </channel>
+  </rss>

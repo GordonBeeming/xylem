@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 12 Apr 2017 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/deployment-slots/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-04-12/implementing-a-dynamic-robotstxt</guid>
+    <title>Implementing a dynamic robots.txt</title>
+    <link>https://gordonbeeming.com/blog/2017-04-12/implementing-a-dynamic-robotstxt</link>
+    <description>Firstly you might want to know why would you want to implement a dynamic robots.txt? Isn&#39;t it better to just put a static file in the web app? Yes it is but when you running your application on certain platforms like web apps in Azure when you using deployment slots. I found this handy link which explains deployment slots quite nicely , but basically what happens is when you switch 2 slots Azure will do a virtual IP switch so traffic from your slots will now be switched (not the files from each slot).</description>
+    <pubDate>Wed, 12 Apr 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>MVC</category><category>robots text file</category><category>Deployment slots</category><category>Just Coding</category>
+  </item>
+
+    </channel>
+  </rss>

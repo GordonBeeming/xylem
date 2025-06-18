@@ -1,0 +1,54 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Sun, 06 Aug 2017 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/vsts/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</guid>
+    <title>Connecting agents to TFS using integrated security on http from external domain</title>
+    <link>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</link>
+    <description>If you have TFS on the domain but you are trying to connect agents to it from outside the domain and TFS is not running on https then this post is for you.</description>
+    <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>VSTS / TFS</category><category>Digi Cert</category><category>TFS</category><category>TFS Agents</category><category>VSTS</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-08-06/searching-in-vststfs</guid>
+    <title>Searching in VSTS/TFS</title>
+    <link>https://gordonbeeming.com/blog/2017-08-06/searching-in-vststfs</link>
+    <description>This post is largely showing off a cool feature of chrome but the core focus is how you can be more productive with VSTS search</description>
+    <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>Search</category><category>Google</category><category>VSTS</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-07-15/turning-on-the-new-navigation-for-visual-studio-team-services</guid>
+    <title>Turning on the new navigation for Visual Studio Team Services</title>
+    <link>https://gordonbeeming.com/blog/2018-07-15/turning-on-the-new-navigation-for-visual-studio-team-services</link>
+    <description>Although I&#39;m hoping everyone reading this doesn&#39;t need this I thought I&#39;d share anyway. A little under a month ago Jeremy Epling (@jeremy_epling) posted on the Microsoft DevOps Blog about the New Navigation for Visual Studio Team Services. I&#39;m not going to repeat the very detailed blog post but I am going to show you how to enabled the amazing experience quickly.</description>
+    <pubDate>Sun, 15 Jul 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Just longer than a tweet</category><category>VSTS</category><category>Preview Features</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-08/tymhkon-what-is-it</guid>
+    <title>#TYMHKON: What is it?</title>
+    <link>https://gordonbeeming.com/blog/2018-09-08/tymhkon-what-is-it</link>
+    <description>TYMHKON is something random that to me looks like it could be Japanese? Not sure what makes me think that when seeing it but what it really stands for is Things You May Have Known Or Not!</description>
+    <pubDate>Sat, 08 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TYMHKON</category><category>VSTS</category>
+  </item>
+
+    </channel>
+  </rss>

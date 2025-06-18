@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 02 Jul 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/mvp-stuff/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-02/one-year-as-alm-ranger-and-first-day-as-alm-mvp</guid>
+    <title>One year as ALM Ranger and First day as ALM MVP</title>
+    <link>https://gordonbeeming.com/blog/2014-07-02/one-year-as-alm-ranger-and-first-day-as-alm-mvp</link>
+    <description>So a year ago today I joined the ALM Rangers family and have recently been &quot;promoted&quot; into an active ALM Ranger and worked on projects like Upgrade Guide, Version Control (ex Branching and Merging) Guide and Flight Plan.</description>
+    <pubDate>Wed, 02 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>MVP Stuff</category><category>Chatter</category>
+  </item>
+
+    </channel>
+  </rss>

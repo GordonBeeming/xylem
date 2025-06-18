@@ -2,18 +2,6 @@
   "name": "xylem",
   "version": "1.0.0",
   "description": "Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect",
-  "cloudflare": {
-    "label": "xylem",
-    "products": [
-      "Workers"
-    ],
-    "categories": [],
-    "icon_urls": [
-      "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/5ca0ca32-e897-4699-d4c1-6b680512f000/public"
-    ],
-    "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/e42eec61-db86-49c8-7b29-c3ed4783e400/public",
-    "publish": true
-  },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@monaco-editor/react": "^4.7.0",
@@ -54,6 +42,7 @@
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "eslint": "8.56.0",
     "eslint-config-next": "15.3.3",
     "postcss": "8.5.4",
@@ -63,11 +52,13 @@
     "wrangler": "^4.18.0"
   },
   "scripts": {
-    "build": "NEXT_PRIVATE_STANDALONE=true next build",
-    "check": "npm run build && tsc",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start -H 0.0.0.0",
+    "start": "next dev",
+    "dev": "cross-env INIT_CWD=$PWD next dev",
+    "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
+    "serve": "next start -H 0.0.0.0",
+    "analyze": "cross-env ANALYZE=true next build",
+    "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
+    "prepare": "husky",
     "certs:setup": "scripts/setup-certs.sh",
     "proxy:ssl": "scripts/run-https.sh"
   }

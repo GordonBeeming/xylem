@@ -1,0 +1,204 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 12 Aug 2020 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/youtube-videos/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</guid>
+    <title>How to use the same editor as Visual Studio Code in your sites</title>
+    <link>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</link>
+    <description>Wondering how you can use the same editor as Visual Studio Code in your sites? In this video I&#39;ll show you how you can 😀. 0:00 - Introduction 0:25 - Setup basic HTML file 1:55 - Add monaco editor html tags 3:23 - Use monaco colorizeElement functionality 5:17 - Create a monaco editor 9:46 - Monaco editor &quot;Cannot read property &#39;AddEventListener&#39; of null 10:38 - Use npm to install monaco editor dependencies 12:19 - Exploring the monaco editor playground 13:52 - Thank you for watching</description>
+    <pubDate>Wed, 12 Aug 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Monaco Editor</category><category>NPM</category><category>YouTube Videos</category><category>Visual Studio Code</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-21/how-to-create-a-team-project-in-azure-devops</guid>
+    <title>How to create a team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-21/how-to-create-a-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to create a team project in Azure DevOps</description>
+    <pubDate>Mon, 21 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
+    <title>How to migrate git repositories to Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
+    <title>How to move Work Items between projects in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</guid>
+    <title>How to delete a team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-recovery-a-deleted-team-project-in-azure-devops</guid>
+    <title>How to recovery a deleted team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-22/how-to-recovery-a-deleted-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-24/how-to-migrate-svn-and-tfvc-repositories-to-git-repositories-in-azure-devops</guid>
+    <title>How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-24/how-to-migrate-svn-and-tfvc-repositories-to-git-repositories-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</description>
+    <pubDate>Thu, 24 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</guid>
+    <title>Migrating Test artifacts and all other work item types using the Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</link>
+    <description>In this video I&#39;m going to show you... Migrating Test artifacts (and all other work item types) using the Azure DevOps Migration Tools</description>
+    <pubDate>Sun, 27 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</guid>
+    <title>Rethink your application boundary and use Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</link>
+    <description>In this video I&#39;m going to talk to you about... Rethinking your application boundary and using Cloudflare</description>
+    <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Cloudflare</category><category>GitHub Actions</category><category>GitHub</category><category>YouTube Videos</category><category>msdug</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</guid>
+    <title>Migrating pipelines and releases in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... Migrating pipelines and releases in Azure DevOps</description>
+    <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</guid>
+    <title>Having fun with GitHub Codespaces, docker, swagger codegen cli</title>
+    <link>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</link>
+    <description>In this video I&#39;m going to show you... How you can use GitHub Codespaces to prototype an idea and put it into action... or should I say actions with nothing more than your browser.</description>
+    <pubDate>Tue, 02 Feb 2021 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>nuget.org</category><category>swagger codegen cli</category><category>Codespaces</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>Docker</category><category>Strava API</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</guid>
+    <title>Developing software for the modern world using only your browser and GitHub</title>
+    <link>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</link>
+    <description>In this video I&#39;m going to show you... How to develop software for the modern world using only your browser and GitHub.</description>
+    <pubDate>Wed, 19 May 2021 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2021-07-22/allow-project-users-to-manage-permissions-groups-in-azure-devops</guid>
+    <title>Allow project users to manage Permissions Groups in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2021-07-22/allow-project-users-to-manage-permissions-groups-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to allow project users to manage Permissions Groups in Azure DevOps that aren&#39;t project administrators</description>
+    <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Azure DevOps</category><category>Postman</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2021-08-11/profile-readme-github-quick-tips</guid>
+    <title>Profile README - GitHub Quick Tips</title>
+    <link>https://gordonbeeming.com/blog/2021-08-11/profile-readme-github-quick-tips</link>
+    <description>This is a Quick GitHub Tip on Profile Readmes</description>
+    <pubDate>Wed, 11 Aug 2021 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-01-17/moving-repos-to-github-from-azure-devops-github-quick-tips</guid>
+    <title>Moving Repos to GitHub from Azure DevOps - GitHub Quick Tips</title>
+    <link>https://gordonbeeming.com/blog/2022-01-17/moving-repos-to-github-from-azure-devops-github-quick-tips</link>
+    <description>This is a Quick GitHub Tip on Moving Repos to GitHub from Azure DevOps</description>
+    <pubDate>Mon, 17 Jan 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub Git Code Pipelines Import</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</guid>
+    <title>GitHub Projects and Issues</title>
+    <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
+    <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
+    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</guid>
+    <title>Setting up commit signature verification for GitHub</title>
+    <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
+    <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
+    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</guid>
+    <title>Playing with Azure and Terraform</title>
+    <link>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</link>
+    <description>I recently presented &quot;Playing with Azure and Terraform&quot; at our user group locally in Durban, there were some requests for a recording so I thought I&#39;d share it here 😊 We play with a lot of different tech in this session like GitHub Codespaces, Azure, Cloudflare and Snyk</description>
+    <pubDate>Thu, 01 Sep 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</guid>
+    <title>Improving your git efficiency using git alias</title>
+    <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
+    <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
+    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
+  </item>
+
+    </channel>
+  </rss>

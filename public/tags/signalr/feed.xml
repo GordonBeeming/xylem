@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Thu, 24 Apr 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/signalr/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</guid>
+    <title>Hubs.tt will save your life</title>
+    <link>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</link>
+    <description>Updates have been made, see the end of the post</description>
+    <pubDate>Thu, 24 Apr 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>SignalR</category><category>Visual Studio</category><category>TypeScript</category><category>GitHub Projects</category>
+  </item>
+
+    </channel>
+  </rss>

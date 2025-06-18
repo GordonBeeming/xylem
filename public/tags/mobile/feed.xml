@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Thu, 18 May 2017 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/mobile/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-05-18/using-ngrok-to-test-web-apps-on-mobile-while-developing</guid>
+    <title>Using ngrok to test web apps on mobile while developing</title>
+    <link>https://gordonbeeming.com/blog/2017-05-18/using-ngrok-to-test-web-apps-on-mobile-while-developing</link>
+    <description>I often never really test on mobile properly because most sites are responsive so it&#39;s easier to just resize your browser and test like that. This works great until you trying to get the perfect mobile experience and looking at every element like how drop lists present themselves with different content taking into account how wrapping might happen in mobile browser controls (which is different from web browser, even in chrome ). A long time ago I briefly used ngrok just to test how it works and now I use it constantly for testing apps while they are still in development.</description>
+    <pubDate>Thu, 18 May 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Mobile</category><category>Visual Studio</category><category>Just Coding</category>
+  </item>
+
+    </channel>
+  </rss>

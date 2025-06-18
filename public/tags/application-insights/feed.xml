@@ -21,16 +21,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
-    <title>Sharing code that uses Application Insights</title>
-    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
-    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
-    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</guid>
     <title>Using Application Insights with an existing Windows Store App</title>
     <link>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</link>
@@ -38,6 +28,16 @@
     <pubDate>Mon, 12 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Rangers Research</category><category>Application Insights</category><category>Windows Store App</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
+    <title>Sharing code that uses Application Insights</title>
+    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
+    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
+    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
   </item>
 
   <item>

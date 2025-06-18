@@ -111,16 +111,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
-    <title>TFS Work Item Visualizers</title>
-    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
-    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
-    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</guid>
     <title>Introduction to DotNet Pretty</title>
     <link>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</link>
@@ -128,6 +118,16 @@
     <pubDate>Thu, 17 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>DotNet Pretty</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
+    <title>TFS Work Item Visualizers</title>
+    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
+    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
   </item>
 
   <item>
@@ -151,13 +151,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</guid>
-    <title>Generating code documentation using Ghost Doc Enterprise</title>
-    <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
-    <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
-    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</guid>
+    <title>So I installed VS Enterprise 2017 and have no MTM, where is it?</title>
+    <link>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</link>
+    <description>If you&#39;ve installed Visual Studio 2017 Enterprise and weren&#39;t one of the people that went over to the Individual Components tab to see what you weren&#39;t installing you probably don&#39;t have Microsoft Test Manager installed.</description>
+    <pubDate>Wed, 08 Mar 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
+    <category>Visual Studio</category><category>Visual Studio 2017</category><category>Test Manager</category>
   </item>
 
   <item>
@@ -181,13 +181,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</guid>
-    <title>So I installed VS Enterprise 2017 and have no MTM, where is it?</title>
-    <link>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</link>
-    <description>If you&#39;ve installed Visual Studio 2017 Enterprise and weren&#39;t one of the people that went over to the Individual Components tab to see what you weren&#39;t installing you probably don&#39;t have Microsoft Test Manager installed.</description>
-    <pubDate>Wed, 08 Mar 2017 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</guid>
+    <title>Generating code documentation using Ghost Doc Enterprise</title>
+    <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
+    <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
+    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Visual Studio</category><category>Visual Studio 2017</category><category>Test Manager</category>
+    <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
   </item>
 
   <item>

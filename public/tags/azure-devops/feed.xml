@@ -61,26 +61,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
-    <title>How to migrate git repositories to Azure DevOps</title>
-    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
-    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
-    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
-    <title>How to move Work Items between projects in Azure DevOps</title>
-    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
-    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
-    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</guid>
     <title>How to delete a team project in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</link>
@@ -98,6 +78,26 @@
     <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
+    <title>How to migrate git repositories to Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
+    <title>How to move Work Items between projects in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
 
   <item>

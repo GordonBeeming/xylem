@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Mon, 28 Jul 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 17 Jul 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/dotnet-pretty/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
-    <title>TFS Work Item Visualizers</title>
-    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
-    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
-    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</guid>
     <title>Introduction to DotNet Pretty</title>
@@ -28,6 +18,16 @@
     <pubDate>Thu, 17 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>DotNet Pretty</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
+    <title>TFS Work Item Visualizers</title>
+    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
+    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
   </item>
 
   <item>

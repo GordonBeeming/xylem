@@ -31,26 +31,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
-    <title>How to migrate git repositories to Azure DevOps</title>
-    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
-    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
-    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
-    <title>How to move Work Items between projects in Azure DevOps</title>
-    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
-    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
-    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</guid>
     <title>How to delete a team project in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</link>
@@ -68,6 +48,26 @@
     <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
+    <title>How to migrate git repositories to Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
+    <title>How to move Work Items between projects in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
 
   <item>
@@ -91,16 +91,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</guid>
-    <title>Rethink your application boundary and use Cloudflare</title>
-    <link>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</link>
-    <description>In this video I&#39;m going to talk to you about... Rethinking your application boundary and using Cloudflare</description>
-    <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>Cloudflare</category><category>GitHub Actions</category><category>GitHub</category><category>YouTube Videos</category><category>msdug</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</guid>
     <title>Migrating pipelines and releases in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</link>
@@ -108,6 +98,16 @@
     <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</guid>
+    <title>Rethink your application boundary and use Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</link>
+    <description>In this video I&#39;m going to talk to you about... Rethinking your application boundary and using Cloudflare</description>
+    <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Cloudflare</category><category>GitHub Actions</category><category>GitHub</category><category>YouTube Videos</category><category>msdug</category>
   </item>
 
   <item>
@@ -161,16 +161,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</guid>
-    <title>GitHub Projects and Issues</title>
-    <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
-    <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
-    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</guid>
     <title>Setting up commit signature verification for GitHub</title>
     <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
@@ -178,6 +168,16 @@
     <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</guid>
+    <title>GitHub Projects and Issues</title>
+    <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
+    <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
+    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
   </item>
 
   <item>

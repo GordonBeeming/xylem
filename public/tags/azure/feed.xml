@@ -21,16 +21,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
-    <title>Sharing code that uses Application Insights</title>
-    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
-    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
-    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</guid>
     <title>Using Application Insights with an existing Windows Store App</title>
     <link>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</link>
@@ -38,6 +28,16 @@
     <pubDate>Mon, 12 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Rangers Research</category><category>Application Insights</category><category>Windows Store App</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
+    <title>Sharing code that uses Application Insights</title>
+    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
+    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
+    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
   </item>
 
   <item>
@@ -161,13 +161,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</guid>
-    <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
-    <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
-    <description>Whenever you take out an Azure VM you generally get a single disk which is not that big, when you select a SQL Server based VM (even web edition) you automatically get a 1TB disk, if you are using managed disks you pay for that whole TB even if you are only using 1GB of it. This post will show you how you can lower the price of that virtual machine if you are in this situation</description>
-    <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</guid>
+    <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
+    <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
+    <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
+    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>Tips</category>
+    <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
   </item>
 
   <item>
@@ -181,13 +181,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</guid>
-    <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
-    <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
-    <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
-    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</guid>
+    <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
+    <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
+    <description>Whenever you take out an Azure VM you generally get a single disk which is not that big, when you select a SQL Server based VM (even web edition) you automatically get a 1TB disk, if you are using managed disks you pay for that whole TB even if you are only using 1GB of it. This post will show you how you can lower the price of that virtual machine if you are in this situation</description>
+    <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
+    <category>Azure</category><category>Tips</category>
   </item>
 
   <item>

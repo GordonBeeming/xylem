@@ -61,16 +61,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</guid>
-    <title>TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration</title>
-    <link>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</link>
-    <description>UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise</description>
-    <pubDate>Thu, 27 Mar 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>TFS 2013</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-03-03/increase-the-value-of-your-dashboard-with-tfs-2013-update-2</guid>
     <title>Increase the value of your dashboard with TFS 2013 Update 2</title>
     <link>https://gordonbeeming.com/blog/2014-03-03/increase-the-value-of-your-dashboard-with-tfs-2013-update-2</link>
@@ -81,13 +71,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
-    <title>TFS Work Item Visualizers</title>
-    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
-    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
-    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</guid>
+    <title>TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration</title>
+    <link>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</link>
+    <description>UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise</description>
+    <pubDate>Thu, 27 Mar 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>TFS 2013</category>
   </item>
 
   <item>
@@ -101,13 +91,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</guid>
-    <title>Creating a VSTS Account for Demos</title>
-    <link>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</link>
-    <description>I need a VSO account for Demos which needs to be separate from my personal and business VSO accounts. The problem is though if you go to the Visual Studio Online page and click Get started for free</description>
-    <pubDate>Fri, 26 Sep 2014 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
+    <title>TFS Work Item Visualizers</title>
+    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
+    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
   </item>
 
   <item>
@@ -118,6 +108,16 @@
     <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</guid>
+    <title>Creating a VSTS Account for Demos</title>
+    <link>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</link>
+    <description>I need a VSO account for Demos which needs to be separate from my personal and business VSO accounts. The problem is though if you go to the Visual Studio Online page and click Get started for free</description>
+    <pubDate>Fri, 26 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
   </item>
 
   <item>

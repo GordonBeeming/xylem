@@ -1,0 +1,44 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 07 Jan 2015 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/sql-server/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</guid>
+    <title>Failover or Restart Results in Reseed of Identity - FIX</title>
+    <link>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</link>
+    <description>This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.</description>
+    <pubDate>Wed, 07 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Adoption Blockers</category><category>Old Blog Posts</category><category>Data</category><category>SQL Server</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</guid>
+    <title>They said Select * was bad but...</title>
+    <link>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</link>
+    <description>So speaking to any smart database people they will generally tell you that the SELECT * FROM ... is a bad idea and should not be used. Today (well would of been if I didn&#39;t procrastinate) I spent many hours debugging something from the wrong places because I used SELECT *. Below is what I found out =). Rennie Moodley helped me understand what was happening after I figured out where the problem was, helped me create the sample code below and then the 2 of us and Christopher Swart poked at and improve the sample and found some more weirdness which you&#39;ll also see below.</description>
+    <pubDate>Thu, 09 Apr 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>T-SQL</category><category>Data</category><category>SQL Server</category><category>Grab Some Coffee</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2016-07-25/ssms-2016-where-have-my-line-breaks-gone</guid>
+    <title>SSMS 2016 where have my line breaks gone?</title>
+    <link>https://gordonbeeming.com/blog/2016-07-25/ssms-2016-where-have-my-line-breaks-gone</link>
+    <description>I&#39;m hoping it&#39;s not just me but one of the things I was missing from SSMS 2014 is that I had my line breaks when copying large text fields out of the query results. For a long time I have been putting it off and only using SSMS 2014, last week I re-installed my Operating System and decided not to install SSMS 2014 just for this 1 feature.</description>
+    <pubDate>Mon, 25 Jul 2016 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Data</category><category>SSMS 2016</category><category>SQL Server</category>
+  </item>
+
+    </channel>
+  </rss>

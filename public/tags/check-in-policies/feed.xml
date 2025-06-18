@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Fri, 10 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/check-in-policies/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</guid>
+    <title>How to Enforce Check-In Policies</title>
+    <link>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</link>
+    <description>So one of the benefits of using Server side Plugins is that you can&#39;t override them. The problem with this is that the users don&#39;t know that the policy is in place until they check-in their code. Wouldn&#39;t it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.</description>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Check-In Policies</category><category>TFS Server Plugins</category><category>GitHub Projects</category>
+  </item>
+
+    </channel>
+  </rss>

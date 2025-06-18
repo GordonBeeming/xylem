@@ -1,0 +1,54 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Mon, 06 Oct 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/windows-10/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-06/activating-your-windows-10</guid>
+    <title>Activating your Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2014-10-06/activating-your-windows-10</link>
+    <description>So you shouldn&#39;t need to do this but in my case for some reason I needed to activate windows after performing and upgrade from Windows 8.1.</description>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Just longer than a tweet</category><category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-06/changing-the-theme-in-windows-10</guid>
+    <title>Changing the theme in Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2014-10-06/changing-the-theme-in-windows-10</link>
+    <description>In windows 10 when you go to Change the background and colors on Start</description>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</guid>
+    <title>Cleaning up the Taskbar on Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</link>
+    <description>The number 1 thing voted for under Taskbar currently is to hide the new Search bar and task view buttons</description>
+    <pubDate>Thu, 26 Mar 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Tips</category><category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</guid>
+    <title>Browsing localhost with the Microsoft Edge Browser</title>
+    <link>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</link>
+    <description>So if you using windows 10 and doing some web development you would probably have noticed that you can&#39;t browse localhost for some reason. And there is a couple of feedback items for it in the Windows Feedback app.</description>
+    <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Microsoft Edge</category><category>Fiddler</category><category>Windows 10</category>
+  </item>
+
+    </channel>
+  </rss>

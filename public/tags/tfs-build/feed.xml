@@ -1,0 +1,44 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Fri, 15 Nov 2013 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/tfs-build/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
+    <title>TypeScript : Emit Error: Write to file failed..</title>
+    <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
+    <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
+    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</guid>
+    <title>Creating &quot;fake&quot; TFS Builds</title>
+    <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
+    <description>This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.</description>
+    <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</guid>
+    <title>Setting up TFS Build Agents fast</title>
+    <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
+    <description>So you could make a script that can do the bits below but if you don&#39;t here is how you can easily create build agents fast for TFS 2015+ or VSO.</description>
+    <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
+  </item>
+
+    </channel>
+  </rss>

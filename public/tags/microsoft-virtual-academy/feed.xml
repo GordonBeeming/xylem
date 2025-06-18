@@ -1,0 +1,34 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Fri, 24 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/microsoft-virtual-academy/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</guid>
+    <title>Download #MVA Content with PowerShell</title>
+    <link>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</link>
+    <description>So I&#39;m starting to go through some of the content on Microsoft Virtual Academy but I don&#39;t have time to do this when I&#39;m by a good internet connection and at the same time don&#39;t have time when by the good internet connection to run though all the content I need to download it to watch in my spare time.</description>
+    <pubDate>Fri, 24 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Microsoft Virtual Academy</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-13/know-it-prove-it-28-days-to-rock-your-skills</guid>
+    <title>Know it. Prove it. 28 days to rock your skills.</title>
+    <link>https://gordonbeeming.com/blog/2015-01-13/know-it-prove-it-28-days-to-rock-your-skills</link>
+    <description>If you haven&#39;t heard yet Microsoft Virtual Academy are running &quot;know it. Prove it&quot;. This is a great opportunity to learn something new or extend your current knowledge in one of the 8 topics available.</description>
+    <pubDate>Tue, 13 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Events</category><category>#KnowItProveIt</category><category>Microsoft Virtual Academy</category>
+  </item>
+
+    </channel>
+  </rss>

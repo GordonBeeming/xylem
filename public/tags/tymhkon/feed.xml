@@ -1,0 +1,44 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Sat, 08 Sep 2018 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/tymhkon/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-08/tymhkon-what-is-it</guid>
+    <title>#TYMHKON: What is it?</title>
+    <link>https://gordonbeeming.com/blog/2018-09-08/tymhkon-what-is-it</link>
+    <description>TYMHKON is something random that to me looks like it could be Japanese? Not sure what makes me think that when seeing it but what it really stands for is Things You May Have Known Or Not!</description>
+    <pubDate>Sat, 08 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TYMHKON</category><category>VSTS</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-15/tymhkon-public-projects-in-azure-devops</guid>
+    <title>#TYMHKON: Public projects in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2018-09-15/tymhkon-public-projects-in-azure-devops</link>
+    <description>#TYMHKON: What is it?</description>
+    <pubDate>Sat, 15 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</guid>
+    <title>#TYMHKON: How do I follow what&#39;s happening with Azure DevOps?</title>
+    <link>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</link>
+    <description>#TYMHKON: What is it?</description>
+    <pubDate>Mon, 24 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
+  </item>
+
+    </channel>
+  </rss>

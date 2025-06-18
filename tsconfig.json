@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
     // --- Modern settings from the new Cloudflare config ---
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -14,18 +18,28 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [{ "name": "next" }],
-
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     // --- Settings brought over from your old config ---
     "forceConsistentCasingInFileNames": true, // Good practice
     "baseUrl": ".", // Makes path aliases work reliably
-
     // --- Merged and updated "paths" for the new `src` structure ---
     "paths": {
-      "@/*": ["src/*"], // The main alias now points to the src folder
-      "@/data/*": ["data/*"], // Specific alias for the data folder in the root
-      "contentlayer/generated": ["./.contentlayer/generated"], // For your blog content
-      "pliny/*": ["node_modules/pliny/*"] // Required by the blog theme
+      "@/*": [
+        "src/*"
+      ], // The main alias now points to the src folder
+      "@/data/*": [
+        "data/*"
+      ], // Specific alias for the data folder in the root
+      "contentlayer/generated": [
+        "./.contentlayer/generated"
+      ], // For your blog content
+      "pliny/*": [
+        "node_modules/pliny/*"
+      ] // Required by the blog theme
     }
   },
   // --- Merged "include" to cover all necessary files ---
@@ -40,5 +54,7 @@
     ".contentlayer/generated/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

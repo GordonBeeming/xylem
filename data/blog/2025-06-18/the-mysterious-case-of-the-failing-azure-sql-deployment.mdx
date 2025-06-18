@@ -1,0 +1,164 @@
+---
+title: 'The Mysterious Case of the Failing Azure SQL Deployment'
+date: 2025-06-18
+tags: ['Azure', 'PowerShell', 'GitHub Actions', 'DevOps', 'OIDC', 'SQL']
+draft: false
+summary: 'A perfectly stable GitHub Actions deployment to Azure SQL suddenly fails with a misleading ''Identity not found'' error. Follow the debugging journey to uncover the real culprit that has nothing to do with the identity.'
+---
+
+It’s the call every developer dreads… “The deployment is failing.”
+
+You check the logs, and sure enough, a workflow that has been running perfectly for months has suddenly decided to break. No code has changed on the `main` branch, no configuration *seems* to have been altered. Yet, here we are.
+
+This is the story of one such mystery, a journey down a rabbit hole that starts with a scary-looking identity error and ends with a surprising culprit.
+
+## The Scene of the Crime
+
+The setup is modern and, until now, has been robust:
+* A **GitHub Actions** workflow for CI/CD.
+* **Passwordless deployments** to Azure using OpenID Connect (OIDC).
+* A **PowerShell script** to run permission scripts on **Azure SQL** using `Invoke-Sqlcmd`.
+
+Then, one afternoon, the pipeline glows red. 😱
+
+## The Misleading First Clue
+
+The first thing you see in the logs is this terrifying error message:
+
+<Figure key="/images/2025-06-18-12-44-24.png" src="/images/2025-06-18-12-44-24.png" alt="A screenshot of the GitHub Actions log showing a PowerShell error message. The log displays Invoke-Sqlcmd ManagedIdentityCredential authentication failed Managed Identity Authentication unavailable Either the requested identity has not been assigned to this resource or other errors could be present Content error invalid_request error_description Identity not found. The error message is highlighted in red, indicating a failed deployment step. The overall tone is urgent and frustrating, reflecting a deployment failure in a technical environment." width="0" height="0" caption="The error that sends you looking in all the wrong places." />
+
+Every instinct screams that this is an Azure AD problem. Did someone delete the Service Principal? Was the Federated Credential on the App Registration removed? Did a new Conditional Access policy just drop and ruin my day?
+
+You go down the checklist:
+* ✅ App Registration exists.
+* ✅ Federated Credential looks fine.
+* ✅ Permissions haven't changed.
+* ✅ Entra admin says no new policies were applied.
+
+Nothing makes sense.
+
+## The Breakthrough
+
+The big break in the case came from a simple observation: a deployment step *before* the failing PowerShell script was working perfectly. A Bicep deployment in the same job, using the same identity, was successfully deploying infrastructure to Azure.
+
+This meant the failure was isolated to the PowerShell step. The GitHub Actions log looked conceptually like this:
+
+```
+##[group]Run Bicep Deployment
+Run azure/arm-deploy@v1
+...
+Deployment Succeeded.
+##[endgroup]
+✅  Success - Bicep Deployment (2m 15s)
+
+##[group]Run Permission Scripts
+Run ./scripts/apply-permissions.ps1
+...
+Invoke-Sqlcmd: ManagedIdentityCredential authentication failed...
+##[endgroup]
+❌  Failure - Permission Scripts (0m 12s)
+```
+
+This tells us something crucial:
+
+1.  The fundamental authentication from GitHub to Azure **is working**.
+2.  The Service Principal **is valid** and can get a token for the Azure Resource Manager (ARM) API.
+
+So, the problem isn't the identity itself, but something specific to the PowerShell script's attempt to connect to Azure SQL.
+
+## The Real Culprit
+
+After a lot of debugging, we proved that the Service Principal *could* get a token for Azure SQL using the `Get-AzAccessToken` cmdlet directly. The problem was that `Invoke-Sqlcmd`, when using `Authentication=Active Directory Default`, was failing to find and use that token correctly.
+
+The real culprit was a subtle incompatibility or bug in the SQL driver being used by `Invoke-Sqlcmd` on the GitHub runner. It simply couldn't complete the passwordless authentication handshake on its own.
+
+## The Solution
+
+The solution is to stop relying on `Invoke-Sqlcmd`'s internal authentication mechanism and instead handle it ourselves. We get the token using the reliable `Get-AzAccessToken` cmdlet and then "spoon-feed" it directly to `Invoke-Sqlcmd`.
+
+Here is the final, robust PowerShell class that implements this pattern, including token caching to make multiple calls more efficient.
+
+```powershell
+using module ./Logger.psm1 # Custom logging module
+
+class SqlFunctions {
+
+    $logger = [Logger]::new()
+
+    [string] $serverName
+    $sqlAccessToken # This will cache our token object
+
+    SqlFunctions(
+        [string]$serverName
+            ){
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        Install-Module -Name SqlServer -AllowClobber -Scope CurrentUser -Confirm:$false
+        Install-Module -Name Az.Accounts -Repository PSGallery -Scope CurrentUser -Force -AllowClobber
+        $this.serverName = $serverName
+    }
+
+    [void] AddUserToRole(
+                [string]$groupOrUserName,
+                [string]$databaseName,
+                [string]$roleName) {
+        $this.logger.LogActivity("🔐 Adding $($groupOrUserName) to $($roleName) for $($databaseName)...")
+        $sqlCommand="IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = '$groupOrUserName')
+        BEGIN
+            CREATE USER [$groupOrUserName] FROM EXTERNAL PROVIDER;
+        END
+
+        ALTER ROLE [$roleName] ADD MEMBER [$groupOrUserName];"
+
+        try {
+            # 1. Get the token (from cache or new)
+            $accessToken = $this.GetSqlAccessToken()
+            
+            # 2. Pass it directly to the command and force errors to be caught
+            Invoke-Sqlcmd -ServerInstance "$($this.serverName).database.windows.net" `
+                    -Database $databaseName `
+                    -Query $sqlCommand `
+                    -AccessToken $accessToken.Token `
+                    -ErrorAction Stop # Crucial for proper error handling!
+            
+            $this.logger.LogSuccess()
+        }
+        catch {
+            $this.logger.LogError("Invoke-Sqlcmd failed. See the full error below.")
+            Write-Error ($_.Exception | Format-List -Force | Out-String)
+            exit 1
+        }
+    }
+
+    [object] GetSqlAccessToken() {
+        # 3. Check if we have a valid, non-expired token in our cache
+        if ($this.sqlAccessToken -and (Get-Date).ToUniversalTime() -lt $this.sqlAccessToken.ExpiresOn.UtcDateTime.AddMinutes(-5)) {
+            Write-Host "✅ Using cached and valid Azure SQL token."
+            return $this.sqlAccessToken
+        }
+
+        Write-Host "Attempting to retrieve Azure SQL access token..."
+        $sqlResource = "https://database.windows.net/"
+        try {
+            $this.sqlAccessToken = Get-AzAccessToken -ResourceUrl $sqlResource
+            Write-Host "✅ Successfully retrieved Azure SQL token."
+            return $this.sqlAccessToken
+        }
+        catch {
+            Write-Host "❌ FAILED: Could not get the Azure SQL token. Halting."
+            Write-Error ($_.Exception | Format-List -Force | Out-String)
+            exit 1
+        }
+    }
+}
+```
+
+The key takeaways from the working code are:
+1.  **Get the token manually** with `Get-AzAccessToken -ResourceUrl "https://database.windows.net/"`.
+2.  **Pass the token string** directly to `Invoke-Sqlcmd` via the `-AccessToken $token.Token` parameter.
+3.  **Use `-ErrorAction Stop`** to ensure that if `Invoke-Sqlcmd` does fail, it generates an error that your `try/catch` block will actually see.
+
+## Cheers
+
+Sometimes the loudest error message is just a distraction. By digging deeper and isolating the problem, we found the issue wasn't with the identity, but with the tooling. Hopefully, this journey saves you from a few sleepless nights!
+
+If you found this useful let me know on [X (@GordonBeeming)](https://x.com/GordonBeeming/), [LinkedIn (gordon-beeming)](https://www.linkedin.com/in/gordon-beeming/) or leave a comment below 😅 ... It would be cool to hear if this helped you out! 👀

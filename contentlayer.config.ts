@@ -21,6 +21,7 @@ import rehypeKatex from 'rehype-katex'
 import rehypeKatexNoTranslate from 'rehype-katex-notranslate'
 import rehypeCitation from 'rehype-citation'
 import rehypePresetMinify from 'rehype-preset-minify'
+import rehypeExternalLinks from 'rehype-external-links'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
@@ -260,6 +261,7 @@ export default makeSource({
       rehypeKatex,
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
+      [rehypeExternalLinks, { target: '_blank', rel: ['nofollow'] }],
       rehypePresetMinify,
     ],
   },

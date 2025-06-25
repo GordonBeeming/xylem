@@ -10,6 +10,9 @@ on:
       - "src/**"
       - ".github/workflows/build-publish.yml"
       - "Dockerfile"
+      - "next.config.mjs"
+      - "package.json"
+      - "config/redirects.js"
 
 env:
   REGISTRY: ghcr.io

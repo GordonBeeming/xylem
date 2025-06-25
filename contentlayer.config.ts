@@ -70,7 +70,8 @@ async function createTagCount(allBlogs) {
   allBlogs.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
       file.tags.forEach((tag) => {
-        const formattedTag = slug(tag)
+        const initialSlug = slug(tag);
+        const formattedTag = initialSlug.replace(/--+/g, '-');
         if (formattedTag in tagCount) {
           tagCount[formattedTag] += 1
         } else {

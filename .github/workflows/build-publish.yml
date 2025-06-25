@@ -12,7 +12,7 @@ on:
       - "Dockerfile"
       - "next.config.mjs"
       - "package.json"
-      - "config/redirects.js"
+      - "config/redirects.mjs"
       - "contentlayer.config.ts"
 
 env:

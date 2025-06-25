@@ -171,16 +171,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</guid>
-    <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
-    <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
-    <description>Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can&#39;t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I&#39;m going to post the steps so that it&#39;s helpful to others as well as future me.</description>
-    <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</guid>
     <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
     <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
@@ -188,6 +178,16 @@
     <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Tips</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</guid>
+    <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
+    <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
+    <description>Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can&#39;t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I&#39;m going to post the steps so that it&#39;s helpful to others as well as future me.</description>
+    <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
   </item>
 
   <item>

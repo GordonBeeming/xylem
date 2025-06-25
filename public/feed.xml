@@ -7,9 +7,19 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 18 Jun 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 25 Jun 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-06-25/solving-the-parallels-networking-puzzle-accessing-mac-localhost-from-a-windows-vm</guid>
+    <title>Solving the Parallels Networking Puzzle: Accessing Mac localhost from a Windows VM</title>
+    <link>https://gordonbeeming.com/blog/2025-06-25/solving-the-parallels-networking-puzzle-accessing-mac-localhost-from-a-windows-vm</link>
+    <description>Ever tried to access a web app running on your Mac from a Windows VM in Parallels and been met with connection errors? You are not alone. Follow this troubleshooting guide to solve the mystery of network binding, firewalls, and the real culprit hiding in your hosts file.</description>
+    <pubDate>Wed, 25 Jun 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Parallels</category><category>macOS</category><category>Windows</category><category>Development</category><category>Networking</category><category>Docker</category><category>.NET</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2025-06-18/the-mysterious-case-of-the-failing-azure-sql-deployment</guid>
     <title>The Mysterious Case of the Failing Azure SQL Deployment</title>

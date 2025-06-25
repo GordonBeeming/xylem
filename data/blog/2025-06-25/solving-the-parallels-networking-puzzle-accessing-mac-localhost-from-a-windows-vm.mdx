@@ -1,0 +1,80 @@
+---
+title: 'Solving the Parallels Networking Puzzle: Accessing Mac localhost from a Windows VM'
+date: 2025-06-25
+tags: ['Parallels', 'macOS', 'Windows', 'Development', 'Networking', 'Docker', '.NET']
+draft: false
+summary: 'Ever tried to access a web app running on your Mac from a Windows VM in Parallels and been met with connection errors? You are not alone. Follow this troubleshooting guide to solve the mystery of network binding, firewalls, and the real culprit hiding in your hosts file.'
+---
+
+As a developer using a Mac, running a Windows VM in Parallels is a common part of my workflow. It's perfect for testing cross-platform compatibility. The dream is seamless integration, where everything on my Mac is accessible from my Windows guest. But when it comes to networking, that dream can sometimes feel like a bit of a nightmare.
+
+You spin up your .NET web app, it's running perfectly on `localhost` on your Mac, you open a browser in Windows to test it, and... `Hmmm... can't reach this page`. If you've been down this rabbit hole, keep reading. 😅
+
+## The First Hurdle: "It Works on My Machine"
+
+The classic developer excuse, but this time it's literally true! The web app works fine on the Mac, but not the VM. The first thing to check is what IP address your application is bound to.
+
+Using the `lsof` command in the macOS terminal is a great way to diagnose this:
+```bash
+lsof -nP -iTCP:<your_port_number> | grep LISTEN
+```
+
+Initially, my output showed the app was only listening on `127.0.0.1`—the localhost loopback address. This means it will only accept connections from the Mac itself.
+
+<Figure key="/images/2025-06-25-12-33-51.png" src="/images/2025-06-25-12-33-51.png" alt="Terminal output from the lsof command showing a process listening on 127.0.0.1:port" width="0" height="0" caption="The first clue: The app is only listening for local traffic." />
+
+The fix for this is to tell your application to listen on all available network interfaces by binding it to `0.0.0.0`. For a .NET app, you can easily change this in your `launchSettings.json`:
+
+```json
+// "applicationUrl": "http://localhost:15072" 
+"applicationUrl": "http://0.0.0.0:15072"
+```
+
+After this change and a restart, `lsof` confirmed the app was now listening on `*:<port>`, which means it's open to the world (or at least, the local network). Problem solved, right?
+
+## The Plot Twist: It Still Doesn't Work!
+
+With the server correctly configured, I went back to my Windows VM, full of confidence, and tried to connect. My first instinct was to try `http://0.0.0.0:15072`. That failed. Then I tried my Mac's local network IP. That also failed.
+
+This is where the real head-scratching began. The `lsof` command proved the server was listening. The connection was being dropped somewhere else. Was it the firewall? A VPN?
+
+<Figure key="/images/2025-06-25-12-40-25.png" src="/images/2025-06-25-12-40-25.png" alt="A browser inside the Windows VM failing to connect, showing an error page." width="0" height="0" caption="The server is listening, but the VM can't see it. The mystery deepens." />
+
+## The Real Culprit: Hiding in Plain Sight
+
+After checking the firewall and finding nothing wrong, I stumbled upon the real culprit in a place I hadn't thought to look: the Windows `hosts` file.
+
+Parallels automatically adds entries to this file to help with communication between the guest and the host. But what I found was... not right.
+
+<Figure key="/images/2025-06-25-13-38-47.png" src="/images/2025-06-25-13-38-47.png" alt="The Windows hosts file showing the hostname 'mac' pointing to 0.0.0.0" width="0" height="0" caption="The smoking gun: Parallels incorrectly mapped 'mac' to a blackhole address." />
+
+The file had an entry mapping the hostname `mac` to `0.0.0.0`. I'm assuming this is meant to work, otherwise it would not have been added automatically. But in this case, it was causing the Windows VM to try to connect to a non-existent address, effectively blocking access to the Mac's localhost.
+
+## The Solution
+
+The fix, thankfully, was simple. I just had to edit the `hosts` file and replace the IP with the correct one. In Parallels' Shared Network mode, the host mac can almost always be reached at `10.211.55.2`.
+
+1.  Open **Notepad** as an **Administrator** in Windows.
+2.  Open the file `C:\Windows\System32\drivers\etc\hosts`.
+3.  Find the incorrect line and fix it.
+
+**Before:**
+```
+0.0.0.0       mac
+```
+
+**After:**
+```
+# Manual fix for connecting to the host mac
+10.211.55.2   mac
+```
+
+After saving this change, I could finally open a browser in my Windows VM and navigate to **`http://mac:<port>`**, and it loaded perfectly!
+
+This also fixed my access to Docker containers running on the Mac, which was a nice bonus. I could now access them using `http://mac:<port>` or in the case of Microsoft SQL Server `mac,<port>` as well.
+
+The journey was a bit of a winding road, but the destination—a seamless development environment—was well worth it.
+
+## Cheers
+
+If you've ever been stuck on this, I hope this guide helps you find the solution faster than I did! Let me know if this was useful on [X (@GordonBeeming)](https://x.com/GordonBeeming/), [LinkedIn (gordon-beeming)](https://www.linkedin.com/in/gordon-beeming/) or leave a comment below 😅 ... It would be cool to hear if this helped you out! 👀

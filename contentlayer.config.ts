@@ -261,7 +261,7 @@ export default makeSource({
       rehypeKatex,
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
-      [rehypeExternalLinks, { target: '_blank', rel: ['nofollow'] }],
+      [rehypeExternalLinks, { target: '_blank', rel: ['nofollow noopener'] }],
       rehypePresetMinify,
     ],
   },

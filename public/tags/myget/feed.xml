@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Mon, 27 Oct 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 28 Oct 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/myget/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Configuring a Chocolatey Install</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/configuring-a-chocolatey-install</link>
     <description>So yesterday I posted Pushing a new project to Chocolatey and I said I would create another post showing how to configure how the Chocolatey install runs and this is that post .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>DotNet Pretty</category><category>Chocolatey</category><category>PowerShell</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Pushing a new project to Chocolatey</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
     <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>

@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 26 Jun 2025 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Fri, 27 Jun 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Taking up the last slot... if you know you know 😘</title>
     <link>https://gordonbeeming.com/blog/2025-06-26/taking-up-the-last-slot-if-you-know-you-know</link>
     <description>Ever felt like you just *had* to squeeze in and make your presence known? Sometimes, a well-timed appearance is all it takes to complete the picture. This one&#39;s for those who appreciate the subtle art of fitting in… right at the very end.</description>
-    <pubDate>Thu, 26 Jun 2025 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 27 Jun 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Internal Jokes</category><category>Team Fun</category><category>Blog Posts</category>
   </item>
@@ -25,7 +25,7 @@
     <title>From Conversation to Documentation: A Modern Dev Workflow with AI</title>
     <link>https://gordonbeeming.com/blog/2025-06-26/from-conversation-to-documentation-a-modern-dev-workflow-with-ai</link>
     <description>We solve complex problems and then face the daunting task of writing documentation. What if the documentation wrote itself? Discover a workflow that turns a simple conversation with an AI into polished ADRs and blog posts, saving you hours.</description>
-    <pubDate>Wed, 25 Jun 2025 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 26 Jun 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>AI</category><category>Productivity</category><category>Development</category><category>ADR</category><category>Documentation</category>
   </item>
@@ -35,7 +35,7 @@
     <title>Solving the Parallels Networking Puzzle: Accessing Mac localhost from a Windows VM</title>
     <link>https://gordonbeeming.com/blog/2025-06-25/solving-the-parallels-networking-puzzle-accessing-mac-localhost-from-a-windows-vm</link>
     <description>Ever tried to access a web app running on your Mac from a Windows VM in Parallels and been met with connection errors? You are not alone. Follow this troubleshooting guide to solve the mystery of network binding, firewalls, and the real culprit hiding in your hosts file.</description>
-    <pubDate>Tue, 24 Jun 2025 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 25 Jun 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Parallels</category><category>macOS</category><category>Windows</category><category>Development</category><category>Networking</category><category>Docker</category><category>.NET</category>
   </item>
@@ -45,7 +45,7 @@
     <title>The Mysterious Case of the Failing Azure SQL Deployment</title>
     <link>https://gordonbeeming.com/blog/2025-06-18/the-mysterious-case-of-the-failing-azure-sql-deployment</link>
     <description>A perfectly stable GitHub Actions deployment to Azure SQL suddenly fails with a misleading &#39;Identity not found&#39; error. Follow the debugging journey to uncover the real culprit that has nothing to do with the identity.</description>
-    <pubDate>Tue, 17 Jun 2025 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 18 Jun 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>PowerShell</category><category>GitHub Actions</category><category>DevOps</category><category>OIDC</category><category>SQL</category>
   </item>
@@ -55,7 +55,7 @@
     <title>Goodbye Microsoft Teams bar... Hello Productivity</title>
     <link>https://gordonbeeming.com/blog/2024-05-16/goodbye-microsoft-teams-bar-hello-productivity</link>
     <description>We&#39;ve all been there, you&#39;re in a meeting, you start sharing your screen and things are going great... next up you need to do something at the top of your screen and you can&#39;t because the Microsoft Teams bar is in the way. You can&#39;t move it, you can&#39;t hide it, you can&#39;t do anything about it.  Or can you?</description>
-    <pubDate>Wed, 15 May 2024 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 May 2024 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Collaboration</category><category>Productivity</category><category>Microsoft Teams</category>
   </item>
@@ -65,7 +65,7 @@
     <title>Improving your git efficiency using git alias</title>
     <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
     <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
-    <pubDate>Wed, 20 Mar 2024 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
   </item>
@@ -75,7 +75,7 @@
     <title>Deploying .NET templates using GitHub Actions</title>
     <link>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</link>
     <description>Once you&#39;ve created a .NET template, you should automate the updates of the package using GitHub actions to remove the effort required in publishing updates</description>
-    <pubDate>Sat, 04 Nov 2023 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
   </item>
@@ -85,7 +85,7 @@
     <title>Visual Studio Item Templates vs .NET Templates in 2023</title>
     <link>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</link>
     <description>Long ago, one of the ways we&#39;d get some reuse out of standard and utility files would be by exporting item templates. Since the .NET CLI rolled around, the approach has been different and much easier. </description>
-    <pubDate>Sat, 28 Oct 2023 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 29 Oct 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>nuget.org</category><category>.NET</category><category>.NET CLI</category><category>.editorconfig</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
   </item>
@@ -95,7 +95,7 @@
     <title>Is this thing on?</title>
     <link>https://gordonbeeming.com/blog/2023-10-20/is-this-thing-on</link>
     <description>Sometimes you just need an accountability partner... or 2, and then you&#39;ll start course-correcting</description>
-    <pubDate>Thu, 19 Oct 2023 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 20 Oct 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Blogging</category><category>Commitment</category><category>YouTube</category><category>Making Videos</category>
   </item>
@@ -105,7 +105,7 @@
     <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
     <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
     <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
-    <pubDate>Mon, 14 Aug 2023 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
   </item>
@@ -115,7 +115,7 @@
     <title>Playing with Azure and Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</link>
     <description>I recently presented &quot;Playing with Azure and Terraform&quot; at our user group locally in Durban, there were some requests for a recording so I thought I&#39;d share it here 😊 We play with a lot of different tech in this session like GitHub Codespaces, Azure, Cloudflare and Snyk</description>
-    <pubDate>Wed, 31 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 01 Sep 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
   </item>
@@ -125,7 +125,7 @@
     <title>Scanning Infrastructure as Code (IaC) for vulnerabilities</title>
     <link>https://gordonbeeming.com/blog/2022-08-24/scanning-infrastructure-as-code-iac-for-vulnerabilities</link>
     <description>In the modern world where it feels like every sentence has a Dev⭐Ops word in it, 1 that is probably used more than most is DevSecOps.When teams focus on DevSecOps they make sure to integrate security into every phase of development, this includes scanning for vulnerabilities as soon as possible. This videos shows you briefly how you can use Snyk to scan your terraform templates for vulnerabilities from your CLI as well as part of every commit pushed to GitHub.</description>
-    <pubDate>Tue, 23 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 24 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Terraform</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>DevSecOps</category>
   </item>
@@ -135,7 +135,7 @@
     <title>Interacting with Cloudflare DNS and Origin Certs using Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-08-17/setting-up-nginx-on-azure-vms-behind-cloudflare-using-terraform</link>
     <description>In this video we&#39;ll take a look at connecting to Cloudflare with terraform to fully automate a full (strict) SSL/TLS encryption mode setup We&#39;ll also cover setting up a basic nginx server which we&#39;ll use to validate that our setup is working as expected.</description>
-    <pubDate>Tue, 16 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>GitHub</category>
   </item>
@@ -145,7 +145,7 @@
     <title>Managing GitHub secrets using terraform</title>
     <link>https://gordonbeeming.com/blog/2022-08-11/managing-github-secrets-using-terraform</link>
     <description>In this video we&#39;ll take a look at Managing GitHub secrets using terraform as well as federated identities from GitHub into Azure. You should only be storing secrets if you absolutely need to, in this demo although we are only accessing storage accounts the change from a storage connection string to Azure Federated Identity means that we can access any of resource the identity has access too using RBAC which is a much better overall approach.</description>
-    <pubDate>Wed, 10 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 11 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Terraform</category><category>IaC</category><category>GitHub</category>
   </item>
@@ -155,7 +155,7 @@
     <title>Building basic Azure infrastructure using Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-08-04/building-basic-azure-infrastructure-using-terraform</link>
     <description>In this video we&#39;ll take a look at how to build some basic Azure infrastructure using Terraform.</description>
-    <pubDate>Wed, 03 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 04 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Terraform</category><category>IaC</category>
   </item>
@@ -165,7 +165,7 @@
     <title>GitHub Projects and Issues</title>
     <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
     <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
-    <pubDate>Sun, 22 May 2022 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
   </item>
@@ -175,7 +175,7 @@
     <title>Setting up commit signature verification for GitHub</title>
     <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
     <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
-    <pubDate>Sun, 20 Mar 2022 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
   </item>
@@ -185,7 +185,7 @@
     <title>Moving Repos to GitHub from Azure DevOps - GitHub Quick Tips</title>
     <link>https://gordonbeeming.com/blog/2022-01-17/moving-repos-to-github-from-azure-devops-github-quick-tips</link>
     <description>This is a Quick GitHub Tip on Moving Repos to GitHub from Azure DevOps</description>
-    <pubDate>Sun, 16 Jan 2022 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 17 Jan 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub Git Code Pipelines Import</category><category>YouTube Videos</category>
   </item>
@@ -195,7 +195,7 @@
     <title>Profile README - GitHub Quick Tips</title>
     <link>https://gordonbeeming.com/blog/2021-08-11/profile-readme-github-quick-tips</link>
     <description>This is a Quick GitHub Tip on Profile Readmes</description>
-    <pubDate>Tue, 10 Aug 2021 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 11 Aug 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>YouTube Videos</category>
   </item>
@@ -205,7 +205,7 @@
     <title>Allow project users to manage Permissions Groups in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2021-07-22/allow-project-users-to-manage-permissions-groups-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to allow project users to manage Permissions Groups in Azure DevOps that aren&#39;t project administrators</description>
-    <pubDate>Wed, 21 Jul 2021 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure DevOps</category><category>Postman</category><category>YouTube Videos</category>
   </item>
@@ -215,7 +215,7 @@
     <title>Developing software for the modern world using only your browser and GitHub</title>
     <link>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</link>
     <description>In this video I&#39;m going to show you... How to develop software for the modern world using only your browser and GitHub.</description>
-    <pubDate>Tue, 18 May 2021 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 19 May 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>YouTube Videos</category>
   </item>
@@ -225,7 +225,7 @@
     <title>Having fun with GitHub Codespaces, docker, swagger codegen cli</title>
     <link>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</link>
     <description>In this video I&#39;m going to show you... How you can use GitHub Codespaces to prototype an idea and put it into action... or should I say actions with nothing more than your browser.</description>
-    <pubDate>Mon, 01 Feb 2021 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 02 Feb 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>nuget.org</category><category>swagger codegen cli</category><category>Codespaces</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>Docker</category><category>Strava API</category>
   </item>
@@ -235,7 +235,7 @@
     <title>MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found</title>
     <link>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</link>
     <description>.</description>
-    <pubDate>Thu, 19 Nov 2020 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 20 Nov 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Automated Builds</category><category>dotnet core</category><category>MSBuild</category><category>SSDT</category>
   </item>
@@ -245,7 +245,7 @@
     <title>Rethink your application boundary and use Cloudflare</title>
     <link>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</link>
     <description>In this video I&#39;m going to talk to you about... Rethinking your application boundary and using Cloudflare</description>
-    <pubDate>Tue, 20 Oct 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Cloudflare</category><category>GitHub Actions</category><category>GitHub</category><category>YouTube Videos</category><category>msdug</category>
   </item>
@@ -255,7 +255,7 @@
     <title>Migrating pipelines and releases in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... Migrating pipelines and releases in Azure DevOps</description>
-    <pubDate>Mon, 28 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
@@ -265,7 +265,7 @@
     <title>Migrating Test artifacts and all other work item types using the Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</link>
     <description>In this video I&#39;m going to show you... Migrating Test artifacts (and all other work item types) using the Azure DevOps Migration Tools</description>
-    <pubDate>Sat, 26 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 27 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
@@ -275,7 +275,7 @@
     <title>How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-24/how-to-migrate-svn-and-tfvc-repositories-to-git-repositories-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</description>
-    <pubDate>Wed, 23 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 24 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
@@ -285,7 +285,7 @@
     <title>How to migrate git repositories to Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
-    <pubDate>Tue, 22 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
@@ -295,7 +295,7 @@
     <title>How to move Work Items between projects in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
-    <pubDate>Tue, 22 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>
@@ -305,7 +305,7 @@
     <title>How to delete a team project in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
-    <pubDate>Mon, 21 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
   </item>
@@ -315,7 +315,7 @@
     <title>How to recovery a deleted team project in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-22/how-to-recovery-a-deleted-team-project-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
-    <pubDate>Mon, 21 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
   </item>
@@ -325,7 +325,7 @@
     <title>How to create a team project in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-21/how-to-create-a-team-project-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to create a team project in Azure DevOps</description>
-    <pubDate>Sun, 20 Sep 2020 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
   </item>
@@ -335,7 +335,7 @@
     <title>How to use the same editor as Visual Studio Code in your sites</title>
     <link>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</link>
     <description>Wondering how you can use the same editor as Visual Studio Code in your sites? In this video I&#39;ll show you how you can 😀. 0:00 - Introduction 0:25 - Setup basic HTML file 1:55 - Add monaco editor html tags 3:23 - Use monaco colorizeElement functionality 5:17 - Create a monaco editor 9:46 - Monaco editor &quot;Cannot read property &#39;AddEventListener&#39; of null 10:38 - Use npm to install monaco editor dependencies 12:19 - Exploring the monaco editor playground 13:52 - Thank you for watching</description>
-    <pubDate>Tue, 11 Aug 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 12 Aug 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Monaco Editor</category><category>NPM</category><category>YouTube Videos</category><category>Visual Studio Code</category>
   </item>
@@ -345,7 +345,7 @@
     <title>[ code snippet ] JsonPropertyConverter.cs</title>
     <link>https://gordonbeeming.com/blog/2020-07-30/code-snippet-jsonpropertyconvertercs</link>
     <description>JsonConverter that works with System.Text.Json allows having a string property that will just store the json element string instead of trying to parse the properties into a complex object</description>
-    <pubDate>Wed, 29 Jul 2020 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 30 Jul 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>JSON</category><category>code snippet</category>
   </item>
@@ -355,7 +355,7 @@
     <title>2020 Journey to 120</title>
     <link>https://gordonbeeming.com/blog/2020-05-20/2020-journey-to-120</link>
     <description>This post is just to kick off and mention that I will be doing a series of videos out on YouTube about my 2020 Journey to 120.</description>
-    <pubDate>Tue, 19 May 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 20 May 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>2020 Journey to 120</category>
   </item>
@@ -365,7 +365,7 @@
     <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
     <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
     <description>Whenever you take out an Azure VM you generally get a single disk which is not that big, when you select a SQL Server based VM (even web edition) you automatically get a 1TB disk, if you are using managed disks you pay for that whole TB even if you are only using 1GB of it. This post will show you how you can lower the price of that virtual machine if you are in this situation</description>
-    <pubDate>Thu, 26 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Tips</category>
   </item>
@@ -375,7 +375,7 @@
     <title>Raising awareness and reliable information sources for #COVID19 by adding a banner to your websites</title>
     <link>https://gordonbeeming.com/blog/2020-03-26/raising-awareness-and-reliable-information-sources-for-covid19-by-adding-a-banner-to-your-websites</link>
     <description>Recently talking to people it&#39;s obvious that a lot of people are either not following what is going on globally and in lots of cases have information that seems to have been obtained from unreliable sources MyBroadband released a post titled &quot;New rules for all co.za websites and ISPs during coronavirus outbreak&quot; which mentioned that ISPs needed a visible link to one of the South African information sites for corona virus so thought it would be a useful thing for more people to add banners in general to their sites linking to a trusted source for corona virus information</description>
-    <pubDate>Wed, 25 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 26 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Raising Awareness</category><category>COVID19</category>
   </item>
@@ -385,7 +385,7 @@
     <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
     <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
     <description>Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can&#39;t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I&#39;m going to post the steps so that it&#39;s helpful to others as well as future me.</description>
-    <pubDate>Mon, 23 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
   </item>
@@ -395,7 +395,7 @@
     <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
     <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
     <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
-    <pubDate>Sun, 22 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
   </item>
@@ -405,7 +405,7 @@
     <title>The importance of regression testing and real world security consequences</title>
     <link>https://gordonbeeming.com/blog/2020-03-18/the-importance-of-regression-testing-and-real-world-security-consequences</link>
     <description>Organizations often put a lot of effort around testing their products, they&#39;ll put tons of effort in unit testing, integration testing across their UI and API layers but sometimes have a strategy of covering everything. This doesn&#39;t always add value to their pipelines because the metric that is being chased is not value which agreeably is a hard thing to measure but rather it&#39;s a coverage metric. To start with I don&#39;t know if testing strategy is what was happening for TicTocTrack but is something that is definitely highlighted as something that would have been valuable for them. A security vulnerability discovered around a year ago from a fellow MVP and security expert Troy Hunt was patched and then earlier this year I re-discovered it</description>
-    <pubDate>Tue, 17 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 18 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Testing</category>
   </item>
@@ -415,7 +415,7 @@
     <title>Find organizations linked to your AAD tenant in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2019-12-10/find-organizations-linked-to-your-aad-tenant-in-azure-devops</link>
     <description>Did you know that you can get a list of all organizations linked to your Azure Active Directory tenant? Since august this has been possible 😁</description>
-    <pubDate>Mon, 09 Dec 2019 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 10 Dec 2019 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure Active Directory</category>
   </item>
@@ -425,7 +425,7 @@
     <title>GitHub actions… CI in 5 clicks</title>
     <link>https://gordonbeeming.com/blog/2019-08-19/github-actions-ci-in-5-clicks</link>
     <description>If you don&#39;t know yet what GitHub actions are you can read about it on the GitHub Actions feature on GitHub. In short on the 8th of August GitHub announced an update to their actions which you can read about in this blog post. it&#39;s a very easy way to automate anything from any event in GitHub.</description>
-    <pubDate>Sun, 18 Aug 2019 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 19 Aug 2019 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub Actions</category><category>GitHub</category>
   </item>
@@ -435,7 +435,7 @@
     <title>Missing ctrl + enter in Visual Studio to commit changes? Here&#39;s how you can add it</title>
     <link>https://gordonbeeming.com/blog/2019-03-18/missing-ctrl-enter-in-visual-studio-to-commit-changes-here-s-how-you-can-add-it</link>
     <description>So something that you&#39;ve probably noticed when using dev tools in the web and Visual Studio Code is that you can hit ctrl + enter and with this you may have noticed that in Visual Studio you can&#39;t do that. Below you&#39;ll see how you can add this to your IDE.</description>
-    <pubDate>Sun, 17 Mar 2019 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 18 Mar 2019 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>VSTS / TFS</category><category>Visual Studio</category>
   </item>
@@ -445,7 +445,7 @@
     <title>Adding routes to Strava and then to Garmin devices</title>
     <link>https://gordonbeeming.com/blog/2019-02-16/adding-routes-to-strava-and-then-to-garmin-devices</link>
     <description>I&#39;ve spoken to a couple of people who want to add routes to their Garmin devices but the path isn&#39;t as straight forward as you&#39;d imagine it should/can be.</description>
-    <pubDate>Fri, 15 Feb 2019 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 16 Feb 2019 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Strava</category><category>Know your tools</category><category>Connect IQ</category><category>Garmin</category>
   </item>
@@ -455,7 +455,7 @@
     <title>Creating an Azure dashboard for Application Insights in 1,2,3</title>
     <link>https://gordonbeeming.com/blog/2018-12-12/creating-an-azure-dashboard-for-application-insights-in-1-2-3</link>
     <description>So watching this weeks asp.net community standup ASP.NET Community Standup - December 11, 2018 - 2.2 Release Party! and Scott Hanselman shows how to make a dashboard for your application insights resource in no time.</description>
-    <pubDate>Tue, 11 Dec 2018 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 12 Dec 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Monitoring</category><category>Dashboards</category><category>Application Insights</category>
   </item>
@@ -465,7 +465,7 @@
     <title>#TYMHKON: How do I follow what&#39;s happening with Azure DevOps?</title>
     <link>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</link>
     <description>#TYMHKON: What is it?</description>
-    <pubDate>Sun, 23 Sep 2018 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 24 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
   </item>
@@ -475,7 +475,7 @@
     <title>How to Tweet Azure Pipeline activity easily</title>
     <link>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</link>
     <description>A while back I created a service linked to Twitter that tweets when your pipeline has completed in Azure Pipelines. This post is going to show you how you can easily tweet when your builds complete .</description>
-    <pubDate>Wed, 19 Sep 2018 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 20 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Azure DevOps</category><category>Web Online Tools</category>
   </item>
@@ -485,7 +485,7 @@
     <title>#TYMHKON: Public projects in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2018-09-15/tymhkon-public-projects-in-azure-devops</link>
     <description>#TYMHKON: What is it?</description>
-    <pubDate>Fri, 14 Sep 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 15 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
   </item>
@@ -495,7 +495,7 @@
     <title>#TYMHKON: What is it?</title>
     <link>https://gordonbeeming.com/blog/2018-09-08/tymhkon-what-is-it</link>
     <description>TYMHKON is something random that to me looks like it could be Japanese? Not sure what makes me think that when seeing it but what it really stands for is Things You May Have Known Or Not!</description>
-    <pubDate>Fri, 07 Sep 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 08 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TYMHKON</category><category>VSTS</category>
   </item>
@@ -505,7 +505,7 @@
     <title>Building libraries that target multiple frameworks</title>
     <link>https://gordonbeeming.com/blog/2018-07-30/building-libraries-that-target-multiple-frameworks</link>
     <description>I&#39;ve generally built libraries wrong by placing all binaries in the root and it&#39;s worked ok for now so why change it. I might also add that these libraries have been for internal use so no real reason for not doing this I guess.</description>
-    <pubDate>Sun, 29 Jul 2018 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 30 Jul 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>nupkg</category><category>nuspec</category><category>NuGet</category>
   </item>
@@ -515,7 +515,7 @@
     <title>Turning on the new navigation for Visual Studio Team Services</title>
     <link>https://gordonbeeming.com/blog/2018-07-15/turning-on-the-new-navigation-for-visual-studio-team-services</link>
     <description>Although I&#39;m hoping everyone reading this doesn&#39;t need this I thought I&#39;d share anyway. A little under a month ago Jeremy Epling (@jeremy_epling) posted on the Microsoft DevOps Blog about the New Navigation for Visual Studio Team Services. I&#39;m not going to repeat the very detailed blog post but I am going to show you how to enabled the amazing experience quickly.</description>
-    <pubDate>Sat, 14 Jul 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 15 Jul 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Just longer than a tweet</category><category>VSTS</category><category>Preview Features</category>
   </item>
@@ -525,7 +525,7 @@
     <title>A journey worth taking</title>
     <link>https://gordonbeeming.com/blog/2018-05-21/a-journey-worth-taking</link>
     <description>The post is going to go over the last 10 years (7 in more detail) and how I applied a little self control (eventually) and have sort of changed how I motivate myself to try better and why I came to do that. You can almost think of the journey as being a good movie where the dude in high school has everything, somehow loses it (well finding other great things) and then finds his way again (sort of).</description>
-    <pubDate>Sun, 20 May 2018 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 May 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Personal</category>
   </item>
@@ -535,7 +535,7 @@
     <title>How do I fix HTTP Error 502.5 - Process Failure when hosting in IIS with dotnet core</title>
     <link>https://gordonbeeming.com/blog/2018-05-13/how-do-i-fix-http-error-5025-process-failure-when-hosting-in-iis-with-dotnet-core</link>
     <description>I received a new error today that I haven&#39;t received before when deploying dotnet core apps. It was as the title suggest a &quot;HTTP Error 502.5 - Process Failure&quot; error</description>
-    <pubDate>Sat, 12 May 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 13 May 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>dotnet core</category><category>Just Coding</category><category>IIS</category>
   </item>
@@ -545,7 +545,7 @@
     <title>Set which chrome profile for Visual Studio to use</title>
     <link>https://gordonbeeming.com/blog/2018-03-26/set-which-chrome-profile-for-visual-studio-to-use</link>
     <description>At MVP Summit this year one of the valuable things I learnt (which I can share ) was from Colin Dembovsky (ALM MVP) which was Using Chrome to Solve Identity Hell. Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn&#39;t that great. Not going to talk much about that here, you can read his post to find out more.</description>
-    <pubDate>Sun, 25 Mar 2018 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 26 Mar 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Productivity</category><category>Chrome</category>
   </item>
@@ -555,7 +555,7 @@
     <title>Creating a new branch in @VSTS</title>
     <link>https://gordonbeeming.com/blog/2018-03-10/creating-a-new-branch-in-vsts</link>
     <description>This is a quick reference post that shows you how to create a branch in VSTS and TFS.</description>
-    <pubDate>Fri, 09 Mar 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 10 Mar 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Tips</category>
   </item>
@@ -565,7 +565,7 @@
     <title>Setting wild card branch policies in @VSTS</title>
     <link>https://gordonbeeming.com/blog/2018-03-10/setting-wild-card-branch-policies-in-vsts</link>
     <description>I&#39;ve probably mentioned it before but keeping up with what&#39;s happening with VSTS is incredible hard with their 3 week cadence and generally huge set of features each 3 weeks. This week at MVP Summit I had what I thought would be a cool request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it&#39;s part of the many benefits of being a MVP .</description>
-    <pubDate>Fri, 09 Mar 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 10 Mar 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Source Control. Git</category>
   </item>
@@ -575,7 +575,7 @@
     <title>Setting up 2 factor authentication and email verification with .net core 2.0</title>
     <link>https://gordonbeeming.com/blog/2018-02-15/setting-up-2-factor-authentication-and-email-verification-with-net-core-20</link>
     <description>Today I played with a new .net core template just to see what the authentication options were out the box and was surprised to see just how easy it is to go from nothing to having a base project that has authentication fully baked in with 2 factor authentication and email verification.</description>
-    <pubDate>Wed, 14 Feb 2018 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 15 Feb 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>dotnet core</category><category>Just Coding</category>
   </item>
@@ -585,7 +585,7 @@
     <title>Creating an asynchronous AuthorizeAttribute in MVC</title>
     <link>https://gordonbeeming.com/blog/2018-01-26/creating-an-asynchronous-authorizeattribute-in-mvc</link>
     <description>A couple days ago I needed to call a remote web api call in my AuthorizeAttribute sometimes but as mentioned in this (Is it possible to use async/await in MVC 4 AuthorizeAttribute?) StackOverflow question (and other forums) it isn&#39;t supported but is in the newer .net core. Unfortunately the project I needed this on was traditional MVC so I was left still finding a way .</description>
-    <pubDate>Thu, 25 Jan 2018 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 26 Jan 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>async</category><category>C#</category><category>MVC</category><category>Just Coding</category>
   </item>
@@ -595,7 +595,7 @@
     <title>Moving Application Insights resources between subscriptions in Azure</title>
     <link>https://gordonbeeming.com/blog/2018-01-03/moving-application-insights-resources-between-subscriptions-in-azure</link>
     <description>There is documentation available for Move resources to new resource group or subscription but things are easier to do with exact sample code so here it goes . The steps below will work for moving between Resource Groups as well, you&#39;ll just skip some steps that would be obvious.</description>
-    <pubDate>Tue, 02 Jan 2018 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 03 Jan 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Application Insights</category><category>PowerShell</category>
   </item>
@@ -605,7 +605,7 @@
     <title>BenchmarkDotNet: IsBoolean method</title>
     <link>https://gordonbeeming.com/blog/2017-12-28/benchmarkdotnet-isboolean-method</link>
     <description>This post might seem weird and is slightly. It&#39;s really just a pointer as with all my posts to send people to instead of sharing lots of text &quot;on the down low&quot; 😁.</description>
-    <pubDate>Wed, 27 Dec 2017 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 28 Dec 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>BenchmarkDotNet</category><category>Just Coding</category>
   </item>
@@ -615,7 +615,7 @@
     <title>Work Around for .NET Framework 4.7 or a later update is already installed on this computer</title>
     <link>https://gordonbeeming.com/blog/2017-12-07/work-around-for-net-framework-47-or-a-later-update-is-already-installed-on-this-computer</link>
     <description>I see this message most times I format my machines after opening existing projects in Visual Studio and I always forgot how I solve it</description>
-    <pubDate>Wed, 06 Dec 2017 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 07 Dec 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>dotnet</category>
   </item>
@@ -625,7 +625,7 @@
     <title>Connecting agents to TFS using integrated security on http from external domain</title>
     <link>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</link>
     <description>If you have TFS on the domain but you are trying to connect agents to it from outside the domain and TFS is not running on https then this post is for you.</description>
-    <pubDate>Sat, 05 Aug 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>VSTS / TFS</category><category>Digi Cert</category><category>TFS</category><category>TFS Agents</category><category>VSTS</category>
   </item>
@@ -635,7 +635,7 @@
     <title>Searching in VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-08-06/searching-in-vststfs</link>
     <description>This post is largely showing off a cool feature of chrome but the core focus is how you can be more productive with VSTS search</description>
-    <pubDate>Sat, 05 Aug 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>Search</category><category>Google</category><category>VSTS</category>
   </item>
@@ -645,7 +645,7 @@
     <title>Bulk import git repositories into VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</link>
     <description>With the rate that the VSTS team releases with all the features they releasing it&#39;s hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours .</description>
-    <pubDate>Mon, 24 Jul 2017 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 25 Jul 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>Source Control</category><category>VSTS / TFS</category><category>TFS</category><category>GitHub Projects</category>
   </item>
@@ -655,7 +655,7 @@
     <title>Battling to Join Insider Preview?</title>
     <link>https://gordonbeeming.com/blog/2017-06-20/battling-to-join-insider-preview</link>
     <description>Today I tried to join one of my machines to the insider preview. Most people if they get issues would probably take it as a sign that putting the broken bits on their machine was a bad idea and the universe has saved them…I need my broken bits fix .</description>
-    <pubDate>Mon, 19 Jun 2017 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 20 Jun 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Microsoft Account</category><category>Windows Insider Program</category>
   </item>
@@ -665,7 +665,7 @@
     <title>Converting Html to Pdf using C# and magic!</title>
     <link>https://gordonbeeming.com/blog/2017-05-22/converting-html-to-pdf-using-c-and-magic</link>
     <description>Everyone at some point needs to convert and html page into a PDF for some reason or another. For this I&#39;ve always used a component which was cheap at the time (and is far from it now). This component has worked well for the last 8(ish) years, most ish in the last while because it doesn&#39;t deal well with https sites. When contacting the vendor they said hey but our latest version which can be expected I guess because it&#39;s 8 years down the line but then came the it&#39;s ALL OF THE $ . The last issue is that the component I used doesn&#39;t work in Azure. That lead me to some investigation and then ultimately this post.</description>
-    <pubDate>Sun, 21 May 2017 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 22 May 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Just Coding</category><category>GitHub Projects</category><category>Pdf-to-Html</category>
   </item>
@@ -675,7 +675,7 @@
     <title>Using ngrok to test web apps on mobile while developing</title>
     <link>https://gordonbeeming.com/blog/2017-05-18/using-ngrok-to-test-web-apps-on-mobile-while-developing</link>
     <description>I often never really test on mobile properly because most sites are responsive so it&#39;s easier to just resize your browser and test like that. This works great until you trying to get the perfect mobile experience and looking at every element like how drop lists present themselves with different content taking into account how wrapping might happen in mobile browser controls (which is different from web browser, even in chrome ). A long time ago I briefly used ngrok just to test how it works and now I use it constantly for testing apps while they are still in development.</description>
-    <pubDate>Wed, 17 May 2017 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 18 May 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Mobile</category><category>Visual Studio</category><category>Just Coding</category>
   </item>
@@ -685,7 +685,7 @@
     <title>Generating code documentation using Ghost Doc Enterprise</title>
     <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
     <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
-    <pubDate>Sat, 29 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
   </item>
@@ -695,7 +695,7 @@
     <title>Setting up a standard continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-a-standard-continuous-integration-build-with-vststfs</link>
     <description>If you do a quick Google for pros of setting up continuous integration you&#39;ll come across a lot of articles about how good setting up continuous integration (CI) is compared to googling cons of setting up continuous integration which basically gives you the same posts of the the pros search so we won&#39;t dig too much into that now .</description>
-    <pubDate>Sat, 22 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Build Automation</category><category>Visual Studio Marketplace</category><category>Maximum Effort</category>
   </item>
@@ -705,7 +705,7 @@
     <title>Setting up .net core continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</link>
     <description>You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I&#39;d need to post specifically on .net core. After all it&#39;s still a Visual Studio solution so things should just work, the keyword here is should . Things didn&#39;t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).</description>
-    <pubDate>Sat, 22 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
   </item>
@@ -715,7 +715,7 @@
     <title>Implementing a dynamic robots.txt</title>
     <link>https://gordonbeeming.com/blog/2017-04-12/implementing-a-dynamic-robotstxt</link>
     <description>Firstly you might want to know why would you want to implement a dynamic robots.txt? Isn&#39;t it better to just put a static file in the web app? Yes it is but when you running your application on certain platforms like web apps in Azure when you using deployment slots. I found this handy link which explains deployment slots quite nicely , but basically what happens is when you switch 2 slots Azure will do a virtual IP switch so traffic from your slots will now be switched (not the files from each slot).</description>
-    <pubDate>Tue, 11 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 12 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>MVC</category><category>robots text file</category><category>Deployment slots</category><category>Just Coding</category>
   </item>
@@ -725,7 +725,7 @@
     <title>So I installed VS Enterprise 2017 and have no MTM, where is it?</title>
     <link>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</link>
     <description>If you&#39;ve installed Visual Studio 2017 Enterprise and weren&#39;t one of the people that went over to the Individual Components tab to see what you weren&#39;t installing you probably don&#39;t have Microsoft Test Manager installed.</description>
-    <pubDate>Tue, 07 Mar 2017 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 08 Mar 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio 2017</category><category>Test Manager</category>
   </item>
@@ -735,7 +735,7 @@
     <title>Using C# 6 to make &#39;bad&#39; SQL awesome</title>
     <link>https://gordonbeeming.com/blog/2017-02-09/using-c-6-to-make-bad-sql-awesome</link>
     <description>I&#39;m busy going through Pluralsight watching Exploring C# 6 with Jon Skeet by Rob Conery. Jon Skeet goes ahead and makes this epic method that looks like it&#39;s so naughty but is pretty cool.</description>
-    <pubDate>Wed, 08 Feb 2017 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 09 Feb 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>SQL Injection</category><category>CSharp-6</category><category>Just Coding</category>
   </item>
@@ -745,7 +745,7 @@
     <title>Easily adding auditing to a Entity Framework Code First project</title>
     <link>https://gordonbeeming.com/blog/2017-01-05/easily-adding-auditing-to-a-entity-framework-code-first-project</link>
     <description>If you&#39;ve done any amount of development where you need to interact with data you&#39;d know that at some point customers or stakeholders always want to know who made that change or when was that change made. To answer these questions you&#39;d look to your auditing which in most cases is the last thing people think about adding into their apps for some reason.</description>
-    <pubDate>Wed, 04 Jan 2017 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 05 Jan 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Auditing</category><category>Data</category><category>Entity Framework</category>
   </item>
@@ -755,7 +755,7 @@
     <title>Opening apps from the directory you in as Administrator</title>
     <link>https://gordonbeeming.com/blog/2016-12-13/opening-apps-from-the-directory-you-in-as-administrator</link>
     <description>The other day I saw a post that Greg Duncan shared about opening CMD and PowerShell from the directory you in.</description>
-    <pubDate>Mon, 12 Dec 2016 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 13 Dec 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows Explorer</category><category>Command Line</category><category>Run As Admin</category><category>PowerShell</category>
   </item>
@@ -765,7 +765,7 @@
     <title>SSMS 2016 where have my line breaks gone?</title>
     <link>https://gordonbeeming.com/blog/2016-07-25/ssms-2016-where-have-my-line-breaks-gone</link>
     <description>I&#39;m hoping it&#39;s not just me but one of the things I was missing from SSMS 2014 is that I had my line breaks when copying large text fields out of the query results. For a long time I have been putting it off and only using SSMS 2014, last week I re-installed my Operating System and decided not to install SSMS 2014 just for this 1 feature.</description>
-    <pubDate>Sun, 24 Jul 2016 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 25 Jul 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Data</category><category>SSMS 2016</category><category>SQL Server</category>
   </item>
@@ -775,7 +775,7 @@
     <title>Visual Studio Team Services Overview - Video Series</title>
     <link>https://gordonbeeming.com/blog/2016-05-03/visual-studio-team-services-overview-video-series</link>
     <description>A couple weeks ago I was asked to present at DUT to a group of students. The presentation was quite a long one so I had to cut some bits out in order to present in the timeslot that I had. So I decided that I&#39;d record all the content and post it up so that others can potentially benefit from it as well.</description>
-    <pubDate>Mon, 02 May 2016 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 03 May 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Source Control</category><category>VSTS / TFS</category><category>Work Item Management</category><category>Release Management</category><category>Automated Builds</category><category>Load Testing</category><category>Test Manager</category>
   </item>
@@ -785,7 +785,7 @@
     <title>Making a Cake Day</title>
     <link>https://gordonbeeming.com/blog/2016-05-02/making-a-cake-day</link>
     <description>Today I decided to record a presentation I did recently. It will be posted soon but in the meantime here&#39;s something else. While I was busy recording my wife (Tiani) decided that her and the kids would make a cake. It was as usual one of the best cakes I&#39;ve tasted. If you haven&#39;t seen any of her other creations take a look at her Facebook page3 Tiers Novalty Cakes, below is my cake for my 25th birthday cake.</description>
-    <pubDate>Sun, 01 May 2016 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 02 May 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Personal</category>
   </item>
@@ -795,7 +795,7 @@
     <title>VSTS widget for GitHub badges</title>
     <link>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</link>
     <description>When I first heard about the SDK for widgets in Visual Studio Team Services (VSTS) I wanted to make a couple of widgets, one of these was a GitHub widget that would show some info from any GitHub repo on your VSTS dashboard. This can can be helpful when you have your source open on GitHub but still work out of VSTS.</description>
-    <pubDate>Wed, 27 Jan 2016 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 28 Jan 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Extensions</category><category>GitHub Projects</category>
   </item>
@@ -805,7 +805,7 @@
     <title>Setting up TFS Build Agents fast</title>
     <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
     <description>So you could make a script that can do the bits below but if you don&#39;t here is how you can easily create build agents fast for TFS 2015+ or VSO.</description>
-    <pubDate>Thu, 15 Oct 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
   </item>
@@ -815,7 +815,7 @@
     <title>Load testing using Azure</title>
     <link>https://gordonbeeming.com/blog/2015-10-08/load-testing-using-azure</link>
     <description>So everyone wants to have the ultimate system that never breaks can handle &#39;all&#39; the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what&#39;s the odds of that happening. The other option is to have a bank account that is never ending and throw &#39;all&#39; the hardware at your application to make sure it doesn&#39;t ever have a slow day but then how are you making your money, how do you know when &#39;all&#39; the hardware isn&#39;t enough.</description>
-    <pubDate>Wed, 07 Oct 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 08 Oct 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Load Testing</category><category>Visual Studio Team Services</category>
   </item>
@@ -825,7 +825,7 @@
     <title>Browsing localhost with the Microsoft Edge Browser</title>
     <link>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</link>
     <description>So if you using windows 10 and doing some web development you would probably have noticed that you can&#39;t browse localhost for some reason. And there is a couple of feedback items for it in the Windows Feedback app.</description>
-    <pubDate>Fri, 03 Jul 2015 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Microsoft Edge</category><category>Fiddler</category><category>Windows 10</category>
   </item>
@@ -835,7 +835,7 @@
     <title>A &#39;Hello World&#39; for VSTS Extensions</title>
     <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
     <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
-    <pubDate>Wed, 17 Jun 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
   </item>
@@ -845,7 +845,7 @@
     <title>Creating Iterations in VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-25/creating-iterations-in-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 24 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 25 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -855,7 +855,7 @@
     <title>Connecting Test Manager to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 21 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
   </item>
@@ -865,7 +865,7 @@
     <title>Connecting Visual Studio to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 17 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -875,7 +875,7 @@
     <title>Creating your first VSTS Team Project</title>
     <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 14 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -885,7 +885,7 @@
     <title>Create a new VSTS account</title>
     <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 10 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -895,7 +895,7 @@
     <title>They said Select * was bad but...</title>
     <link>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</link>
     <description>So speaking to any smart database people they will generally tell you that the SELECT * FROM ... is a bad idea and should not be used. Today (well would of been if I didn&#39;t procrastinate) I spent many hours debugging something from the wrong places because I used SELECT *. Below is what I found out =). Rennie Moodley helped me understand what was happening after I figured out where the problem was, helped me create the sample code below and then the 2 of us and Christopher Swart poked at and improve the sample and found some more weirdness which you&#39;ll also see below.</description>
-    <pubDate>Wed, 08 Apr 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 09 Apr 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>T-SQL</category><category>Data</category><category>SQL Server</category><category>Grab Some Coffee</category>
   </item>
@@ -905,7 +905,7 @@
     <title>Cleaning up the Taskbar on Windows 10</title>
     <link>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</link>
     <description>The number 1 thing voted for under Taskbar currently is to hide the new Search bar and task view buttons</description>
-    <pubDate>Wed, 25 Mar 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 26 Mar 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Tips</category><category>Windows 10</category>
   </item>
@@ -915,7 +915,7 @@
     <title>Fixing The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)</title>
     <link>https://gordonbeeming.com/blog/2015-01-21/fixing-the-process-cannot-access-the-file-because-it-is-being-used-by-another-process-exception-from-hresult-0x80070020</link>
     <description>I had some &quot;Weird&quot; things happening with IIS on one of my developer machines. After trouble shooting for a while I decided that was definitely not winning and removed all features from my pc that were even the slightest related to IIS, my pc required a restart so I did. When it came back I re-enabled all the features as I would normally do and then attempted to put my dev site in IIS. For some reason all the sites were stopped and when trying to start them I received the message</description>
-    <pubDate>Tue, 20 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 21 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>IIS</category><category>Skype</category>
   </item>
@@ -925,7 +925,7 @@
     <title>How to Enable Alternate Credentials in Visual Studio Team Services (VSTS)</title>
     <link>https://gordonbeeming.com/blog/2015-01-16/how-to-enable-alternate-credentials-in-visual-studio-online-vso</link>
     <description>Ok so obviously the first you need is to have a VSO account. If you have one already, awesome, continue on and skip this section.</description>
-    <pubDate>Thu, 15 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 16 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
   </item>
@@ -935,7 +935,7 @@
     <title>Windows Insider Program: Changes to Terms of Use</title>
     <link>https://gordonbeeming.com/blog/2015-01-15/windows-insider-program-changes-to-terms-of-use</link>
     <description>This is just an FYI</description>
-    <pubDate>Wed, 14 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 15 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows Insider Program</category><category>Read It Don't Read It</category>
   </item>
@@ -945,7 +945,7 @@
     <title>Know it. Prove it. 28 days to rock your skills.</title>
     <link>https://gordonbeeming.com/blog/2015-01-13/know-it-prove-it-28-days-to-rock-your-skills</link>
     <description>If you haven&#39;t heard yet Microsoft Virtual Academy are running &quot;know it. Prove it&quot;. This is a great opportunity to learn something new or extend your current knowledge in one of the 8 topics available.</description>
-    <pubDate>Mon, 12 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 13 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Events</category><category>#KnowItProveIt</category><category>Microsoft Virtual Academy</category>
   </item>
@@ -955,7 +955,7 @@
     <title>Failover or Restart Results in Reseed of Identity - FIX</title>
     <link>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</link>
     <description>This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.</description>
-    <pubDate>Tue, 06 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 07 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Adoption Blockers</category><category>Old Blog Posts</category><category>Data</category><category>SQL Server</category>
   </item>
@@ -965,7 +965,7 @@
     <title>Assign a Azure Subscription to a existing user</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/assign-a-azure-subscription-to-a-existing-user</link>
     <description>If you have logged into the Azure Management Portal and see a message like below then you need to have a azure subscription assigned to you in order to use the portal and this post is going to help you (probably your Administrator) assign a subscription to your account.</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Subscriptions</category>
   </item>
@@ -975,7 +975,7 @@
     <title>Creating a new Azure Active Directory User</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/creating-a-new-azure-active-directory-user</link>
     <description>Open the Azure Management Portal, login and then navigate to the Active Directory tab and click on the Active Directory resource you want to add a user to, alternatively create a new Azure Active Directory resource and then come back to this post.</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Azure Active Directory</category>
   </item>
@@ -985,7 +985,7 @@
     <title>Using Azure Resource Manager</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</link>
     <description>In the new Azure Portal you create all your resources in Resource Groups, there is also as part of the Azure SDK&#39;s a module called AzureResourceManager by default the module loaded for the Azure SDK is AzureServiceManagement. A blurb from one of the Azure documentation page reads</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Azure Resource Manager</category><category>Rangers Research</category><category>PowerShell</category>
   </item>
@@ -995,7 +995,7 @@
     <title>Application Insights for Windows Store Apps in Azure Portal</title>
     <link>https://gordonbeeming.com/blog/2014-12-10/application-insights-for-windows-store-apps-in-azure-portal</link>
     <description>If you&#39;ve been using Application Insights for a while now you would have noticed that with recent Visual Updates the Application Insights SDK had been updated to use a new version that logs AI data into the new Azure Portal. From this if you use Windows Store Apps you would probably have noticed that if you instrument a Windows Store application with the new SDK that you can&#39;t actually find your data anywhere although you can see it being logged from the Visual Studio Output window and using Fiddler. The good news is that you will soon be able to have a great experience with the new AI SDK for Windows Store apps as you do for your currently for your web applications, the better news is that below you&#39;ll see how to use the new SDK for your Store Apps and see the data in the Azure Portal.</description>
-    <pubDate>Tue, 09 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 10 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Adoption Blockers</category><category>Rangers Research</category><category>Application Insights</category>
   </item>
@@ -1005,7 +1005,7 @@
     <title>Webinar - Performance Tuning .NET &amp; SQL Code using ANTS Profiler</title>
     <link>https://gordonbeeming.com/blog/2014-12-03/webinar-performance-tuning-net-sql-code-using-ants-profiler</link>
     <description>Friend of Red Gate (and .NET MVP) Mitchel Sellers will be hosting it for us alongside Red Gate&#39;s APP product manager Ben Emmett. We&#39;re running it in conjunction with LinkedIn group LIDNUG (LinkedIn .NET User Group) who have over 52,000 members so we&#39;re hoping to get a big list of people signed up! Feel free to sign up yourself or let anyone know who you think might be interested in registering.</description>
-    <pubDate>Tue, 02 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 03 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Events</category><category>Webinar</category><category>Red Gate</category>
   </item>
@@ -1015,7 +1015,7 @@
     <title>My Experience with Codealike</title>
     <link>https://gordonbeeming.com/blog/2014-11-13/my-experience-with-codealike</link>
     <description>I have been using Codealike for a while now and thought I&#39;d share my experience and things that I like about codealike with everyone. I did mention codealike on This Week on Ch9 when I hosted it last week with Greg Duncan.</description>
-    <pubDate>Wed, 12 Nov 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 13 Nov 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Codealike</category><category>Metrics</category>
   </item>
@@ -1025,7 +1025,7 @@
     <title>Configuring a Chocolatey Install</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/configuring-a-chocolatey-install</link>
     <description>So yesterday I posted Pushing a new project to Chocolatey and I said I would create another post showing how to configure how the Chocolatey install runs and this is that post .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>DotNet Pretty</category><category>Chocolatey</category><category>PowerShell</category>
   </item>
@@ -1035,7 +1035,7 @@
     <title>Pushing a new project to Chocolatey</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
     <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -1045,7 +1045,7 @@
     <title>Activating your Windows 10</title>
     <link>https://gordonbeeming.com/blog/2014-10-06/activating-your-windows-10</link>
     <description>So you shouldn&#39;t need to do this but in my case for some reason I needed to activate windows after performing and upgrade from Windows 8.1.</description>
-    <pubDate>Sun, 05 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Just longer than a tweet</category><category>Windows 10</category>
   </item>
@@ -1055,7 +1055,7 @@
     <title>Changing the theme in Windows 10</title>
     <link>https://gordonbeeming.com/blog/2014-10-06/changing-the-theme-in-windows-10</link>
     <description>In windows 10 when you go to Change the background and colors on Start</description>
-    <pubDate>Sun, 05 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows 10</category>
   </item>
@@ -1065,7 +1065,7 @@
     <title>Creating a VSTS Account for Demos</title>
     <link>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</link>
     <description>I need a VSO account for Demos which needs to be separate from my personal and business VSO accounts. The problem is though if you go to the Visual Studio Online page and click Get started for free</description>
-    <pubDate>Thu, 25 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 26 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
   </item>
@@ -1075,7 +1075,7 @@
     <title>Turning &quot;on&quot; local cache for NuGet</title>
     <link>https://gordonbeeming.com/blog/2014-09-25/turning-on-local-cache-for-nuget</link>
     <description>My internet connection is slow or down quite a lot. One of the things Robert MacLean pointed out today in a presentation at a Microsoft Dev Day event today is that is that you can make use of the local cache from previous downloaded packages. Below is how to do this</description>
-    <pubDate>Wed, 24 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 25 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>NuGet</category>
   </item>
@@ -1085,7 +1085,7 @@
     <title>SQL Prompt 6.4 Release</title>
     <link>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</link>
     <description>I used to highlight a bunch of text (a couple of statements) then press F5 to execute that statement. With this new release you are able to easily execute the current statement by pressing Shift + F5.</description>
-    <pubDate>Mon, 22 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 23 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>SQL Prompt</category><category>Product Release</category><category>Productivity</category>
   </item>
@@ -1095,7 +1095,7 @@
     <title>Upgrade/Publish TFS 2013 Process Templates with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</link>
     <description>I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.</description>
-    <pubDate>Thu, 11 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -1105,7 +1105,7 @@
     <title>TFS Work Item Visualizers</title>
     <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
     <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
-    <pubDate>Sun, 27 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
   </item>
@@ -1115,7 +1115,7 @@
     <title>Creating &quot;fake&quot; TFS Builds</title>
     <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
     <description>This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.</description>
-    <pubDate>Thu, 17 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
   </item>
@@ -1125,7 +1125,7 @@
     <title>Introduction to DotNet Pretty</title>
     <link>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</link>
     <description>Another thing that come out of last weeks training was Visual Studio Debuggers. This lead to me finding the coolest visualizer ever called TPL Dataflow Debugger Visualizer which allows you to easily visualize your TPL Dataflow</description>
-    <pubDate>Wed, 16 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 17 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>DotNet Pretty</category>
   </item>
@@ -1135,7 +1135,7 @@
     <title>Organize your Music Collection</title>
     <link>https://gordonbeeming.com/blog/2014-07-16/organize-your-music-collection</link>
     <description>I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called PowerShell - Automatically organizing your mp3-collection. Although this wasn&#39;t exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine and categorize a bit more . You can grab the script off GitHub Gist organise-music.ps1.</description>
-    <pubDate>Tue, 15 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 16 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -1145,7 +1145,7 @@
     <title>Do you know Optional Parameters?</title>
     <link>https://gordonbeeming.com/blog/2014-07-07/do-you-know-optional-parameters</link>
     <description>Up until about an hour ago I thought I knew how optional parameters worked but didn&#39;t actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like</description>
-    <pubDate>Sun, 06 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 07 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Language Features</category><category>CSharp</category><category>Just Coding</category>
   </item>
@@ -1155,7 +1155,7 @@
     <title>One year as ALM Ranger and First day as ALM MVP</title>
     <link>https://gordonbeeming.com/blog/2014-07-02/one-year-as-alm-ranger-and-first-day-as-alm-mvp</link>
     <description>So a year ago today I joined the ALM Rangers family and have recently been &quot;promoted&quot; into an active ALM Ranger and worked on projects like Upgrade Guide, Version Control (ex Branching and Merging) Guide and Flight Plan.</description>
-    <pubDate>Tue, 01 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 02 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MVP Stuff</category><category>Chatter</category>
   </item>
@@ -1165,7 +1165,7 @@
     <title>How to get your identity tokens</title>
     <link>https://gordonbeeming.com/blog/2014-06-02/how-to-get-your-identity-tokens</link>
     <description>This post has been ported from http://gbeeming.wordpress.com/2013/10/08/how-to-get-your-identity-tokens/.</description>
-    <pubDate>Sun, 01 Jun 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 02 Jun 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Microsoft Account</category><category>Facebook</category><category>Old Blog Posts</category><category>Google</category><category>OAuth</category><category>Twitter</category>
   </item>
@@ -1175,7 +1175,7 @@
     <title>Sys Internals Updater</title>
     <link>https://gordonbeeming.com/blog/2014-05-15/sys-internals-updater</link>
     <description>During Channel 9 Live: Defrag Tools Live – Mark Russinovich, Mark Russinovich mentioned that one of the apps might not have been up to date on the machine he was showing really cool things on . So then I thought hey I never update my sys internals apps.</description>
-    <pubDate>Wed, 14 May 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 15 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Sys-Internals</category><category>Cool Apps</category><category>GitHub Projects</category>
   </item>
@@ -1185,7 +1185,7 @@
     <title>Sharing code that uses Application Insights</title>
     <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
     <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
-    <pubDate>Tue, 13 May 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
   </item>
@@ -1195,7 +1195,7 @@
     <title>Using Application Insights with an existing Windows Store App</title>
     <link>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</link>
     <description>If you haven&#39;t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.</description>
-    <pubDate>Sun, 11 May 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 12 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Rangers Research</category><category>Application Insights</category><category>Windows Store App</category>
   </item>
@@ -1205,7 +1205,7 @@
     <title>Hubs.tt will save your life</title>
     <link>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</link>
     <description>Updates have been made, see the end of the post</description>
-    <pubDate>Wed, 23 Apr 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 24 Apr 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>SignalR</category><category>Visual Studio</category><category>TypeScript</category><category>GitHub Projects</category>
   </item>
@@ -1215,7 +1215,7 @@
     <title>Easily download Ch9 videos</title>
     <link>https://gordonbeeming.com/blog/2014-04-10/easily-download-ch9-videos</link>
     <description>I watch and download a lot of videos from Channel 9 and because I&#39;m a developer and always looking for ways to speed up anything I do I searched for a PowerShell script. I eventually found one (can&#39;t remember where) and immediately set it up to download This Week on Channel 9 and Ping Show. Over time I have added many other shows, events and series. The initial script I was found with some modifications was</description>
-    <pubDate>Wed, 09 Apr 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 10 Apr 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Channel 9</category><category>PowerShell</category>
   </item>
@@ -1225,7 +1225,7 @@
     <title>TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration</title>
     <link>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</link>
     <description>UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise</description>
-    <pubDate>Wed, 26 Mar 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 27 Mar 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>TFS 2013</category>
   </item>
@@ -1235,7 +1235,7 @@
     <title>Packt Publishing Celebrating 2000 Titles</title>
     <link>https://gordonbeeming.com/blog/2014-03-24/packt-publishing-celebrating-2000-titles</link>
     <description>Have you heard about the campaign that Packt Publishing is running at the moment? They are celebrating 2000 published titles, below are just 3 of the titles that you can get. For more info see http://bit.ly/1j26nPN.</description>
-    <pubDate>Sun, 23 Mar 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 24 Mar 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Packt Publishing</category><category>Chatter</category>
   </item>
@@ -1245,7 +1245,7 @@
     <title>Increase the value of your dashboard with TFS 2013 Update 2</title>
     <link>https://gordonbeeming.com/blog/2014-03-03/increase-the-value-of-your-dashboard-with-tfs-2013-update-2</link>
     <description>Did you hear? Somasegarblogged that Team Foundation Server 2013 RC is a go-live release. What does that mean for you and your customers? One word</description>
-    <pubDate>Sun, 02 Mar 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 03 Mar 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Pinned Items</category><category>TFS</category><category>Work Item Charting</category><category>TFS 2013</category>
   </item>
@@ -1255,7 +1255,7 @@
     <title>Visual Studio Hangs + SystemCertificates + Fiddler</title>
     <link>https://gordonbeeming.com/blog/2014-02-25/visual-studio-hangs-systemcertificates-fiddler</link>
     <description>For the last while I have been experiencing weird hangs with Visual Studio 2013. To try identify what was causing the hangs or at least where about the problem was I ran ProcMon.exe on devenv.exe and the point where Visual Studio hung I was getting the below output recursively</description>
-    <pubDate>Mon, 24 Feb 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 25 Feb 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Fiddler</category><category>System Certificates</category>
   </item>
@@ -1265,7 +1265,7 @@
     <title>Using Application Insights with a new Windows Store App</title>
     <link>https://gordonbeeming.com/blog/2014-02-18/using-application-insights-with-a-new-windows-store-app</link>
     <description>If you haven&#39;t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.</description>
-    <pubDate>Mon, 17 Feb 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 18 Feb 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Application Insights</category><category>Windows Store App</category>
   </item>
@@ -1275,7 +1275,7 @@
     <title>Download #MVA Content with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</link>
     <description>So I&#39;m starting to go through some of the content on Microsoft Virtual Academy but I don&#39;t have time to do this when I&#39;m by a good internet connection and at the same time don&#39;t have time when by the good internet connection to run though all the content I need to download it to watch in my spare time.</description>
-    <pubDate>Thu, 23 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 24 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Microsoft Virtual Academy</category><category>PowerShell</category>
   </item>
@@ -1285,7 +1285,7 @@
     <title>TF400324: Team Foundation services are not available from server...</title>
     <link>https://gordonbeeming.com/blog/2014-01-21/tf400324-team-foundation-services-are-not-available-from-server</link>
     <description>This post was originally found on my old blog at http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/.</description>
-    <pubDate>Mon, 20 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 21 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>Old Blog Posts</category>
   </item>
@@ -1295,7 +1295,7 @@
     <title>Visual Studio 2013 Update 1  Released</title>
     <link>https://gordonbeeming.com/blog/2014-01-21/visual-studio-2013-update-1-released</link>
     <description>Visual Studio 2013 Update 1 has been released and as usual you are able to use the /layout argument to download all the files so you can share them locally instead of everyone downloading them. As mentioned in Brian Harry&#39;s blog here there is no update for TFS this time round but good things are coming for TFS Update 2.</description>
-    <pubDate>Mon, 20 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 21 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Update</category>
   </item>
@@ -1305,7 +1305,7 @@
     <title>Creating a CheckPoint VPN Connection on Windows 8.1</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/creating-a-checkpoint-vpn-connection-on-windows-81</link>
     <description>So we use CheckPoint VPN, but the most frustrating part is that when a new version on windows is released the CheckPoint VPN client is incompatible with it and makes your computer weird when you do try use it.</description>
-    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows 8.1</category><category>CheckPoint VPN</category>
   </item>
@@ -1315,7 +1315,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 1</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-1</link>
     <description>In these posts we will be going through creating different elements that can be found in the Team Explorer, the aim is to give you the ground knowledge required to extend Team Explorer your way. For an example of some great Team Explorer plugins that demonstrate how much you can do take a look at Team Rooms for Visual Studio 2013 and News which were created by Utkarsh Shigihalli and Tarun Arora for Team Explorer in Visual Studio 2013.</description>
-    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -1325,7 +1325,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 2</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 1 we setup a base to start extending Team Explorer, this post assumes you have already have the base project setup. Creating a new Team Explorer Navigation Item Add a new const to the GuidList class (in the Guids file) like below</description>
-    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -1335,7 +1335,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 3</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-3</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 2 we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.</description>
-    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -1345,7 +1345,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 4</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 3 we created a Team Explorer Page and we will be using that item in this post and therefore assume that you have been through it already and created the page.</description>
-    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Team Explorer</category>
   </item>
@@ -1355,7 +1355,7 @@
     <title>Download Brian Keller&#39;s VM with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-01-10/download-brian-kellers-vm-with-powershell</link>
     <description>So yesterday and update for Brian Keller&#39;s VM (Visual Studio 2013 Application Lifecycle Management Virtual Machine and Hands-on-Labs / Demo Scripts) was release</description>
-    <pubDate>Thu, 09 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Brian Keller VM</category><category>PowerShell</category>
   </item>
@@ -1365,7 +1365,7 @@
     <title>How to Enforce Check-In Policies</title>
     <link>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</link>
     <description>So one of the benefits of using Server side Plugins is that you can&#39;t override them. The problem with this is that the users don&#39;t know that the policy is in place until they check-in their code. Wouldn&#39;t it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.</description>
-    <pubDate>Thu, 09 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Check-In Policies</category><category>TFS Server Plugins</category><category>GitHub Projects</category>
   </item>
@@ -1375,7 +1375,7 @@
     <title>Start-BitsTransfer : Object reference not set to an instance of an object.</title>
     <link>https://gordonbeeming.com/blog/2014-01-04/start-bitstransfer-object-reference-not-set-to-an-instance-of-an-object</link>
     <description>Today I find myself with yet another bit of functionality that only works when you are running in Administrator Mode. A while back I had Full Admin Mode always enabled, downside of this is the store apps don&#39;t work at all. Up side is your PC works as expected . I created a PowerShell script to download Channel 9 videos as described in my post Easily download Ch9 videos, this script worked perfectly but recently started breaking with the error</description>
-    <pubDate>Fri, 03 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 04 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Requires Admin</category><category>PowerShell</category>
   </item>
@@ -1385,7 +1385,7 @@
     <title>Cryptographic failure while signing assembly</title>
     <link>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</link>
     <description>Today I got a weird error on code that should just work.</description>
-    <pubDate>Thu, 02 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 03 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Requires Admin</category><category>Tips</category>
   </item>
@@ -1395,7 +1395,7 @@
     <title>Add work item links from check in comments</title>
     <link>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</link>
     <description>The other night while watching the Visual Studio 2013 Launch a question came up asking if the team had added support yet for automatically linking work items to the change set created when checking in as it currently is in Git. Currently this functionality doesn&#39;t exist for TFVC Check ins, at the time I didn&#39;t think anything of it but tonight for some reason I thought &quot;hey that would be something simply to create and should hopefully make lives easier for developers&quot;. So I opened up Visual Studio and at the same time started a new project on GitHub for TFS Server Plugins. The code required for the plugin was very basic, basically just checked the comment from the check in with a regular expression and then added the links between the change set and all the IDs found in the comments.</description>
-    <pubDate>Fri, 15 Nov 2013 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 16 Nov 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>TFS Customisations</category><category>VSTS / TFS</category><category>TFS Server Plugins</category><category>TFS</category><category>GitHub Projects</category>
   </item>
@@ -1405,7 +1405,7 @@
     <title>TypeScript : Emit Error: Write to file failed..</title>
     <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
     <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
-    <pubDate>Thu, 14 Nov 2013 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
   </item>
@@ -1415,7 +1415,7 @@
     <title>Visual Studio 2012 – Paste Special Feature</title>
     <link>https://gordonbeeming.com/blog/2013-10-29/visual-studio-2012-paste-special-feature</link>
     <description>Generally the longest and most frustrating part of using a 3rd party API is making all the C# classes that the data will plugin to after you make requests into those API&#39;s.</description>
-    <pubDate>Mon, 28 Oct 2013 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 29 Oct 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>XML</category><category>JSON</category><category>Visual Studio 2013</category>
   </item>
@@ -1425,7 +1425,7 @@
     <title>First post here</title>
     <link>https://gordonbeeming.com/blog/2013-10-22/first-post-here</link>
     <description>So this is my first post in my new blog which I should be using for quite a bit longer than I Currently have been using my previous blogs on WordPress. I am using a base that was started by Mads Kristensen on GitHub called MiniBlog. I am trying where possible or requested pushing some changes back into the project so that others can also get extra functionality.</description>
-    <pubDate>Mon, 21 Oct 2013 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 22 Oct 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Chatter</category><category>GitHub Projects</category>
   </item>

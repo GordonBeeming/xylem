@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 24 Jul 2016 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 25 Jul 2016 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/ssms-2016/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>SSMS 2016 where have my line breaks gone?</title>
     <link>https://gordonbeeming.com/blog/2016-07-25/ssms-2016-where-have-my-line-breaks-gone</link>
     <description>I&#39;m hoping it&#39;s not just me but one of the things I was missing from SSMS 2014 is that I had my line breaks when copying large text fields out of the query results. For a long time I have been putting it off and only using SSMS 2014, last week I re-installed my Operating System and decided not to install SSMS 2014 just for this 1 feature.</description>
-    <pubDate>Sun, 24 Jul 2016 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 25 Jul 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Data</category><category>SSMS 2016</category><category>SQL Server</category>
   </item>

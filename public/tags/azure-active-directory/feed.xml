@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 16 Dec 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 17 Dec 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/azure-active-directory/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Creating a new Azure Active Directory User</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/creating-a-new-azure-active-directory-user</link>
     <description>Open the Azure Management Portal, login and then navigate to the Active Directory tab and click on the Active Directory resource you want to add a user to, alternatively create a new Azure Active Directory resource and then come back to this post.</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Azure Active Directory</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Find organizations linked to your AAD tenant in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2019-12-10/find-organizations-linked-to-your-aad-tenant-in-azure-devops</link>
     <description>Did you know that you can get a list of all organizations linked to your Azure Active Directory tenant? Since august this has been possible 😁</description>
-    <pubDate>Mon, 09 Dec 2019 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 10 Dec 2019 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure Active Directory</category>
   </item>

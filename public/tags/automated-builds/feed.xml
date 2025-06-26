@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Mon, 02 May 2016 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 03 May 2016 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/automated-builds/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Visual Studio Team Services Overview - Video Series</title>
     <link>https://gordonbeeming.com/blog/2016-05-03/visual-studio-team-services-overview-video-series</link>
     <description>A couple weeks ago I was asked to present at DUT to a group of students. The presentation was quite a long one so I had to cut some bits out in order to present in the timeslot that I had. So I decided that I&#39;d record all the content and post it up so that others can potentially benefit from it as well.</description>
-    <pubDate>Mon, 02 May 2016 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 03 May 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Source Control</category><category>VSTS / TFS</category><category>Work Item Management</category><category>Release Management</category><category>Automated Builds</category><category>Load Testing</category><category>Test Manager</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Setting up .net core continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</link>
     <description>You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I&#39;d need to post specifically on .net core. After all it&#39;s still a Visual Studio solution so things should just work, the keyword here is should . Things didn&#39;t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).</description>
-    <pubDate>Sat, 22 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
   </item>
@@ -35,7 +35,7 @@
     <title>Generating code documentation using Ghost Doc Enterprise</title>
     <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
     <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
-    <pubDate>Sat, 29 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
   </item>
@@ -45,7 +45,7 @@
     <title>MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found</title>
     <link>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</link>
     <description>.</description>
-    <pubDate>Thu, 19 Nov 2020 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 20 Nov 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Automated Builds</category><category>dotnet core</category><category>MSBuild</category><category>SSDT</category>
   </item>

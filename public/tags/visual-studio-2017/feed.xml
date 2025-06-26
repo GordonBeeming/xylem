@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 07 Mar 2017 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 08 Mar 2017 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/visual-studio-2017/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>So I installed VS Enterprise 2017 and have no MTM, where is it?</title>
     <link>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</link>
     <description>If you&#39;ve installed Visual Studio 2017 Enterprise and weren&#39;t one of the people that went over to the Individual Components tab to see what you weren&#39;t installing you probably don&#39;t have Microsoft Test Manager installed.</description>
-    <pubDate>Tue, 07 Mar 2017 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 08 Mar 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio 2017</category><category>Test Manager</category>
   </item>

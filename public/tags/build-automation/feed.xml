@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sat, 22 Apr 2017 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sun, 23 Apr 2017 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/build-automation/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Setting up a standard continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-a-standard-continuous-integration-build-with-vststfs</link>
     <description>If you do a quick Google for pros of setting up continuous integration you&#39;ll come across a lot of articles about how good setting up continuous integration (CI) is compared to googling cons of setting up continuous integration which basically gives you the same posts of the the pros search so we won&#39;t dig too much into that now .</description>
-    <pubDate>Sat, 22 Apr 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Build Automation</category><category>Visual Studio Marketplace</category><category>Maximum Effort</category>
   </item>

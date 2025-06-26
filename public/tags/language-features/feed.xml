@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 06 Jul 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 07 Jul 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/language-features/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Do you know Optional Parameters?</title>
     <link>https://gordonbeeming.com/blog/2014-07-07/do-you-know-optional-parameters</link>
     <description>Up until about an hour ago I thought I knew how optional parameters worked but didn&#39;t actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like</description>
-    <pubDate>Sun, 06 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 07 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Language Features</category><category>CSharp</category><category>Just Coding</category>
   </item>

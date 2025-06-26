@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 09 Mar 2018 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 10 Mar 2018 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/source-control-git/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Setting wild card branch policies in @VSTS</title>
     <link>https://gordonbeeming.com/blog/2018-03-10/setting-wild-card-branch-policies-in-vsts</link>
     <description>I&#39;ve probably mentioned it before but keeping up with what&#39;s happening with VSTS is incredible hard with their 3 week cadence and generally huge set of features each 3 weeks. This week at MVP Summit I had what I thought would be a cool request to allow wild card branch policies. I was thinking of writing a console app to do this but thought it would be interesting to ask the product group as it&#39;s part of the many benefits of being a MVP .</description>
-    <pubDate>Fri, 09 Mar 2018 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 10 Mar 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Source Control. Git</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Improving your git efficiency using git alias</title>
     <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
     <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
-    <pubDate>Wed, 20 Mar 2024 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
   </item>

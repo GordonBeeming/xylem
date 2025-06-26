@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 16 Dec 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 17 Dec 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/azure-resource-manager/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Using Azure Resource Manager</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</link>
     <description>In the new Azure Portal you create all your resources in Resource Groups, there is also as part of the Azure SDK&#39;s a module called AzureResourceManager by default the module loaded for the Azure SDK is AzureServiceManagement. A blurb from one of the Azure documentation page reads</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Azure Resource Manager</category><category>Rangers Research</category><category>PowerShell</category>
   </item>

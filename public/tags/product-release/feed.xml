@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 23 Sep 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 22 Sep 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/product-release/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>SQL Prompt 6.4 Release</title>
     <link>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</link>
     <description>I used to highlight a bunch of text (a couple of statements) then press F5 to execute that statement. With this new release you are able to easily execute the current statement by pressing Shift + F5.</description>
-    <pubDate>Tue, 23 Sep 2014 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 22 Sep 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>SQL Prompt</category><category>Product Release</category><category>Productivity</category>
   </item>

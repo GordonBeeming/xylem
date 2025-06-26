@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 16 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 15 Jan 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/team-explorer/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 1</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-1</link>
     <description>In these posts we will be going through creating different elements that can be found in the Team Explorer, the aim is to give you the ground knowledge required to extend Team Explorer your way. For an example of some great Team Explorer plugins that demonstrate how much you can do take a look at Team Rooms for Visual Studio 2013 and News which were created by Utkarsh Shigihalli and Tarun Arora for Team Explorer in Visual Studio 2013.</description>
-    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 2</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 1 we setup a base to start extending Team Explorer, this post assumes you have already have the base project setup. Creating a new Team Explorer Navigation Item Add a new const to the GuidList class (in the Guids file) like below</description>
-    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -35,7 +35,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 3</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-3</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 2 we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.</description>
-    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
   </item>
@@ -45,7 +45,7 @@
     <title>Getting start with a Team Explorer Plugin for VS 2013 Part 4</title>
     <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4</link>
     <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 3 we created a Team Explorer Page and we will be using that item in this post and therefore assume that you have been through it already and created the page.</description>
-    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 15 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Team Explorer</category>
   </item>

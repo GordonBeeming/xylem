@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sat, 04 Jul 2015 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Fri, 03 Jul 2015 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/microsoft-edge/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Browsing localhost with the Microsoft Edge Browser</title>
     <link>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</link>
     <description>So if you using windows 10 and doing some web development you would probably have noticed that you can&#39;t browse localhost for some reason. And there is a couple of feedback items for it in the Windows Feedback app.</description>
-    <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
+    <pubDate>Fri, 03 Jul 2015 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Microsoft Edge</category><category>Fiddler</category><category>Windows 10</category>
   </item>

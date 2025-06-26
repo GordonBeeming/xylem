@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 17 Dec 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 16 Dec 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/subscriptions/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Assign a Azure Subscription to a existing user</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/assign-a-azure-subscription-to-a-existing-user</link>
     <description>If you have logged into the Azure Management Portal and see a message like below then you need to have a azure subscription assigned to you in order to use the portal and this post is going to help you (probably your Administrator) assign a subscription to your account.</description>
-    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
+    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Subscriptions</category>
   </item>

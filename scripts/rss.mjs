@@ -9,13 +9,40 @@ import { sortPosts } from 'pliny/utils/contentlayer.js'
 
 const outputFolder = process.env.EXPORT ? 'out' : 'public'
 
+function getBrisbaneMidnight(dateString) {
+  // Create a new Date object from the input date string.
+  // This will initially be in the local timezone of the machine running the code.
+  const date = new Date(dateString);
+
+  // Set the time to midnight (00:00:00.000).
+  date.setHours(0, 0, 0, 0);
+
+  // Get the current UTC offset for Brisbane (Australia/Brisbane).
+  // We'll create a dummy date at the target time to get the correct offset,
+  // as DST rules can change offsets.
+  // Note: For 'Australia/Brisbane', there is no Daylight Saving Time,
+  // so the offset is consistent, but this approach is robust for other timezones.
+  const brisbaneTimezone = 'Australia/Brisbane';
+  const brisbaneOffset = new Date(date.toLocaleString('en-US', { timeZone: brisbaneTimezone }))
+    .getTime() - new Date(date.toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+
+  // Adjust the date to Brisbane's midnight.
+  // We subtract the local offset and add the Brisbane offset to get to Brisbane time.
+  // The 'getTimezoneOffset()' method returns the difference in minutes between UTC and local time.
+  // We convert it to milliseconds.
+  const localOffsetMilliseconds = date.getTimezoneOffset() * 60 * 1000;
+  date.setTime(date.getTime() + localOffsetMilliseconds + brisbaneOffset);
+
+  return date;
+}
+
 const generateRssItem = (config, post) => `
   <item>
     <guid>${config.siteUrl}/blog/${post.slug}</guid>
     <title>${escape(post.title)}</title>
     <link>${config.siteUrl}/blog/${post.slug}</link>
     ${post.summary && `<description>${escape(post.summary)}</description>`}
-    <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+    <pubDate>${getBrisbaneMidnight(post.date).toUTCString()}</pubDate>
     <author>${config.email} (${config.author})</author>
     ${post.tags && post.tags.map((t) => `<category>${t}</category>`).join('')}
   </item>
@@ -30,7 +57,7 @@ const generateRss = (config, posts, page = 'feed.xml') => `
       <language>${config.language}</language>
       <managingEditor>${config.email} (${config.author})</managingEditor>
       <webMaster>${config.email} (${config.author})</webMaster>
-      <lastBuildDate>${new Date(posts[0].date).toUTCString()}</lastBuildDate>
+      <lastBuildDate>${getBrisbaneMidnight(posts[0].date).toUTCString()}</lastBuildDate>
       <atom:link href="${config.siteUrl}/${page}" rel="self" type="application/rss+xml"/>
       ${posts.map((post) => generateRssItem(config, post)).join('')}
     </channel>

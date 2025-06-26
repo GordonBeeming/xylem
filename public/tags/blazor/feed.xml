@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 15 Aug 2023 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 14 Aug 2023 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/blazor/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
     <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
     <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
-    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 14 Aug 2023 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
   </item>

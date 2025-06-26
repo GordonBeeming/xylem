@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 13 Dec 2016 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 12 Dec 2016 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/windows-explorer/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Opening apps from the directory you in as Administrator</title>
     <link>https://gordonbeeming.com/blog/2016-12-13/opening-apps-from-the-directory-you-in-as-administrator</link>
     <description>The other day I saw a post that Greg Duncan shared about opening CMD and PowerShell from the directory you in.</description>
-    <pubDate>Tue, 13 Dec 2016 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 12 Dec 2016 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows Explorer</category><category>Command Line</category><category>Run As Admin</category><category>PowerShell</category>
   </item>

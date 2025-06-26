@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 20 Nov 2020 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 19 Nov 2020 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/msbuild/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found</title>
     <link>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</link>
     <description>.</description>
-    <pubDate>Fri, 20 Nov 2020 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 19 Nov 2020 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Automated Builds</category><category>dotnet core</category><category>MSBuild</category><category>SSDT</category>
   </item>

@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 30 Apr 2017 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 29 Apr 2017 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/c/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Generating code documentation using Ghost Doc Enterprise</title>
     <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
     <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
-    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
+    <pubDate>Sat, 29 Apr 2017 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Creating an asynchronous AuthorizeAttribute in MVC</title>
     <link>https://gordonbeeming.com/blog/2018-01-26/creating-an-asynchronous-authorizeattribute-in-mvc</link>
     <description>A couple days ago I needed to call a remote web api call in my AuthorizeAttribute sometimes but as mentioned in this (Is it possible to use async/await in MVC 4 AuthorizeAttribute?) StackOverflow question (and other forums) it isn&#39;t supported but is in the newer .net core. Unfortunately the project I needed this on was traditional MVC so I was left still finding a way .</description>
-    <pubDate>Fri, 26 Jan 2018 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 25 Jan 2018 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>async</category><category>C#</category><category>MVC</category><category>Just Coding</category>
   </item>

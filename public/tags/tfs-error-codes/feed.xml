@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 21 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 20 Jan 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/tfs-error-codes/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>TF400324: Team Foundation services are not available from server...</title>
     <link>https://gordonbeeming.com/blog/2014-01-21/tf400324-team-foundation-services-are-not-available-from-server</link>
     <description>This post was originally found on my old blog at http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/.</description>
-    <pubDate>Tue, 21 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 20 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>Old Blog Posts</category>
   </item>
@@ -25,7 +25,7 @@
     <title>TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration</title>
     <link>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</link>
     <description>UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise</description>
-    <pubDate>Thu, 27 Mar 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 26 Mar 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>TFS 2013</category>
   </item>

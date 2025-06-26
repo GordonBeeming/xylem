@@ -1,0 +1,71 @@
+---
+title: 'From Conversation to Documentation: A Modern Dev Workflow with AI'
+date: 2025-06-26
+tags: ['AI', 'Productivity', 'Development', 'ADR', 'Documentation']
+draft: false
+summary: 'We solve complex problems and then face the daunting task of writing documentation. What if the documentation wrote itself? Discover a workflow that turns a simple conversation with an AI into polished ADRs and blog posts, saving you hours.'
+---
+
+We've all been there. You've just wrestled with a complex technical problem for hours, maybe even days. You've navigated the trade-offs, explored the options, and finally landed on a brilliant solution. You feel victorious! 🚀
+
+...and then a little voice whispers, *"Now you have to document it."*
+
+The energy drains from the room. Writing documentation, Architecture Decision Records (ADRs), and blog posts often feels like a chore—an after-the-fact task that's easy to put off.
+
+But what if it wasn't? What if the process of documenting was a natural, seamless outcome of the problem-solving itself? Well, for the last few weeks, I've been refining a workflow that does exactly that, and it all revolves around treating my AI assistant not as a search engine, but as a development partner.
+
+## The Workflow: A Four-Step Process
+
+Instead of solving a problem in isolation and then writing about it, I now do both at the same time. Here's the process.
+
+### 1. The Collaborative Brainstorm
+
+It all starts with a conversation. Instead of just Googling for an answer, I open up a chat with an AI and describe my problem, just like I would to a colleague.
+
+Today, for example, I was working on a C# API and needed to handle concurrency to prevent race conditions. So, I just asked.
+
+<Figure key="/images/2025-06-26-10-00-15.png" src="/images/2025-06-26-10-00-15.png" alt="A screenshot of an initial prompt to an AI assistant asking about a C# concurrency problem." width="0" height="0" caption="It all starts with a simple question." />
+
+This kicks off a collaborative dialogue. Whether I'm diving into a completely new topic or just want a sanity check on something I know well, the process is the same: the AI suggests options, I ask clarifying questions, and together we explore different paths, uncovering new approaches or details I might have otherwise missed.
+
+### 2. Exploring and Refining Options
+
+This is where the magic really begins. The AI isn't just a "one and done" answer machine. It's a sounding board. We discussed multiple strategies for my locking problem:
+
+-   Database-level pessimistic locks
+-   An in-memory, C#-only solution
+-   A full-blown distributed lock with Azure Blob Storage
+
+For each option, we dove into the pros, cons, and performance implications. This conversational approach helps clarify my own thinking and ensures I'm considering all the angles.
+
+<Figure key="/images/2025-06-26-10-06-08.png" src="/images/2025-06-26-10-06-08.png" alt="A screenshot of the AI response comparing the pros and cons of different locking strategies." width="0" height="0" caption="Weighing the options together, just like with a human colleague." />
+
+### 3. Making the Decision
+
+After exploring the options, a clear winner emerged for my current needs: a high-performance, in-memory lock that was architected to be easily swappable later. The decision was made, and the solution was implemented.
+
+In a traditional workflow, this is where the "real work" ends and the "documentation work" begins. But not anymore.
+
+### 4. Generating the Artifacts (Instantly)
+
+This is the productivity hack that changes everything. All that rich context from our conversation—the problem statement, the options considered, the pros and cons, the final decision—is just sitting there in the chat history.
+
+So, I simply asked the AI to use it.
+
+First, I needed an ADR for our internal repository. I gave the AI our company's ADR template and a simple prompt.
+
+<Figure key="/images/2025-06-26-10-08-36.png" src="/images/2025-06-26-10-08-36.png" alt="A screenshot of the prompt asking the AI to fill an ADR template based on our conversation." width="0" height="0" caption="The magic prompt: 'Please can you fill in this template...'" />
+
+Seconds later, I had a perfectly formatted, comprehensive ADR capturing the entire decision-making process. No tedious writing required.
+
+<Figure key="/images/2025-06-26-10-13-09.png" src="/images/2025-06-26-10-13-09.png" alt="A screenshot of the AI-generated Architecture Decision Record, with all sections filled out." width="0" height="0" caption="From scattered thoughts to structured documentation in seconds." />
+
+And what about this blog post? You guessed it. I did the exact same thing, asking the AI to describe the process we just went through. It's a bit like inception, but incredibly efficient!
+
+## Goodbye Context Switching, Hello Productivity
+
+This workflow has fundamentally changed how I approach documentation. It's no longer a separate, dreaded task. It's an integrated, value-add part of the development process itself.
+
+By using an AI as a conversational partner, you can turn your problem-solving dialogues directly into the valuable artifacts your team and the community need. You save hours, eliminate context switching, and end up with higher-quality documentation because it's captured when the context is fresh.
+
+So next time you're facing a tricky problem, invite an AI to the conversation. You might be surprised by what you create together. 😉

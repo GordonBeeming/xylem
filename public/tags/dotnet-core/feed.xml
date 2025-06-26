@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 23 Apr 2017 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 22 Apr 2017 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/dotnet-core/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Setting up .net core continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</link>
     <description>You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I&#39;d need to post specifically on .net core. After all it&#39;s still a Visual Studio solution so things should just work, the keyword here is should . Things didn&#39;t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).</description>
-    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
+    <pubDate>Sat, 22 Apr 2017 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Setting up 2 factor authentication and email verification with .net core 2.0</title>
     <link>https://gordonbeeming.com/blog/2018-02-15/setting-up-2-factor-authentication-and-email-verification-with-net-core-20</link>
     <description>Today I played with a new .net core template just to see what the authentication options were out the box and was surprised to see just how easy it is to go from nothing to having a base project that has authentication fully baked in with 2 factor authentication and email verification.</description>
-    <pubDate>Thu, 15 Feb 2018 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 14 Feb 2018 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>dotnet core</category><category>Just Coding</category>
   </item>
@@ -35,7 +35,7 @@
     <title>How do I fix HTTP Error 502.5 - Process Failure when hosting in IIS with dotnet core</title>
     <link>https://gordonbeeming.com/blog/2018-05-13/how-do-i-fix-http-error-5025-process-failure-when-hosting-in-iis-with-dotnet-core</link>
     <description>I received a new error today that I haven&#39;t received before when deploying dotnet core apps. It was as the title suggest a &quot;HTTP Error 502.5 - Process Failure&quot; error</description>
-    <pubDate>Sun, 13 May 2018 00:00:00 GMT</pubDate>
+    <pubDate>Sat, 12 May 2018 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>dotnet core</category><category>Just Coding</category><category>IIS</category>
   </item>
@@ -45,7 +45,7 @@
     <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
     <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
     <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
-    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
+    <pubDate>Sun, 22 Mar 2020 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
   </item>
@@ -55,7 +55,7 @@
     <title>MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found</title>
     <link>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</link>
     <description>.</description>
-    <pubDate>Fri, 20 Nov 2020 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 19 Nov 2020 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Automated Builds</category><category>dotnet core</category><category>MSBuild</category><category>SSDT</category>
   </item>

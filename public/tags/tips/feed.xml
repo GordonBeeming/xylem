@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 03 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 02 Jan 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/tips/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Cryptographic failure while signing assembly</title>
     <link>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</link>
     <description>Today I got a weird error on code that should just work.</description>
-    <pubDate>Fri, 03 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 02 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Requires Admin</category><category>Tips</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Cleaning up the Taskbar on Windows 10</title>
     <link>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</link>
     <description>The number 1 thing voted for under Taskbar currently is to hide the new Search bar and task view buttons</description>
-    <pubDate>Thu, 26 Mar 2015 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 25 Mar 2015 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Tips</category><category>Windows 10</category>
   </item>
@@ -35,7 +35,7 @@
     <title>Creating a new branch in @VSTS</title>
     <link>https://gordonbeeming.com/blog/2018-03-10/creating-a-new-branch-in-vsts</link>
     <description>This is a quick reference post that shows you how to create a branch in VSTS and TFS.</description>
-    <pubDate>Sat, 10 Mar 2018 00:00:00 GMT</pubDate>
+    <pubDate>Fri, 09 Mar 2018 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Tips</category>
   </item>
@@ -45,7 +45,7 @@
     <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
     <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
     <description>Whenever you take out an Azure VM you generally get a single disk which is not that big, when you select a SQL Server based VM (even web edition) you automatically get a 1TB disk, if you are using managed disks you pay for that whole TB even if you are only using 1GB of it. This post will show you how you can lower the price of that virtual machine if you are in this situation</description>
-    <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 26 Mar 2020 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Tips</category>
   </item>

@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 18 Jun 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 17 Jun 2025 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/oidc/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>The Mysterious Case of the Failing Azure SQL Deployment</title>
     <link>https://gordonbeeming.com/blog/2025-06-18/the-mysterious-case-of-the-failing-azure-sql-deployment</link>
     <description>A perfectly stable GitHub Actions deployment to Azure SQL suddenly fails with a misleading &#39;Identity not found&#39; error. Follow the debugging journey to uncover the real culprit that has nothing to do with the identity.</description>
-    <pubDate>Wed, 18 Jun 2025 00:00:00 GMT</pubDate>
+    <pubDate>Tue, 17 Jun 2025 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>PowerShell</category><category>GitHub Actions</category><category>DevOps</category><category>OIDC</category><category>SQL</category>
   </item>

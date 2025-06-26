@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Mon, 26 Mar 2018 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sun, 25 Mar 2018 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/chrome/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Set which chrome profile for Visual Studio to use</title>
     <link>https://gordonbeeming.com/blog/2018-03-26/set-which-chrome-profile-for-visual-studio-to-use</link>
     <description>At MVP Summit this year one of the valuable things I learnt (which I can share ) was from Colin Dembovsky (ALM MVP) which was Using Chrome to Solve Identity Hell. Now I knew chrome profiles existed but never thought of using them to solve the problem of different identities, in-private mode was a way of doing things but you always lost that when closing the session so wasn&#39;t that great. Not going to talk much about that here, you can read his post to find out more.</description>
-    <pubDate>Mon, 26 Mar 2018 00:00:00 GMT</pubDate>
+    <pubDate>Sun, 25 Mar 2018 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Productivity</category><category>Chrome</category>
   </item>

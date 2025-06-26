@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 22 Oct 2013 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 21 Oct 2013 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/github-projects/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>First post here</title>
     <link>https://gordonbeeming.com/blog/2013-10-22/first-post-here</link>
     <description>So this is my first post in my new blog which I should be using for quite a bit longer than I Currently have been using my previous blogs on WordPress. I am using a base that was started by Mads Kristensen on GitHub called MiniBlog. I am trying where possible or requested pushing some changes back into the project so that others can also get extra functionality.</description>
-    <pubDate>Tue, 22 Oct 2013 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 Oct 2013 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Chatter</category><category>GitHub Projects</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Add work item links from check in comments</title>
     <link>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</link>
     <description>The other night while watching the Visual Studio 2013 Launch a question came up asking if the team had added support yet for automatically linking work items to the change set created when checking in as it currently is in Git. Currently this functionality doesn&#39;t exist for TFVC Check ins, at the time I didn&#39;t think anything of it but tonight for some reason I thought &quot;hey that would be something simply to create and should hopefully make lives easier for developers&quot;. So I opened up Visual Studio and at the same time started a new project on GitHub for TFS Server Plugins. The code required for the plugin was very basic, basically just checked the comment from the check in with a regular expression and then added the links between the change set and all the IDs found in the comments.</description>
-    <pubDate>Sat, 16 Nov 2013 00:00:00 GMT</pubDate>
+    <pubDate>Fri, 15 Nov 2013 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>TFS Customisations</category><category>VSTS / TFS</category><category>TFS Server Plugins</category><category>TFS</category><category>GitHub Projects</category>
   </item>
@@ -35,9 +35,19 @@
     <title>How to Enforce Check-In Policies</title>
     <link>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</link>
     <description>So one of the benefits of using Server side Plugins is that you can&#39;t override them. The problem with this is that the users don&#39;t know that the policy is in place until they check-in their code. Wouldn&#39;t it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.</description>
-    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 09 Jan 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Check-In Policies</category><category>TFS Server Plugins</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</guid>
+    <title>Hubs.tt will save your life</title>
+    <link>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</link>
+    <description>Updates have been made, see the end of the post</description>
+    <pubDate>Wed, 23 Apr 2014 14:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>SignalR</category><category>Visual Studio</category><category>TypeScript</category><category>GitHub Projects</category>
   </item>
 
   <item>
@@ -45,7 +55,7 @@
     <title>Sys Internals Updater</title>
     <link>https://gordonbeeming.com/blog/2014-05-15/sys-internals-updater</link>
     <description>During Channel 9 Live: Defrag Tools Live – Mark Russinovich, Mark Russinovich mentioned that one of the apps might not have been up to date on the machine he was showing really cool things on . So then I thought hey I never update my sys internals apps.</description>
-    <pubDate>Thu, 15 May 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 14 May 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Sys-Internals</category><category>Cool Apps</category><category>GitHub Projects</category>
   </item>
@@ -65,7 +75,7 @@
     <title>Organize your Music Collection</title>
     <link>https://gordonbeeming.com/blog/2014-07-16/organize-your-music-collection</link>
     <description>I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called PowerShell - Automatically organizing your mp3-collection. Although this wasn&#39;t exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine and categorize a bit more . You can grab the script off GitHub Gist organise-music.ps1.</description>
-    <pubDate>Wed, 16 Jul 2014 00:00:00 GMT</pubDate>
+    <pubDate>Tue, 15 Jul 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -75,7 +85,7 @@
     <title>Upgrade/Publish TFS 2013 Process Templates with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</link>
     <description>I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.</description>
-    <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 11 Sep 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -85,7 +95,7 @@
     <title>Pushing a new project to Chocolatey</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
     <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
-    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -95,7 +105,7 @@
     <title>A &#39;Hello World&#39; for VSTS Extensions</title>
     <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
     <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
-    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Jun 2015 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
   </item>
@@ -105,9 +115,19 @@
     <title>VSTS widget for GitHub badges</title>
     <link>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</link>
     <description>When I first heard about the SDK for widgets in Visual Studio Team Services (VSTS) I wanted to make a couple of widgets, one of these was a GitHub widget that would show some info from any GitHub repo on your VSTS dashboard. This can can be helpful when you have your source open on GitHub but still work out of VSTS.</description>
-    <pubDate>Thu, 28 Jan 2016 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 27 Jan 2016 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Extensions</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-05-22/converting-html-to-pdf-using-c-and-magic</guid>
+    <title>Converting Html to Pdf using C# and magic!</title>
+    <link>https://gordonbeeming.com/blog/2017-05-22/converting-html-to-pdf-using-c-and-magic</link>
+    <description>Everyone at some point needs to convert and html page into a PDF for some reason or another. For this I&#39;ve always used a component which was cheap at the time (and is far from it now). This component has worked well for the last 8(ish) years, most ish in the last while because it doesn&#39;t deal well with https sites. When contacting the vendor they said hey but our latest version which can be expected I guess because it&#39;s 8 years down the line but then came the it&#39;s ALL OF THE $ . The last issue is that the component I used doesn&#39;t work in Azure. That lead me to some investigation and then ultimately this post.</description>
+    <pubDate>Sun, 21 May 2017 14:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Just Coding</category><category>GitHub Projects</category><category>Pdf-to-Html</category>
   </item>
 
   <item>
@@ -115,7 +135,7 @@
     <title>Bulk import git repositories into VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</link>
     <description>With the rate that the VSTS team releases with all the features they releasing it&#39;s hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours .</description>
-    <pubDate>Tue, 25 Jul 2017 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 24 Jul 2017 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>Source Control</category><category>VSTS / TFS</category><category>TFS</category><category>GitHub Projects</category>
   </item>
@@ -135,7 +155,7 @@
     <title>GitHub Projects and Issues</title>
     <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
     <description>Are you tired of your average planning tools? Take a look at what you could be using if you switched to GitHub Projects and Issues 😉</description>
-    <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
+    <pubDate>Sun, 22 May 2022 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
   </item>

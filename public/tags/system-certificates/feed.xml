@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 25 Feb 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 24 Feb 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/system-certificates/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Visual Studio Hangs + SystemCertificates + Fiddler</title>
     <link>https://gordonbeeming.com/blog/2014-02-25/visual-studio-hangs-systemcertificates-fiddler</link>
     <description>For the last while I have been experiencing weird hangs with Visual Studio 2013. To try identify what was causing the hangs or at least where about the problem was I ran ProcMon.exe on devenv.exe and the point where Visual Studio hung I was getting the below output recursively</description>
-    <pubDate>Tue, 25 Feb 2014 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 24 Feb 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Fiddler</category><category>System Certificates</category>
   </item>

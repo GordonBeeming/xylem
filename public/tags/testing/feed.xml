@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 18 Mar 2020 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 17 Mar 2020 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/testing/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>The importance of regression testing and real world security consequences</title>
     <link>https://gordonbeeming.com/blog/2020-03-18/the-importance-of-regression-testing-and-real-world-security-consequences</link>
     <description>Organizations often put a lot of effort around testing their products, they&#39;ll put tons of effort in unit testing, integration testing across their UI and API layers but sometimes have a strategy of covering everything. This doesn&#39;t always add value to their pipelines because the metric that is being chased is not value which agreeably is a hard thing to measure but rather it&#39;s a coverage metric. To start with I don&#39;t know if testing strategy is what was happening for TicTocTrack but is something that is definitely highlighted as something that would have been valuable for them. A security vulnerability discovered around a year ago from a fellow MVP and security expert Troy Hunt was patched and then earlier this year I re-discovered it</description>
-    <pubDate>Wed, 18 Mar 2020 00:00:00 GMT</pubDate>
+    <pubDate>Tue, 17 Mar 2020 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Testing</category>
   </item>

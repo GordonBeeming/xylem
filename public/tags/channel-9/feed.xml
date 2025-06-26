@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 10 Apr 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 09 Apr 2014 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/channel-9/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Easily download Ch9 videos</title>
     <link>https://gordonbeeming.com/blog/2014-04-10/easily-download-ch9-videos</link>
     <description>I watch and download a lot of videos from Channel 9 and because I&#39;m a developer and always looking for ways to speed up anything I do I searched for a PowerShell script. I eventually found one (can&#39;t remember where) and immediately set it up to download This Week on Channel 9 and Ping Show. Over time I have added many other shows, events and series. The initial script I was found with some modifications was</description>
-    <pubDate>Thu, 10 Apr 2014 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 09 Apr 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Channel 9</category><category>PowerShell</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Pushing a new project to Chocolatey</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
     <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
-    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>

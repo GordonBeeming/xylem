@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 22 May 2015 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 21 May 2015 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/test-manager/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Connecting Test Manager to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
+    <pubDate>Thu, 21 May 2015 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Visual Studio Team Services Overview - Video Series</title>
     <link>https://gordonbeeming.com/blog/2016-05-03/visual-studio-team-services-overview-video-series</link>
     <description>A couple weeks ago I was asked to present at DUT to a group of students. The presentation was quite a long one so I had to cut some bits out in order to present in the timeslot that I had. So I decided that I&#39;d record all the content and post it up so that others can potentially benefit from it as well.</description>
-    <pubDate>Tue, 03 May 2016 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 02 May 2016 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Source Control</category><category>VSTS / TFS</category><category>Work Item Management</category><category>Release Management</category><category>Automated Builds</category><category>Load Testing</category><category>Test Manager</category>
   </item>
@@ -35,7 +35,7 @@
     <title>So I installed VS Enterprise 2017 and have no MTM, where is it?</title>
     <link>https://gordonbeeming.com/blog/2017-03-08/so-i-installed-vs-enterprise-2017-and-have-no-mtm-where-is-it</link>
     <description>If you&#39;ve installed Visual Studio 2017 Enterprise and weren&#39;t one of the people that went over to the Individual Components tab to see what you weren&#39;t installing you probably don&#39;t have Microsoft Test Manager installed.</description>
-    <pubDate>Wed, 08 Mar 2017 00:00:00 GMT</pubDate>
+    <pubDate>Tue, 07 Mar 2017 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>Visual Studio 2017</category><category>Test Manager</category>
   </item>

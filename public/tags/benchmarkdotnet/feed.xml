@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 28 Dec 2017 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 27 Dec 2017 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/benchmarkdotnet/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>BenchmarkDotNet: IsBoolean method</title>
     <link>https://gordonbeeming.com/blog/2017-12-28/benchmarkdotnet-isboolean-method</link>
     <description>This post might seem weird and is slightly. It&#39;s really just a pointer as with all my posts to send people to instead of sharing lots of text &quot;on the down low&quot; 😁.</description>
-    <pubDate>Thu, 28 Dec 2017 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 27 Dec 2017 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>BenchmarkDotNet</category><category>Just Coding</category>
   </item>

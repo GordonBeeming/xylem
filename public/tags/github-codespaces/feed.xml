@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 02 Feb 2021 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 01 Feb 2021 14:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/github-codespaces/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Having fun with GitHub Codespaces, docker, swagger codegen cli</title>
     <link>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</link>
     <description>In this video I&#39;m going to show you... How you can use GitHub Codespaces to prototype an idea and put it into action... or should I say actions with nothing more than your browser.</description>
-    <pubDate>Tue, 02 Feb 2021 00:00:00 GMT</pubDate>
+    <pubDate>Mon, 01 Feb 2021 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>nuget.org</category><category>swagger codegen cli</category><category>Codespaces</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>Docker</category><category>Strava API</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Playing with Azure and Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</link>
     <description>I recently presented &quot;Playing with Azure and Terraform&quot; at our user group locally in Durban, there were some requests for a recording so I thought I&#39;d share it here 😊 We play with a lot of different tech in this session like GitHub Codespaces, Azure, Cloudflare and Snyk</description>
-    <pubDate>Thu, 01 Sep 2022 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 31 Aug 2022 14:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
   </item>

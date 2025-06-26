@@ -41,16 +41,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
-    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
-    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
-    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
-    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</guid>
     <title>Playing with Azure and Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</link>
@@ -58,6 +48,16 @@
     <pubDate>Thu, 01 Sep 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
+    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
+    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
+    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
   </item>
 
     </channel>

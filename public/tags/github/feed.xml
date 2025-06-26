@@ -51,16 +51,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</guid>
-    <title>Setting up commit signature verification for GitHub</title>
-    <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
-    <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
-    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</guid>
     <title>GitHub Projects and Issues</title>
     <link>https://gordonbeeming.com/blog/2022-05-23/github-projects-and-issues</link>
@@ -68,6 +58,16 @@
     <pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub</category><category>Productivity</category><category>GitHub Issues</category><category>YouTube Videos</category><category>GitHub Projects</category><category>Planning Tools</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</guid>
+    <title>Setting up commit signature verification for GitHub</title>
+    <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
+    <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
+    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
   </item>
 
   <item>
@@ -111,16 +111,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</guid>
-    <title>Improving your git efficiency using git alias</title>
-    <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
-    <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
-    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</guid>
     <title>Deploying .NET templates using GitHub Actions</title>
     <link>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</link>
@@ -128,6 +118,16 @@
     <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</guid>
+    <title>Improving your git efficiency using git alias</title>
+    <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
+    <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
+    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
   </item>
 
     </channel>

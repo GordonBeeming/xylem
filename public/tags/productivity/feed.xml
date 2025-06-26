@@ -50,5 +50,15 @@
     <category>Collaboration</category><category>Productivity</category><category>Microsoft Teams</category>
   </item>
 
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-06-26/from-conversation-to-documentation-a-modern-dev-workflow-with-ai</guid>
+    <title>From Conversation to Documentation: A Modern Dev Workflow with AI</title>
+    <link>https://gordonbeeming.com/blog/2025-06-26/from-conversation-to-documentation-a-modern-dev-workflow-with-ai</link>
+    <description>We solve complex problems and then face the daunting task of writing documentation. What if the documentation wrote itself? Discover a workflow that turns a simple conversation with an AI into polished ADRs and blog posts, saving you hours.</description>
+    <pubDate>Thu, 26 Jun 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>AI</category><category>Productivity</category><category>Development</category><category>ADR</category><category>Documentation</category>
+  </item>
+
     </channel>
   </rss>

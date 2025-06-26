@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 07 Oct 2015 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 08 Oct 2015 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/load-testing/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Load testing using Azure</title>
     <link>https://gordonbeeming.com/blog/2015-10-08/load-testing-using-azure</link>
     <description>So everyone wants to have the ultimate system that never breaks can handle &#39;all&#39; the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what&#39;s the odds of that happening. The other option is to have a bank account that is never ending and throw &#39;all&#39; the hardware at your application to make sure it doesn&#39;t ever have a slow day but then how are you making your money, how do you know when &#39;all&#39; the hardware isn&#39;t enough.</description>
-    <pubDate>Wed, 07 Oct 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 08 Oct 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Load Testing</category><category>Visual Studio Team Services</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Visual Studio Team Services Overview - Video Series</title>
     <link>https://gordonbeeming.com/blog/2016-05-03/visual-studio-team-services-overview-video-series</link>
     <description>A couple weeks ago I was asked to present at DUT to a group of students. The presentation was quite a long one so I had to cut some bits out in order to present in the timeslot that I had. So I decided that I&#39;d record all the content and post it up so that others can potentially benefit from it as well.</description>
-    <pubDate>Mon, 02 May 2016 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 03 May 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Source Control</category><category>VSTS / TFS</category><category>Work Item Management</category><category>Release Management</category><category>Automated Builds</category><category>Load Testing</category><category>Test Manager</category>
   </item>

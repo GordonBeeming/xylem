@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 25 Sep 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Fri, 26 Sep 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/visual-studio-team-services/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Creating a VSTS Account for Demos</title>
     <link>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</link>
     <description>I need a VSO account for Demos which needs to be separate from my personal and business VSO accounts. The problem is though if you go to the Visual Studio Online page and click Get started for free</description>
-    <pubDate>Thu, 25 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 26 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
   </item>
@@ -25,7 +25,7 @@
     <title>How to Enable Alternate Credentials in Visual Studio Team Services (VSTS)</title>
     <link>https://gordonbeeming.com/blog/2015-01-16/how-to-enable-alternate-credentials-in-visual-studio-online-vso</link>
     <description>Ok so obviously the first you need is to have a VSO account. If you have one already, awesome, continue on and skip this section.</description>
-    <pubDate>Thu, 15 Jan 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 16 Jan 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
   </item>
@@ -35,17 +35,7 @@
     <title>Create a new VSTS account</title>
     <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 10 May 2015 14:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
-    <title>Creating your first VSTS Team Project</title>
-    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 14 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -55,9 +45,19 @@
     <title>Connecting Visual Studio to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 17 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
+    <title>Creating your first VSTS Team Project</title>
+    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
 
   <item>
@@ -65,7 +65,7 @@
     <title>Connecting Test Manager to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 21 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
   </item>
@@ -75,7 +75,7 @@
     <title>Creating Iterations in VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-25/creating-iterations-in-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 24 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 25 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -85,7 +85,7 @@
     <title>A &#39;Hello World&#39; for VSTS Extensions</title>
     <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
     <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
-    <pubDate>Wed, 17 Jun 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
   </item>
@@ -95,7 +95,7 @@
     <title>Load testing using Azure</title>
     <link>https://gordonbeeming.com/blog/2015-10-08/load-testing-using-azure</link>
     <description>So everyone wants to have the ultimate system that never breaks can handle &#39;all&#39; the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what&#39;s the odds of that happening. The other option is to have a bank account that is never ending and throw &#39;all&#39; the hardware at your application to make sure it doesn&#39;t ever have a slow day but then how are you making your money, how do you know when &#39;all&#39; the hardware isn&#39;t enough.</description>
-    <pubDate>Wed, 07 Oct 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 08 Oct 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Load Testing</category><category>Visual Studio Team Services</category>
   </item>

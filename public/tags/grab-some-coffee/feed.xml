@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 08 Apr 2015 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 09 Apr 2015 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/grab-some-coffee/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>They said Select * was bad but...</title>
     <link>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</link>
     <description>So speaking to any smart database people they will generally tell you that the SELECT * FROM ... is a bad idea and should not be used. Today (well would of been if I didn&#39;t procrastinate) I spent many hours debugging something from the wrong places because I used SELECT *. Below is what I found out =). Rennie Moodley helped me understand what was happening after I figured out where the problem was, helped me create the sample code below and then the 2 of us and Christopher Swart poked at and improve the sample and found some more weirdness which you&#39;ll also see below.</description>
-    <pubDate>Wed, 08 Apr 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 09 Apr 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>T-SQL</category><category>Data</category><category>SQL Server</category><category>Grab Some Coffee</category>
   </item>
@@ -25,7 +25,7 @@
     <title>A &#39;Hello World&#39; for VSTS Extensions</title>
     <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
     <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
-    <pubDate>Wed, 17 Jun 2015 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
   </item>

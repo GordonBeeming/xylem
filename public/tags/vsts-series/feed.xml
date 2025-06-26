@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 10 May 2015 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 11 May 2015 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/vsts-series/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,17 +15,7 @@
     <title>Create a new VSTS account</title>
     <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 10 May 2015 14:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
-    <title>Creating your first VSTS Team Project</title>
-    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 14 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -35,9 +25,19 @@
     <title>Connecting Visual Studio to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 17 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
+    <title>Creating your first VSTS Team Project</title>
+    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
 
   <item>
@@ -45,7 +45,7 @@
     <title>Connecting Test Manager to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Thu, 21 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
   </item>
@@ -55,7 +55,7 @@
     <title>Creating Iterations in VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-25/creating-iterations-in-vso</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Sun, 24 May 2015 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 25 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>

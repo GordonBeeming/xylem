@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sat, 05 Aug 2017 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sun, 06 Aug 2017 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/security/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Connecting agents to TFS using integrated security on http from external domain</title>
     <link>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</link>
     <description>If you have TFS on the domain but you are trying to connect agents to it from outside the domain and TFS is not running on https then this post is for you.</description>
-    <pubDate>Sat, 05 Aug 2017 14:00:00 GMT</pubDate>
+    <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>VSTS / TFS</category><category>Digi Cert</category><category>TFS</category><category>TFS Agents</category><category>VSTS</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Setting up 2 factor authentication and email verification with .net core 2.0</title>
     <link>https://gordonbeeming.com/blog/2018-02-15/setting-up-2-factor-authentication-and-email-verification-with-net-core-20</link>
     <description>Today I played with a new .net core template just to see what the authentication options were out the box and was surprised to see just how easy it is to go from nothing to having a base project that has authentication fully baked in with 2 factor authentication and email verification.</description>
-    <pubDate>Wed, 14 Feb 2018 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 15 Feb 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>dotnet core</category><category>Just Coding</category>
   </item>
@@ -35,7 +35,7 @@
     <title>The importance of regression testing and real world security consequences</title>
     <link>https://gordonbeeming.com/blog/2020-03-18/the-importance-of-regression-testing-and-real-world-security-consequences</link>
     <description>Organizations often put a lot of effort around testing their products, they&#39;ll put tons of effort in unit testing, integration testing across their UI and API layers but sometimes have a strategy of covering everything. This doesn&#39;t always add value to their pipelines because the metric that is being chased is not value which agreeably is a hard thing to measure but rather it&#39;s a coverage metric. To start with I don&#39;t know if testing strategy is what was happening for TicTocTrack but is something that is definitely highlighted as something that would have been valuable for them. A security vulnerability discovered around a year ago from a fellow MVP and security expert Troy Hunt was patched and then earlier this year I re-discovered it</description>
-    <pubDate>Tue, 17 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 18 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Testing</category>
   </item>
@@ -45,7 +45,7 @@
     <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
     <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
     <description>Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can&#39;t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I&#39;m going to post the steps so that it&#39;s helpful to others as well as future me.</description>
-    <pubDate>Mon, 23 Mar 2020 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
   </item>
@@ -55,7 +55,7 @@
     <title>Allow project users to manage Permissions Groups in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2021-07-22/allow-project-users-to-manage-permissions-groups-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... How to allow project users to manage Permissions Groups in Azure DevOps that aren&#39;t project administrators</description>
-    <pubDate>Wed, 21 Jul 2021 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 22 Jul 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure DevOps</category><category>Postman</category><category>YouTube Videos</category>
   </item>
@@ -65,7 +65,7 @@
     <title>Setting up commit signature verification for GitHub</title>
     <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
     <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
-    <pubDate>Sun, 20 Mar 2022 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
   </item>
@@ -75,7 +75,7 @@
     <title>Managing GitHub secrets using terraform</title>
     <link>https://gordonbeeming.com/blog/2022-08-11/managing-github-secrets-using-terraform</link>
     <description>In this video we&#39;ll take a look at Managing GitHub secrets using terraform as well as federated identities from GitHub into Azure. You should only be storing secrets if you absolutely need to, in this demo although we are only accessing storage accounts the change from a storage connection string to Azure Federated Identity means that we can access any of resource the identity has access too using RBAC which is a much better overall approach.</description>
-    <pubDate>Wed, 10 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 11 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Terraform</category><category>IaC</category><category>GitHub</category>
   </item>
@@ -85,7 +85,7 @@
     <title>Scanning Infrastructure as Code (IaC) for vulnerabilities</title>
     <link>https://gordonbeeming.com/blog/2022-08-24/scanning-infrastructure-as-code-iac-for-vulnerabilities</link>
     <description>In the modern world where it feels like every sentence has a Dev⭐Ops word in it, 1 that is probably used more than most is DevSecOps.When teams focus on DevSecOps they make sure to integrate security into every phase of development, this includes scanning for vulnerabilities as soon as possible. This videos shows you briefly how you can use Snyk to scan your terraform templates for vulnerabilities from your CLI as well as part of every commit pushed to GitHub.</description>
-    <pubDate>Tue, 23 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 24 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Terraform</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>DevSecOps</category>
   </item>
@@ -95,7 +95,7 @@
     <title>Playing with Azure and Terraform</title>
     <link>https://gordonbeeming.com/blog/2022-09-01/playing-with-azure-and-terraform</link>
     <description>I recently presented &quot;Playing with Azure and Terraform&quot; at our user group locally in Durban, there were some requests for a recording so I thought I&#39;d share it here 😊 We play with a lot of different tech in this session like GitHub Codespaces, Azure, Cloudflare and Snyk</description>
-    <pubDate>Wed, 31 Aug 2022 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 01 Sep 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
   </item>

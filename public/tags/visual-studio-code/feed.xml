@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 11 Aug 2020 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Wed, 12 Aug 2020 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/visual-studio-code/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>How to use the same editor as Visual Studio Code in your sites</title>
     <link>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</link>
     <description>Wondering how you can use the same editor as Visual Studio Code in your sites? In this video I&#39;ll show you how you can 😀. 0:00 - Introduction 0:25 - Setup basic HTML file 1:55 - Add monaco editor html tags 3:23 - Use monaco colorizeElement functionality 5:17 - Create a monaco editor 9:46 - Monaco editor &quot;Cannot read property &#39;AddEventListener&#39; of null 10:38 - Use npm to install monaco editor dependencies 12:19 - Exploring the monaco editor playground 13:52 - Thank you for watching</description>
-    <pubDate>Tue, 11 Aug 2020 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 12 Aug 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Monaco Editor</category><category>NPM</category><category>YouTube Videos</category><category>Visual Studio Code</category>
   </item>

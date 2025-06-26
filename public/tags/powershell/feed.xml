@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 03 Jan 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 04 Jan 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/powershell/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Start-BitsTransfer : Object reference not set to an instance of an object.</title>
     <link>https://gordonbeeming.com/blog/2014-01-04/start-bitstransfer-object-reference-not-set-to-an-instance-of-an-object</link>
     <description>Today I find myself with yet another bit of functionality that only works when you are running in Administrator Mode. A while back I had Full Admin Mode always enabled, downside of this is the store apps don&#39;t work at all. Up side is your PC works as expected . I created a PowerShell script to download Channel 9 videos as described in my post Easily download Ch9 videos, this script worked perfectly but recently started breaking with the error</description>
-    <pubDate>Fri, 03 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Sat, 04 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Requires Admin</category><category>PowerShell</category>
   </item>
@@ -25,7 +25,7 @@
     <title>Download Brian Keller&#39;s VM with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-01-10/download-brian-kellers-vm-with-powershell</link>
     <description>So yesterday and update for Brian Keller&#39;s VM (Visual Studio 2013 Application Lifecycle Management Virtual Machine and Hands-on-Labs / Demo Scripts) was release</description>
-    <pubDate>Thu, 09 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Brian Keller VM</category><category>PowerShell</category>
   </item>
@@ -35,7 +35,7 @@
     <title>Download #MVA Content with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</link>
     <description>So I&#39;m starting to go through some of the content on Microsoft Virtual Academy but I don&#39;t have time to do this when I&#39;m by a good internet connection and at the same time don&#39;t have time when by the good internet connection to run though all the content I need to download it to watch in my spare time.</description>
-    <pubDate>Thu, 23 Jan 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 24 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Microsoft Virtual Academy</category><category>PowerShell</category>
   </item>
@@ -45,7 +45,7 @@
     <title>Easily download Ch9 videos</title>
     <link>https://gordonbeeming.com/blog/2014-04-10/easily-download-ch9-videos</link>
     <description>I watch and download a lot of videos from Channel 9 and because I&#39;m a developer and always looking for ways to speed up anything I do I searched for a PowerShell script. I eventually found one (can&#39;t remember where) and immediately set it up to download This Week on Channel 9 and Ping Show. Over time I have added many other shows, events and series. The initial script I was found with some modifications was</description>
-    <pubDate>Wed, 09 Apr 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 10 Apr 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Channel 9</category><category>PowerShell</category>
   </item>
@@ -55,7 +55,7 @@
     <title>Organize your Music Collection</title>
     <link>https://gordonbeeming.com/blog/2014-07-16/organize-your-music-collection</link>
     <description>I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called PowerShell - Automatically organizing your mp3-collection. Although this wasn&#39;t exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine and categorize a bit more . You can grab the script off GitHub Gist organise-music.ps1.</description>
-    <pubDate>Tue, 15 Jul 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 16 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -65,7 +65,7 @@
     <title>Upgrade/Publish TFS 2013 Process Templates with PowerShell</title>
     <link>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</link>
     <description>I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.</description>
-    <pubDate>Thu, 11 Sep 2014 14:00:00 GMT</pubDate>
+    <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -75,7 +75,7 @@
     <title>Configuring a Chocolatey Install</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/configuring-a-chocolatey-install</link>
     <description>So yesterday I posted Pushing a new project to Chocolatey and I said I would create another post showing how to configure how the Chocolatey install runs and this is that post .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>DotNet Pretty</category><category>Chocolatey</category><category>PowerShell</category>
   </item>
@@ -85,7 +85,7 @@
     <title>Pushing a new project to Chocolatey</title>
     <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
     <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
-    <pubDate>Mon, 27 Oct 2014 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
   </item>
@@ -95,7 +95,7 @@
     <title>Using Azure Resource Manager</title>
     <link>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</link>
     <description>In the new Azure Portal you create all your resources in Resource Groups, there is also as part of the Azure SDK&#39;s a module called AzureResourceManager by default the module loaded for the Azure SDK is AzureServiceManagement. A blurb from one of the Azure documentation page reads</description>
-    <pubDate>Tue, 16 Dec 2014 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Azure Resource Manager</category><category>Rangers Research</category><category>PowerShell</category>
   </item>
@@ -105,7 +105,7 @@
     <title>Opening apps from the directory you in as Administrator</title>
     <link>https://gordonbeeming.com/blog/2016-12-13/opening-apps-from-the-directory-you-in-as-administrator</link>
     <description>The other day I saw a post that Greg Duncan shared about opening CMD and PowerShell from the directory you in.</description>
-    <pubDate>Mon, 12 Dec 2016 14:00:00 GMT</pubDate>
+    <pubDate>Tue, 13 Dec 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Windows Explorer</category><category>Command Line</category><category>Run As Admin</category><category>PowerShell</category>
   </item>
@@ -115,7 +115,7 @@
     <title>Moving Application Insights resources between subscriptions in Azure</title>
     <link>https://gordonbeeming.com/blog/2018-01-03/moving-application-insights-resources-between-subscriptions-in-azure</link>
     <description>There is documentation available for Move resources to new resource group or subscription but things are easier to do with exact sample code so here it goes . The steps below will work for moving between Resource Groups as well, you&#39;ll just skip some steps that would be obvious.</description>
-    <pubDate>Tue, 02 Jan 2018 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 03 Jan 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Application Insights</category><category>PowerShell</category>
   </item>
@@ -125,7 +125,7 @@
     <title>The Mysterious Case of the Failing Azure SQL Deployment</title>
     <link>https://gordonbeeming.com/blog/2025-06-18/the-mysterious-case-of-the-failing-azure-sql-deployment</link>
     <description>A perfectly stable GitHub Actions deployment to Azure SQL suddenly fails with a misleading &#39;Identity not found&#39; error. Follow the debugging journey to uncover the real culprit that has nothing to do with the identity.</description>
-    <pubDate>Tue, 17 Jun 2025 14:00:00 GMT</pubDate>
+    <pubDate>Wed, 18 Jun 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>PowerShell</category><category>GitHub Actions</category><category>DevOps</category><category>OIDC</category><category>SQL</category>
   </item>

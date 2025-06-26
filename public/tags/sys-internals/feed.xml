@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 14 May 2014 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 15 May 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/sys-internals/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Sys Internals Updater</title>
     <link>https://gordonbeeming.com/blog/2014-05-15/sys-internals-updater</link>
     <description>During Channel 9 Live: Defrag Tools Live – Mark Russinovich, Mark Russinovich mentioned that one of the apps might not have been up to date on the machine he was showing really cool things on . So then I thought hey I never update my sys internals apps.</description>
-    <pubDate>Wed, 14 May 2014 14:00:00 GMT</pubDate>
+    <pubDate>Thu, 15 May 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Sys-Internals</category><category>Cool Apps</category><category>GitHub Projects</category>
   </item>

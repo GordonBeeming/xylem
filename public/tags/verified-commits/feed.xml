@@ -7,7 +7,7 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 20 Mar 2022 14:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Mon, 21 Mar 2022 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/verified-commits/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
@@ -15,7 +15,7 @@
     <title>Setting up commit signature verification for GitHub</title>
     <link>https://gordonbeeming.com/blog/2022-03-21/setting-up-commit-signature-verification-for-github</link>
     <description>Ever wondered why some commits show verified and others don&#39;t? Take a look at how you can make sure all your commits are verified. Commands from this video are available in this gist https://gist.github.com/DevStarOps/6c88482ecd632ba04d68d9e15590b4a2</description>
-    <pubDate>Sun, 20 Mar 2022 14:00:00 GMT</pubDate>
+    <pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>git</category><category>Verified Commits</category><category>Commit Signing</category><category>GitHub</category><category>YouTube Videos</category>
   </item>

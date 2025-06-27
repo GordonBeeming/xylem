@@ -21,16 +21,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</guid>
-    <title>Setting up .net core continuous integration build with VSTS/TFS</title>
-    <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</link>
-    <description>You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I&#39;d need to post specifically on .net core. After all it&#39;s still a Visual Studio solution so things should just work, the keyword here is should . Things didn&#39;t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).</description>
-    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</guid>
     <title>Generating code documentation using Ghost Doc Enterprise</title>
     <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
@@ -38,6 +28,16 @@
     <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</guid>
+    <title>Setting up .net core continuous integration build with VSTS/TFS</title>
+    <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-net-core-continuous-integration-build-with-vststfs</link>
+    <description>You might be wondering after recently posting Setting up a standard continuous integration build with VSTS/TFS why I&#39;d need to post specifically on .net core. After all it&#39;s still a Visual Studio solution so things should just work, the keyword here is should . Things didn&#39;t just work when I tried to get this working so decided to share my experience here (as well as document it for myself later ).</description>
+    <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
   </item>
 
   <item>

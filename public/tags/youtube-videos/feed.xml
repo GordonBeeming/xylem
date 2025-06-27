@@ -111,16 +111,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</guid>
-    <title>Developing software for the modern world using only your browser and GitHub</title>
-    <link>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</link>
-    <description>In this video I&#39;m going to show you... How to develop software for the modern world using only your browser and GitHub.</description>
-    <pubDate>Wed, 19 May 2021 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</guid>
     <title>Having fun with GitHub Codespaces, docker, swagger codegen cli</title>
     <link>https://gordonbeeming.com/blog/2021-02-02/having-fun-with-github-codespaces-docker-swagger-codegen-cli</link>
@@ -128,6 +118,16 @@
     <pubDate>Tue, 02 Feb 2021 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>nuget.org</category><category>swagger codegen cli</category><category>Codespaces</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>Docker</category><category>Strava API</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</guid>
+    <title>Developing software for the modern world using only your browser and GitHub</title>
+    <link>https://gordonbeeming.com/blog/2021-05-19/developing-software-for-the-modern-world-using-only-your-browser-and-github</link>
+    <description>In this video I&#39;m going to show you... How to develop software for the modern world using only your browser and GitHub.</description>
+    <pubDate>Wed, 19 May 2021 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>YouTube Videos</category>
   </item>
 
   <item>

@@ -41,16 +41,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
-    <title>Connecting Visual Studio to VSTS</title>
-    <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
     <title>Creating your first VSTS Team Project</title>
     <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
@@ -58,6 +48,16 @@
     <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
+    <title>Connecting Visual Studio to VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
 
   <item>

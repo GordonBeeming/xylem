@@ -1,0 +1,146 @@
+---
+title: 'EF Core''s Hidden Identity Crisis: The Owned Entity Cloning Problem'
+date: 2025-07-07
+tags: ['Entity Framework Core', 'C#', '.NET', 'Troubleshooting']
+draft: false
+summary: 'Your integration tests all pass, but your live app throws a cryptic EF Core error about modifying a key that doesn''t even exist. Let''s dive into the fascinating reason why and how to fix it.'
+---
+
+You've been there. You write some code, you write your tests, and everything comes up green. You deploy to production with confidence, only to be met with a cryptic runtime error that makes no sense.
+
+This is the story of one such error—an `InvalidOperationException` from Entity Framework Core that seems to defy logic, especially when your tests say everything is fine.
+
+## The Scenario: Cloning an Entity
+
+Let's imagine a simple data model for a blog. We have a `BlogPost` entity, and each post can have a collection of simple `Tag` objects. Crucially, the `Tag`s don't have their own ID; they belong exclusively to a blog post and will be stored as a JSON column in the database.
+
+Here are our entity classes:
+
+```csharp
+// The parent entity
+public class BlogPost
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public int Version { get; set; }
+
+    // A collection of child objects with no independent identity
+    private readonly List<Tag> _tags = new();
+    public IReadOnlyList<Tag> Tags => _tags;
+
+    // A method to create a new version of the post
+    public BlogPost CreateNewVersion()
+    {
+        var newVersion = new BlogPost
+        {
+            Id = Guid.NewGuid(), // A new Id for the new version
+            Title = this.Title,
+            Version = this.Version + 1,
+        };
+
+        // This is the problematic line
+        newVersion._tags.AddRange(this.Tags);
+
+        return newVersion;
+    }
+
+    public void AddTag(string tagText)
+    {
+        _tags.Add(new Tag { Text = tagText });
+    }
+}
+
+// The child object, stored as JSON
+public class Tag
+{
+    public string Text { get; set; }
+}
+```
+
+To configure this in EF Core, we use `OwnsMany` to define the relationship and `ToJson` to specify the storage mechanism.
+
+```csharp
+// In your DbContext's OnModelCreating or an IEntityTypeConfiguration<BlogPost>
+public void Configure(EntityTypeBuilder<BlogPost> builder)
+{
+    builder.HasKey(b => b.Id);
+
+    // This is the key line:
+    // It tells EF Core that Tags are owned by BlogPost and stored as JSON.
+    builder.OwnsMany(b => b.Tags, owned =>
+    {
+        owned.ToJson();
+    });
+}
+```
+
+The `CreateNewVersion` method seems simple enough. It creates a new `BlogPost`, gives it a new ID, and copies over the tags. What could go wrong?
+
+
+
+## The Error and the "Why"
+
+When you run this code in a live application, you might get this baffling error after trying to save the new version:
+
+> InvalidOperationException: The property 'Tag.BlogPostId' is part of a key and so cannot be modified or marked as modified.
+
+Your first reaction is likely, "What `BlogPostId`? My `Tag` class doesn't have that property\!"
+
+And you're right, it doesn't. The error is referring to a **conceptual, in-memory shadow property** that EF Core creates because you used `OwnsMany`.
+
+`OwnsMany` tells EF Core that `Tag` is an **owned entity**. It cannot exist without a `BlogPost`. To manage this, the EF Core Change Tracker creates an in-memory identity for each `Tag` instance that includes a link back to its parent (the conceptual `BlogPostId`).
+
+Here's the chain of events in your live application:
+
+1.  You load the original `BlogPost` from the database. EF Core begins **tracking** the `BlogPost` and all its child `Tag` object instances.
+2.  You call `CreateNewVersion()`.
+3.  The line `newVersion._tags.AddRange(this.Tags)` takes the **exact same C\# object instances** from the original post and adds them to the new version.
+4.  You try to save the new `BlogPost`. The Change Tracker sees the `Tag` objects, recognizes them as the ones it's already tracking, and sees that you're trying to assign them to a new parent.
+5.  This requires changing their conceptual `BlogPostId`, which is part of their identity. EF Core forbids changing a key property and throws the exception.
+
+## But Why Do My Tests Pass?
+
+The core issue is that the exact same code fails in the live application but passes in integration tests, despite the environments being configured to be identical. This indicates a subtle, underlying difference in the execution context.
+
+### Investigated Factors
+
+After troubleshooting, I confirmed the following variables were the same in both the test and live scenarios, ruling them out as the cause:
+
+* **`DbContext` Lifetime:** The context was correctly scoped to the individual operation in both cases.
+* **Initial Data State:** The entity being cloned was loaded from the database first in both environments.
+* **Database Provider:** Both the test and live application used the same SQL Server provider.
+* **Change Tracking Configuration:** The default `QueryTrackingBehavior` was identical.
+
+## The Solution: Create New Instances
+
+The fix is to stop reusing the old object instances and instead create new ones for the clone.
+
+Update the `CreateNewVersion` method to project the old tags into new `Tag` objects.
+
+```csharp
+public BlogPost CreateNewVersion()
+{
+    var newVersion = new BlogPost
+    {
+        Id = Guid.NewGuid(),
+        Title = this.Title,
+        Version = this.Version + 1,
+    };
+
+    // The Fix: Create NEW Tag instances instead of reusing the old ones
+    var newTags = this.Tags.Select(t => new Tag { Text = t.Text });
+    newVersion._tags.AddRange(newTags);
+
+    return newVersion;
+}
+```
+
+By using `.Select(t => new Tag { ... })`, you are creating brand new `Tag` objects. The Change Tracker has never seen these instances before, so it correctly treats them as new children of the new `BlogPost`, and everything saves perfectly.
+
+The key takeaway? With EF Core, the **identity of your C\# object instances** is just as important as the data they hold.
+
+## Conclusion
+
+With all logical factors being equal, the discrepancy points to a deep, non-obvious difference between the test execution host and the live application web host.
+
+The most important takeaway is that the original cloning logic was inherently fragile because its success depended on the state of the EF Core Change Tracker. The correct solution—creating **new instances** of the owned child entities—is robust precisely because it eliminates this dependency. It works correctly regardless of subtle environmental differences, making it the right approach for production code.

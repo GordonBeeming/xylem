@@ -70,6 +70,7 @@ const MonacoCodeViewer: FC<MonacoCodeViewerProps> = ({
     scrollbar: {
       vertical: 'auto',
       horizontal: 'auto',
+      handleMouseWheel: false,
     },
     fontFamily: 'Menlo, Monaco, "Courier New", monospace',
   }

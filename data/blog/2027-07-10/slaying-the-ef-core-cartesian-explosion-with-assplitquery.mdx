@@ -1,0 +1,106 @@
+---
+title: 'Slaying the EF Core Cartesian Explosion with AsSplitQuery()'
+date: 2025-07-10
+tags: ['C#', '.NET', 'Entity Framework', 'Performance']
+draft: false
+summary: 'You built a rich domain model with aggregates and child collections, but now your queries are painfully slow. Learn how a one-line change in Entity Framework Core, .AsSplitQuery(), can fix the dreaded "Cartesian Explosion" and make your app fly.'
+---
+
+You've done everything right. You've designed a beautiful, rich domain model using DDD principles. You have an aggregate root, and you're using Entity Framework Core to load it and all its related child entities. But when you run the application, loading a single record takes 30 seconds. What gives? 🐌
+
+Chances are you've fallen victim to a classic performance issue known as a **Cartesian Explosion**, and luckily, EF Core has a simple and elegant solution.
+
+### The Scenario: A Rich Domain Model
+
+Let's imagine a simplified e-commerce domain. We have an `Order` as our aggregate root. An `Order` contains a list of `OrderItems` and also has a `ShipmentHistory` to track its journey.
+
+Here's what our simple entities might look like:
+
+```csharp
+// The Aggregate Root
+public class Order
+{
+    public Guid Id { get; set; }
+    public DateTimeOffset OrderDate { get; set; }
+    public string CustomerName { get; set; } = string.Empty;
+
+    // Child Collections
+    public List<OrderItem> Items { get; set; } = [];
+    public List<ShipmentHistory> History { get; set; } = [];
+}
+
+// A child entity
+public class OrderItem
+{
+    public Guid Id { get; set; }
+    public Guid OrderId { get; set; }
+    public string Sku { get; set; } = string.Empty;
+    public int Quantity { get; set; }
+}
+
+// Another child entity
+public class ShipmentHistory
+{
+    public Guid Id { get; set; }
+    public Guid OrderId { get; set; }
+    public DateTimeOffset Timestamp { get; set; }
+    public string Status { get; set; } = string.Empty;
+}
+````
+
+Our goal is simple: we want to load a single `Order` from the database and include both its `Items` and its `History` so we can display a full summary. The EF Core query looks clean and intuitive:
+
+```csharp
+// The query to load our aggregate
+var order = await dbContext.Orders
+    .Include(o => o.Items)
+    .Include(o => o.History)
+    .FirstOrDefaultAsync(o => o.Id == someOrderId);
+```
+
+This code works, but it's secretly creating a monster.
+
+
+
+### The Problem: The "Cartesian Explosion"
+
+When Entity Framework sees multiple `.Include()` calls for collections at the same level, it generates a single, massive SQL query with multiple `LEFT JOIN`s to get all the data in one go.
+
+While this sounds efficient, it creates a huge, duplicated result set. If an order has **10 items** and **5 history entries**, the database doesn't return `10 + 5 = 15` child rows. It returns `10 * 5 = 50` rows, repeating the order and item data for every history entry.
+
+In our real-world scenario that prompted this post, we had \~150 section changes and \~880 question changes. This resulted in a query that returned over **133,000 rows** just to load one object\! This "Cartesian Explosion" of data is incredibly inefficient. It's slow for the database to generate, consumes a huge amount of network bandwidth, and requires a lot of CPU on the client-side for EF Core to sort through all the duplicates.
+
+
+
+### The Solution: `.AsSplitQuery()`
+
+The EF Core team knew about this problem and provided a beautifully simple solution: the `.AsSplitQuery()` operator. By adding this one method to our query, we change EF Core's entire strategy.
+
+Here's the fix:
+
+```csharp
+// The one-line fix that changes everything
+var order = await dbContext.Orders
+    .Include(o => o.Items)
+    .Include(o => o.History)
+    .AsSplitQuery() // <-- That's it!
+    .FirstOrDefaultAsync(o => o.Id == someOrderId);
+```
+
+Instead of generating one giant query, EF Core now generates multiple, smaller queries: one for the root `Order`, a second for its `Items`, and a third for its `History`. The total number of rows returned from the database drops from over 133,000 to just over 1,000—a **99% reduction**. The result is a query that runs almost instantly.
+
+### When To Use It
+
+This feature is a lifesaver, but it's not the default for a reason. It involves multiple round-trips to the database, and the data from the separate queries isn't guaranteed to be transactionally consistent (though for read-only scenarios, this is rarely an issue).
+
+A good rule of thumb is: **use `.AsSplitQuery()` whenever you are including more than one "one-to-many" collection in the same query.** For single includes, the default behavior is usually fine.
+
+
+
+### Conclusion
+
+The best part about this fix wasn't just the incredible performance gain. Because our application uses the **Specification pattern**, we only had 3 or 4 well-defined entry points for querying this aggregate root. This meant that applying this one-line `.AsSplitQuery()` fix across the entire application, including running tests and verifying the UI, took **less than two minutes**.
+
+It's a great reminder that a solid architecture with clear data access patterns doesn't just make your code cleaner—it makes it dramatically easier to optimize when you find a bottleneck like this.
+
+So next time your rich domain model feels slow, check your includes and see if `.AsSplitQuery()` can slay the beast for you\! 🚀

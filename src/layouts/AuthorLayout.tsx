@@ -9,7 +9,9 @@ interface Props {
 }
 
 export default function AuthorLayout({ children, content }: Props) {
-  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, company_logo_dark, company_logo_light, company_website } = content
+  const { name, avatar, profile_line_1, profile_line_2, email, twitter, bluesky, linkedin, github,
+    company_name, company_logo_dark, company_logo_light, company_website,
+    mvp_logo_dark, mvp_logo_light, mvp_website } = content
 
   return (
     <>
@@ -31,8 +33,8 @@ export default function AuthorLayout({ children, content }: Props) {
               />
             )}
             <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight">{name}</h3>
-            <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
-            <div className="text-gray-500 dark:text-gray-400">{company}</div>
+            <div className="text-gray-500 dark:text-gray-400">{profile_line_1}</div>
+            <div className="text-gray-500 dark:text-gray-400">{profile_line_2}</div>
             <div className="flex space-x-3 pt-6">
               <SocialIcon kind="mail" href={`mailto:${email}`} />
               <SocialIcon kind="github" href={github} />
@@ -44,13 +46,13 @@ export default function AuthorLayout({ children, content }: Props) {
               href={company_website}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${company} Website`}
+              aria-label={`${company_name} Website`}
             >
               <div className="pt-8">
                 {/* Light Theme Logo */}
                 <Image
                   src={company_logo_light}
-                  alt={`${company} Logo Light`}
+                  alt={`${company_name} Logo Light`}
                   width={200}
                   height={120}
                   className="dark:hidden"
@@ -58,7 +60,32 @@ export default function AuthorLayout({ children, content }: Props) {
                 {/* Dark Theme Logo */}
                 <Image
                   src={company_logo_dark}
-                  alt={`${company} Logo Dark`}
+                  alt={`${company_name} Logo Dark`}
+                  width={200}
+                  height={120}
+                  className="hidden dark:block"
+                />
+              </div>
+            </a>
+            <a
+              href={mvp_website}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${name} MVP Profile`}
+            >
+              <div className="pt-8">
+                {/* Light Theme Logo */}
+                <Image
+                  src={mvp_logo_light}
+                  alt={`MVP Logo Light`}
+                  width={200}
+                  height={120}
+                  className="dark:hidden"
+                />
+                {/* Dark Theme Logo */}
+                <Image
+                  src={mvp_logo_dark}
+                  alt={`MVP Logo Dark`}
                   width={200}
                   height={120}
                   className="hidden dark:block"

@@ -1,0 +1,125 @@
+---
+title: 'The Deceptive Simplicity of Polymorphism in .NET APIs'
+date: '2025-07-17'
+tags: ['.NET', 'C#', 'JSON', 'ASP.NET Core', 'Polymorphism']
+draft: false
+summary: 'You add one more state to your polymorphic API response, and suddenly everything breaks. This is the story of a subtle bug, a frustrating debugging session, and the one line of code that fixed it all.'
+---
+
+You've been there before. You have a perfectly working API endpoint. You make what seems like a simple, additive change. You run your tests, and suddenly, everything is on fire. 🔥
+
+This is the story of one of those days, a journey into the nuances of `System.Text.Json`, and a reminder that sometimes the most frustrating bugs have the simplest solutions.
+
+## The "Simple" Change
+
+Imagine we have an API endpoint that processes a command. The response can be one of two things: either it succeeded instantly, or it failed validation. We can model this with a polymorphic record structure.
+
+```csharp
+// The response model for our command
+[JsonDerivedType(typeof(Success), "Success")]
+[JsonDerivedType(typeof(ValidationFailed), "ValidationFailed")]
+public abstract record ProcessCommandResponse
+{
+    private ProcessCommandResponse() { }
+
+    public sealed record Success(Guid CommandId, string ResultMessage) : ProcessCommandResponse;
+    public sealed record ValidationFailed(List<string> Errors) : ProcessCommandResponse;
+}
+````
+
+This works perfectly. Our server sends the response, our client deserializes it, and everyone is happy.
+
+Now, a new requirement comes in: some commands take a long time to run, so we need to process them in the background using a job queue like Hangfire. We'll add a new response type to represent this.
+
+```csharp
+// The "simple" addition to our response model
+[JsonDerivedType(typeof(Success), "Success")]
+[JsonDerivedType(typeof(ValidationFailed), "ValidationFailed")]
+[JsonDerivedType(typeof(ProcessingInBackground), "ProcessingInBackground")] // Our new state
+public abstract record ProcessCommandResponse
+{
+    // ... existing records
+
+    public sealed record ProcessingInBackground(string JobId) : ProcessCommandResponse;
+}
+```
+
+This looks like a safe, normal progression. We added a new state. What could go wrong?
+
+## The Error That Changed Everything
+
+As soon as we implemented the logic to return this new state, our tests and UI started failing with this error:
+
+> System.NotSupportedException: The JSON payload for polymorphic interface or abstract type '...ProcessCommandResponse' must specify a type discriminator.
+
+In simple terms, the error means: "I received a JSON object, but I don't know which of the three C\# classes (`Success`, `ValidationFailed`, or `ProcessingInBackground`) to build from it."
+
+This happens because for polymorphic deserialization to work, the JSON needs an extra field to identify the type, which by default is `$type`. The server wasn't sending it.
+
+## Debugging Step 1: The Obvious Fix
+
+The first logical step is to check the server's configuration. In ASP.NET Core, you need to ensure the JSON serializer is configured to handle polymorphism. The fix is to add this to `Program.cs`:
+
+```csharp
+// In Program.cs on the server
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    // This resolver enables support for attributes like [JsonDerivedType]
+    options.SerializerOptions.TypeInfoResolver = new DefaultJsonTypeInfoResolver();
+});
+```
+
+This tells the server to look at our `[JsonDerivedType]` attributes and add the `$type` field when it serializes our response. This is where things get confusing, because you'd be right to think, **"But it was working before I added the new state\!"** which makes this error particularly puzzling.
+
+Problem solved, right?
+
+## Debugging Step 2: The Plot Twist
+
+After confirming the server's global configuration was correct (by injecting `IOptions<JsonOptions>` and inspecting it in the debugger), the situation became truly puzzling. The configuration was loaded, yet the JSON being sent was still wrong.
+
+This means something in our code was bypassing the global configuration. In our case, it was a custom extension method that turned a `FluentResults.Result` object into a Minimal API `IResult`. But even after ensuring that method used `TypedResults` (which respects the DI configuration), the problem remained.
+
+This led to the final "aha\!" moment. The problem wasn't the configuration or the framework; it was one subtle line of C\# code in the endpoint itself.
+
+## The Real Culprit: Type Inference
+
+Here is the code from our API endpoint that returned the "job queued" response. Can you spot the bug?
+
+```csharp
+// In our API Endpoint
+var newResponse = new ProcessCommandResponse.ProcessingInBackground("job-123");
+
+// This line looks innocent, but it's the source of the entire problem.
+return Result.Ok(newResponse); // This is then passed to our .ToMinimalApiResult() helper
+```
+
+The problem is **type inference**.
+
+  - The variable `newResponse` is of the **concrete** type `ProcessCommandResponse.ProcessingInBackground`.
+  - When we call `Result.Ok(newResponse)`, the C\# compiler infers the generic type as the most specific, concrete type it can. The call becomes `Result.Ok<ProcessCommandResponse.ProcessingInBackground>(...)`.
+  - The JSON serializer receives an object that it believes is just a plain, concrete class. It has no reason to treat it as part of a polymorphic hierarchy, so it **doesn't add the `$type` discriminator.**
+
+## The Fix: Be Explicit
+
+The solution was to explicitly tell the compiler that we are dealing with the abstract base type.
+
+```csharp
+// In our API Endpoint
+var newResponse = new ProcessCommandResponse.ProcessingInBackground("job-123");
+
+// The Fix: Explicitly specify the abstract base type.
+return Result.Ok<ProcessCommandResponse>(newResponse);
+```
+
+By adding `<ProcessCommandResponse>`, we change the compile-time type of the result. Now, the JSON serializer receives an object whose type is **abstract**. This is the hint it needs. It says, "Okay, I can't serialize an abstract class directly. I must look at the actual runtime type (`ProcessingInBackground`), find its discriminator name ('ProcessingInBackground'), and add the `$type` field to the JSON."
+
+With that one change, the server started producing the correct JSON, and our client could finally deserialize the response.
+
+```json
+{
+  "$type": "ProcessingInBackground",
+  "jobId": "job-123"
+}
+```
+
+It's a powerful reminder that sometimes the most complex-seeming bugs come down to the subtle, implicit decisions made by the compiler.

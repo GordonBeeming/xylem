@@ -7,9 +7,29 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 27 Jun 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 10 Jul 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</guid>
+    <title>Slaying the EF Core Cartesian Explosion with AsSplitQuery()</title>
+    <link>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</link>
+    <description>You built a rich domain model with aggregates and child collections, but now your queries are painfully slow. Learn how a one-line change in Entity Framework Core, .AsSplitQuery(), can fix the dreaded &quot;Cartesian Explosion&quot; and make your app fly.</description>
+    <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>Entity Framework</category><category>Performance</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-06/ef-cores-hidden-identity-crisis-the-owned-entity-cloning-problem</guid>
+    <title>EF Core&#39;s Hidden Identity Crisis: The Owned Entity Cloning Problem</title>
+    <link>https://gordonbeeming.com/blog/2025-07-06/ef-cores-hidden-identity-crisis-the-owned-entity-cloning-problem</link>
+    <description>Your integration tests all pass, but your live app throws a cryptic EF Core error about modifying a key that doesn&#39;t even exist. Let&#39;s dive into the fascinating reason why and how to fix it.</description>
+    <pubDate>Mon, 07 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Entity Framework Core</category><category>C#</category><category>.NET</category><category>Troubleshooting</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2025-06-27/taking-up-the-last-slot-if-you-know-you-know</guid>
     <title>Taking up the last slot... if you know you know 😘</title>

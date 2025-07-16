@@ -161,16 +161,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</guid>
-    <title>Generating code documentation using Ghost Doc Enterprise</title>
-    <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
-    <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
-    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2017-04-23/setting-up-a-standard-continuous-integration-build-with-vststfs</guid>
     <title>Setting up a standard continuous integration build with VSTS/TFS</title>
     <link>https://gordonbeeming.com/blog/2017-04-23/setting-up-a-standard-continuous-integration-build-with-vststfs</link>
@@ -188,6 +178,16 @@
     <pubDate>Sun, 23 Apr 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>Automated Builds</category><category>dotnet core</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</guid>
+    <title>Generating code documentation using Ghost Doc Enterprise</title>
+    <link>https://gordonbeeming.com/blog/2017-04-30/generating-code-documentation-using-ghost-doc-enterprise</link>
+    <description>I&#39;ve recently started catching up with all the blogs that I&#39;ve wanted to write and have had flagged to write for a long time. This one I have had flagged since 26 January 2016.</description>
+    <pubDate>Sun, 30 Apr 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>C#</category><category>Ghost Doc</category><category>Automated Builds</category>
   </item>
 
   <item>

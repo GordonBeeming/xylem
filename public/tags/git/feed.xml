@@ -51,16 +51,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</guid>
-    <title>Deploying .NET templates using GitHub Actions</title>
-    <link>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</link>
-    <description>Once you&#39;ve created a .NET template, you should automate the updates of the package using GitHub actions to remove the effort required in publishing updates</description>
-    <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</guid>
     <title>Improving your git efficiency using git alias</title>
     <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
@@ -68,6 +58,16 @@
     <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</guid>
+    <title>Deploying .NET templates using GitHub Actions</title>
+    <link>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</link>
+    <description>Once you&#39;ve created a .NET template, you should automate the updates of the package using GitHub actions to remove the effort required in publishing updates</description>
+    <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
   </item>
 
     </channel>

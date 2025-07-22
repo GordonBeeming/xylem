@@ -31,21 +31,21 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
-    <title>Creating your first VSTS Team Project</title>
-    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</guid>
     <title>Create a new VSTS account</title>
     <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
     <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
+    <title>Creating your first VSTS Team Project</title>
+    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>

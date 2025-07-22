@@ -81,16 +81,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</guid>
-    <title>Creating &quot;fake&quot; TFS Builds</title>
-    <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
-    <description>This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.</description>
-    <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
     <title>TFS Work Item Visualizers</title>
     <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
@@ -98,6 +88,16 @@
     <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</guid>
+    <title>Creating &quot;fake&quot; TFS Builds</title>
+    <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
+    <description>This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.</description>
+    <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
   </item>
 
   <item>
@@ -131,21 +131,21 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
-    <title>Creating your first VSTS Team Project</title>
-    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</guid>
     <title>Create a new VSTS account</title>
     <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
     <description>This post is part of an overall Series on Visual Studio Online.</description>
     <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
+    <title>Creating your first VSTS Team Project</title>
+    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
@@ -331,16 +331,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</guid>
-    <title>#TYMHKON: How do I follow what&#39;s happening with Azure DevOps?</title>
-    <link>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</link>
-    <description>#TYMHKON: What is it?</description>
-    <pubDate>Mon, 24 Sep 2018 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</guid>
     <title>How to Tweet Azure Pipeline activity easily</title>
     <link>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</link>
@@ -348,6 +338,16 @@
     <pubDate>Thu, 20 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Azure DevOps</category><category>Web Online Tools</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</guid>
+    <title>#TYMHKON: How do I follow what&#39;s happening with Azure DevOps?</title>
+    <link>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</link>
+    <description>#TYMHKON: What is it?</description>
+    <pubDate>Mon, 24 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
   </item>
 
   <item>

@@ -81,16 +81,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
-    <title>TFS Work Item Visualizers</title>
-    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
-    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
-    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</guid>
     <title>Creating &quot;fake&quot; TFS Builds</title>
     <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
@@ -98,6 +88,16 @@
     <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
+    <title>TFS Work Item Visualizers</title>
+    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
+    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
   </item>
 
   <item>

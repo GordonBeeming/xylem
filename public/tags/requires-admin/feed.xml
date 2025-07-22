@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 03 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 04 Jan 2014 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/requires-admin/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</guid>
-    <title>Cryptographic failure while signing assembly</title>
-    <link>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</link>
-    <description>Today I got a weird error on code that should just work.</description>
-    <pubDate>Fri, 03 Jan 2014 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Visual Studio</category><category>Requires Admin</category><category>Tips</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2014-01-04/start-bitstransfer-object-reference-not-set-to-an-instance-of-an-object</guid>
     <title>Start-BitsTransfer : Object reference not set to an instance of an object.</title>
@@ -28,6 +18,16 @@
     <pubDate>Sat, 04 Jan 2014 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Requires Admin</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</guid>
+    <title>Cryptographic failure while signing assembly</title>
+    <link>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</link>
+    <description>Today I got a weird error on code that should just work.</description>
+    <pubDate>Fri, 03 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Requires Admin</category><category>Tips</category>
   </item>
 
     </channel>

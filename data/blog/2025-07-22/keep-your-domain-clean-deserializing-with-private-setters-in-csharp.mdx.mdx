@@ -82,9 +82,7 @@ When we run this code, we'll see that the `Status` property fails to deserialize
 
 This is a problem. We need our incoming data to be respected without breaking our object's encapsulation.
 
------
-
-## The Solution: `[JsonInclude]`
+## The Simple Fix: Using `[JsonInclude]`
 
 The fix is surprisingly simple and clean. `System.Text.Json` provides the **`[JsonInclude]`** attribute. By placing this attribute on a property, you're explicitly telling the serializer to include it during both serialization and deserialization, regardless of its accessibility.
 
@@ -123,55 +121,73 @@ Now, if we run the *exact same* `Program.cs` code as before, `System.Text.Json` 
 
 <Figure key="/images/GB-2025-07-22 at 13.30.20@2x.png" src="/images/GB-2025-07-22 at 13.30.20@2x.png" alt="Console output showing the deserialized status is now correctly 'Inactive'" width="800" height="0" caption="Success! The Status property is now correctly deserialized. ✅" />
 
-## Bonus: What About Immutable Objects?
+## Advanced: Centralizing Logic with `[JsonConstructor]`
 
-Sometimes you want to go a step further and make your objects truly immutable with `get`-only properties. You can use the **`[JsonConstructor]`** attribute to tell the serializer which constructor to use, and you can even make that constructor `private` to hide it from the rest of your application.
+The constructor-based approach isn't limited to immutable objects. Its real power lies in **centralizing validation logic** to ensure an object is created in a valid state, even if it's mutable. This guarantees that no matter how an object is instantiated (by your code or by the serializer), it respects your core business rules from the very beginning.
 
-This powerful pattern allows you to have a standard public constructor for use within your code, while defining a separate, private constructor with specific validation logic that only `System.Text.Json` will use for deserialization.
-
-Here's how you can set it up:
+To do this, you can use a **private constructor** for the creation and validation logic, and a **public static factory method** as the entry point for your application code.
 
 ```csharp
-// ImmutablePhonebookEntry.cs
-using System.Text.Json.Serialization;
-using System;
-
-public class ImmutablePhonebookEntry
+public class PhonebookEntry
 {
-  public Guid Id { get; }
-  public string Name { get; }
-  public string PhoneNumber { get; }
-  public string Status { get; }
+  public Guid Id { get; } // ID can be immutable
+  public string Name { get; set; } // Name can be changed
+  public string PhoneNumber { get; set; } // Phone number can be changed
+  public string Status { get; private set; } // Status is controlled internally
 
-  // 1. Standard public constructor for general use
-  public ImmutablePhonebookEntry(Guid id, string name, string phoneNumber)
+  // The single, private constructor with all validation logic.
+  [JsonConstructor]
+  private PhonebookEntry(Guid id, string name, string phoneNumber, string status)
   {
+    // Central validation logic runs for all creation paths
+    if (id == Guid.Empty) throw new ArgumentException("ID is required");
+    if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required");
+    if (string.IsNullOrWhiteSpace(phoneNumber)) throw new ArgumentException("Phone number is required");
+    if (string.IsNullOrWhiteSpace(status)) throw new ArgumentException("Status is required");
+
     Id = id;
     Name = name;
     PhoneNumber = phoneNumber;
-    Status = "Active"; // Always defaults to "Active"
+    Status = status;
   }
 
-  // 2. Private constructor exclusively for the JSON serializer
-  [JsonConstructor]
-  private ImmutablePhonebookEntry(Guid id, string name, string phoneNumber, string status)
+  // Public static factory method for creating a NEW entry from your application
+  public static PhonebookEntry Create(string name, string phoneNumber)
   {
-    Id = id;
-    Name = name;
-    PhoneNumber = phoneNumber;
+    // It calls the private constructor, ensuring the default "Active" status is used
+    // and all validation is still run.
+    return new PhonebookEntry(Guid.NewGuid(), name, phoneNumber, "Active");
+  }
 
-    // Add specific validation for deserialization
-    if (string.IsNullOrWhiteSpace(status))
-    {
-      throw new ArgumentException("Status cannot be null or empty", nameof(status));
-    }
-    if (status != "Active" && status != "Inactive")
-    {
-      throw new ArgumentException("Status must be either 'Active' or 'Inactive'", nameof(status));
-    }
-    Status = status;
+  // Public method to modify the object's state, enforcing rules
+  public void Deactivate()
+  {
+    this.Status = "Inactive";
   }
 }
 ```
 
-By using these attributes, you can fully embrace modern serialization with `System.Text.Json` without ever having to compromise the design and encapsulation of your domain models. Happy coding\! 🤓
+
+## Which Approach Should You Use?
+
+Choosing the right approach comes down to the complexity and rules of your object.
+
+### Approach 1: `[JsonInclude]` with Private Setters
+
+This approach is best for simpler objects or when validation is self-contained to a single property.
+
+✅ **Simple:** It's very easy to implement by adding an attribute.\
+✅ **Good for DTOs:** Works well for Data Transfer Objects (DTOs) where complex business rules are not a concern.\
+❌ **Decentralized Logic:** Validation logic can be spread across multiple setters, making it harder to ensure the object as a whole is valid.
+
+### Approach 2: `[JsonConstructor]`
+
+This is the superior approach for rich domain models where you need to enforce business rules that involve multiple properties.
+
+✅ **Guarantees Initial Validity:** The object is created in a transaction-like manner. It either succeeds with a valid state or fails. It can never exist in an invalid initial state.\
+✅ **Centralized Validation:** All rules for what makes an object valid are in one place, making the code easier to understand and maintain.\
+✅ **Clear Intent:** It clearly communicates the requirements for creating a valid object.\
+✅ **Enables Optional Immutability:** While it doesn't force immutability, it's the foundation for it. You can choose to make properties `get`-only if desired.\
+❌ **More Boilerplate:** Requires a bit more initial setup (e.g., the static factory method).
+
+For most scenarios involving rich domain models, the **constructor-based approach is the way to go**. It provides the strongest guarantees for creating valid objects and leads to more reliable, maintainable, and expressive code.

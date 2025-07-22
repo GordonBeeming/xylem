@@ -81,21 +81,21 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</guid>
-    <title>Migrating Test artifacts and all other work item types using the Azure DevOps</title>
-    <link>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</link>
-    <description>In this video I&#39;m going to show you... Migrating Test artifacts (and all other work item types) using the Azure DevOps Migration Tools</description>
-    <pubDate>Sun, 27 Sep 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</guid>
     <title>Migrating pipelines and releases in Azure DevOps</title>
     <link>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</link>
     <description>In this video I&#39;m going to show you... Migrating pipelines and releases in Azure DevOps</description>
     <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</guid>
+    <title>Migrating Test artifacts and all other work item types using the Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</link>
+    <description>In this video I&#39;m going to show you... Migrating Test artifacts (and all other work item types) using the Azure DevOps Migration Tools</description>
+    <pubDate>Sun, 27 Sep 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
   </item>

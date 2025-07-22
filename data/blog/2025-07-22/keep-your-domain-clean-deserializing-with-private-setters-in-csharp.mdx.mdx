@@ -78,7 +78,7 @@ public class Program
 
 When we run this code, we'll see that the `Status` property fails to deserialize. It will retain the default value from the constructor because the serializer can't access the private setter.
 
-<Figure key="/images/GB-2025-07-22 at 13.25.14@2x.png" src="/images/GB-2025-07-22 at 13.25.14@2x.png" alt="Console output showing the deserialized status as 'Active' instead of 'Inactive'" width="800" height="0" caption="The deserialized Status is incorrect, falling back to the constructor's default value." />
+<Figure key="/images/2025-07-22_13.25.14.png" src="/images/2025-07-22_13.25.14.png" alt="Console output showing the deserialized status as 'Active' instead of 'Inactive'" width="800" height="0" caption="The deserialized Status is incorrect, falling back to the constructor's default value." />
 
 This is a problem. We need our incoming data to be respected without breaking our object's encapsulation.
 
@@ -119,7 +119,7 @@ public class PhonebookEntry
 
 Now, if we run the *exact same* `Program.cs` code as before, `System.Text.Json` will see the `[JsonInclude]` attribute and correctly populate the `Status` property using its private setter.
 
-<Figure key="/images/GB-2025-07-22 at 13.30.20@2x.png" src="/images/GB-2025-07-22 at 13.30.20@2x.png" alt="Console output showing the deserialized status is now correctly 'Inactive'" width="800" height="0" caption="Success! The Status property is now correctly deserialized. ✅" />
+<Figure key="/images/2025-07-22_13.30.20.png" src="/images/2025-07-22_13.30.20.png" alt="Console output showing the deserialized status is now correctly 'Inactive'" width="800" height="0" caption="Success! The Status property is now correctly deserialized. ✅" />
 
 ## Advanced: Centralizing Logic with `[JsonConstructor]`
 

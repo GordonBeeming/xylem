@@ -1,0 +1,177 @@
+---
+title: 'Keep Your Domain Clean: Deserializing with Private Setters in C#'
+date: 2025-07-22
+tags: ['C#', '.NET', 'System.Text.Json', 'Serialization', 'Domain-Driven Design']
+draft: false
+summary: 'Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can''t deserialize data back into it? You don''t have to expose your setters! Let''s explore a clean solution.'
+---
+
+As developers, we strive to build robust and well-designed domain models. A key part of that is **encapsulation**—protecting the internal state of our objects and controlling how they are modified. A common way to achieve this is by using private setters on properties.
+
+This works great until you need to serialize these objects to JSON and, more importantly, deserialize them back. You run your code and... `null`. The property with the private setter wasn't populated. 🤔
+
+Do you have to make the setter `public` just to satisfy the serializer? Thankfully, no. Let's look at how to handle this gracefully with `System.Text.Json`.
+
+## The Problem: A Phonebook Example
+
+Imagine we have a simple `PhonebookEntry` class. We want the `Status` of an entry (e.g., "Active", "Inactive") to be controlled internally, so we give its property a `private set`.
+
+Here's our initial domain object:
+
+```csharp
+// PhonebookEntry.cs
+public class PhonebookEntry
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Status { get; private set; } // Private setter!
+
+    public PhonebookEntry(Guid id, string name, string phoneNumber)
+    {
+        Id = id;
+        Name = name;
+        PhoneNumber = phoneNumber;
+        Status = "Active"; // Default status
+    }
+}
+````
+
+Now, let's try to serialize an instance of this class and then deserialize it back. This mimics a common scenario like saving state, sending it over an API, and then rehydrating the object.
+
+```csharp
+// Program.cs
+using System;
+using System.Text.Json;
+
+public class Program
+{
+    public static void Main()
+    {
+        var originalEntry = new PhonebookEntry(
+            Guid.NewGuid(), 
+            "Gordon Beeming", 
+            "0400 123 456"
+        );
+
+        // Imagine we're manually setting the Status to something else for the payload
+        var jsonPayload = $$"""
+        {
+            "Id": "{{originalEntry.Id}}",
+            "Name": "{{originalEntry.Name}}",
+            "PhoneNumber": "{{originalEntry.PhoneNumber}}",
+            "Status": "Inactive"
+        }
+        """;
+
+        Console.WriteLine("--- Original JSON Payload ---");
+        Console.WriteLine(jsonPayload);
+        
+        Console.WriteLine("\n--- Attempting to Deserialize ---");
+        var deserializedEntry = JsonSerializer.Deserialize<PhonebookEntry>(jsonPayload);
+
+        Console.WriteLine($"\nDeserialized Name: {deserializedEntry?.Name}");
+        Console.WriteLine($"Deserialized Status: '{deserializedEntry?.Status}'"); // The issue will be here
+    }
+}
+```
+
+When we run this code, we'll see that the `Status` property fails to deserialize. It will retain the default value from the constructor because the serializer can't access the private setter.
+
+<Figure key="/images/GB-2025-07-22 at 13.25.14@2x.png" src="/images/GB-2025-07-22 at 13.25.14@2x.png" alt="Console output showing the deserialized status as 'Active' instead of 'Inactive'" width="800" height="0" caption="The deserialized Status is incorrect, falling back to the constructor's default value." />
+
+This is a problem. We need our incoming data to be respected without breaking our object's encapsulation.
+
+-----
+
+## The Solution: `[JsonInclude]`
+
+The fix is surprisingly simple and clean. `System.Text.Json` provides the **`[JsonInclude]`** attribute. By placing this attribute on a property, you're explicitly telling the serializer to include it during both serialization and deserialization, regardless of its accessibility.
+
+Let's update our `PhonebookEntry` class:
+
+```csharp
+// PhonebookEntry.cs (Updated)
+using System.Text.Json.Serialization; // Don't forget this using statement!
+
+public class PhonebookEntry
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string PhoneNumber { get; set; }
+
+    [JsonInclude] // ✨ This is the magic!
+    public string Status { get; private set; }
+
+    // We need a parameterless constructor for the serializer to create an instance
+    // before it can set the properties.
+    public PhonebookEntry() { }
+
+    public PhonebookEntry(Guid id, string name, string phoneNumber)
+    {
+        Id = id;
+        Name = name;
+        PhoneNumber = phoneNumber;
+        Status = "Active";
+    }
+}
+```
+
+**Note:** For `[JsonInclude]` to work on properties, the serializer needs a way to create an initial instance of the object. The easiest way is to provide a parameterless constructor.
+
+Now, if we run the *exact same* `Program.cs` code as before, `System.Text.Json` will see the `[JsonInclude]` attribute and correctly populate the `Status` property using its private setter.
+
+<Figure key="/images/GB-2025-07-22 at 13.30.20@2x.png" src="/images/GB-2025-07-22 at 13.30.20@2x.png" alt="Console output showing the deserialized status is now correctly 'Inactive'" width="800" height="0" caption="Success! The Status property is now correctly deserialized. ✅" />
+
+## Bonus: What About Immutable Objects?
+
+Sometimes you want to go a step further and make your objects truly immutable with `get`-only properties. You can use the **`[JsonConstructor]`** attribute to tell the serializer which constructor to use, and you can even make that constructor `private` to hide it from the rest of your application.
+
+This powerful pattern allows you to have a standard public constructor for use within your code, while defining a separate, private constructor with specific validation logic that only `System.Text.Json` will use for deserialization.
+
+Here's how you can set it up:
+
+```csharp
+// ImmutablePhonebookEntry.cs
+using System.Text.Json.Serialization;
+using System;
+
+public class ImmutablePhonebookEntry
+{
+  public Guid Id { get; }
+  public string Name { get; }
+  public string PhoneNumber { get; }
+  public string Status { get; }
+
+  // 1. Standard public constructor for general use
+  public ImmutablePhonebookEntry(Guid id, string name, string phoneNumber)
+  {
+    Id = id;
+    Name = name;
+    PhoneNumber = phoneNumber;
+    Status = "Active"; // Always defaults to "Active"
+  }
+
+  // 2. Private constructor exclusively for the JSON serializer
+  [JsonConstructor]
+  private ImmutablePhonebookEntry(Guid id, string name, string phoneNumber, string status)
+  {
+    Id = id;
+    Name = name;
+    PhoneNumber = phoneNumber;
+
+    // Add specific validation for deserialization
+    if (string.IsNullOrWhiteSpace(status))
+    {
+      throw new ArgumentException("Status cannot be null or empty", nameof(status));
+    }
+    if (status != "Active" && status != "Inactive")
+    {
+      throw new ArgumentException("Status must be either 'Active' or 'Inactive'", nameof(status));
+    }
+    Status = status;
+  }
+}
+```
+
+By using these attributes, you can fully embrace modern serialization with `System.Text.Json` without ever having to compromise the design and encapsulation of your domain models. Happy coding\! 🤓

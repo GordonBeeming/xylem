@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Tue, 22 Jul 2025 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/serialization/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</guid>
+    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
+    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</link>
+    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
+    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
+  </item>
+
+    </channel>
+  </rss>

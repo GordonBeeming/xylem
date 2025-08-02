@@ -1,13 +1,13 @@
 import { slug } from 'github-slugger'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
-import ListLayout from '@/layouts/ListLayoutWithTags'
+import ListLayoutGrid from '@/layouts/ListLayoutGrid'
 import { allBlogs } from 'contentlayer/generated'
 import yearData from 'src/app/year-data.json'
 import { genPageMetadata } from 'src/app/seo'
 import { Metadata } from 'next'
 
-const POSTS_PER_PAGE = 5
+const POSTS_PER_PAGE = 10
 
 export async function generateMetadata(props: {
   params: Promise<{ year: string }>
@@ -37,7 +37,7 @@ export const generateStaticParams = async () => {
 export default async function yearPage(props: { params: Promise<{ year: string }> }) {
   const params = await props.params
   const year = parseInt(params.year)
-  const title = year.toString()
+  const title = `Posts from ${year}`
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => {
       let date = new Date(post.date)
@@ -52,7 +52,7 @@ export default async function yearPage(props: { params: Promise<{ year: string }
   }
 
   return (
-    <ListLayout
+    <ListLayoutGrid
       posts={filteredPosts}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}

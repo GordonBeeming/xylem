@@ -201,6 +201,16 @@
   </item>
 
   <item>
+    <guid>https://gordonbeeming.com/blog/2022-08-04/building-basic-azure-infrastructure-using-terraform</guid>
+    <title>Building basic Azure infrastructure using Terraform</title>
+    <link>https://gordonbeeming.com/blog/2022-08-04/building-basic-azure-infrastructure-using-terraform</link>
+    <description>In this video we&#39;ll take a look at how to build some basic Azure infrastructure using Terraform.</description>
+    <pubDate>Thu, 04 Aug 2022 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Terraform</category><category>IaC</category>
+  </item>
+
+  <item>
     <guid>https://gordonbeeming.com/blog/2022-08-11/managing-github-secrets-using-terraform</guid>
     <title>Managing GitHub secrets using terraform</title>
     <link>https://gordonbeeming.com/blog/2022-08-11/managing-github-secrets-using-terraform</link>
@@ -218,16 +228,6 @@
     <pubDate>Wed, 17 Aug 2022 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Azure</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>GitHub</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2022-08-04/building-basic-azure-infrastructure-using-terraform</guid>
-    <title>Building basic Azure infrastructure using Terraform</title>
-    <link>https://gordonbeeming.com/blog/2022-08-04/building-basic-azure-infrastructure-using-terraform</link>
-    <description>In this video we&#39;ll take a look at how to build some basic Azure infrastructure using Terraform.</description>
-    <pubDate>Thu, 04 Aug 2022 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>Terraform</category><category>IaC</category>
   </item>
 
   <item>

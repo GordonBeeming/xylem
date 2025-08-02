@@ -218,27 +218,42 @@
       /* Darker background for contrast */
     }
 
-    /* Dark mode blockquote styling - FIXED with higher specificity */
-    & :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
-      border-left-color: #46CBFF !important;
-      background-color: #242424 !important;
-      color: #F0F0F0 !important;
+    /* Dark mode blockquote styling with high specificity to override Tailwind Typography */
+    & :where(blockquote) {
+      border-left-color: var(--color-primary-400) !important;
+      background-color: var(--color-gray-800) !important;
+      color: var(--color-gray-100) !important;
     }
     
-    /* Additional selector to ensure override */
-    & blockquote {
-      border-left-color: #46CBFF !important;
-      background-color: #242424 !important;
-      color: #F0F0F0 !important;
+    /* Additional higher specificity selector to ensure override */
+    &.prose-invert blockquote {
+      border-left-color: var(--color-primary-400) !important;
+      background-color: var(--color-gray-800) !important;
+      color: var(--color-gray-100) !important;
     }
+  }
+}
 
+/* Global dark mode blockquote styles - even higher specificity */
+html.dark .prose blockquote {
+  border-left-color: var(--color-primary-400) !important;
+  background-color: var(--color-gray-800) !important;
+  color: var(--color-gray-100) !important;
+}
+
+html.dark .prose-invert blockquote {
+  border-left-color: var(--color-primary-400) !important;
+  background-color: var(--color-gray-800) !important;
+  color: var(--color-gray-100) !important;
+}
+
+  .prose-invert {
     /* Dark mode code block styling */
     & pre {
       background-color: var(--color-gray-800) !important;
       border-color: var(--color-gray-700);
     }
   }
-}
 
 /* Remaining styles from your original file - generally these should be fine */
   .line-clamp-3 {

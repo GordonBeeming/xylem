@@ -113,57 +113,75 @@ export default function ListLayoutGrid({
       <div className="space-y-4">
         {/* Search Bar */}
         <div className="relative">
+          <label htmlFor="search-input" className="sr-only">
+            Search articles by title or summary
+          </label>
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <input
-            aria-label="Search articles"
+            id="search-input"
+            aria-label="Search articles by title or summary"
             type="text"
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Search articles..."
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-800 focus:border-primary-800 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-400 dark:focus:border-primary-400"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary-800 focus:border-primary-800 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-400 dark:focus:border-primary-400"
           />
         </div>
 
         {/* Tag Pills and Year Filter */}
         <div className="flex flex-wrap gap-2 items-center">
-          <button
-            onClick={() => setSelectedTag('')}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-              selectedTag === ''
-                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            All Posts
-          </button>
-          {allTags.slice(0, 15).map((tag) => (
+          <div role="group" aria-labelledby="tag-filter-label">
+            <span id="tag-filter-label" className="sr-only">Filter by tags</span>
             <button
-              key={tag}
-              onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                selectedTag === tag
+              onClick={() => setSelectedTag('')}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
+                selectedTag === ''
                   ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
               }`}
+              aria-pressed={selectedTag === ''}
             >
-              {tag}
+              All Posts
             </button>
-          ))}
-          {allTags.length > 15 && (
-            <span className="px-3 py-1 text-sm text-gray-500 dark:text-gray-400">
-              +{allTags.length - 15} more
-            </span>
-          )}
+            {allTags.slice(0, 15).map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
+                  selectedTag === tag
+                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
+                aria-pressed={selectedTag === tag}
+              >
+                {tag}
+              </button>
+            ))}
+            {allTags.length > 15 && (
+              <Link
+                href="/tags"
+                className="px-3 py-1 text-sm text-gray-500 hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
+                aria-label={`View all ${allTags.length} tags`}
+              >
+                +{allTags.length - 15} more
+              </Link>
+            )}
+          </div>
           
           {/* Year Filter Dropdown */}
           <div className="relative ml-4">
+            <label htmlFor="year-filter" className="sr-only">
+              Filter by year
+            </label>
             <select
+              id="year-filter"
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="appearance-none bg-gray-200 text-gray-700 px-4 py-2 pr-8 rounded-lg text-sm font-medium transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400"
+              className="appearance-none bg-gray-200 text-gray-700 px-4 py-2 pr-8 rounded-lg text-sm font-medium transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400"
+              aria-label="Filter posts by year"
             >
               <option value="">All Years</option>
               {yearKeys.map((year) => (
@@ -173,7 +191,7 @@ export default function ListLayoutGrid({
               ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
               </svg>
             </div>
@@ -199,54 +217,56 @@ export default function ListLayoutGrid({
 
       {/* Posts Grid */}
       {displayPosts.length > 0 ? (
-        <div className="grid gap-8 md:grid-cols-2">
-          {displayPosts.map((post) => {
-            const { path, date, title, summary, tags } = post
-            return (
-              <article key={path} className="group">
-                <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 dark:bg-gray-800">
-                  <div className="space-y-4">
-                    {/* Date */}
-                    <time
-                      dateTime={date}
-                      className="text-sm font-medium text-gray-500 dark:text-gray-400"
-                      suppressHydrationWarning
-                    >
-                      {formatDate(date, siteMetadata.locale)}
-                    </time>
-                    
-                    {/* Title */}
-                    <h2 className="text-xl font-bold leading-tight">
-                      <Link
-                        href={`/${path}`}
-                        className="text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400 transition-colors"
+        <section role="main" aria-label="Blog posts">
+          <div className="grid gap-8 md:grid-cols-2">
+            {displayPosts.map((post) => {
+              const { path, date, title, summary, tags } = post
+              return (
+                <article key={path} className="group">
+                  <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-50 dark:focus-within:ring-offset-gray-900">
+                    <div className="space-y-4">
+                      {/* Date */}
+                      <time
+                        dateTime={date}
+                        className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        suppressHydrationWarning
                       >
-                        {title}
-                      </Link>
-                    </h2>
-                    
-                    {/* Summary */}
-                    <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
-                      {summary}
-                    </p>
-                    
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {tags?.slice(0, 3).map((tag) => (
-                        <Tag key={tag} text={tag} />
-                      ))}
-                      {tags && tags.length > 3 && (
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          +{tags.length - 3} more
-                        </span>
-                      )}
+                        {formatDate(date, siteMetadata.locale)}
+                      </time>
+                      
+                      {/* Title */}
+                      <h2 className="text-xl font-bold leading-tight">
+                        <Link
+                          href={`/${path}`}
+                          className="text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                        >
+                          {title}
+                        </Link>
+                      </h2>
+                      
+                      {/* Summary */}
+                      <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
+                        {summary}
+                      </p>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+                        {tags?.slice(0, 3).map((tag) => (
+                          <Tag key={tag} text={tag} />
+                        ))}
+                        {tags && tags.length > 3 && (
+                          <span className="text-sm text-gray-500 dark:text-gray-400" aria-label={`${tags.length - 3} more tags`}>
+                            +{tags.length - 3} more
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
-            )
-          })}
-        </div>
+                </article>
+              )
+            })}
+          </div>
+        </section>
       ) : searchValue === '' && selectedTag === '' && selectedYear === '' ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No posts found.</p>

@@ -12,26 +12,41 @@ export default async function Page() {
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
   return (
     <>
-      <div className="flex flex-col items-start justify-start divide-y divide-gray-200 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0 dark:divide-gray-700">
-        <div className="space-x-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:border-r-2 md:px-6 md:text-6xl md:leading-14 dark:text-gray-100">
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
             Tags
           </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            Explore topics and technologies covered across all {tagKeys.length} tags
+          </p>
         </div>
-        <div className="flex max-w-lg flex-wrap">
-          {tagKeys.length === 0 && 'No tags found.'}
+
+        {/* Tags Grid */}
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {tagKeys.length === 0 && (
+            <div className="col-span-full text-center text-gray-500 dark:text-gray-400">
+              No tags found.
+            </div>
+          )}
           {sortedTags.map((t) => {
             return (
-              <div key={t} className="mt-2 mr-5 mb-2">
-                <Tag text={t} />
-                <Link
-                  href={`/tags/${slug(t).replace(/--+/g, '-')}`}
-                  className="-ml-2 text-sm font-semibold text-gray-600 uppercase dark:text-gray-300"
-                  aria-label={`View posts tagged ${t}`}
-                >
-                  {` (${tagCounts[t]})`}
-                </Link>
-              </div>
+              <Link
+                key={t}
+                href={`/tags/${slug(t).replace(/--+/g, '-')}`}
+                className="group block"
+                aria-label={`View ${tagCounts[t]} posts tagged ${t}`}
+              >
+                <div className="flex items-center justify-between p-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate pr-2">
+                    {t}
+                  </span>
+                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-primary-800 bg-primary-100 dark:text-primary-200 dark:bg-primary-800 rounded-full flex-shrink-0">
+                    {tagCounts[t]}
+                  </span>
+                </div>
+              </Link>
             )
           })}
         </div>

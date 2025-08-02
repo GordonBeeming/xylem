@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 15 Nov 2013 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 29 Oct 2013 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/visual-studio/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
-    <title>TypeScript : Emit Error: Write to file failed..</title>
-    <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
-    <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
-    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2013-10-29/visual-studio-2012-paste-special-feature</guid>
     <title>Visual Studio 2012 – Paste Special Feature</title>
@@ -28,6 +18,16 @@
     <pubDate>Tue, 29 Oct 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Visual Studio</category><category>XML</category><category>JSON</category><category>Visual Studio 2013</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
+    <title>TypeScript : Emit Error: Write to file failed..</title>
+    <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
+    <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
+    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
   </item>
 
   <item>

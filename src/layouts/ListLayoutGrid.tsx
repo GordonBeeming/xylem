@@ -119,7 +119,7 @@ export default function ListLayoutGrid({
         </div>
 
         {/* Tag Pills and Year Filter */}
-        <div className="flex flex-wrap items-center">
+        <div className="space-y-4">
           <div role="group" aria-labelledby="tag-filter-label" className="flex flex-wrap gap-2">
             <span id="tag-filter-label" className="sr-only">Filter by tags</span>
             <button
@@ -159,7 +159,7 @@ export default function ListLayoutGrid({
           </div>
           
           {/* Year Filter Pills */}
-          <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2 ml-4">
+          <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
             <span id="year-filter-label" className="sr-only">Filter by year</span>
             <button
               onClick={() => setSelectedYear('')}

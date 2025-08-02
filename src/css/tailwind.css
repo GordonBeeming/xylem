@@ -7,55 +7,60 @@
 
 /* Core theme configuration */
 @theme {
-  /* Font families - Prioritizing Inter */
+  /* Font families - Inter as primary font */
   --font-sans:
     'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
 
-  /* Colors - Themed for your blog */
-  /* Primary Colors - Blues/Teals */
-  /* Derived from #007bff (links/accents), #004a70 (hero), #00334e (navbar/footer) */
-  /* Hue target: ~245-260 (blues) */
-  --color-primary-50: oklch(0.95 0.04 255);
-  /* Lighter, less saturated blue */
-  --color-primary-100: oklch(0.9 0.07 255);
-  --color-primary-200: oklch(0.8 0.1 257);
-  --color-primary-300: oklch(0.7 0.14 258);
-  --color-primary-400: oklch(0.65 0.16 259);
-  --color-primary-500: oklch(0.608 0.173 259.5);
-  /* Approx. #007bff - for links, buttons */
-  --color-primary-600: oklch(0.48 0.13 250);
-  /* Darker accent */
-  --color-primary-700: oklch(0.358 0.086 245.3);
-  /* Approx. #004a70 - Hero background */
-  --color-primary-800: oklch(0.3 0.078 247);
-  --color-primary-900: oklch(0.267 0.071 249.7);
-  /* Approx. #00334e - Navbar/Footer background */
-  --color-primary-950: oklch(0.22 0.06 250);
-  /* Even darker blue */
+  /* Brand Colors - New Design Requirements */
+  /* Light Blue (#46CBFF) and Dark Blue (#003353) based theme */
+  --color-primary-50: oklch(0.97 0.015 215);
+  /* Very light blue tint */
+  --color-primary-100: oklch(0.93 0.03 215);
+  /* Light blue for subtle backgrounds */
+  --color-primary-200: oklch(0.85 0.06 215);
+  /* Light blue for borders */
+  --color-primary-300: oklch(0.77 0.09 215);
+  /* Medium light blue */
+  --color-primary-400: oklch(0.69 0.12 215);
+  /* #46CBFF - Light Blue accent for dark mode and hover */
+  --color-primary-500: oklch(0.69 0.12 215);
+  /* Default link color - Light Blue */
+  --color-primary-600: oklch(0.55 0.10 215);
+  /* Slightly darker blue */
+  --color-primary-700: oklch(0.40 0.08 215);
+  /* #003353 - Dark Blue primary accent for light mode */
+  --color-primary-800: oklch(0.25 0.06 215);
+  /* #003353 - Dark Blue for hero backgrounds */
+  --color-primary-900: oklch(0.20 0.05 215);
+  /* Very dark blue */
+  --color-primary-950: oklch(0.15 0.04 215);
+  /* Near black blue */
 
-  /* Gray Colors - Themed for your blog */
-  /* Derived from #f8f9fa (page bg), #e9ecef (placeholders), #adb5bd (text) */
-  /* Hue target: neutral or slightly cool gray ~260-275 */
-  --color-gray-50: oklch(0.981 0.0026 270);
-  /* Approx. #f8f9fa - Page background */
-  --color-gray-100: oklch(0.936 0.005 270);
-  /* Approx. #e9ecef - Light borders/backgrounds */
-  --color-gray-200: oklch(0.9 0.008 270);
-  /* Light gray for borders (used as default border) */
-  --color-gray-300: oklch(0.85 0.01 270);
-  --color-gray-400: oklch(0.753 0.012 270);
-  /* Approx. #adb5bd - Medium gray text (footer links) */
-  --color-gray-500: oklch(0.65 0.015 270);
-  /* Mid-gray text */
-  --color-gray-600: oklch(0.556 0.016 270);
-  /* Approx. #6c757d - Darker gray text */
-  --color-gray-700: oklch(0.45 0.014 270);
-  --color-gray-800: oklch(0.3 0.01 270);
-  /* Dark gray text for light backgrounds */
-  --color-gray-900: oklch(0.225 0.003 270);
-  /* Approx. #212529 - Very dark gray text */
-  --color-gray-950: oklch(0.15 0.002 270);
+  /* Gray Colors - Neutral palette for new design */
+  /* Light Mode: Background #FAFAFA, Surface white */
+  /* Dark Mode: Background #1A1A1A, Surface #242424 */
+  --color-gray-50: oklch(0.985 0.001 270);
+  /* #FAFAFA - Light mode background */
+  --color-gray-100: oklch(0.96 0.002 270);
+  /* Very light gray */
+  --color-gray-200: oklch(0.92 0.003 270);
+  /* Light gray for borders */
+  --color-gray-300: oklch(0.85 0.004 270);
+  /* Medium light gray */
+  --color-gray-400: oklch(0.75 0.005 270);
+  /* Medium gray for muted text */
+  --color-gray-500: oklch(0.65 0.006 270);
+  /* Mid gray */
+  --color-gray-600: oklch(0.55 0.007 270);
+  /* Darker gray text */
+  --color-gray-700: oklch(0.45 0.008 270);
+  /* Dark gray */
+  --color-gray-800: oklch(0.20 0.005 270);
+  /* #242424 - Dark mode surface */
+  --color-gray-900: oklch(0.15 0.003 270);
+  /* #1A1A1A - Dark mode background */
+  --color-gray-950: oklch(0.10 0.002 270);
   /* Near black */
 
   /* Line heights (from original) */
@@ -108,18 +113,17 @@
 @layer utilities {
   .prose {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-primary-800);
+      /* Dark Blue for light mode links */
 
-      /* Uses new themed primary-500 */
       &:hover {
-        color: var(--color-primary-600);
-        /* Uses new themed primary-600 */
+        color: var(--color-primary-400);
+        /* Light Blue for hover in light mode */
       }
 
       & code {
         /* Inline code within a link */
-        color: var(--color-primary-400);
-        /* Uses new themed primary-400 */
+        color: var(--color-primary-700);
       }
     }
 
@@ -150,9 +154,10 @@
     & a {
       color: var(--color-primary-400);
 
-      /* Lighter primary for dark backgrounds */
+      /* Light Blue for dark mode links */
       &:hover {
         color: var(--color-primary-300);
+        /* Lighter blue for hover in dark mode */
       }
 
       & code {
@@ -176,7 +181,21 @@
 }
 
 /* Remaining styles from your original file - generally these should be fine */
-.task-list-item::before {
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .task-list-item::before {
   @apply hidden;
 }
 

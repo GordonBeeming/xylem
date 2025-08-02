@@ -8,6 +8,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import yearData from 'src/app/year-data.json'
+import { KBarButton } from 'pliny/search/KBarButton'
 
 interface PaginationProps {
   totalPages: number
@@ -68,7 +69,6 @@ export default function ListLayoutGrid({
   initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
-  const [searchValue, setSearchValue] = useState('')
   const [selectedTag, setSelectedTag] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
   
@@ -80,20 +80,15 @@ export default function ListLayoutGrid({
   const yearCounts = yearData as Record<string, number>
   const yearKeys = Object.keys(yearCounts).reverse()
 
-  // Filter posts based on search, tag, and year
+  // Filter posts based on tag and year
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch = searchValue === '' || 
-      post.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-      post.summary?.toLowerCase().includes(searchValue.toLowerCase())
-    
     const matchesTag = selectedTag === '' || post.tags?.includes(selectedTag)
-    
     const matchesYear = selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
     
-    return matchesSearch && matchesTag && matchesYear
+    return matchesTag && matchesYear
   })
 
-  const displayPosts = initialDisplayPosts.length > 0 && searchValue === '' && selectedTag === '' && selectedYear === '' 
+  const displayPosts = initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === '' 
     ? initialDisplayPosts 
     : filteredPosts
 
@@ -111,29 +106,21 @@ export default function ListLayoutGrid({
 
       {/* Search and Filter Bar */}
       <div className="space-y-4">
-        {/* Search Bar */}
+        {/* Search Button */}
         <div className="relative">
-          <label htmlFor="search-input" className="sr-only">
-            Search articles by title or summary
-          </label>
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <input
-            id="search-input"
-            aria-label="Search articles by title or summary"
-            type="text"
-            onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search articles..."
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary-800 focus:border-primary-800 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-400 dark:focus:border-primary-400"
-          />
+          <KBarButton className="w-full">
+            <div className="flex items-center w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400">
+              <svg className="h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span className="text-gray-500 dark:text-gray-400">Search by title, tag, or content...</span>
+            </div>
+          </KBarButton>
         </div>
 
         {/* Tag Pills and Year Filter */}
-        <div className="flex flex-wrap gap-2 items-center">
-          <div role="group" aria-labelledby="tag-filter-label">
+        <div className="flex flex-wrap items-center">
+          <div role="group" aria-labelledby="tag-filter-label" className="flex flex-wrap gap-2">
             <span id="tag-filter-label" className="sr-only">Filter by tags</span>
             <button
               onClick={() => setSelectedTag('')}
@@ -171,36 +158,40 @@ export default function ListLayoutGrid({
             )}
           </div>
           
-          {/* Year Filter Dropdown */}
-          <div className="relative ml-4">
-            <label htmlFor="year-filter" className="sr-only">
-              Filter by year
-            </label>
-            <select
-              id="year-filter"
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-              className="appearance-none bg-gray-200 text-gray-700 px-4 py-2 pr-8 rounded-lg text-sm font-medium transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400"
-              aria-label="Filter posts by year"
+          {/* Year Filter Pills */}
+          <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2 ml-4">
+            <span id="year-filter-label" className="sr-only">Filter by year</span>
+            <button
+              onClick={() => setSelectedYear('')}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
+                selectedYear === ''
+                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+              }`}
+              aria-pressed={selectedYear === ''}
             >
-              <option value="">All Years</option>
-              {yearKeys.map((year) => (
-                <option key={year} value={year}>
-                  {year} ({yearCounts[year]})
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-              </svg>
-            </div>
+              All Years
+            </button>
+            {yearKeys.map((year) => (
+              <button
+                key={year}
+                onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
+                  selectedYear === year
+                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
+                aria-pressed={selectedYear === year}
+              >
+                {year} ({yearCounts[year]})
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Results Summary */}
-      {(searchValue || selectedTag || selectedYear) && (
+      {(selectedTag || selectedYear) && (
         <div className="text-center text-gray-600 dark:text-gray-400">
           {displayPosts.length === 0 ? (
             <p>No posts found.</p>
@@ -209,7 +200,6 @@ export default function ListLayoutGrid({
               Found {displayPosts.length} post{displayPosts.length !== 1 ? 's' : ''}
               {selectedTag && ` tagged with "${selectedTag}"`}
               {selectedYear && ` from ${selectedYear}`}
-              {searchValue && ` matching "${searchValue}"`}
             </p>
           )}
         </div>
@@ -267,14 +257,14 @@ export default function ListLayoutGrid({
             })}
           </div>
         </section>
-      ) : searchValue === '' && selectedTag === '' && selectedYear === '' ? (
+      ) : selectedTag === '' && selectedYear === '' ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No posts found.</p>
         </div>
       ) : null}
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && !searchValue && !selectedTag && !selectedYear && (
+      {pagination && pagination.totalPages > 1 && !selectedTag && !selectedYear && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
       )}
     </div>

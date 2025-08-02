@@ -218,11 +218,18 @@
       /* Darker background for contrast */
     }
 
-    /* Dark mode blockquote styling */
+    /* Dark mode blockquote styling - FIXED with higher specificity */
+    & :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+      border-left-color: #46CBFF !important;
+      background-color: #242424 !important;
+      color: #F0F0F0 !important;
+    }
+    
+    /* Additional selector to ensure override */
     & blockquote {
-      border-left-color: var(--color-primary-400);
-      background-color: var(--color-gray-800);
-      color: var(--color-gray-200);
+      border-left-color: #46CBFF !important;
+      background-color: #242424 !important;
+      color: #F0F0F0 !important;
     }
 
     /* Dark mode code block styling */

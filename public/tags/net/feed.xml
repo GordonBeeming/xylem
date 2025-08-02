@@ -7,9 +7,19 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sun, 29 Oct 2023 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 15 Aug 2023 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/net/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
+    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
+    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
+    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</guid>
     <title>Visual Studio Item Templates vs .NET Templates in 2023</title>
@@ -28,16 +38,6 @@
     <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
-    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
-    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
-    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
-    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
   </item>
 
   <item>
@@ -71,16 +71,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</guid>
-    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
-    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</link>
-    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
-    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</guid>
     <title>The Deceptive Simplicity of Polymorphism in .NET APIs</title>
     <link>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</link>
@@ -88,6 +78,16 @@
     <pubDate>Thu, 17 Jul 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>.NET</category><category>C#</category><category>JSON</category><category>ASP.NET Core</category><category>Polymorphism</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</guid>
+    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
+    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp.mdx</link>
+    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
+    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
   </item>
 
     </channel>

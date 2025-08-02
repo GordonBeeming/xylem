@@ -1,13 +1,29 @@
+'use client'
+
+import { useState } from 'react'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import booksData from '@/data/booksData'
 import { formatDate } from 'pliny/utils/formatDate'
 import Image from '@/components/Image'
+import BookModal from '@/components/BookModal'
 
 const MAX_DISPLAY = 4
 
 export default function Home({ posts }) {
+  const [selectedBook, setSelectedBook] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openBookModal = (book) => {
+    setSelectedBook(book)
+    setIsModalOpen(true)
+  }
+
+  const closeBookModal = () => {
+    setIsModalOpen(false)
+    setSelectedBook(null)
+  }
   return (
     <>
       {/* Hero Section */}
@@ -122,7 +138,10 @@ export default function Home({ posts }) {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {booksData.map((book) => (
               <article key={book.title} className="group">
-                <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800">
+                <button
+                  onClick={() => openBookModal(book)}
+                  className="h-full w-full rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800 text-left"
+                >
                   <div className="space-y-4">
                     {/* Book Cover */}
                     {book.imgSrc && (
@@ -132,61 +151,42 @@ export default function Home({ posts }) {
                           alt={book.title}
                           width={200}
                           height={267}
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                          className="h-full w-full object-cover"
                         />
                       </div>
                     )}
                     
                     {/* Title */}
-                    <h3 className="text-lg font-bold leading-tight">
-                      {book.href ? (
-                        <Link
-                          href={book.href}
-                          className="text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400"
-                        >
-                          {book.title}
-                        </Link>
-                      ) : (
-                        <span className="text-gray-900 dark:text-gray-100">{book.title}</span>
-                      )}
+                    <h3 className="text-lg font-bold leading-tight text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400">
+                      {book.title}
                     </h3>
                     
-                    {/* Description */}
+                    {/* Description Preview */}
                     <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-4">
                       {book.description}
                     </p>
                     
-                    {/* Learn More Link */}
-                    {book.href && (
-                      <Link
-                        href={book.href}
-                        className="inline-flex items-center gap-1 text-sm font-medium text-primary-800 hover:text-primary-400 dark:text-primary-400 dark:hover:text-primary-300"
-                      >
-                        Learn more
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </Link>
-                    )}
+                    {/* Click to learn more */}
+                    <div className="inline-flex items-center gap-1 text-sm font-medium text-primary-800 group-hover:text-primary-400 dark:text-primary-400 dark:group-hover:text-primary-300">
+                      Click to learn more
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
+                </button>
               </article>
             ))}
           </div>
-          
-          <div className="mt-8 text-center">
-            <Link
-              href="/books"
-              className="inline-flex items-center gap-2 rounded-lg border border-primary-800 px-6 py-3 text-primary-800 hover:bg-primary-800 hover:text-white dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-400 dark:hover:text-gray-900"
-            >
-              View All Books
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
         </section>
       </div>
+
+      {/* Book Modal */}
+      <BookModal
+        book={selectedBook}
+        isOpen={isModalOpen}
+        onClose={closeBookModal}
+      />
     </>
   )
 }

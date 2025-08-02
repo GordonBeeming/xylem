@@ -7,6 +7,7 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
+import yearData from 'src/app/year-data.json'
 
 interface PaginationProps {
   totalPages: number
@@ -69,12 +70,17 @@ export default function ListLayoutGrid({
 }: ListLayoutProps) {
   const [searchValue, setSearchValue] = useState('')
   const [selectedTag, setSelectedTag] = useState('')
+  const [selectedYear, setSelectedYear] = useState('')
   
   // Get all unique tags from posts
   const allTags = [...new Set(posts.flatMap(post => post.tags || []))]
     .sort((a, b) => a.localeCompare(b))
 
-  // Filter posts based on search and tag
+  // Get all unique years from posts
+  const yearCounts = yearData as Record<string, number>
+  const yearKeys = Object.keys(yearCounts).reverse()
+
+  // Filter posts based on search, tag, and year
   const filteredPosts = posts.filter((post) => {
     const matchesSearch = searchValue === '' || 
       post.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -82,10 +88,12 @@ export default function ListLayoutGrid({
     
     const matchesTag = selectedTag === '' || post.tags?.includes(selectedTag)
     
-    return matchesSearch && matchesTag
+    const matchesYear = selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
+    
+    return matchesSearch && matchesTag && matchesYear
   })
 
-  const displayPosts = initialDisplayPosts.length > 0 && searchValue === '' && selectedTag === '' 
+  const displayPosts = initialDisplayPosts.length > 0 && searchValue === '' && selectedTag === '' && selectedYear === '' 
     ? initialDisplayPosts 
     : filteredPosts
 
@@ -119,8 +127,8 @@ export default function ListLayoutGrid({
           />
         </div>
 
-        {/* Tag Pills */}
-        <div className="flex flex-wrap gap-2">
+        {/* Tag Pills and Year Filter */}
+        <div className="flex flex-wrap gap-2 items-center">
           <button
             onClick={() => setSelectedTag('')}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
@@ -149,11 +157,32 @@ export default function ListLayoutGrid({
               +{allTags.length - 15} more
             </span>
           )}
+          
+          {/* Year Filter Dropdown */}
+          <div className="relative ml-4">
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="appearance-none bg-gray-200 text-gray-700 px-4 py-2 pr-8 rounded-lg text-sm font-medium transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400"
+            >
+              <option value="">All Years</option>
+              {yearKeys.map((year) => (
+                <option key={year} value={year}>
+                  {year} ({yearCounts[year]})
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Results Summary */}
-      {(searchValue || selectedTag) && (
+      {(searchValue || selectedTag || selectedYear) && (
         <div className="text-center text-gray-600 dark:text-gray-400">
           {displayPosts.length === 0 ? (
             <p>No posts found.</p>
@@ -161,6 +190,7 @@ export default function ListLayoutGrid({
             <p>
               Found {displayPosts.length} post{displayPosts.length !== 1 ? 's' : ''}
               {selectedTag && ` tagged with "${selectedTag}"`}
+              {selectedYear && ` from ${selectedYear}`}
               {searchValue && ` matching "${searchValue}"`}
             </p>
           )}
@@ -169,7 +199,7 @@ export default function ListLayoutGrid({
 
       {/* Posts Grid */}
       {displayPosts.length > 0 ? (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2">
           {displayPosts.map((post) => {
             const { path, date, title, summary, tags } = post
             return (
@@ -217,14 +247,14 @@ export default function ListLayoutGrid({
             )
           })}
         </div>
-      ) : searchValue === '' && selectedTag === '' ? (
+      ) : searchValue === '' && selectedTag === '' && selectedYear === '' ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No posts found.</p>
         </div>
       ) : null}
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && !searchValue && !selectedTag && (
+      {pagination && pagination.totalPages > 1 && !searchValue && !selectedTag && !selectedYear && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
       )}
     </div>

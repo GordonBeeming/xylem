@@ -26,7 +26,7 @@ export default function CodeBlockEnhancer() {
         buttonContainer.style.right = '0'
         
         // Make the pre element relative for absolute positioning
-        pre.style.position = 'relative'
+        ;(pre as HTMLElement).style.position = 'relative'
         
         // Insert the button container
         pre.appendChild(buttonContainer)

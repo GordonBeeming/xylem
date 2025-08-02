@@ -138,9 +138,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 )}
                 {(next || prev) && (
                   <div className="py-4 xl:py-8">
-                    <div className="flex justify-between items-start">
-                      {prev && prev.path ? (
-                        <div className="flex-1 pr-4">
+                    <div className="flex flex-col space-y-4">
+                      {prev && prev.path && (
+                        <div className="w-full">
                           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
                             <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400 mb-2 flex items-center">
                               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -156,13 +156,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             </Link>
                           </div>
                         </div>
-                      ) : (
-                        <div className="flex-1 pr-4"></div>
                       )}
-                      {next && next.path ? (
-                        <div className="flex-1 pl-4">
+                      {next && next.path && (
+                        <div className="w-full">
                           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-                            <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400 mb-2 flex items-center justify-end">
+                            <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400 mb-2 flex items-center">
                               Next Article
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -170,14 +168,12 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             </h2>
                             <Link 
                               href={`/${next.path}`}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium line-clamp-2 text-right block focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
                             >
                               {next.title}
                             </Link>
                           </div>
                         </div>
-                      ) : (
-                        <div className="flex-1 pl-4"></div>
                       )}
                     </div>
                   </div>

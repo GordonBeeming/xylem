@@ -218,11 +218,11 @@
       /* Darker background for contrast */
     }
 
-    /* Dark mode blockquote styling */
+    /* Dark mode blockquote styling - FIXED */
     & blockquote {
-      border-left-color: var(--color-primary-400);
-      background-color: var(--color-gray-800);
-      color: var(--color-gray-200);
+      border-left-color: #46CBFF !important;
+      background-color: #242424 !important;
+      color: #F0F0F0 !important;
     }
 
     /* Dark mode code block styling */

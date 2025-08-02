@@ -218,7 +218,14 @@
       /* Darker background for contrast */
     }
 
-    /* Dark mode blockquote styling - FIXED */
+    /* Dark mode blockquote styling - FIXED with higher specificity */
+    & :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+      border-left-color: #46CBFF !important;
+      background-color: #242424 !important;
+      color: #F0F0F0 !important;
+    }
+    
+    /* Additional selector to ensure override */
     & blockquote {
       border-left-color: #46CBFF !important;
       background-color: #242424 !important;

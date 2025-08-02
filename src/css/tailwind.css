@@ -127,6 +127,46 @@
       }
     }
 
+    /* Blockquote styling with accent color bar */
+    & blockquote {
+      border-left: 4px solid var(--color-primary-800);
+      background-color: var(--color-gray-50);
+      margin: 1.5rem 0;
+      padding: 1rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      
+      & p {
+        margin: 0.5rem 0;
+        
+        &:first-child {
+          margin-top: 0;
+        }
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    /* Code block improvements */
+    & pre {
+      position: relative;
+      background-color: var(--color-gray-100) !important;
+      border: 1px solid var(--color-gray-200);
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      
+      & code {
+        background-color: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+    }
+
     & :where(h1, h2) {
       font-weight: 700;
       letter-spacing: var(--tracking-tight);
@@ -176,6 +216,19 @@
       /* Lighter primary for code text */
       background-color: var(--color-gray-800);
       /* Darker background for contrast */
+    }
+
+    /* Dark mode blockquote styling */
+    & blockquote {
+      border-left-color: var(--color-primary-400);
+      background-color: var(--color-gray-800);
+      color: var(--color-gray-200);
+    }
+
+    /* Dark mode code block styling */
+    & pre {
+      background-color: var(--color-gray-800) !important;
+      border-color: var(--color-gray-700);
     }
   }
 }

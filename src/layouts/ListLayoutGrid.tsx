@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
@@ -8,7 +9,6 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import yearData from 'src/app/year-data.json'
-import { KBarButton } from 'pliny/search/KBarButton'
 
 interface PaginationProps {
   totalPages: number
@@ -51,8 +51,8 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         </button>
       )}
       {nextPage && (
-        <Link 
-          href={`/blog/page/${currentPage + 1}`} 
+        <Link
+          href={`/blog/page/${currentPage + 1}`}
           rel="next"
           className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300"
         >
@@ -71,26 +71,76 @@ export default function ListLayoutGrid({
 }: ListLayoutProps) {
   const [selectedTag, setSelectedTag] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
-  
+  const [searchQuery, setSearchQuery] = useState('')
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Populate searchQuery, tag, year from URL on mount and focus input if q is present
+  useEffect(() => {
+    const q = searchParams.get('q') || ''
+    setSearchQuery(q)
+    const tag = searchParams.get('tag') || ''
+    setSelectedTag(tag)
+    const year = searchParams.get('year') || ''
+    setSelectedYear(year)
+    if (q && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [searchParams])
+
+  // Update query string when filters/search change
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (searchQuery) params.set('q', searchQuery)
+    if (selectedTag) params.set('tag', selectedTag)
+    if (selectedYear) params.set('year', selectedYear)
+    router.replace(`${pathname}${params.toString() ? '?' + params.toString() : ''}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, selectedTag, selectedYear])
+
   // Get all unique tags from posts
-  const allTags = [...new Set(posts.flatMap(post => post.tags || []))]
-    .sort((a, b) => a.localeCompare(b))
+  const allTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) =>
+    a.localeCompare(b)
+  )
 
   // Get all unique years from posts
   const yearCounts = yearData as Record<string, number>
-  const yearKeys = Object.keys(yearCounts).reverse()
 
   // Filter posts based on tag and year
   const filteredPosts = posts.filter((post) => {
     const matchesTag = selectedTag === '' || post.tags?.includes(selectedTag)
-    const matchesYear = selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
-    
-    return matchesTag && matchesYear
+    const matchesYear =
+      selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
+    const matchesSearch =
+      searchQuery === '' ||
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+
+    return matchesTag && matchesYear && matchesSearch
   })
 
-  const displayPosts = initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === '' 
-    ? initialDisplayPosts 
-    : filteredPosts
+  const displayPosts =
+    initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === '' && searchQuery === ''
+      ? initialDisplayPosts
+      : filteredPosts
+
+  // Compute yearKeys, yearsWithDisplayPosts, and tagsWithDisplayPosts based on current displayPosts
+  const yearKeys = Object.keys(yearCounts).reverse()
+
+  // Only show years that have posts in the current displayPosts
+  const yearsWithDisplayPosts = yearKeys.filter((year) =>
+    filteredPosts.some((post) => post.date.startsWith(year))
+  )
+
+  // Only show tags that have posts in the current displayPosts
+  const tagsWithDisplayPosts = allTags.filter((tag) =>
+    filteredPosts.some((post) => post.tags?.includes(tag))
+  )
+
+  const tagShownLimit = selectedYear ? 30 : 15
 
   return (
     <div className="space-y-8">
@@ -108,14 +158,42 @@ export default function ListLayoutGrid({
       <div className="space-y-4">
         {/* Search Button */}
         <div className="relative">
-          <KBarButton className="w-full">
-            <div className="flex items-center w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400">
-              <svg className="h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <span className="text-gray-500 dark:text-gray-400">Search by title, tag, or content...</span>
-            </div>
-          </KBarButton>
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by title, tag, or content..."
+            className="w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400"
+          />
+        </div>
+
+        {/* Year Filter Pills */}
+        <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
+          <span id="year-filter-label" className="sr-only">Filter by year</span>
+          <button
+            onClick={() => setSelectedYear('')}
+            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === ''
+              ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+              }`}
+            aria-pressed={selectedYear === ''}
+          >
+            All Years
+          </button>
+          {yearsWithDisplayPosts.map((year) => (
+            <button
+              key={year}
+              onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === year
+                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
+              aria-pressed={selectedYear === year}
+            >
+              {year} ({yearCounts[year]})
+            </button>
+          ))}
         </div>
 
         {/* Tag Pills and Year Filter */}
@@ -124,74 +202,43 @@ export default function ListLayoutGrid({
             <span id="tag-filter-label" className="sr-only">Filter by tags</span>
             <button
               onClick={() => setSelectedTag('')}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                selectedTag === ''
-                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedTag === ''
+                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
               aria-pressed={selectedTag === ''}
             >
               All Posts
             </button>
-            {allTags.slice(0, 15).map((tag) => (
+            {tagsWithDisplayPosts.slice(0, tagShownLimit).map((tag) => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                  selectedTag === tag
-                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                }`}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedTag === tag
+                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                  }`}
                 aria-pressed={selectedTag === tag}
               >
                 {tag}
               </button>
             ))}
-            {allTags.length > 15 && (
+            {tagsWithDisplayPosts.length > tagShownLimit && (
               <Link
                 href="/tags"
                 className="px-3 py-1 text-sm text-gray-500 hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
-                aria-label={`View all ${allTags.length} tags`}
+                aria-label={`View all ${tagsWithDisplayPosts.length} tags`}
               >
-                +{allTags.length - 15} more
+                +{tagsWithDisplayPosts.length - tagShownLimit} more
               </Link>
             )}
           </div>
-          
-          {/* Year Filter Pills */}
-          <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
-            <span id="year-filter-label" className="sr-only">Filter by year</span>
-            <button
-              onClick={() => setSelectedYear('')}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                selectedYear === ''
-                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-              }`}
-              aria-pressed={selectedYear === ''}
-            >
-              All Years
-            </button>
-            {yearKeys.map((year) => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                  selectedYear === year
-                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                }`}
-                aria-pressed={selectedYear === year}
-              >
-                {year} ({yearCounts[year]})
-              </button>
-            ))}
-          </div>
+
         </div>
       </div>
 
       {/* Results Summary */}
-      {(selectedTag || selectedYear) && (
+      {(selectedTag || selectedYear || searchQuery) && (
         <div className="text-center text-gray-600 dark:text-gray-400">
           {displayPosts.length === 0 ? (
             <p>No posts found.</p>
@@ -223,7 +270,7 @@ export default function ListLayoutGrid({
                       >
                         {formatDate(date, siteMetadata.locale)}
                       </time>
-                      
+
                       {/* Title */}
                       <h2 className="text-xl font-bold leading-tight">
                         <Link
@@ -233,23 +280,28 @@ export default function ListLayoutGrid({
                           {title}
                         </Link>
                       </h2>
-                      
+
                       {/* Summary */}
                       <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
                         {summary}
                       </p>
-                      
+
                       {/* Tags */}
-                      <div className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+                      <ul className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
                         {tags?.slice(0, 3).map((tag) => (
-                          <Tag key={tag} text={tag} />
+                          <li key={tag}>
+                            <Tag text={tag} />
+                          </li>
                         ))}
                         {tags && tags.length > 3 && (
-                          <span className="text-sm text-gray-500 dark:text-gray-400" aria-label={`${tags.length - 3} more tags`}>
+                          <li
+                            className="text-sm text-gray-500 dark:text-gray-400"
+                            aria-label={`${tags.length - 3} more tags`}
+                          >
                             +{tags.length - 3} more
-                          </span>
+                          </li>
                         )}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </article>
@@ -257,14 +309,14 @@ export default function ListLayoutGrid({
             })}
           </div>
         </section>
-      ) : selectedTag === '' && selectedYear === '' ? (
+      ) : (selectedTag === '' && selectedYear === '' && searchQuery === '') ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No posts found.</p>
         </div>
       ) : null}
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && !selectedTag && !selectedYear && (
+      {pagination && pagination.totalPages > 1 && !selectedTag && !selectedYear && !searchQuery && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
       )}
     </div>

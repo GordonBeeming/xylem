@@ -27,25 +27,25 @@ export default function Home({ posts }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="-mx-6 mb-16 bg-primary-800 px-6 py-20 text-white md:-mx-8 md:px-8">
+      <section className="mb-16 bg-primary-800 px-6 py-20 text-white md:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          {/* Profile Picture */}
-          <div className="mb-6">
-            <Image
-              src="/static/images/avatar.jpg"
-              alt="Gordon Beeming"
-              width={150}
-              height={150}
-              className="mx-auto rounded-full shadow-lg"
-            />
+            {/* Profile Picture */}
+            <div className="mb-6">
+              <Image
+                src="/static/images/avatar.jpg"
+                alt="Gordon Beeming"
+                width={150}
+                height={150}
+                className="mx-auto rounded-full shadow-lg"
+              />
+            </div>
+
+            {/* Name and Tagline */}
+            <h1 className="mb-4 text-4xl font-bold md:text-5xl">Gordon Beeming</h1>
+            <p className="text-xl text-primary-100 md:text-2xl">
+              Father • Husband • Triathlete • SSW Solution Architect
+            </p>
           </div>
-          
-          {/* Name and Tagline */}
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">Gordon Beeming</h1>
-          <p className="text-xl text-primary-100 md:text-2xl">
-            Father • Husband • Triathlete • SSW Solution Architect
-          </p>
-        </div>
       </section>
 
       {/* Content Hub */}
@@ -60,7 +60,7 @@ export default function Home({ posts }) {
               Recent insights and technical deep-dives
             </p>
           </div>
-          
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
             {posts.slice(0, MAX_DISPLAY).map((post) => {
               const { slug, date, title, summary, tags } = post
@@ -75,7 +75,7 @@ export default function Home({ posts }) {
                       >
                         {formatDate(date, siteMetadata.locale)}
                       </time>
-                      
+
                       {/* Title */}
                       <h3 className="text-xl font-bold leading-tight">
                         <Link
@@ -85,12 +85,12 @@ export default function Home({ posts }) {
                           {title}
                         </Link>
                       </h3>
-                      
+
                       {/* Summary */}
                       <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
                         {summary}
                       </p>
-                      
+
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2">
                         {tags.slice(0, 3).map((tag) => (
@@ -108,7 +108,7 @@ export default function Home({ posts }) {
               )
             })}
           </div>
-          
+
           {posts.length > MAX_DISPLAY && (
             <div className="mt-8 text-center">
               <Link
@@ -134,7 +134,7 @@ export default function Home({ posts }) {
               Technical books and publications I've authored
             </p>
           </div>
-          
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {booksData.map((book) => (
               <article key={book.title} className="group">
@@ -155,17 +155,17 @@ export default function Home({ posts }) {
                         />
                       </div>
                     )}
-                    
+
                     {/* Title */}
                     <h3 className="text-lg font-bold leading-tight text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400">
                       {book.title}
                     </h3>
-                    
+
                     {/* Description Preview */}
                     <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-4">
                       {book.description}
                     </p>
-                    
+
                     {/* Click to learn more */}
                     <div className="inline-flex items-center gap-1 text-sm font-medium text-primary-800 group-hover:text-primary-400 dark:text-primary-400 dark:group-hover:text-primary-300">
                       Click to learn more

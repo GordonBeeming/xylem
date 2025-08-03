@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
@@ -64,6 +64,45 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 }
 
 export default function ListLayoutGrid({
+  posts,
+  title,
+  initialDisplayPosts = [],
+  pagination,
+}: ListLayoutProps) {
+  return (
+    <Suspense fallback={<ListLayoutGridFallback title={title} posts={posts} />}>
+      <ListLayoutGridContent
+        posts={posts}
+        title={title}
+        initialDisplayPosts={initialDisplayPosts}
+        pagination={pagination}
+      />
+    </Suspense>
+  )
+}
+
+// Fallback component for when search params are loading
+function ListLayoutGridFallback({ posts, title }: { posts: CoreContent<Blog>[]; title: string }) {
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+          {title}
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          Explore {posts.length} articles about development, technology, and more
+        </p>
+      </div>
+      <div className="text-center">
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main component that uses useSearchParams
+function ListLayoutGridContent({
   posts,
   title,
   initialDisplayPosts = [],

@@ -51,8 +51,8 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         </button>
       )}
       {nextPage && (
-        <Link 
-          href={`/blog/page/${currentPage + 1}`} 
+        <Link
+          href={`/blog/page/${currentPage + 1}`}
           rel="next"
           className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300"
         >
@@ -71,26 +71,38 @@ export default function ListLayoutGrid({
 }: ListLayoutProps) {
   const [selectedTag, setSelectedTag] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
-  
+
   // Get all unique tags from posts
   const allTags = [...new Set(posts.flatMap(post => post.tags || []))]
     .sort((a, b) => a.localeCompare(b))
 
   // Get all unique years from posts
   const yearCounts = yearData as Record<string, number>
-  const yearKeys = Object.keys(yearCounts).reverse()
 
   // Filter posts based on tag and year
   const filteredPosts = posts.filter((post) => {
     const matchesTag = selectedTag === '' || post.tags?.includes(selectedTag)
     const matchesYear = selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
-    
+
     return matchesTag && matchesYear
   })
 
-  const displayPosts = initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === '' 
-    ? initialDisplayPosts 
+  const displayPosts = initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === ''
+    ? initialDisplayPosts
     : filteredPosts
+
+  // Compute yearKeys, yearsWithDisplayPosts, and tagsWithDisplayPosts based on current displayPosts
+  const yearKeys = Object.keys(yearCounts).reverse()
+
+  // Only show years that have posts in the current displayPosts
+  const yearsWithDisplayPosts = yearKeys.filter((year) =>
+    filteredPosts.some((post) => post.date.startsWith(year))
+  )
+
+  // Only show tags that have posts in the current displayPosts
+  const tagsWithDisplayPosts = allTags.filter((tag) =>
+    filteredPosts.some((post) => post.tags?.includes(tag))
+  )
 
   return (
     <div className="space-y-8">
@@ -124,63 +136,59 @@ export default function ListLayoutGrid({
             <span id="tag-filter-label" className="sr-only">Filter by tags</span>
             <button
               onClick={() => setSelectedTag('')}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                selectedTag === ''
-                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedTag === ''
+                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
               aria-pressed={selectedTag === ''}
             >
               All Posts
             </button>
-            {allTags.slice(0, 15).map((tag) => (
+            {tagsWithDisplayPosts.slice(0, 15).map((tag) => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                  selectedTag === tag
-                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                }`}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedTag === tag
+                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                  }`}
                 aria-pressed={selectedTag === tag}
               >
                 {tag}
               </button>
             ))}
-            {allTags.length > 15 && (
+            {tagsWithDisplayPosts.length > 15 && (
               <Link
                 href="/tags"
                 className="px-3 py-1 text-sm text-gray-500 hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
-                aria-label={`View all ${allTags.length} tags`}
+                aria-label={`View all ${tagsWithDisplayPosts.length} tags`}
               >
-                +{allTags.length - 15} more
+                +{tagsWithDisplayPosts.length - 15} more
               </Link>
             )}
           </div>
-          
+
           {/* Year Filter Pills */}
           <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
             <span id="year-filter-label" className="sr-only">Filter by year</span>
             <button
               onClick={() => setSelectedYear('')}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                selectedYear === ''
-                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === ''
+                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
               aria-pressed={selectedYear === ''}
             >
               All Years
             </button>
-            {yearKeys.map((year) => (
+            {yearsWithDisplayPosts.map((year) => (
               <button
                 key={year}
                 onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
-                  selectedYear === year
-                    ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                }`}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === year
+                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                  }`}
                 aria-pressed={selectedYear === year}
               >
                 {year} ({yearCounts[year]})
@@ -223,7 +231,7 @@ export default function ListLayoutGrid({
                       >
                         {formatDate(date, siteMetadata.locale)}
                       </time>
-                      
+
                       {/* Title */}
                       <h2 className="text-xl font-bold leading-tight">
                         <Link
@@ -233,12 +241,12 @@ export default function ListLayoutGrid({
                           {title}
                         </Link>
                       </h2>
-                      
+
                       {/* Summary */}
                       <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
                         {summary}
                       </p>
-                      
+
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
                         {tags?.slice(0, 3).map((tag) => (

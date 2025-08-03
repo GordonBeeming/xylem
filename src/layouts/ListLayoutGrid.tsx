@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
@@ -71,6 +72,33 @@ export default function ListLayoutGrid({
   const [selectedTag, setSelectedTag] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Populate searchQuery, tag, year from URL on mount and focus input if q is present
+  useEffect(() => {
+    const q = searchParams.get('q') || ''
+    setSearchQuery(q)
+    const tag = searchParams.get('tag') || ''
+    setSelectedTag(tag)
+    const year = searchParams.get('year') || ''
+    setSelectedYear(year)
+    if (q && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [searchParams])
+
+  // Update query string when filters/search change
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (searchQuery) params.set('q', searchQuery)
+    if (selectedTag) params.set('tag', selectedTag)
+    if (selectedYear) params.set('year', selectedYear)
+    router.replace(`${pathname}${params.toString() ? '?' + params.toString() : ''}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, selectedTag, selectedYear])
 
   // Get all unique tags from posts
   const allTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) =>
@@ -131,6 +159,7 @@ export default function ListLayoutGrid({
         {/* Search Button */}
         <div className="relative">
           <input
+            ref={searchInputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

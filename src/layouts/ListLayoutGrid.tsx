@@ -104,6 +104,8 @@ export default function ListLayoutGrid({
     filteredPosts.some((post) => post.tags?.includes(tag))
   )
 
+  const tagShownLimit = selectedYear ? 30 : 15
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -130,6 +132,34 @@ export default function ListLayoutGrid({
           </KBarButton>
         </div>
 
+        {/* Year Filter Pills */}
+        <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
+          <span id="year-filter-label" className="sr-only">Filter by year</span>
+          <button
+            onClick={() => setSelectedYear('')}
+            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === ''
+              ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+              }`}
+            aria-pressed={selectedYear === ''}
+          >
+            All Years
+          </button>
+          {yearsWithDisplayPosts.map((year) => (
+            <button
+              key={year}
+              onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === year
+                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                }`}
+              aria-pressed={selectedYear === year}
+            >
+              {year} ({yearCounts[year]})
+            </button>
+          ))}
+        </div>
+
         {/* Tag Pills and Year Filter */}
         <div className="space-y-4">
           <div role="group" aria-labelledby="tag-filter-label" className="flex flex-wrap gap-2">
@@ -144,7 +174,7 @@ export default function ListLayoutGrid({
             >
               All Posts
             </button>
-            {tagsWithDisplayPosts.slice(0, 15).map((tag) => (
+            {tagsWithDisplayPosts.slice(0, tagShownLimit).map((tag) => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
@@ -157,44 +187,17 @@ export default function ListLayoutGrid({
                 {tag}
               </button>
             ))}
-            {tagsWithDisplayPosts.length > 15 && (
+            {tagsWithDisplayPosts.length > tagShownLimit && (
               <Link
                 href="/tags"
                 className="px-3 py-1 text-sm text-gray-500 hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
                 aria-label={`View all ${tagsWithDisplayPosts.length} tags`}
               >
-                +{tagsWithDisplayPosts.length - 15} more
+                +{tagsWithDisplayPosts.length - tagShownLimit} more
               </Link>
             )}
           </div>
 
-          {/* Year Filter Pills */}
-          <div role="group" aria-labelledby="year-filter-label" className="flex flex-wrap gap-2">
-            <span id="year-filter-label" className="sr-only">Filter by year</span>
-            <button
-              onClick={() => setSelectedYear('')}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === ''
-                ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                }`}
-              aria-pressed={selectedYear === ''}
-            >
-              All Years
-            </button>
-            {yearsWithDisplayPosts.map((year) => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(selectedYear === year ? '' : year)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${selectedYear === year
-                  ? 'bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                  }`}
-                aria-pressed={selectedYear === year}
-              >
-                {year} ({yearCounts[year]})
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 

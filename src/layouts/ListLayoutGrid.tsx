@@ -195,6 +195,23 @@ function ListLayoutGridContent({
 
       {/* Search and Filter Bar */}
       <div className="space-y-4">
+        {/* Clear Filters Button */}
+        {(searchQuery || selectedTag || selectedYear) && (
+          <div className="flex justify-end">
+            <button
+              onClick={() => {
+                setSearchQuery('')
+                setSelectedTag('')
+                setSelectedYear('')
+              }}
+              className="px-4 py-2 mb-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900"
+              aria-label="Clear search and filters"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
         {/* Search Button */}
         <div className="relative">
           <input

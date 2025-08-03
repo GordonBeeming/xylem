@@ -8,7 +8,6 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import yearData from 'src/app/year-data.json'
-import { KBarButton } from 'pliny/search/KBarButton'
 
 interface PaginationProps {
   totalPages: number
@@ -71,10 +70,12 @@ export default function ListLayoutGrid({
 }: ListLayoutProps) {
   const [selectedTag, setSelectedTag] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Get all unique tags from posts
-  const allTags = [...new Set(posts.flatMap(post => post.tags || []))]
-    .sort((a, b) => a.localeCompare(b))
+  const allTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) =>
+    a.localeCompare(b)
+  )
 
   // Get all unique years from posts
   const yearCounts = yearData as Record<string, number>
@@ -82,14 +83,21 @@ export default function ListLayoutGrid({
   // Filter posts based on tag and year
   const filteredPosts = posts.filter((post) => {
     const matchesTag = selectedTag === '' || post.tags?.includes(selectedTag)
-    const matchesYear = selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
+    const matchesYear =
+      selectedYear === '' || new Date(post.date).getFullYear().toString() === selectedYear
+    const matchesSearch =
+      searchQuery === '' ||
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
 
-    return matchesTag && matchesYear
+    return matchesTag && matchesYear && matchesSearch
   })
 
-  const displayPosts = initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === ''
-    ? initialDisplayPosts
-    : filteredPosts
+  const displayPosts =
+    initialDisplayPosts.length > 0 && selectedTag === '' && selectedYear === '' && searchQuery === ''
+      ? initialDisplayPosts
+      : filteredPosts
 
   // Compute yearKeys, yearsWithDisplayPosts, and tagsWithDisplayPosts based on current displayPosts
   const yearKeys = Object.keys(yearCounts).reverse()
@@ -122,14 +130,13 @@ export default function ListLayoutGrid({
       <div className="space-y-4">
         {/* Search Button */}
         <div className="relative">
-          <KBarButton className="w-full">
-            <div className="flex items-center w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400">
-              <svg className="h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <span className="text-gray-500 dark:text-gray-400">Search by title, tag, or content...</span>
-            </div>
-          </KBarButton>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by title, tag, or content..."
+            className="w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400"
+          />
         </div>
 
         {/* Year Filter Pills */}
@@ -202,7 +209,7 @@ export default function ListLayoutGrid({
       </div>
 
       {/* Results Summary */}
-      {(selectedTag || selectedYear) && (
+      {(selectedTag || selectedYear || searchQuery) && (
         <div className="text-center text-gray-600 dark:text-gray-400">
           {displayPosts.length === 0 ? (
             <p>No posts found.</p>
@@ -251,16 +258,21 @@ export default function ListLayoutGrid({
                       </p>
 
                       {/* Tags */}
-                      <div className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+                      <ul className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
                         {tags?.slice(0, 3).map((tag) => (
-                          <Tag key={tag} text={tag} />
+                          <li key={tag}>
+                            <Tag text={tag} />
+                          </li>
                         ))}
                         {tags && tags.length > 3 && (
-                          <span className="text-sm text-gray-500 dark:text-gray-400" aria-label={`${tags.length - 3} more tags`}>
+                          <li
+                            className="text-sm text-gray-500 dark:text-gray-400"
+                            aria-label={`${tags.length - 3} more tags`}
+                          >
                             +{tags.length - 3} more
-                          </span>
+                          </li>
                         )}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </article>
@@ -268,14 +280,14 @@ export default function ListLayoutGrid({
             })}
           </div>
         </section>
-      ) : selectedTag === '' && selectedYear === '' ? (
+      ) : (selectedTag === '' && selectedYear === '' && searchQuery === '') ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No posts found.</p>
         </div>
       ) : null}
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && !selectedTag && !selectedYear && (
+      {pagination && pagination.totalPages > 1 && !selectedTag && !selectedYear && !searchQuery && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
       )}
     </div>

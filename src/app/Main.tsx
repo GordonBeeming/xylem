@@ -28,7 +28,8 @@ export default function Home({ posts }) {
     <>
       {/* Hero Section */}
       <section className="-mx-6 mb-16 bg-primary-800 px-6 py-20 text-white md:-mx-8 md:px-8">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-3xl xl:max-w-5xl">
+          <div className="mx-auto max-w-4xl text-center">
           {/* Profile Picture */}
           <div className="mb-6">
             <Image
@@ -45,6 +46,7 @@ export default function Home({ posts }) {
           <p className="text-xl text-primary-100 md:text-2xl">
             Father • Husband • Triathlete • SSW Solution Architect
           </p>
+        </div>
         </div>
       </section>
 

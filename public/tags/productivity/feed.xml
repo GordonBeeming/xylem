@@ -60,5 +60,15 @@
     <category>AI</category><category>Productivity</category><category>Development</category><category>ADR</category><category>Documentation</category>
   </item>
 
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-04/redesigning-my-blog-with-an-ai-powered-workflow</guid>
+    <title>Redesigning My Blog with an AI-Powered Workflow</title>
+    <link>https://gordonbeeming.com/blog/2025-08-04/redesigning-my-blog-with-an-ai-powered-workflow</link>
+    <description>My blog needed a facelift. Instead of weeks of manual CSS changes, I used Gemini for planning and GitHub Copilot for execution to completely redesign my site. Here&#39;s how the AI-assisted process worked.</description>
+    <pubDate>Mon, 04 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>AI</category><category>Gemini</category><category>GitHub Copilot</category><category>Next.js</category><category>Web Development</category><category>Productivity</category>
+  </item>
+
     </channel>
   </rss>

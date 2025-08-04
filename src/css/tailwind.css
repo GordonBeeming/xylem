@@ -115,10 +115,15 @@
     & a {
       color: var(--color-primary-800);
       /* Dark Blue for light mode links */
+      text-decoration: underline;
+      /* Add underline for accessibility */
 
-      &:hover {
+      &:hover,
+      &:focus {
         color: var(--color-primary-400);
-        /* Light Blue for hover in light mode */
+        /* Light Blue for hover/focus in light mode */
+        text-decoration: none;
+        /* Remove underline on hover/focus for "lift" effect */
       }
 
       & code {
@@ -193,11 +198,16 @@
     /* For dark mode */
     & a {
       color: var(--color-primary-400);
-
       /* Light Blue for dark mode links */
-      &:hover {
+      text-decoration: underline;
+      /* Add underline for accessibility */
+
+      &:hover,
+      &:focus {
         color: var(--color-primary-300);
-        /* Lighter blue for hover in dark mode */
+        /* Lighter blue for hover/focus in dark mode */
+        text-decoration: none;
+        /* Remove underline on hover/focus for "lift" effect */
       }
 
       & code {

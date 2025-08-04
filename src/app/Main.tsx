@@ -27,25 +27,25 @@ export default function Home({ posts }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="mb-16 bg-primary-800 px-6 py-20 text-white md:px-8">
+      <section className="mb-8 bg-primary-800 px-6 py-20 text-white md:px-8">
         <div className="mx-auto max-w-4xl text-center">
-            {/* Profile Picture */}
-            <div className="mb-6">
-              <Image
-                src="/static/images/avatar.jpg"
-                alt="Gordon Beeming"
-                width={150}
-                height={150}
-                className="mx-auto rounded-full shadow-lg"
-              />
-            </div>
-
-            {/* Name and Tagline */}
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl">Gordon Beeming</h1>
-            <p className="text-xl text-primary-100 md:text-2xl">
-              Father • Husband • Triathlete • SSW Solution Architect
-            </p>
+          {/* Profile Picture */}
+          <div className="mb-6">
+            <Image
+              src="/static/images/avatar.jpg"
+              alt="Gordon Beeming"
+              width={150}
+              height={150}
+              className="mx-auto rounded-full shadow-lg"
+            />
           </div>
+
+          {/* Name and Tagline */}
+          <h1 className="mb-4 text-4xl font-bold md:text-5xl">Gordon Beeming</h1>
+          <p className="text-xl text-primary-100 md:text-2xl">
+            Father • Husband • Triathlete • SSW Solution Architect
+          </p>
+        </div>
       </section>
 
       {/* Content Hub */}

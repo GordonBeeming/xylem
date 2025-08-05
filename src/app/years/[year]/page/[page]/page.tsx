@@ -19,11 +19,10 @@ export const generateStaticParams = async () => {
   })
 }
 
-export default async function YearPage(props: { params: Promise<{ year: string; page: string }> }) {
-  const params = await props.params
-  const year = parseInt(params.year)
-  const title = year.toString()
-  const pageNumber = parseInt(params.page)
+export default async function YearPage(props: { params: { year: string; page: string } }) {
+  const year = parseInt(props.params.year)
+  const title = props.params.year.toString()
+  const pageNumber = parseInt(props.params.page)
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => {
       let date = new Date(post.date)

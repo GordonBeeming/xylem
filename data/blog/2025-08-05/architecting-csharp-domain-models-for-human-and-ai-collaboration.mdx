@@ -66,9 +66,11 @@ This is especially critical for child entities. You should never be able to fetc
 Here's what that looks like:
 
 ```csharp
-// --- OrderAggregate.cs ---
-// We place the interface and both entities in the same file to allow
-// the Order to see the file-local interface of the OrderItem.
+// --- Order.cs ---
+// For the Order class to use the file-local IOrderItemMutator interface, 
+// the interface must be defined in the same file as the Order.
+// For simplicity in this example, we've included OrderItem here as well, 
+// but in a real project, it would likely live in its own file (OrderItem.cs).
 
 // This interface is a "secret handshake" only visible within this file.
 file interface IOrderItemMutator
@@ -135,8 +137,12 @@ public sealed class Order
 }
 ```
 
-✅ **Pros:** This is a powerful demonstration of enforcing aggregate boundaries at the compiler level. It makes invalid operations on child entities truly impossible from the outside.\
-❌ **Cons:** The complexity is very high. It requires careful file organization and creates a rigid coupling between the entities within that file. It's a heavy-handed approach that can make the domain harder to evolve.
+✅ Enforces aggregate boundaries at the compiler level.\
+✅ Makes invalid operations on child entities truly impossible from the outside.\
+❌ The complexity and cognitive load are very high.\
+❌ Requires careful file organization.\
+❌ Creates a rigid coupling between the entities within the file.\
+❌ Can make the domain harder to evolve.
 
 ## Approach \#2: The Pragmatic Trust Boundary
 
@@ -201,8 +207,11 @@ public sealed class Order
 }
 ```
 
-✅ **Pros:** Much cleaner and easier to read. Significantly less boilerplate. It clearly separates public business operations from internal state mutations and provides a strong physical boundary at the assembly level.\
-⚠️ **Cons:** A developer working *in the same domain assembly* could theoretically modify `item.Quantity` directly, bypassing the `Order`'s logic. This is where the "trust" comes in, supported by code reviews and a solid test suite.
+✅ Much cleaner and easier to read.\
+✅ Significantly less boilerplate code.\
+✅ Clearly separates public business operations from internal state mutations.\
+✅ Provides a strong physical boundary at the assembly level.\
+⚠️ A developer working in the same domain assembly could theoretically bypass the Aggregate Root's logic, requiring team discipline and trust.
 
 ## The Real Superpower: Guardrails for AI
 

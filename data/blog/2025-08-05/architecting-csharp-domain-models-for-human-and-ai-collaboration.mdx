@@ -1,0 +1,247 @@
+---
+title: 'Architecting C# Domain Models for Human and AI Collaboration'
+date: 2025-08-05
+tags: ['C#', 'Domain-Driven Design', 'Architecture', '.NET', 'Copilot', 'AI']
+draft: false
+summary: 'I went down a rabbit hole of extreme encapsulation in C# only to find a more pragmatic path. Discover the journey from a complex domain model to a simpler one that provides powerful guardrails for AI development tools like GitHub Copilot.'
+---
+
+I recently went down a deep rabbit hole, chasing the dragon of "perfect" encapsulation in a C# domain model. I was using every modern feature I could, including file-scoped interfaces, to create an absolutely watertight, immutable-from-the-outside domain. I thought it was brilliant.
+
+Then, during a conversation with my colleague [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), he suggested a different path. He argued that a more pragmatic approach, perhaps moving the domain into its own library, could offer almost all the same benefits with a fraction of the complexity.
+
+I'll be honest—**I fought him on it at first.** I was emotionally attached to the intricate 'fortress' I had built; it was clever, and it worked perfectly. Why would I trade it for something simpler?
+
+But as we talked it through, I started to come around. The simpler design wasn't just 'good enough'; it had its own profound advantages. This realization started a journey that didn't just simplify my code, but also revealed a powerful, unintended benefit: creating the perfect 'guardrails' for AI assistants like GitHub Copilot.
+
+## The Goal: A Well-Defined Domain
+
+First, why bother with all this complexity? In Domain-Driven Design (DDD), the goal of encapsulation is to protect your **business rules**, or "invariants." Your domain model is the heart of your application, and it needs to protect itself from being put into an invalid state.
+
+Let's imagine our `Order` processing system. An order has rules:
+* You can't ship an order that hasn't been paid for.
+* You can't modify an order that has already been shipped.
+* You must provide a positive quantity for an item.
+
+If your `Order` entity is just a collection of public properties (an "anemic" model), especially with public setters, anyone can break these rules.
+
+```csharp
+// The "Anemic" way - anything is possible, everything is dangerous
+public class Order
+{
+    public Guid Id { get; set; }
+    public List<OrderItem> OrderItems { get; set; } = new();
+    public OrderStatus Status { get; set; }
+}
+
+public class OrderItem 
+{
+    public string Sku { get; set; }
+    // A public setter on a child entity is a big risk
+    public int Quantity { get; set; }
+}
+
+public enum OrderStatus { Pending, Paid, Shipped, Delivered }
+
+// Some other part of the system...
+var order = new Order { Status = OrderStatus.Shipped };
+var item = new OrderItem { Sku = "SKU-123", Quantity = 1 };
+order.OrderItems.Add(item);
+
+// Whoops! This breaks a rule, but the domain can't protect itself.
+// The Order had no say in this change.
+item.Quantity = 5; 
+
+Our goal is to make these invalid states unrepresentable by forcing all interactions to go through controlled methods on the Aggregate Root.
+
+## Approach \#1: The Fortress (and the Aggregate Root)
+
+My initial approach was to build a fortress, and I built it around a core concept from Domain-Driven Design (DDD): the **Aggregate Root**.
+
+An Aggregate is a cluster of domain objects (like `Order` and `OrderItem`) that we treat as a single unit. The **Aggregate Root** (`Order` in this case) is the single entity that the outside world is allowed to hold a reference to. The golden rule is that **all commands to modify any entity within the aggregate must go through the Root.**
+
+This is especially critical for child entities. You should never be able to fetch a child `OrderItem` and modify it directly. The `Order` must be in control. To enforce this with an iron fist, I used the `file`-scoped interface pattern to create a "back channel" that only the `Order` could use to command its children.
+
+Here's what that looks like:
+
+```csharp
+// --- Order.cs ---
+// For the Order class to use the file-local IOrderItemMutator interface, 
+// the interface must be defined in the same file as the Order.
+// For simplicity in this example, we've included OrderItem here as well, 
+// but in a real project, it would likely live in its own file (OrderItem.cs).
+
+// This interface is a "secret handshake" only visible within this file.
+file interface IOrderItemMutator
+{
+    void UpdateQuantity(int newQuantity);
+}
+
+// OrderItem now implements the secret interface.
+public class OrderItem : IOrderItemMutator
+{
+    public string Sku { get; private set; }
+    public int Quantity { get; private set; } // Private setter is key
+    public decimal Price { get; private set; }
+
+    internal OrderItem(string sku, int quantity, decimal price)
+    {
+        Sku = sku;
+        Quantity = quantity;
+        Price = price;
+    }
+
+    // The actual mutation is EXPLICITLY implemented and thus private.
+    // It can only be called by casting to IOrderItemMutator.
+    void IOrderItemMutator.UpdateQuantity(int newQuantity)
+    {
+        this.Quantity = newQuantity;
+    }
+}
+
+// The Order is our Aggregate Root
+public sealed class Order
+{
+    private readonly List<OrderItem> _orderItems = new();
+    public IReadOnlyList<OrderItem> OrderItems => _orderItems.AsReadOnly();
+    public OrderStatus Status { get; private set; }
+    
+    // ... Create() and other methods ...
+
+    // This public method on the Root is the ONLY valid entry point.
+    public Result UpdateItemQuantity(string sku, int newQuantity)
+    {
+        // 1. The Aggregate Root enforces its own rules first.
+        if (Status == OrderStatus.Shipped)
+        {
+            return Result.Fail("Cannot modify a shipped order.");
+        }
+        if (newQuantity <= 0)
+        {
+            return Result.Fail("Quantity must be positive.");
+        }
+
+        var itemToUpdate = _orderItems.FirstOrDefault(item => item.Sku == sku);
+        if (itemToUpdate is null)
+        {
+            return Result.Fail($"Item with SKU '{sku}' not found in order.");
+        }
+
+        // 2. The Root uses the "secret handshake" to command the child entity.
+        // This cast is only possible because they are in the same file.
+        ((IOrderItemMutator)itemToUpdate).UpdateQuantity(newQuantity);
+
+        return Result.Ok();
+    }
+}
+```
+
+✅ Enforces aggregate boundaries at the compiler level.\
+✅ Makes invalid operations on child entities truly impossible from the outside.\
+❌ The complexity and cognitive load are very high.\
+❌ Requires careful file organization.\
+❌ Creates a rigid coupling between the entities within the file.\
+❌ Can make the domain harder to evolve.
+
+## Approach \#2: The Pragmatic Trust Boundary
+
+After my chat with Daniel, the pragmatic approach became much clearer. The ultimate goal is to isolate your domain model into its own, separate C\# project (e.g., `MySolution.Domain.dll`). This creates a strong physical boundary. When you're building modern applications with frameworks like Minimal APIs, your "app code" often lives in the main web project. Placing your domain in a separate assembly ensures it can't be accidentally coupled with your web or infrastructure concerns.
+
+This is where the "trust your assembly" idea really comes to life. By marking your setters and methods as `internal`, they are fully public *within* the trusted `MySolution.Domain` project, but completely inaccessible to the `MySolution.WebAPI` project that references it. Your infrastructure code, like Entity Framework configurations, would then live in your web project or a dedicated infrastructure project, keeping your pure domain model free from any persistence-related dependencies.
+
+This approach is much cleaner and still provides the strong boundary we need.
+
+```csharp
+// --- In project MySolution.Domain ---
+
+// OrderItem's setter for Quantity is now 'internal'
+public class OrderItem
+{
+    public string Sku { get; private set; }
+    public int Quantity { get; internal set; } // Internal setter
+    public decimal Price { get; private set; }
+
+    // Constructor is still internal
+    internal OrderItem(string sku, int quantity, decimal price)
+    {
+        Sku = sku;
+        Quantity = quantity;
+        Price = price;
+    }
+}
+
+// The Order class is much simpler now.
+public sealed class Order
+{
+    private readonly List<OrderItem> _orderItems = new();
+    public IReadOnlyList<OrderItem> OrderItems => _orderItems.AsReadOnly();
+    public OrderStatus Status { get; private set; }
+
+    // ... Create() and other methods ...
+
+    public Result UpdateItemQuantity(string sku, int newQuantity)
+    {
+        // 1. The Aggregate Root still enforces its rules.
+        if (Status == OrderStatus.Shipped)
+        {
+            return Result.Fail("Cannot modify a shipped order.");
+        }
+        if (newQuantity <= 0)
+        {
+            return Result.Fail("Quantity must be positive.");
+        }
+
+        var itemToUpdate = _orderItems.FirstOrDefault(item => item.Sku == sku);
+        if (itemToUpdate is null)
+        {
+            return Result.Fail($"Item with SKU '{sku}' not found in order.");
+        }
+
+        // 2. The mutation is now a direct property set.
+        // This is safe because the setter is 'internal' and we trust our own assembly.
+        itemToUpdate.Quantity = newQuantity;
+
+        return Result.Ok();
+    }
+}
+```
+
+✅ Much cleaner and easier to read.\
+✅ Significantly less boilerplate code.\
+✅ Clearly separates public business operations from internal state mutations.\
+✅ Provides a strong physical boundary at the assembly level.\
+⚠️ A developer working in the same domain assembly could theoretically bypass the Aggregate Root's logic, requiring team discipline and trust.
+
+## The Real Superpower: Guardrails for AI
+
+Here's where the story gets really interesting. The pragmatic approach (\#2) creates the perfect environment for AI-assisted development.
+
+AI tools like **GitHub Copilot** are phenomenal, but they work based on the context they are given. If you give them an anemic model, the AI has no choice but to suggest a dangerous path that bypasses your business rules.
+
+> **With an Anemic Model, the AI suggests the wrong path:**
+> Because it sees a public setter on the child `OrderItem`, it will suggest directly mutating the property, bypassing all of the `Order`'s rules:
+>
+> ```csharp
+> // DANGEROUS SUGGESTION
+> item.Quantity = 5;
+> ```
+
+However, when you provide a rich domain model with a clear, limited public API, you create **guardrails**. You guide the AI down the only correct and safe path.
+
+> **With a Rich Domain Model, the AI suggests the right path:**
+> Because the setters are protected (`private` or `internal`), it's guided to the only public method available on the aggregate root:
+>
+> ```csharp
+> // SAFE SUGGESTION
+> order.UpdateItemQuantity("SKU-123", 5);
+> ```
+
+This creates a safe and reliable foundation. This core domain library is where human developers should focus their expertise, writing the code by hand and backing it with a comprehensive suite of high-quality unit tests to rigorously verify every business rule. Once this trusted foundation exists, the higher-level work—like writing integration tests against the Web API endpoints, or even scaffolding the API controllers themselves—can be safely accelerated by either human developers or AI agents, with confidence that the core business logic is protected.
+
+## Conclusion
+
+Even with nearly two decades of experience building systems, it's easy to get lost in the pursuit of a technically "perfect" solution. This journey was a powerful reminder of that. When you're deep in the weeds of a problem, the allure of an unbreakable, clever design can sometimes obscure a more pragmatic path that delivers the same value with far less complexity. It's a classic case of being too close to the problem to see the simpler light.
+
+Ultimately, this isn't about choosing a "simple" over a "complex" design. It's about choosing the *right* boundary for the problem at hand—one that provides robust protection while still enabling the team to move efficiently.
+
+In today's world, that "team" increasingly includes AI partners. The biggest takeaway for me was realizing that a well-defined, pragmatic boundary doesn't just benefit human developers. It creates the essential guardrails that make our AI tools dramatically safer and more effective collaborators. And that feels like a huge win. 🚀

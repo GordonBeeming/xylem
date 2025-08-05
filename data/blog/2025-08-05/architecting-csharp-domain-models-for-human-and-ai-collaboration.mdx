@@ -51,6 +51,7 @@ order.OrderItems.Add(item);
 // Whoops! This breaks a rule, but the domain can't protect itself.
 // The Order had no say in this change.
 item.Quantity = 5; 
+```
 
 Our goal is to make these invalid states unrepresentable by forcing all interactions to go through controlled methods on the Aggregate Root.
 

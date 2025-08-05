@@ -2,7 +2,6 @@
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
-/* Assuming this source is still relevant for your setup */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Core theme configuration */
@@ -12,56 +11,57 @@
     'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
 
-  /* Brand Colors - New Design Requirements */
-  /* Light Blue (#46CBFF) and Dark Blue (#003353) based theme */
-  --color-primary-50: oklch(0.97 0.015 215);
-  /* Very light blue tint */
-  --color-primary-100: oklch(0.93 0.03 215);
-  /* Light blue for subtle backgrounds */
-  --color-primary-200: oklch(0.85 0.06 215);
-  /* Light blue for borders */
-  --color-primary-300: oklch(0.77 0.09 215);
-  /* Medium light blue */
-  --color-primary-400: oklch(0.69 0.12 215);
-  /* #46CBFF - Light Blue accent for dark mode and hover */
-  --color-primary-500: oklch(0.69 0.12 215);
-  /* Default link color - Light Blue */
-  --color-primary-600: oklch(0.55 0.10 215);
-  /* Slightly darker blue */
-  --color-primary-700: oklch(0.40 0.08 215);
-  /* #003353 - Dark Blue primary accent for light mode */
-  --color-primary-800: oklch(0.25 0.06 215);
-  /* #003353 - Dark Blue for hero backgrounds */
-  --color-primary-900: oklch(0.20 0.05 215);
-  /* Very dark blue */
-  --color-primary-950: oklch(0.15 0.04 215);
+  /* =================================================================== */
+  /* Brand Colors - Updated to your custom palette                       */
+  /* =================================================================== */
+
+  /* Primary (Blue) Scale */
+  --color-primary-50: oklch(0.95 0.04 230);
+  /* Lighter tint of Light Blue */
+  --color-primary-100: oklch(0.92 0.06 230);
+  /* Light tint */
+  --color-primary-200: oklch(0.88 0.08 230);
+  /* Lighter blue */
+  --color-primary-300: oklch(0.84 0.11 230);
+  /* Light blue */
+  --color-primary-400: oklch(0.8 0.15 230);
+  /* #46CBFF - Main Light Blue Accent (Dark Mode Primary) */
+  --color-primary-500: oklch(0.8 0.15 230);
+  /* #46CBFF - Default link color */
+  --color-primary-600: oklch(0.55 0.12 258.4);
+  /* Mid-tone between light and dark blue */
+  --color-primary-700: oklch(0.42 0.1 258.4);
+  /* Darker blue */
+  --color-primary-800: oklch(0.28 0.08 258.4);
+  /* #003353 - Main Dark Blue (Light Mode Primary) */
+  --color-primary-900: oklch(0.21 0.06 258.4);
+  /* Darker tint of Dark Blue */
+  --color-primary-950: oklch(0.15 0.04 258.4);
   /* Near black blue */
 
-  /* Gray Colors - Neutral palette for new design */
-  /* Light Mode: Background #FAFAFA, Surface white */
-  /* Dark Mode: Background #1A1A1A, Surface #242424 */
-  --color-gray-50: oklch(0.985 0.001 270);
-  /* #FAFAFA - Light mode background */
-  --color-gray-100: oklch(0.96 0.002 270);
-  /* Very light gray */
-  --color-gray-200: oklch(0.92 0.003 270);
-  /* Light gray for borders */
-  --color-gray-300: oklch(0.85 0.004 270);
-  /* Medium light gray */
-  --color-gray-400: oklch(0.75 0.005 270);
+  /* Gray/Neutral Scale */
+  --color-gray-50: oklch(0.98 0.003 260);
+  /* #F8F9FA - Light Mode Background */
+  --color-gray-100: oklch(0.94 0.004 260);
+  /* #E9ECEF - Light Mode UI Accents (e.g. borders) */
+  --color-gray-200: oklch(0.89 0 0);
+  /* #E0E0E0 - Dark Mode Text */
+  --color-gray-300: oklch(0.8 0 0);
+  /* Lighter gray for dark mode text */
+  --color-gray-400: oklch(0.65 0 0);
   /* Medium gray for muted text */
-  --color-gray-500: oklch(0.65 0.006 270);
+  --color-gray-500: oklch(0.55 0 0);
   /* Mid gray */
-  --color-gray-600: oklch(0.55 0.007 270);
+  --color-gray-600: oklch(0.45 0 0);
   /* Darker gray text */
-  --color-gray-700: oklch(0.45 0.008 270);
+  --color-gray-700: oklch(0.35 0 0);
   /* Dark gray */
-  --color-gray-800: oklch(0.20 0.005 270);
-  /* #242424 - Dark mode surface */
-  --color-gray-900: oklch(0.15 0.003 270);
-  /* #1A1A1A - Dark mode background */
-  --color-gray-950: oklch(0.10 0.002 270);
-  /* Near black */
+  --color-gray-800: oklch(0.25 0 0);
+  /* #2C2C2C - Dark Mode UI Accents (e.g. card backgrounds) */
+  --color-gray-900: oklch(0.18 0 0);
+  /* #1A1A1A - Dark Mode Background */
+  --color-gray-950: oklch(0.18 0 0);
+  /* #1A1A1A - Light Mode Text */
 
   /* Line heights (from original) */
   --line-height-11: 2.75rem;
@@ -75,14 +75,7 @@
   --z-80: 80;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* Base layer overrides using the new color theme */
 @layer base {
 
   *,
@@ -90,79 +83,78 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-    /* Uses our new themed gray-200 */
+    border-color: var(--color-gray-100, currentColor);
+    /* #E9ECEF */
   }
 
   a,
   button {
     outline-color: var(--color-primary-500);
-    /* Uses our new themed primary-500 */
+    /* #46CBFF */
   }
 
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid;
     border-radius: var(--radius-sm);
-    /* Assuming --radius-sm is defined elsewhere or by default */
     outline-color: var(--color-primary-500);
-    /* Uses our new themed primary-500 */
+    /* #46CBFF */
   }
 }
 
+/* Utility layer overrides for prose (markdown content) */
 @layer utilities {
   .prose {
     & a {
       color: var(--color-primary-800);
-      /* Dark Blue for light mode links */
+      /* #003353 */
       text-decoration: underline;
-      /* Add underline for accessibility */
 
       &:hover,
       &:focus {
         color: var(--color-primary-400);
-        /* Light Blue for hover/focus in light mode */
+        /* #46CBFF */
         text-decoration: none;
-        /* Remove underline on hover/focus for "lift" effect */
       }
 
       & code {
-        /* Inline code within a link */
         color: var(--color-primary-700);
       }
     }
 
-    /* Blockquote styling with accent color bar */
     & blockquote {
       border-left: 4px solid var(--color-primary-800);
+      /* #003353 */
       background-color: var(--color-gray-50);
+      /* #F8F9FA */
       margin: 1.5rem 0;
       padding: 1rem 1.5rem;
       border-radius: 0 8px 8px 0;
       font-style: italic;
-      
+
       & p {
         margin: 0.5rem 0;
-        
+
         &:first-child {
           margin-top: 0;
         }
-        
+
         &:last-child {
           margin-bottom: 0;
         }
       }
     }
 
-    /* Code block improvements */
     & pre {
       position: relative;
-      background-color: var(--color-gray-100) !important;
-      border: 1px solid var(--color-gray-200);
+      background-color: var(--color-gray-50) !important;
+      /* #F8F9FA */
+      border: 1px solid var(--color-gray-100);
+      /* #E9ECEF */
       border-radius: 8px;
       margin: 1.5rem 0;
       overflow-x: auto;
-      
+
       & code {
         background-color: transparent !important;
         padding: 0 !important;
@@ -175,7 +167,6 @@
     & :where(h1, h2) {
       font-weight: 700;
       letter-spacing: var(--tracking-tight);
-      /* Assuming --tracking-tight is defined */
     }
 
     & h3 {
@@ -183,31 +174,23 @@
     }
 
     & :where(code):not(pre code) {
-      /* General inline code */
       color: var(--color-primary-700);
-      /* Changed from indigo to a darker themed primary */
       background-color: var(--color-primary-50);
-      /* Added a subtle background for contrast */
       padding: 0.1em 0.3em;
       border-radius: 0.25rem;
     }
   }
 
   .prose-invert {
-
-    /* For dark mode */
     & a {
       color: var(--color-primary-400);
-      /* Light Blue for dark mode links */
+      /* #46CBFF */
       text-decoration: underline;
-      /* Add underline for accessibility */
 
       &:hover,
       &:focus {
         color: var(--color-primary-300);
-        /* Lighter blue for hover/focus in dark mode */
         text-decoration: none;
-        /* Remove underline on hover/focus for "lift" effect */
       }
 
       & code {
@@ -216,71 +199,63 @@
     }
 
     & :where(h1, h2, h3, h4, h5, h6) {
-      color: var(--color-gray-100);
-      /* Light gray for headings on dark backgrounds */
+      color: var(--color-gray-200);
+      /* #E0E0E0 */
     }
 
     & :where(code):not(pre code) {
-      /* General inline code in dark mode */
       color: var(--color-primary-200);
-      /* Lighter primary for code text */
       background-color: var(--color-gray-800);
-      /* Darker background for contrast */
+      /* #2C2C2C */
     }
 
-    /* Dark mode blockquote styling with high specificity to override Tailwind Typography */
     & :where(blockquote) {
       border-left-color: var(--color-primary-400) !important;
+      /* #46CBFF */
       background-color: var(--color-gray-800) !important;
-      color: var(--color-gray-100) !important;
-    }
-    
-    /* Additional higher specificity selector to ensure override */
-    &.prose-invert blockquote {
-      border-left-color: var(--color-primary-400) !important;
-      background-color: var(--color-gray-800) !important;
-      color: var(--color-gray-100) !important;
+      /* #2C2C2C */
+      color: var(--color-gray-200) !important;
+      /* #E0E0E0 */
     }
   }
 }
 
-/* Global dark mode blockquote styles - even higher specificity */
-html.dark .prose blockquote {
+/* High-specificity dark mode overrides */
+html.dark .prose blockquote,
+.dark .prose-invert blockquote {
   border-left-color: var(--color-primary-400) !important;
+  /* #46CBFF */
   background-color: var(--color-gray-800) !important;
-  color: var(--color-gray-100) !important;
+  /* #2C2C2C */
+  color: var(--color-gray-200) !important;
+  /* #E0E0E0 */
 }
 
-html.dark .prose-invert blockquote {
-  border-left-color: var(--color-primary-400) !important;
-  background-color: var(--color-gray-800) !important;
-  color: var(--color-gray-100) !important;
+.dark .prose-invert pre {
+  background-color: var(--color-gray-900) !important;
+  /* #1A1A1A */
+  border-color: var(--color-gray-800);
+  /* #2C2C2C */
 }
 
-  .prose-invert {
-    /* Dark mode code block styling */
-    & pre {
-      background-color: var(--color-gray-800) !important;
-      border-color: var(--color-gray-700);
-    }
-  }
 
-/* Remaining styles from your original file - generally these should be fine */
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+/* Remaining utility styles */
+.line-clamp-3,
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-  .line-clamp-4 {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+}
 
-  .task-list-item::before {
+.line-clamp-4 {
+  -webkit-line-clamp: 4;
+}
+
+.task-list-item::before {
   @apply hidden;
 }
 
@@ -289,7 +264,7 @@ html.dark .prose-invert blockquote {
 }
 
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  @apply mt-12 border-t border-gray-100 pt-8 dark:border-gray-800;
 }
 
 .data-footnote-backref {
@@ -306,16 +281,12 @@ html.dark .prose-invert blockquote {
 
 .no-scrollbar {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  transition:
-    background-color 600000s 0s,
-    color 600000s 0s;
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 
 .katex-display {
@@ -338,16 +309,11 @@ input:-webkit-autofill:focus {
   vertical-align: middle;
 }
 
-
 .figure-container img {
   max-width: 100%;
-  /* Ensures the image never overflows its container */
   height: auto;
-  /* Maintains the aspect ratio as the width changes */
   display: block;
-  /* Removes any extra space below the image */
   margin-left: auto;
-  /* Centers the image if it's smaller than the container */
   margin-right: auto;
 }
 
@@ -355,15 +321,13 @@ input:-webkit-autofill:focus {
   text-align: center;
   font-style: italic;
   margin-top: 0.5em;
-  color: #6b7280;
-  /* text-gray-500 */
+  color: var(--color-gray-500);
 }
 
 .iframe-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  /* This creates a 16:9 aspect ratio box. Adjust if you need other ratios. */
   padding-top: 56.25%;
 }
 
@@ -377,31 +341,41 @@ input:-webkit-autofill:focus {
   height: 100%;
 }
 
-/*
- * ===================================================================
- * Custom Inline Code Block Styling (GitHub-like)
- * ===================================================================
- * This overrides the default pliny/Tailwind typography styles for `code`
- * elements to be more subtle. It targets inline code and provides
- * different backgrounds for light and dark modes.
-*/
-
-/* --- Base styles for inline code in both light and dark mode --- */
 .prose a>code,
-/* This targets code inside links */
 .prose code:not(pre > code) {
-  /* This targets all code that is NOT in a <pre> block */
   @apply rounded-[6px] px-[0.4em] py-[0.2em] text-[85%] font-semibold;
 }
 
-/* --- Light mode specific styles --- */
 .prose a>code,
 .prose code:not(pre > code) {
-  @apply bg-gray-100 text-gray-800;
+  @apply bg-gray-100 text-gray-950;
 }
 
-/* --- Dark mode specific styles --- */
 .dark .prose a>code,
 .dark .prose code:not(pre > code) {
   @apply bg-gray-800 text-gray-200;
+}
+
+/*
+ * ===================================================================
+ * FIX: High-Specificity Dark Mode Prose Links
+ * ===================================================================
+ * This rule explicitly targets links within prose content when dark
+ * mode is active, ensuring the correct light-blue color is applied.
+*/
+.dark .prose a {
+  color: var(--color-primary-400);
+  /* Applies Light Blue (#46CBFF) */
+}
+
+/* Ensure hover/focus states are also correct */
+.dark .prose a:hover,
+.dark .prose a:focus {
+  color: var(--color-primary-300);
+  /* A slightly lighter blue for hover */
+}
+
+/* Fix for inline code inside links in dark mode */
+.dark .prose a code {
+  color: var(--color-primary-300);
 }

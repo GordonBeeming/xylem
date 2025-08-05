@@ -21,107 +21,54 @@ export async function GET(req: NextRequest) {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#1a1a1a',
-          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,.15) 1px, transparent 0)',
-          backgroundSize: '40px 40px',
+          backgroundColor: '#F6F8FA',
+          fontFamily: '"Inter"',
           padding: '60px',
         }}
       >
-        {/* Header with Logo */}
-        <div style={{ display: 'flex', alignSelf: 'flex-start' }}>
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              backgroundColor: '#46cbff',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '32px',
-              fontWeight: 'bold',
-              color: '#1a1a1a',
-            }}
-          >
-            X
-          </div>
+        {/* Section 1: Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+          <div style={{ fontSize: 32, color: '#57606a' }}>Xylem</div>
+          <img
+            // @ts-ignore
+            src={logoData}
+            width="100"
+            height="100"
+            alt="Logo"
+          />
         </div>
 
-        {/* Main Content */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            flex: 1,
-            justifyContent: 'center',
-            maxWidth: '900px',
-          }}
-        >
-          <div
-            style={{
-              fontSize: hasTitle ? '52px' : '60px',
-              fontWeight: 700,
-              lineHeight: 1.2,
-              color: '#ffffff',
-              marginBottom: publishDate ? '20px' : '0',
-            }}
-          >
+        {/* Section 2: Main Content (Title and Metadata) */}
+        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center', alignItems: hasTitle ? 'flex-start' : 'center', width: '100%' }}>
+          <div style={{ fontSize: hasTitle ? 68 : 80, fontWeight: 700, color: '#1A1A1A', lineHeight: 1.2, textAlign: hasTitle ? 'left' : 'center', maxWidth: '90%' }}>
             {title}
           </div>
-          {publishDate && (
-            <div
-              style={{
-                fontSize: '28px',
-                color: '#e0e0e0',
-              }}
-            >
-              {publishDate}
+          {!hasTitle && (
+            <div style={{ marginTop: '25px', fontSize: 32, color: '#57606a', lineHeight: 1.3, textAlign: 'center', maxWidth: '80%' }}>
+              {tagline}
+            </div>
+          )}
+          {hasTitle && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '30px', fontSize: 28, color: '#57606a' }}>
+              <span>{publishDate}</span>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                {tags.map((tag) => (
+                  <span key={tag} style={{ backgroundColor: '#E9ECEF', color: '#1A1A1A', padding: '8px 16px', borderRadius: '9999px' }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div
-          style={{
-            display: 'flex',
-            alignSelf: 'flex-start',
-            alignItems: 'center',
-            width: '100%',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {tags.length > 0 && (
-              <div style={{ display: 'flex', gap: '12px' }}>
-                {tags.map((tag) => (
-                  <div
-                    key={tag}
-                    style={{
-                      backgroundColor: '#2c2c2c',
-                      color: '#46cbff',
-                      padding: '8px 16px',
-                      borderRadius: '9999px',
-                      fontSize: '20px',
-                    }}
-                  >
-                    {tag}
-                  </div>
-                ))}
-              </div>
-            )}
+        {/* Section 3: Footer */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', borderTop: '2px solid #E9ECEF', paddingTop: '20px' }}>
+          <div style={{ fontSize: 28, color: '#57606a' }}>
+            gordonbeeming.com
           </div>
-          <div
-            style={{
-              fontSize: '28px',
-              color: '#46cbff',
-              fontWeight: 'bold',
-            }}
-          >
-            Xylem
+          <div style={{ fontSize: 28, fontWeight: 'bold', color: '#003353' }}>
+            Gordon Beeming
           </div>
         </div>
       </div>
@@ -129,6 +76,12 @@ export async function GET(req: NextRequest) {
     {
       width: 1200,
       height: 630,
+      fonts: [{
+        name: 'Inter',
+        data: fontData,
+        weight: 700,
+        style: 'normal',
+      }],
     }
-  )
+  );
 }

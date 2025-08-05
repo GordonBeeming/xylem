@@ -10,10 +10,9 @@ import { Metadata } from 'next'
 const POSTS_PER_PAGE = 10
 
 export async function generateMetadata(props: {
-  params: Promise<{ tag: string }>
+  params: { tag: string }
 }): Promise<Metadata> {
-  const params = await props.params
-  const tag = decodeURI(params.tag)
+  const tag = decodeURI(props.params.tag)
   return genPageMetadata({
     title: tag,
     description: `${siteMetadata.title} ${tag} tagged content`,
@@ -34,9 +33,8 @@ export const generateStaticParams = async () => {
   }))
 }
 
-export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
-  const params = await props.params
-  const tag = decodeURI(params.tag)
+export default async function TagPage(props: { params: { tag: string } }) {
+  const tag = decodeURI(props.params.tag)
   const title = `Posts tagged "${tag}"`
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag)))

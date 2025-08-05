@@ -9,7 +9,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import Image from '@/components/Image'
 import BookModal from '@/components/BookModal'
 
-const MAX_DISPLAY = 4
+const MAX_DISPLAY = 10
 
 export default function Home({ posts }) {
   const [selectedBook, setSelectedBook] = useState(null)
@@ -27,7 +27,7 @@ export default function Home({ posts }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="mb-8 bg-primary-800 px-6 py-20 text-white md:px-8">
+      <section className="mb-8 bg-[#1A1A1A] px-6 py-20 text-white md:px-8">
         <div className="mx-auto max-w-4xl text-center">
           {/* Profile Picture */}
           <div className="mb-6">

@@ -3,7 +3,7 @@ name: 😱 Build, Publish & Deploy
 on:
   workflow_dispatch:
   push:
-    branches: ["main", "preview"]
+    branches: ["main", "preview", "copilot/*"]
     paths:
       - "data/**"
       - "public/**"
@@ -85,7 +85,7 @@ jobs:
   deploy-preview:
     name: 🕵️ Deploy to Preview
     needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preview'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preview' || github.ref == 'refs/heads/copilot/*'
     runs-on: self-hosted
     environment:
       name: preview

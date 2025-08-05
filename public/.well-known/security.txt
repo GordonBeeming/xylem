@@ -1,0 +1,8 @@
+﻿Contact: mailto:security@gordonbeeming.com
+Contact: https://x.com/GordonBeeming
+Contact: https://www.linkedin.com/in/gordon-beeming/
+Contact: https://bsky.app/profile/gordon.beeming.net
+Expires: 2025-12-31T22:00:00.000Z
+Encryption: https://keybase.io/gordonbeeming
+Preferred-Languages: en
+Canonical: https://gordonbeeming.com/.well-known/security.txt

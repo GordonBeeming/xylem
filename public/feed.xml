@@ -7,9 +7,19 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Mon, 04 Aug 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 05 Aug 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</guid>
+    <title>Architecting C# Domain Models for Human and AI Collaboration</title>
+    <link>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</link>
+    <description>I went down a rabbit hole of extreme encapsulation in C# only to find a more pragmatic path. Discover the journey from a complex domain model to a simpler one that provides powerful guardrails for AI development tools like GitHub Copilot.</description>
+    <pubDate>Tue, 05 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>Domain-Driven Design</category><category>Architecture</category><category>.NET</category><category>Copilot</category><category>AI</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2025-08-04/redesigning-my-blog-with-an-ai-powered-workflow</guid>
     <title>Redesigning My Blog with an AI-Powered Workflow</title>

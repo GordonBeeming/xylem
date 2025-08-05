@@ -39,7 +39,23 @@ export async function generateMetadata(props: {
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
   const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
+  
+  // Generate dynamic OG image URL for blog posts
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(post.date))
+  
+  const searchParams = new URLSearchParams()
+  searchParams.set('title', post.title)
+  searchParams.set('publishDate', formattedDate)
+  if (post.tags) {
+    searchParams.set('tags', post.tags.join(','))
+  }
+  const dynamicOgImageUrl = `${siteMetadata.siteUrl}/api/og?${searchParams.toString()}`
+  
+  let imageList = [dynamicOgImageUrl]
   if (post.images) {
     imageList = typeof post.images === 'string' ? [post.images] : post.images
   }

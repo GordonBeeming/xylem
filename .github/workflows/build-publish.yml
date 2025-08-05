@@ -85,7 +85,7 @@ jobs:
   deploy-preview:
     name: 🕵️ Deploy to Preview
     needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preview' || github.ref == 'refs/heads/copilot/*'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preview' || startsWith(github.ref, 'refs/heads/copilot/')
     runs-on: self-hosted
     environment:
       name: preview

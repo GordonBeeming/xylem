@@ -6,8 +6,9 @@ import { notFound } from 'next/navigation'
 
 const POSTS_PER_PAGE = 10
 
-export async function generateMetadata({ params }: { params: { page: string } }) {
-  const page = parseInt(params.page)
+export async function generateMetadata({ params }: { params: Promise<{ page: string }> }) {
+  const resolvedParams = await params
+  const page = parseInt(resolvedParams.page)
   const pageTitle = `All Posts - Page ${page}`
   const pageDescription = 'A list of all my technical articles and blog posts.'
 
@@ -23,10 +24,10 @@ export const generateStaticParams = async () => {
   return paths
 }
 
-// FIXED: Updated function signature to be consistent and robust
-export default async function Page({ params }: { params: { page: string } }) {
+export default async function Page({ params }: { params: Promise<{ page: string }> }) {
+  const resolvedParams = await params
   const posts = allCoreContent(sortPosts(allBlogs))
-  const pageNumber = parseInt(params.page as string)
+  const pageNumber = parseInt(resolvedParams.page as string)
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 
   if (pageNumber <= 0 || pageNumber > totalPages || isNaN(pageNumber)) {

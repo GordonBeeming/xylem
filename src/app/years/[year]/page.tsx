@@ -10,9 +10,10 @@ import { Metadata } from 'next'
 const POSTS_PER_PAGE = 10
 
 export async function generateMetadata(props: {
-  params: { year: string }
+  params: Promise<{ year: string }>
 }): Promise<Metadata> {
-  const year = decodeURI(props.params.year)
+  const resolvedParams = await props.params
+  const year = decodeURI(resolvedParams.year)
   return genPageMetadata({
     title: year,
     description: `${siteMetadata.title} ${year} year content`,
@@ -33,8 +34,9 @@ export const generateStaticParams = async () => {
   }))
 }
 
-export default async function yearPage(props: { params: { year: string } }) {
-  const year = parseInt(props.params.year)
+export default async function yearPage(props: { params: Promise<{ year: string }> }) {
+  const resolvedParams = await props.params
+  const year = parseInt(resolvedParams.year)
   const title = `Posts from ${year}`
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => {

@@ -7,8 +7,9 @@ import { notFound } from 'next/navigation' // <-- Import notFound
 
 export const metadata = genPageMetadata({ title: 'About' })
 
+
 export default function Page() {
-  const author = allAuthors.find((p) => p.slug === 'gordon-beeming')
+  const author = allAuthors.find((p) => p.slug === 'authors/gordon-beeming')
 
   if (!author) {
     console.error('RUNTIME ERROR: Could not find author with slug "gordon-beeming".')

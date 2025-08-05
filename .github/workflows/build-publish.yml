@@ -84,6 +84,7 @@ jobs:
 
   deploy-preview:
     name: 🕵️ Deploy to Preview
+    permissions: {}
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preview' || startsWith(github.ref, 'refs/heads/copilot/')
     runs-on: self-hosted
@@ -114,6 +115,7 @@ jobs:
 
   deploy-production:
     name: 🚀 Deploy to Production
+    permissions: {}
     if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: self-hosted

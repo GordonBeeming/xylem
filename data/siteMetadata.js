@@ -10,7 +10,7 @@ const siteMetadata = {
   siteUrl: 'https://gordonbeeming.com',
   siteRepo: 'https://github.com/GordonBeeming/xylem',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
+  socialBanner: `${process.env.BASE_PATH || ''}/api/og`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'website@gordonbeeming.com',
   github: 'https://github.com/GordonBeeming',

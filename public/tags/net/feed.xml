@@ -90,5 +90,15 @@
     <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
   </item>
 
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</guid>
+    <title>Architecting C# Domain Models for Human and AI Collaboration</title>
+    <link>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</link>
+    <description>I went down a rabbit hole of extreme encapsulation in C# only to find a more pragmatic path. Discover the journey from a complex domain model to a simpler one that provides powerful guardrails for AI development tools like GitHub Copilot.</description>
+    <pubDate>Tue, 05 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>Domain-Driven Design</category><category>Architecture</category><category>.NET</category><category>Copilot</category><category>AI</category>
+  </item>
+
     </channel>
   </rss>

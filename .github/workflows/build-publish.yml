@@ -93,6 +93,10 @@ jobs:
       url: https://preview.gordonbeeming.com
 
     steps:
+      - name: Cleanup old Podman images
+        run: |
+          podman system prune -f --volumes
+
       - name: Deploy to preview environment
         run: |
           export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
@@ -124,6 +128,10 @@ jobs:
       url: https://gordonbeeming.com
 
     steps:
+      - name: Cleanup old Podman images
+        run: |
+          podman system prune -f --volumes
+          
       - name: Deploy to production environment
         run: |
           export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"

@@ -1,0 +1,167 @@
+---
+title: 'A 25-Step TDD Kata: Building a Markdown Renderer in Rust'
+date: '2025-08-09'
+tags: ['Rust', 'TDD', 'Kata', 'Software Development', 'Programming']
+draft: false
+summary: 'Sharpen your Rust and TDD skills with this extensive 25-step coding challenge. Build a complete Markdown-to-HTML renderer from scratch, one test at a time. Perfect for deliberate practice.'
+---
+
+The gap between knowing a language's syntax and truly feeling proficient is a journey every developer takes. For me, that journey currently involves learning Rust. To bridge that gap, I've been searching for challenges that push me to not only write code but to think in a structured way and get faster with my IDE's shortcuts.
+
+This led me down the rabbit hole of code katas. Inspired by classics like the [String Calculator by Roy Osherove](https://osherove.com/tdd-kata-1), I've created a more extensive challenge: a 25-step kata to build a Markdown-to-HTML renderer from scratch.
+
+While I'm using this to sharpen my Rust skills, the beauty of this kata is that it's completely language-agnostic. The principles of Test-Driven Development (TDD) apply everywhere. So, I have a challenge for you: take this on in your favorite language, be it C#, Python, TypeScript, or anything else, and **leave a comment below to let us know which one you used!** It would be awesome to see a collection of solutions in different languages.
+
+Our guide on this journey will be the simple, powerful TDD cycle of Red-Green-Refactor.
+
+<Figure key="/images/tdd-cycle-diagram.png" src="/images/tdd-cycle-diagram.png" alt="A diagram showing a cycle with three parts: Red, Green, and Refactor." width="600" height="0" caption="The Red-Green-Refactor cycle will be our guide for this journey." />
+
+The goal isn't just to finish. It's to embrace the TDD rhythm: write a failing test (Red), make it pass with the simplest code (Green), and then clean it up (Refactor). Let's get started! 🦀
+
+## The Challenge
+
+Your task is to create a function that takes a string of Markdown and returns the correctly formatted HTML string. We will build up the functionality one feature at a time, ensuring our test suite is always green before moving to the next step.
+
+## The 25 Progressions
+
+Here is the step-by-step path to build your renderer. Each step represents a new test (or set of tests) you should write first.
+
+### Phase 1: The Document Structure
+
+1.  **Handle Empty Input**
+    * **Input**: `""`
+    * **Output**: `""`
+
+2.  **A Single Line of Text**
+    * **Input**: `"Hello, World!"`
+    * **Output**: `<p>Hello, World!</p>`
+
+3.  **Multiple Lines in One Paragraph**
+    * **Input**: `"Hello,\nWorld!"`
+    * **Output**: `<p>Hello, World!</p>`
+
+4.  **Separate Paragraphs**
+    * **Input**: `"Line 1\n\nLine 2"`
+    * **Output**: `<p>Line 1</p><p>Line 2</p>`
+
+### Phase 2: Headers
+
+5.  **Header 1**
+    * **Input**: `"# Header 1"`
+    * **Output**: `<h1>Header 1</h1>`
+
+6.  **Header 2**
+    * **Input**: `"## Header 2"`
+    * **Output**: `<h2>Header 2</h2>`
+
+7.  **Support all Headers (H3-H6)**
+    * Test inputs from `### H3` through `###### H6`.
+
+8.  **Refactoring Break**
+    * This is a perfect time to refactor. Instead of multiple `if` conditions, can you create a single, elegant piece of logic that counts the `#` characters to determine the header level?
+
+### Phase 3: Inline Styling
+
+9.  **Emphasis (Italics)**
+    * **Input**: `"This is *italic* text."`
+    * **Output**: `<p>This is <em>italic</em> text.</p>`
+
+10. **Alternative Emphasis**
+    * **Input**: `"This is _italic_ text."`
+    * **Output**: `<p>This is <em>italic</em> text.</p>`
+
+11. **Strong (Bold)**
+    * **Input**: `"This is **bold** text."`
+    * **Output**: `<p>This is <strong>bold</strong> text.</p>`
+
+12. **Alternative Strong**
+    * **Input**: `"This is __bold__ text."`
+    * **Output**: `<p>This is <strong>bold</strong> text.</p>`
+
+13. **Strikethrough**
+    * **Input**: `"This is ~~struck~~ text."`
+    * **Output**: `<p>This is <del>struck</del> text.</p>`
+
+14. **Nested Inline Styles**
+    * **Input**: `"This is **bold and *italic*** text."`
+    * **Output**: `<p>This is <strong>bold and <em>italic</em></strong> text.</p>`
+
+### Phase 4: Links and Images
+
+15. **Links**
+    * **Input**: `"[Gordon's Blog](https://gordonbeeming.com)"`
+    * **Output**: `<p><a href="https://gordonbeeming.com">Gordon's Blog</a></p>`
+
+16. **Images**
+    * **Input**: `"![An alt text](image.jpg)"`
+    * **Output**: `<p><img src="image.jpg" alt="An alt text"></p>`
+
+### Phase 5: Lists and Blocks
+
+17. **Unordered List (Single Item)**
+    * **Input**: `"* List item"`
+    * **Output**: `<ul><li>List item</li></ul>`
+
+18. **Unordered List (Multiple Items)**
+    * **Input**: `"* Item 1\n* Item 2"`
+    * **Output**: `<ul><li>Item 1</li><li>Item 2</li></ul>`
+
+19. **Ordered List**
+    * **Input**: `"1. First item\n2. Second item"`
+    * **Output**: `<ol><li>First item</li><li>Second item</li></ol>`
+
+20. **Blockquotes**
+    * **Input**: `"> This is a quote."`
+    * **Output**: `<blockquote><p>This is a quote.</p></blockquote>`
+
+21. **Horizontal Rule**
+    * **Input**: `---`
+    * **Output**: `<hr>`
+
+### Phase 6: Advanced Elements & Final Polish
+
+22. **Inline Code**
+    * **Input**: ``"Use the `let` keyword."``
+    * **Output**: `<p>Use the <code>let</code> keyword.</p>`
+
+23. **Security Refactor (HTML Escaping)**
+    * **Input**: `"<script>"`
+    * **Output**: `<p>&lt;script&gt;</p>`
+
+24. **Fenced Code Blocks**
+    * **Input**: `````"```\nlet x = 5;\n```"`````
+    * **Output**: `<pre><code>let x = 5;\n</code></pre>`
+
+25. **Links with Titles**
+    * **Input**: `"[Tiani's Site](https://tianibeeming.com \"Tiani Beeming\")"`
+    * **Output**: `<p><a href="https://tianibeeming.com" title="Tiani Beeming">Tiani's Site</a></p>`
+
+And there you have it! After 25 steps, you'll have a renderer capable of turning complex Markdown into clean HTML.
+
+For example, a piece of Markdown like this:
+
+```markdown
+# My Document
+
+This paragraph contains **bold text** and a link to [my wife Tiani's blog](https://tianibeeming.com).
+
+- List Item 1
+- List Item 2
+````
+
+...will produce the following satisfying HTML output. 🎉
+
+```html
+<h1>My Document</h1>
+<p>This paragraph contains <strong>bold text</strong> and a link to <a href="[https://tianibeeming.com](https://tianibeeming.com)">my wife Tiani's blog</a>.</p>
+<ul>
+  <li>List Item 1</li>
+  <li>List Item 2</li>
+</ul>
+```
+
+And that's the full 25-step progression! Following these steps won't just leave you with a functional Markdown renderer; it will give you dozens of reps in the TDD cycle, making the process feel like second nature.
+
+I'm genuinely excited to see what you build with this. Please, share your experience and the language you used in the comments below.
+
+Happy coding!

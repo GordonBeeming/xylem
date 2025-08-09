@@ -15,7 +15,9 @@
 		"noopener",
 		"notranslate",
 		"opennextjs",
-		"sigstore"
+		"sigstore",
+		"Tiani",
+		"Tiani's"
 	],
 	"markdown.copyFiles.destination": {
 		"**/*": "images/"

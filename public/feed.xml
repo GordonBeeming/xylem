@@ -7,9 +7,19 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Tue, 05 Aug 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 09 Aug 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-09/a-25-step-tdd-kata-building-a-markdown-renderer-in-rust</guid>
+    <title>A 25-Step TDD Kata: Building a Markdown Renderer in Rust</title>
+    <link>https://gordonbeeming.com/blog/2025-08-09/a-25-step-tdd-kata-building-a-markdown-renderer-in-rust</link>
+    <description>Sharpen your Rust and TDD skills with this extensive 25-step coding challenge. Build a complete Markdown-to-HTML renderer from scratch, one test at a time. Perfect for deliberate practice.</description>
+    <pubDate>Sat, 09 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Rust</category><category>TDD</category><category>Kata</category><category>Software Development</category><category>Programming</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</guid>
     <title>Architecting C# Domain Models for Human and AI Collaboration</title>

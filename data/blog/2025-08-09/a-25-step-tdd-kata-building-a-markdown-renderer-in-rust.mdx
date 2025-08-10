@@ -33,25 +33,25 @@ Here is the step-by-step path to build your renderer. Each step represents a new
     * **Output**: `""`
 
 2.  **A Single Line of Text**
-    * **Input**: `"Hello, World!"`
+    * **Input**: `Hello, World!`
     * **Output**: `<p>Hello, World!</p>`
 
 3.  **Multiple Lines in One Paragraph**
-    * **Input**: `"Hello,\nWorld!"`
+    * **Input**: `Hello,\nWorld!`
     * **Output**: `<p>Hello, World!</p>`
 
 4.  **Separate Paragraphs**
-    * **Input**: `"Line 1\n\nLine 2"`
+    * **Input**: `Line 1\n\nLine 2`
     * **Output**: `<p>Line 1</p><p>Line 2</p>`
 
 ### Phase 2: Headers
 
 5.  **Header 1**
-    * **Input**: `"# Header 1"`
+    * **Input**: `# Header 1`
     * **Output**: `<h1>Header 1</h1>`
 
 6.  **Header 2**
-    * **Input**: `"## Header 2"`
+    * **Input**: `## Header 2`
     * **Output**: `<h2>Header 2</h2>`
 
 7.  **Support all Headers (H3-H6)**
@@ -63,55 +63,55 @@ Here is the step-by-step path to build your renderer. Each step represents a new
 ### Phase 3: Inline Styling
 
 9.  **Emphasis (Italics)**
-    * **Input**: `"This is *italic* text."`
+    * **Input**: `This is *italic* text.`
     * **Output**: `<p>This is <em>italic</em> text.</p>`
 
 10. **Alternative Emphasis**
-    * **Input**: `"This is _italic_ text."`
+    * **Input**: `This is _italic_ text.`
     * **Output**: `<p>This is <em>italic</em> text.</p>`
 
 11. **Strong (Bold)**
-    * **Input**: `"This is **bold** text."`
+    * **Input**: `This is **bold** text.`
     * **Output**: `<p>This is <strong>bold</strong> text.</p>`
 
 12. **Alternative Strong**
-    * **Input**: `"This is __bold__ text."`
+    * **Input**: `This is __bold__ text.`
     * **Output**: `<p>This is <strong>bold</strong> text.</p>`
 
 13. **Strikethrough**
-    * **Input**: `"This is ~~struck~~ text."`
+    * **Input**: `This is ~~struck~~ text.`
     * **Output**: `<p>This is <del>struck</del> text.</p>`
 
 14. **Nested Inline Styles**
-    * **Input**: `"This is **bold and *italic*** text."`
+    * **Input**: `This is **bold and *italic*** text.`
     * **Output**: `<p>This is <strong>bold and <em>italic</em></strong> text.</p>`
 
 ### Phase 4: Links and Images
 
 15. **Links**
-    * **Input**: `"[Gordon's Blog](https://gordonbeeming.com)"`
+    * **Input**: `[Gordon's Blog](https://gordonbeeming.com)`
     * **Output**: `<p><a href="https://gordonbeeming.com">Gordon's Blog</a></p>`
 
 16. **Images**
-    * **Input**: `"![An alt text](image.jpg)"`
+    * **Input**: `![An alt text](image.jpg)`
     * **Output**: `<p><img src="image.jpg" alt="An alt text"></p>`
 
 ### Phase 5: Lists and Blocks
 
 17. **Unordered List (Single Item)**
-    * **Input**: `"* List item"`
+    * **Input**: `* List item`
     * **Output**: `<ul><li>List item</li></ul>`
 
 18. **Unordered List (Multiple Items)**
-    * **Input**: `"* Item 1\n* Item 2"`
+    * **Input**: `* Item 1\n* Item 2`
     * **Output**: `<ul><li>Item 1</li><li>Item 2</li></ul>`
 
 19. **Ordered List**
-    * **Input**: `"1. First item\n2. Second item"`
+    * **Input**: `1. First item\n2. Second item`
     * **Output**: `<ol><li>First item</li><li>Second item</li></ol>`
 
 20. **Blockquotes**
-    * **Input**: `"> This is a quote."`
+    * **Input**: `> This is a quote.`
     * **Output**: `<blockquote><p>This is a quote.</p></blockquote>`
 
 21. **Horizontal Rule**
@@ -121,11 +121,11 @@ Here is the step-by-step path to build your renderer. Each step represents a new
 ### Phase 6: Advanced Elements & Final Polish
 
 22. **Inline Code**
-    * **Input**: ``"Use the `let` keyword."``
+    * **Input**: ``Use the `let` keyword.``
     * **Output**: `<p>Use the <code>let</code> keyword.</p>`
 
 23. **Security Refactor (HTML Escaping)**
-    * **Input**: `"<script>"`
+    * **Input**: `<script>`
     * **Output**: `<p>&lt;script&gt;</p>`
 
 24. **Fenced Code Blocks**
@@ -133,7 +133,7 @@ Here is the step-by-step path to build your renderer. Each step represents a new
     * **Output**: `<pre><code>let x = 5;\n</code></pre>`
 
 25. **Links with Titles**
-    * **Input**: `"[Tiani's Site](https://tianibeeming.com \"Tiani Beeming\")"`
+    * **Input**: `[Tiani's Site](https://tianibeeming.com \"Tiani Beeming\")`
     * **Output**: `<p><a href="https://tianibeeming.com" title="Tiani Beeming">Tiani's Site</a></p>`
 
 And there you have it! After 25 steps, you'll have a renderer capable of turning complex Markdown into clean HTML.

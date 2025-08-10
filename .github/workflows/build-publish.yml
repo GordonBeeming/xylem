@@ -95,7 +95,7 @@ jobs:
     steps:
       - name: Cleanup old Podman images
         run: |
-          podman system prune -f --volumes
+          podman system prune -a --volumes
 
       - name: Deploy to preview environment
         run: |
@@ -130,8 +130,8 @@ jobs:
     steps:
       - name: Cleanup old Podman images
         run: |
-          podman system prune -f --volumes
-          
+          podman system prune -a --volumes
+
       - name: Deploy to production environment
         run: |
           export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"

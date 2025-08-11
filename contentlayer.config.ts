@@ -120,13 +120,15 @@ async function createYearsCount(allBlogs) {
 function createSearchIndex(allBlogs: any[]): void {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
-    siteMetadata.search.kbarConfig.searchDocumentsPath
+    siteMetadata.search.kbarConfig?.searchDocumentsPath
   ) {
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
       JSON.stringify(allCoreContent(sortPosts(allBlogs)))
     )
     console.log('Local search index generated...')
+  } else {
+    console.log('Skipping search index generation - using custom search implementation')
   }
 }
 

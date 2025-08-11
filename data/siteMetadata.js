@@ -81,10 +81,12 @@ const siteMetadata = {
     },
   },
   search: {
-    provider: 'kbar', // kbar or algolia
-    kbarConfig: {
-      searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`, // path to load documents to search
-    },
+    // Note: Using custom search implementation in SearchButton.tsx and ListLayoutGrid.tsx
+    // The kbar provider from pliny is not actively used - search is handled by custom components
+    provider: 'custom', // custom implementation via SearchButton + ListLayoutGrid filtering
+    // kbarConfig: {
+    //   searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`, // path to load documents to search
+    // },
     // provider: 'algolia',
     // algoliaConfig: {
     //   // The application ID provided by Algolia

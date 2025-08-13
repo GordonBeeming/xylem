@@ -161,16 +161,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</guid>
-    <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
-    <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
-    <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
-    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</guid>
     <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
     <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
@@ -178,6 +168,16 @@
     <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</guid>
+    <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
+    <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
+    <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
+    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
   </item>
 
   <item>

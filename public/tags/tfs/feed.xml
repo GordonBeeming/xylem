@@ -81,16 +81,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</guid>
-    <title>Bulk import git repositories into VSTS/TFS</title>
-    <link>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</link>
-    <description>With the rate that the VSTS team releases with all the features they releasing it&#39;s hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours .</description>
-    <pubDate>Tue, 25 Jul 2017 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>git</category><category>Source Control</category><category>VSTS / TFS</category><category>TFS</category><category>GitHub Projects</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</guid>
     <title>Connecting agents to TFS using integrated security on http from external domain</title>
     <link>https://gordonbeeming.com/blog/2017-08-06/connecting-agents-to-tfs-using-integrated-security-on-http-from-external-domain</link>
@@ -108,6 +98,16 @@
     <pubDate>Sun, 06 Aug 2017 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>Search</category><category>Google</category><category>VSTS</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</guid>
+    <title>Bulk import git repositories into VSTS/TFS</title>
+    <link>https://gordonbeeming.com/blog/2017-07-25/bulk-import-git-repositories-into-vststfs</link>
+    <description>With the rate that the VSTS team releases with all the features they releasing it&#39;s hard to know everything that exists in VSTS. I recently needed to migrate git repos from various Team Project Collections (TPC) into a single Team Project and started out doing it very manually and slowly progresses to importing over 100 in a couple hours .</description>
+    <pubDate>Tue, 25 Jul 2017 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>Source Control</category><category>VSTS / TFS</category><category>TFS</category><category>GitHub Projects</category>
   </item>
 
     </channel>

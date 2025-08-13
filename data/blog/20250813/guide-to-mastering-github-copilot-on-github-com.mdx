@@ -1,0 +1,103 @@
+---
+title: 'A Guide to Mastering GitHub Copilot on github.com'
+date: 2025-08-13
+tags: ['GitHub', 'Copilot', 'AI', 'Productivity', 'DevOps']
+draft: false
+summary: 'Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.'
+---
+
+Most of us have experienced the magic of GitHub Copilot in our IDE. It's a fantastic partner for real-time coding. But there's another, more powerful way to use it that many developers overlook: letting it handle entire tasks, from issue to pull request, directly on github.com. 🤔
+
+Using Copilot on the GitHub platform is a different skill set. It's less about autocompleting single lines and more about managing entire units of work. By mastering a few key techniques, you can offload tedious tasks, focus on more complex problems, and dramatically accelerate your development cycle.
+
+Let's dive into how to master this powerful workflow.
+
+## The Foundation: Your `copilot:instructions`
+
+Before you can effectively use Copilot for entire tasks, you need to set the ground rules. The single most important step is creating a `.github/copilot/instructions` file. This file tells Copilot the specific conventions, patterns, and nuances of your project.
+
+But here's the brilliant part: you don't have to write it from scratch. The first time you ask `@copilot` to follow instructions it doesn't have, it will ask you to create the file first. It provides a convenient link that pre-populates an issue, which you can then assign back to `@copilot` to write the initial draft for you.
+
+<Figure 
+    key="/images/copilot-suggests-instructions.png" 
+    src="/images/copilot-suggests-instructions.png" 
+    alt="GitHub Copilot in an issue comment offering a link to create a copilot:instructions file." 
+    width="0" height="0" 
+    caption="Let Copilot help you help itself. It's a win-win." />
+
+[Comment](https://github.com/GordonBeeming/xylem/pull/101#issuecomment-3172915893) | [Issue Created](https://github.com/GordonBeeming/xylem/issues/102) | [PR Created](https://github.com/GordonBeeming/xylem/pull/103)
+
+Once you have a base, you can create a self-improving system. Instruct Copilot to learn from your feedback by adding this to your instructions:
+
+> If I ever say "we do something like this", "don't do that", or "do this instead", please update these instructions to reflect that feedback for future work.
+
+Now, every piece of feedback you give not only fixes the current PR but also makes Copilot smarter for the next one. 🧠
+
+## The Art of the Request: Good vs. Bad PBIs
+
+To get the best results from Copilot, you must provide clear, unambiguous instructions. A vague request leads to a vague (and likely incorrect) PR, forcing multiple rounds of frustrating feedback.
+
+Here's an example of a "bad" PBI that is likely to fail (or at least require more feedback and refinement):
+
+<Figure 
+    key="/images/bad-pbi.png" 
+    src="/images/bad-pbi.png" 
+    alt="A screenshot of a vague PBI titled 'Add social images' with minimal details." 
+    width="0" height="0" 
+    caption="❌ This vague request forces the AI to guess, leading to incorrect results." />
+This approach fails because it's full of ambiguity and forces the AI to make dozens of assumptions about file paths, image sizes, branding, and specific logic.
+
+Now, let's look at how to write an effective PBI for the exact same feature. This version provides a detailed blueprint that sets Copilot up for success.
+
+**Pro Tip:** Use your AI of choice, like a chatbot, to help you brainstorm and write these effective PBIs. You can tweak requirements in plain text before it ever becomes code, which is far cheaper than fixing issues later in the development cycle. You can even get more advanced with features like GitHub Copilot's local prompt files, but that's a topic for another blog post!
+
+<Figure 
+    key="/images/good-pbi.png" 
+    src="/images/good-pbi.png" 
+    alt="A screenshot of a detailed PBI with a user story, acceptance criteria, and a technical plan." 
+    width="0" height="0" 
+    caption="✅ This detailed blueprint gives Copilot everything it needs to succeed." />
+
+The more guard rails and context you provide upfront, the better the outcome. This is especially true for new features where Copilot can't infer patterns from existing code.
+
+## The Superpower: Parallelizing Your Work
+
+Here's where you can unlock a huge productivity boost. Some tasks are just tedious. They're necessary, but they don't provide that "mental win" we crave as developers. A perfect example is adding a `readonly` flag to an entity. This change needs to be threaded through every layer of your application: the domain, the API, the UI, and of course, all the corresponding unit, integration, and even UI tests.
+
+This is a perfect task to assign to Copilot. It excels at this kind of wide-reaching but repetitive work, and it's remarkably good at finding and updating existing tests to match the new reality. It can adjust unit tests for a changed method signature, modify integration tests to assert on the new API response, and even update UI test selectors to correctly handle a newly disabled input field.
+
+While GitHub Copilot is busy plumbing that `readonly` flag and its associated tests through the codebase, you can be in your IDE tackling a complex business logic problem—the fun stuff! 🚀
+
+Even if Copilot only gets the UI implementation 80% right, your job has been drastically reduced. You just pull down the branch, spend five minutes polishing the UI and perhaps one test selector, and then merge. You've effectively bought back hours of your time and spent it on more engaging work.
+
+
+## Mastering the Feedback Loop
+
+Once Copilot submits a PR, how you provide feedback is critical. The most common mistake is to "drip-feed" your comments.
+
+The way this works is that as soon as you mention `@github-copilot` in a comment, it starts working on that single piece of feedback. Once it's done, it will then see your other comments and pick them up as a *second, separate job*. This is not only inefficient, but it also means the first change was made without the context of your later feedback, often leading to rework.
+
+Instead, **batch your feedback**. It's far more effective to take an extra minute to gather all your thoughts into a single, numbered comment like this:
+
+<Figure 
+    key="/images/good-feedback-example.png" 
+    src="/images/good-feedback-example.png" 
+    alt="A GitHub comment showing good, batched feedback for Copilot in a numbered list." 
+    width="0" height="0" 
+    caption="✅ A single, clear comment with numbered points gives Copilot a complete to-do list." />
+
+To make your feedback even more powerful, remember that a picture is worth a thousand words. You can add screenshots to your comments—and Copilot can see them! Marking up a screenshot with boxes or arrows to pinpoint a specific UI element or issue is an incredibly effective way to provide unambiguous feedback.
+
+<Figure 
+    key="/images/marked-up-screenshot-feedback.png" 
+    src="/images/marked-up-screenshot-feedback.png" 
+    alt="A GitHub comment with a marked-up screenshot showing a red box around a UI element that needs to be changed." 
+    width="0" height="0" 
+    caption="A picture is worth a thousand words—especially when you mark it up for clarity." />
+This "measure twice, cut once" approach ensures Copilot has the full picture before it starts coding, saving you multiple rounds of review.
+
+## Conclusion
+
+Mastering GitHub Copilot on github.com is a new frontier for developer productivity. It requires a different approach than using it in your IDE, but the payoff is immense.
+
+By investing time in solid instructions, writing clear and specific requests, offloading tedious work, and providing batched, thoughtful feedback, you can transform Copilot into an incredibly powerful automated teammate. You'll spend less time on the grind and more time on what matters: building great software.

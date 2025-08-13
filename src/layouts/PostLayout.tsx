@@ -57,7 +57,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6">
+          <div className="grid-rows-[auto_1fr] pb-8 xl:grid xl:grid-cols-4 xl:gap-x-4">
             <dl className="pt-6 pb-10 xl:pt-11">
               <dt className="sr-only">Authors</dt>
               <dd>

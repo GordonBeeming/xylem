@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Thu, 14 Aug 2025 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/ffmpeg/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</guid>
+    <title>My Epic Battle with FFmpeg: A C# Video Overlay Story</title>
+    <link>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</link>
+    <description>What started as a simple task—programmatically adding branded intros and outros to a video—quickly descended into a multi-day debugging marathon. This is the story of how a seemingly impossible FFmpeg problem was solved with C#.</description>
+    <pubDate>Thu, 14 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>FFmpeg</category><category>Video Processing</category><category>Debugging</category>
+  </item>
+
+    </channel>
+  </rss>

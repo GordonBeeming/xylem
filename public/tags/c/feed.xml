@@ -41,16 +41,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</guid>
-    <title>Slaying the EF Core Cartesian Explosion with AsSplitQuery()</title>
-    <link>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</link>
-    <description>You built a rich domain model with aggregates and child collections, but now your queries are painfully slow. Learn how a one-line change in Entity Framework Core, .AsSplitQuery(), can fix the dreaded &quot;Cartesian Explosion&quot; and make your app fly.</description>
-    <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>C#</category><category>.NET</category><category>Entity Framework</category><category>Performance</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</guid>
     <title>The Deceptive Simplicity of Polymorphism in .NET APIs</title>
     <link>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</link>
@@ -58,6 +48,16 @@
     <pubDate>Thu, 17 Jul 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>.NET</category><category>C#</category><category>JSON</category><category>ASP.NET Core</category><category>Polymorphism</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</guid>
+    <title>Slaying the EF Core Cartesian Explosion with AsSplitQuery()</title>
+    <link>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</link>
+    <description>You built a rich domain model with aggregates and child collections, but now your queries are painfully slow. Learn how a one-line change in Entity Framework Core, .AsSplitQuery(), can fix the dreaded &quot;Cartesian Explosion&quot; and make your app fly.</description>
+    <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>Entity Framework</category><category>Performance</category>
   </item>
 
   <item>
@@ -78,6 +78,16 @@
     <pubDate>Tue, 05 Aug 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>C#</category><category>Domain-Driven Design</category><category>Architecture</category><category>.NET</category><category>Copilot</category><category>AI</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</guid>
+    <title>My Epic Battle with FFmpeg: A C# Video Overlay Story</title>
+    <link>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</link>
+    <description>What started as a simple task—programmatically adding branded intros and outros to a video—quickly descended into a multi-day debugging marathon. This is the story of how a seemingly impossible FFmpeg problem was solved with C#.</description>
+    <pubDate>Thu, 14 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>FFmpeg</category><category>Video Processing</category><category>Debugging</category>
   </item>
 
     </channel>

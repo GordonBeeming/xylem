@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 15 Nov 2013 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sat, 16 Nov 2013 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/vsts-tfs/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
-    <title>TypeScript : Emit Error: Write to file failed..</title>
-    <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
-    <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
-    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</guid>
     <title>Add work item links from check in comments</title>
@@ -28,6 +18,16 @@
     <pubDate>Sat, 16 Nov 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>TFS Customisations</category><category>VSTS / TFS</category><category>TFS Server Plugins</category><category>TFS</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
+    <title>TypeScript : Emit Error: Write to file failed..</title>
+    <link>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</link>
+    <description>I have been playing around with TypeScript for a while and usually I just publish from my machine but today I decided to setup a CI build for the solution and found that I received the error</description>
+    <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
   </item>
 
   <item>
@@ -151,16 +151,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
-    <title>Connecting Visual Studio to VSTS</title>
-    <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</guid>
     <title>Connecting Test Manager to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
@@ -168,6 +158,16 @@
     <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
+    <title>Connecting Visual Studio to VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
   </item>
 
   <item>
@@ -191,16 +191,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</guid>
-    <title>Setting up TFS Build Agents fast</title>
-    <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
-    <description>So you could make a script that can do the bits below but if you don&#39;t here is how you can easily create build agents fast for TFS 2015+ or VSO.</description>
-    <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</guid>
     <title>VSTS widget for GitHub badges</title>
     <link>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</link>
@@ -208,6 +198,16 @@
     <pubDate>Thu, 28 Jan 2016 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>VSTS Extensions</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</guid>
+    <title>Setting up TFS Build Agents fast</title>
+    <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
+    <description>So you could make a script that can do the bits below but if you don&#39;t here is how you can easily create build agents fast for TFS 2015+ or VSO.</description>
+    <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
   </item>
 
   <item>

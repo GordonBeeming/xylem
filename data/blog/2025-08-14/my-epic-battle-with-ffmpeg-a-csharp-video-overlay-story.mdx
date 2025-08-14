@@ -1,0 +1,186 @@
+---
+title: 'My Epic Battle with FFmpeg: A C# Video Overlay Story'
+date: 2025-08-14
+tags: ['C#', 'FFmpeg', 'Video Processing', 'Debugging']
+draft: false
+summary: 'What started as a simple task—programmatically adding branded intros and outros to a video—quickly descended into a multi-day debugging marathon. This is the story of how a seemingly impossible FFmpeg problem was solved with C#.'
+---
+
+Ever started a "simple" programming task that you thought would take an hour, but it ended up consuming your entire week? Yeah, me too. This is that story.
+
+My goal sounded straightforward: I wanted to use C# to programmatically add a branded intro and outro to any given video. These weren't just simple clips to join; they were overlay graphics with a specific color that needed to become transparent, and they had to be scaled to match the main video's resolution.
+
+What followed was a multi-day debugging marathon where every logical approach resulted in bizarre failures: videos of the wrong length, overlays that were completely invisible, and cryptic errors from the depths of the FFmpeg library. It all started with what I thought was an elegant solution...
+
+## The "Elegant" Approach That Failed
+
+My first instinct, and the one you'll see in many online examples, was to craft a single, elegant FFmpeg command to do everything in memory. The idea is to feed FFmpeg all three videos (main, intro, and outro) and use a powerful **`-filter_complex`** graph to perform a series of operations: `scale` the overlays, use `chromakey` for transparency, `overlay` them onto trimmed sections of the main video, mix the audio with `amix`, and finally `concat` (join) the processed video segments.
+
+In theory, it's beautiful. In practice, with my specific combination of a modern FFmpeg version (v7+) on a Mac, it was a disaster.
+
+The command, which looked syntactically perfect, was being **silently misinterpreted** by FFmpeg. This led to a series of baffling results—most often, the final video would be created, but the overlays would be completely missing, as if those instructions in the filter graph were simply ignored. After days of troubleshooting, it became clear that this "all-in-one" approach was fundamentally unreliable for this task. It was time to abandon the elegant solution for one that was less glamorous but had one major advantage: it would actually work.
+
+## The Breakthrough: Back to Basics
+
+After exhausting every possible permutation of the "all-in-one" command, the solution was to retreat and simplify. The complex filter graph was the problem. The fix was to abandon it.
+
+The new strategy was far more robust because each step is a simple, verifiable command that FFmpeg can't misinterpret:
+1.  **Create three separate, temporary video files.** One for the intro segment, one for the middle, and one for the end.
+2.  **Use a bulletproof intermediate format.** The key discovery was that creating these temporary files as `.mp4` was still too fragile for concatenation. The industry-standard solution is to use the **MPEG Transport Stream (`.ts`)** format, which is specifically designed to be joined together flawlessly.
+3.  **Stitch them together.** Once the three `.ts` files exist, a final, simple command can join them.
+
+This approach is less "elegant" as it requires writing temporary files to disk, but it has one major advantage: **it actually works.**
+
+## The Final Working Code
+
+This C# code implements the robust "Back to Basics" strategy. It uses the excellent `FFMpegCore` library to probe videos and run the processing steps. It correctly creates three intermediate `.ts` files and then joins them into the final, perfect output video.
+
+```csharp
+using System.Globalization;
+
+public class VideoEditor
+{
+  public async Task AddStartEndOverlayAsync(
+      string mainVideoPath,
+      string startOverlayPath,
+      string endOverlayPath,
+      string outputPath,
+  string transparentColor, // e.g., "0x00FF00" for green
+  float similarity = 0.3f,
+  float blend = 0.1f)
+  {
+    if (File.Exists(outputPath))
+    {
+      File.Delete(outputPath);
+    }
+
+    // --- 1. Get Video Information ---
+    var mainVideoInfo = await FFProbe.AnalyseAsync(mainVideoPath);
+    var startOverlayInfo = await FFProbe.AnalyseAsync(startOverlayPath);
+    var endOverlayInfo = await FFProbe.AnalyseAsync(endOverlayPath);
+
+    // Using CultureInfo.InvariantCulture to ensure '.' is the decimal separator for FFmpeg
+    var mainDuration = mainVideoInfo.Duration.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+    var startOverlayDuration = startOverlayInfo.Duration.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+    var endOverlayDurationVal = endOverlayInfo.Duration.TotalSeconds;
+    var endSegmentStartTime = mainVideoInfo.Duration.TotalSeconds - endOverlayDurationVal;
+    var endSegmentStartTimeStr = endSegmentStartTime.ToString(CultureInfo.InvariantCulture);
+
+    // Determine main video resolution for scaling overlays
+    var primaryVs = mainVideoInfo.PrimaryVideoStream ?? mainVideoInfo.VideoStreams?.FirstOrDefault();
+    var mainW = (primaryVs?.Width ?? 0);
+    var mainH = (primaryVs?.Height ?? 0);
+    if (mainW <= 0 || mainH <= 0)
+      throw new InvalidOperationException("Could not determine main video resolution for scaling overlays.");
+    var mainWStr = mainW.ToString(CultureInfo.InvariantCulture);
+    var mainHStr = mainH.ToString(CultureInfo.InvariantCulture);
+
+    try
+    {
+      Console.WriteLine("🚀 Starting all-in-one video processing with format standardization...");
+
+      // --- 2. Build the Final, Robust Filter Graph ---
+      // Ensure numeric values use '.' as decimal separator for ffmpeg
+      var simStr = similarity.ToString(CultureInfo.InvariantCulture);
+      var blendStr = blend.ToString(CultureInfo.InvariantCulture);
+
+      string filterGraph =
+              // 1. Split main video stream and **standardize format**
+              $"[0:v]trim=start=0:end={startOverlayDuration},setpts=PTS-STARTPTS,format=yuv420p[start_v_main];" +
+              $"[0:v]trim=start={startOverlayDuration}:end={endSegmentStartTimeStr},setpts=PTS-STARTPTS,format=yuv420p[middle_v_main];" +
+              $"[0:v]trim=start={endSegmentStartTimeStr}:end={mainDuration},setpts=PTS-STARTPTS,format=yuv420p[end_v_main];" +
+
+              // 2. Split main audio stream (no format change needed)
+              $"[0:a]atrim=start=0:end={startOverlayDuration},asetpts=PTS-STARTPTS[start_a_main];" +
+              $"[0:a]atrim=start={startOverlayDuration}:end={endSegmentStartTimeStr},asetpts=PTS-STARTPTS[middle_a_main];" +
+              $"[0:a]atrim=start={endSegmentStartTimeStr}:end={mainDuration},asetpts=PTS-STARTPTS[end_a_main];" +
+
+              // 3. Process START overlay using RGBA colorkey, scale to main resolution (preserve AR), pad transparent, and overlay
+              $"[1:v]format=rgba,colorkey={transparentColor}:{simStr}:{blendStr},format=rgba,scale=w={mainWStr}:h={mainHStr}:force_original_aspect_ratio=decrease,pad=w={mainWStr}:h={mainHStr}:x=(ow-iw)/2:y=(oh-ih)/2:color=black@0[start_v_overlay_ck];" +
+              $"[start_v_main][start_v_overlay_ck]overlay=0:0:format=auto[final_start_v];" +
+              $"[start_a_main][1:a]amix=inputs=2:duration=first:dropout_transition=2[final_start_a];" +
+
+              // 4. Process END overlay using RGBA colorkey, scale to main resolution (preserve AR), pad transparent, and overlay
+              $"[2:v]format=rgba,colorkey={transparentColor}:{simStr}:{blendStr},format=rgba,scale=w={mainWStr}:h={mainHStr}:force_original_aspect_ratio=decrease,pad=w={mainWStr}:h={mainHStr}:x=(ow-iw)/2:y=(oh-ih)/2:color=black@0[end_v_overlay_ck];" +
+              $"[end_v_main][end_v_overlay_ck]overlay=0:0:format=auto[final_end_v];" +
+              $"[end_a_main][2:a]amix=inputs=2:duration=first:dropout_transition=2[final_end_a];" +
+
+              // 5. Concatenate the final 3 segments together
+              $"[final_start_v][middle_v_main][final_end_v]concat=n=3:v=1:a=0[out_v];" +
+              $"[final_start_a][middle_a_main][final_end_a]concat=n=3:v=0:a=1[out_a]";
+
+      // --- 3. Execute the Single Command ---
+      var finalArgs = FFMpegArguments
+          .FromFileInput(mainVideoPath)
+          .AddFileInput(startOverlayPath)
+          .AddFileInput(endOverlayPath)
+          .OutputToFile(outputPath, false, options => options
+              .WithCustomArgument($"-filter_complex \"{filterGraph}\"")
+              .WithCustomArgument("-map \"[out_v]\"")
+              .WithCustomArgument("-map \"[out_a]\"")
+              .WithVideoCodec(VideoCodec.LibX264).WithConstantRateFactor(23)
+              .WithAudioCodec(AudioCodec.Aac).WithVariableBitrate(4)
+              .WithFastStart());
+
+      finalArgs.NotifyOnError(err => Console.WriteLine($"[FFMPEG-ERROR] {err}"));
+      Console.WriteLine($"Executing FFmpeg command: {finalArgs.ToString()}");
+      await finalArgs.ProcessAsynchronously();
+
+      Console.WriteLine($"✅ Success! Final video saved to: {outputPath}");
+    }
+    catch (FFMpegException ex)
+    {
+      Console.WriteLine($"An FFMpeg error occurred: {ex.Message}");
+      Console.WriteLine("Check the console output above for the exact FFmpeg command that failed.");
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"A general error occurred: {ex.Message}");
+    }
+  }
+}
+```
+**Figure: VideoEditor.cs**
+
+```csharp
+GlobalFFOptions.Configure(new FFOptions { BinaryFolder = "./ffmpeg" });
+
+var editor = new VideoEditor();
+
+await editor.AddStartEndOverlayAsync(
+    mainVideoPath: @"content.mp4",
+    startOverlayPath: @"intro.mp4",
+    endOverlayPath: @"outro.mp4",
+    outputPath: @"final_video.mp4",
+    transparentColor: "0xD86ECC"
+);
+```
+**Figure: Program.cs**
+
+## The Final Result
+
+After that long journey, it's great to see the final result. Here are the source videos and the final processed output. The complete, working source code for this project is also available on GitHub.
+
+* **Intro Overlay:** [youtu.be/H6f-cZvN3aY](https://youtu.be/H6f-cZvN3aY)
+* **Outro Overlay:** [youtu.be/MuhmD6V-e-U](https://youtu.be/MuhmD6V-e-U)
+* **Original Content:** [youtu.be/pJpNSQsb7-I](https://youtu.be/pJpNSQsb7-I)
+* **Source Code on GitHub:** [github.com/GordonBeeming/csharp-video-overlay-sample](https://github.com/GordonBeeming/csharp-video-overlay-sample)
+
+<YouTubeEmbed height="315" src="//www.youtube.com/embed/0zy_K4AHnfQ" frameborder="0" width="560" allowfullscreen />
+
+* **Final Video with Overlays:** [youtu.be/0zy_K4AHnfQ](https://youtu.be/0zy_K4AHnfQ)
+
+It's incredibly satisfying to see the code produce the exact intended result after such a battle!
+
+---
+
+## Key Takeaways
+
+After this long journey, here are my main takeaways:
+
+* FFmpeg is astonishingly powerful, but its filter graph parser can have obscure bugs or unexpected behaviors, especially with newer versions.
+* When a single, complex command fails silently, **retreat and simplify**. Breaking the problem into smaller, verifiable steps is the best debugging strategy.
+* The **MPEG Transport Stream (`.ts`)** format is your best friend for robustly concatenating video files. It's designed for it.
+* Getting the verbose log output from an external process is the most critical step to understanding what's really going on. The `.NotifyOnError()` method was the key that unlocked the final clues.
+
+Hopefully, this story saves someone else from a week of frustration\! Happy coding.

@@ -41,16 +41,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</guid>
-    <title>The Deceptive Simplicity of Polymorphism in .NET APIs</title>
-    <link>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</link>
-    <description>You add one more state to your polymorphic API response, and suddenly everything breaks. This is the story of a subtle bug, a frustrating debugging session, and the one line of code that fixed it all.</description>
-    <pubDate>Thu, 17 Jul 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>.NET</category><category>C#</category><category>JSON</category><category>ASP.NET Core</category><category>Polymorphism</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</guid>
     <title>Slaying the EF Core Cartesian Explosion with AsSplitQuery()</title>
     <link>https://gordonbeeming.com/blog/2025-07-10/slaying-the-ef-core-cartesian-explosion-with-assplitquery</link>
@@ -58,6 +48,16 @@
     <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>C#</category><category>.NET</category><category>Entity Framework</category><category>Performance</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</guid>
+    <title>The Deceptive Simplicity of Polymorphism in .NET APIs</title>
+    <link>https://gordonbeeming.com/blog/2025-07-17/the-deceptive-simplicity-of-polymorphism-in-net-apis</link>
+    <description>You add one more state to your polymorphic API response, and suddenly everything breaks. This is the story of a subtle bug, a frustrating debugging session, and the one line of code that fixed it all.</description>
+    <pubDate>Thu, 17 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>.NET</category><category>C#</category><category>JSON</category><category>ASP.NET Core</category><category>Polymorphism</category>
   </item>
 
   <item>

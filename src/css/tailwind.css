@@ -100,6 +100,30 @@
     outline-color: var(--color-primary-500);
     /* #46CBFF */
   }
+
+  /* Default link colors using official brand palette */
+  a {
+    color: var(--color-primary-800);
+    /* Light Mode: #0063B2 */
+    
+    &:hover,
+    &:focus {
+      color: var(--color-primary-700);
+      /* Slightly lighter for hover in light mode */
+    }
+  }
+
+  /* Dark mode link colors */
+  .dark a {
+    color: var(--color-primary-400);
+    /* Dark Mode: #46CBFF */
+    
+    &:hover,
+    &:focus {
+      color: var(--color-primary-300);
+      /* Slightly lighter for hover in dark mode */
+    }
+  }
 }
 
 /* Utility layer overrides for prose (markdown content) */

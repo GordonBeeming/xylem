@@ -42,14 +42,6 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="x" href={twitter} />
               <SocialIcon kind="bluesky" href={bluesky} />
             </div>
-            <div className="pt-6">
-              <a
-                href="/color-palette"
-                className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              >
-                View my color palette →
-              </a>
-            </div>
             <a
               href={company_website}
               target="_blank"
@@ -100,6 +92,14 @@ export default function AuthorLayout({ children, content }: Props) {
                 />
               </div>
             </a>
+            <div className="pt-6">
+              <a
+                href="/color-palette"
+                className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              >
+                View my color palette →
+              </a>
+            </div>
           </div>
           <div className="prose dark:prose-invert max-w-none pt-8 pb-8 xl:col-span-2">
             {children}

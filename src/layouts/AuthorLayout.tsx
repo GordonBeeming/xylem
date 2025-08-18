@@ -42,6 +42,14 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="x" href={twitter} />
               <SocialIcon kind="bluesky" href={bluesky} />
             </div>
+            <div className="pt-6">
+              <a
+                href="/color-palette"
+                className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              >
+                View my color palette →
+              </a>
+            </div>
             <a
               href={company_website}
               target="_blank"

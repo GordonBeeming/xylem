@@ -51,4 +51,4 @@ next-env.d.ts
 
 /public/blog/
 /bundled/**
-/public/images/*.png
+/public/images/

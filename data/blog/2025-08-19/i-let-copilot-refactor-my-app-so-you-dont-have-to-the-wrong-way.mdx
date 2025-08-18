@@ -1,0 +1,100 @@
+---
+title: "I Let Copilot Refactor My App, So You Don't Have To (The Wrong Way)"
+date: 2025-08-19
+tags: ['AI', 'Copilot', 'Refactoring', 'Productivity', 'Development']
+draft: false
+summary: 'I had a seemingly simple refactoring task on a sample project and I thought, "Let''s get GitHub Copilot to do the heavy lifting!". What followed was a spiral into chaos that taught me a crucial lesson about using AI the smart way.'
+---
+
+We've all been there. You're working on a project and decide it's time for a little cleanup. A simple change, a quick refactor, in and out in 20 minutes. What could possibly go wrong?
+
+Well, I was recently working on a sample blog engine, a little side project I use to test out new features and ideas, and decided to give it a more professional feel. The task was to rename the core concept from `Post` to `Article`. It seemed like a perfect task for an AI assistant. I thought, "I'll just tell GitHub Copilot what to do, and it'll handle everything!"
+
+Spoiler alert: It did not go well. 😅
+
+
+## The Seductive Promise
+
+The plan was simple. I'd ask Copilot to perform the refactor across the entire solution. I imagined it would be far more intelligent than a manual find-and-replace. It would understand the context, update my C# classes, rename files, fix EF Core migrations, and even update all my documentation (e.g., my `README.md` and everything in the `docs` folder). It was going to be magic.
+
+I gave it a broad, optimistic prompt something like this:
+
+> Please refactor the entire solution. The core domain entity 'Post' needs to be renamed to 'Article'. This should include all class names, variable names, file names, database migrations, and documentation.
+
+With my instructions sent, I sat back and prepared to be amazed.
+
+
+## The Downward Spiral
+
+The first signs of trouble appeared quickly. Copilot started making changes, but they were... inconsistent. It might rename the `Post.cs` file to `Article.cs`, but then forget to update the class name inside the file.
+
+```csharp
+// In a file named Article.cs
+public class Post // <- Oops!
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    // ...
+}
+````
+
+It got worse. It would rename `PostService` but leave method parameters with the old type, leaving a trail of compilation errors. Imagine finding code like this littered across your project:
+
+```csharp
+// ArticleService.cs
+public class ArticleService
+{
+    // This method signature is now broken!
+    // It's in the new service but still accepts the old 'Post' type.
+    public async Task<Article> CreateNewArticleAsync(Post postToCreate)
+    {
+        // ... compilation errors everywhere
+    }
+}
+```
+
+Each time I tried to ask Copilot to fix its previous mistake, it felt like I was digging a deeper hole. What should have been a 20-minute task was now a multi-hour-long session of me debugging the AI's output. The dream of saving time had become a productivity nightmare.
+
+
+## The "Aha\!" Moment
+
+After fighting with the code for way too long, I finally took a step back and asked myself: *why* did this fail so badly?
+
+The answer is the difference between a **deterministic** tool and a **probabilistic** one.
+
+  * An **IDE's refactoring tools** are **deterministic**. When you tell Visual Studio to rename a class, it analyzes the entire solution's structure and precisely updates every single correct reference. It's a surgical operation.
+
+  * An **LLM like Copilot** is **probabilistic**. It makes incredibly educated guesses based on the patterns it has learned. For creative tasks, this is a superpower. For a large-scale, precision-critical refactor, these "guesses" can introduce chaos.
+
+I had used a creative poet for a spell-checker's job. I needed a surgeon, but I'd hired a painter.
+
+
+## The Better Way: The Hybrid Approach
+
+Once I realized my mistake in strategy, the correct path became clear. It wasn't about abandoning the AI, but about partnering with it correctly.
+
+### Phase 1: The Surgeon (The IDE)
+
+First, I used my IDE for what it does best: handling complex, structural changes. It's important to note that `Post` wasn't just a single class. In my domain model, it was an **Aggregate Root**, with related entities like `Comment` and `TagLink` living under its domain folder and namespace. This meant renaming wasn't about one file, but about updating a whole slice of the domain, including folder structures and namespaces.
+
+This is where the IDE's refactoring tools are indispensable.
+
+1.  I reverted all the messy changes.
+2.  I located my `Post.cs` aggregate root class in the Solution Explorer and used the built-in `Rename` feature (often just a press of `F2` or `Ctrl+R, Ctrl+R`). The IDE flawlessly handled the renaming of the class, its related files, all dependent code, and even the namespaces.
+3.  With the code compiling, the next step was the database. I simply ran the standard command: `dotnet ef migrations add RenamePostToArticle`. This generated a clean, *new* migration file to apply the changes, ensuring the database history remained intact and deployable.
+
+This whole deterministic process took only a few minutes.
+
+### Phase 2: The Partner (Copilot)
+
+*Now*, with the structural and database work correctly done and the application compiling, it was time to bring Copilot back in for the tasks it excels at. Instead of the dangerous "refactor everything" command, I gave it broader but safer tasks focused on prose and documentation:
+
+> Based on the recent refactoring from `Post` to `Article`, please review the project's documentation. This should include all markdown files, like the main `README.md` and any guides in the `/docs` folder, to ensure the terminology is updated.
+
+This prompt gives Copilot a well-defined scope (documentation) while still trusting it to find and update all the relevant files. After it handled that, I followed up with:
+
+> That's great, now can you help with the code comments? Please scan the C# files for any remaining XML documentation or inline comments that still refer to the old 'Post' concept and update them.
+
+This is the winning formula: let the IDE handle the deterministic, structural code changes, and then use the AI to handle the probabilistic, context-aware tasks like updating documentation, comments, and other prose.
+
+My failed refactor wasn't Copilot's fault; it was mine. I learned that AI is an incredibly powerful partner, but it's not an autopilot. Know your tools, play to their strengths, and you'll save yourself a world of pain. 🚀

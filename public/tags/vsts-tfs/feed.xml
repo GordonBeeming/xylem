@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Sat, 16 Nov 2013 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Fri, 15 Nov 2013 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/vsts-tfs/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</guid>
-    <title>Add work item links from check in comments</title>
-    <link>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</link>
-    <description>The other night while watching the Visual Studio 2013 Launch a question came up asking if the team had added support yet for automatically linking work items to the change set created when checking in as it currently is in Git. Currently this functionality doesn&#39;t exist for TFVC Check ins, at the time I didn&#39;t think anything of it but tonight for some reason I thought &quot;hey that would be something simply to create and should hopefully make lives easier for developers&quot;. So I opened up Visual Studio and at the same time started a new project on GitHub for TFS Server Plugins. The code required for the plugin was very basic, basically just checked the comment from the check in with a regular expression and then added the links between the change set and all the IDs found in the comments.</description>
-    <pubDate>Sat, 16 Nov 2013 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>TFS Customisations</category><category>VSTS / TFS</category><category>TFS Server Plugins</category><category>TFS</category><category>GitHub Projects</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2013-11-15/typescript-emit-error-write-to-file-failed</guid>
     <title>TypeScript : Emit Error: Write to file failed..</title>
@@ -28,6 +18,16 @@
     <pubDate>Fri, 15 Nov 2013 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>TypeScript</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</guid>
+    <title>Add work item links from check in comments</title>
+    <link>https://gordonbeeming.com/blog/2013-11-16/add-work-item-links-from-check-in-comments</link>
+    <description>The other night while watching the Visual Studio 2013 Launch a question came up asking if the team had added support yet for automatically linking work items to the change set created when checking in as it currently is in Git. Currently this functionality doesn&#39;t exist for TFVC Check ins, at the time I didn&#39;t think anything of it but tonight for some reason I thought &quot;hey that would be something simply to create and should hopefully make lives easier for developers&quot;. So I opened up Visual Studio and at the same time started a new project on GitHub for TFS Server Plugins. The code required for the plugin was very basic, basically just checked the comment from the check in with a regular expression and then added the links between the change set and all the IDs found in the comments.</description>
+    <pubDate>Sat, 16 Nov 2013 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>TFS Customisations</category><category>VSTS / TFS</category><category>TFS Server Plugins</category><category>TFS</category><category>GitHub Projects</category>
   </item>
 
   <item>
@@ -151,16 +151,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</guid>
-    <title>Connecting Test Manager to VSTS</title>
-    <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
-    <description>This post is part of an overall Series on Visual Studio Online.</description>
-    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
     <title>Connecting Visual Studio to VSTS</title>
     <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
@@ -168,6 +158,16 @@
     <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</guid>
+    <title>Connecting Test Manager to VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
   </item>
 
   <item>
@@ -191,16 +191,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</guid>
-    <title>VSTS widget for GitHub badges</title>
-    <link>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</link>
-    <description>When I first heard about the SDK for widgets in Visual Studio Team Services (VSTS) I wanted to make a couple of widgets, one of these was a GitHub widget that would show some info from any GitHub repo on your VSTS dashboard. This can can be helpful when you have your source open on GitHub but still work out of VSTS.</description>
-    <pubDate>Thu, 28 Jan 2016 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>VSTS Extensions</category><category>GitHub Projects</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</guid>
     <title>Setting up TFS Build Agents fast</title>
     <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
@@ -208,6 +198,16 @@
     <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</guid>
+    <title>VSTS widget for GitHub badges</title>
+    <link>https://gordonbeeming.com/blog/2016-01-28/vsts-widget-for-github-badges</link>
+    <description>When I first heard about the SDK for widgets in Visual Studio Team Services (VSTS) I wanted to make a couple of widgets, one of these was a GitHub widget that would show some info from any GitHub repo on your VSTS dashboard. This can can be helpful when you have your source open on GitHub but still work out of VSTS.</description>
+    <pubDate>Thu, 28 Jan 2016 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Extensions</category><category>GitHub Projects</category>
   </item>
 
   <item>

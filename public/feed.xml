@@ -7,9 +7,19 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Thu, 14 Aug 2025 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 19 Aug 2025 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/feed.xml" rel="self" type="application/rss+xml"/>
       
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-19/i-let-copilot-refactor-my-app-so-you-dont-have-to-the-wrong-way</guid>
+    <title>I Let Copilot Refactor My App, So You Don&#39;t Have To (The Wrong Way)</title>
+    <link>https://gordonbeeming.com/blog/2025-08-19/i-let-copilot-refactor-my-app-so-you-dont-have-to-the-wrong-way</link>
+    <description>I had a seemingly simple refactoring task on a sample project and I thought, &quot;Let&#39;s get GitHub Copilot to do the heavy lifting!&quot;. What followed was a spiral into chaos that taught me a crucial lesson about using AI the smart way.</description>
+    <pubDate>Tue, 19 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>AI</category><category>Copilot</category><category>Refactoring</category><category>Productivity</category><category>Development</category>
+  </item>
+
   <item>
     <guid>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</guid>
     <title>My Epic Battle with FFmpeg: A C# Video Overlay Story</title>

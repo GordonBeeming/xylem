@@ -700,6 +700,11 @@ const redirects = [
     destination: '/blog/2017-12-07/work-around-for-net-framework-47-or-a-later-update-is-already-installed-on-this-computer',
     permanent: true,
   },
+  {
+    source: '/blog/20250813/guide-to-mastering-github-copilot-on-github-com',
+    destination: '/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com',
+    permanent: true,
+  },
 ];
 
 export default redirects;

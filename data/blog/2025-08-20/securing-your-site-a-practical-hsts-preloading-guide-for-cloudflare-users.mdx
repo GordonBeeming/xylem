@@ -1,0 +1,111 @@
+---
+title: 'Securing Your Site: A Practical HSTS Preloading Guide for Cloudflare Users'
+date: 2025-08-20
+tags: ['Security', 'Cloudflare', 'HSTS', 'WebDev', '.NET']
+draft: false
+summary: 'Learn why HSTS should not be an application concern and follow this practical guide to correctly configure it at the edge with Cloudflare, getting your site onto the HSTS preload list for maximum security.'
+---
+
+I often see developers implementing HTTP Strict Transport Security (HSTS) headers directly in their application's configuration. You might see it in an old `web.config` file or, in modern .NET applications, configured via middleware in `Program.cs`.
+
+```csharp
+// A common sight in a .NET app's Program.cs
+app.UseHsts();
+```
+
+While this is well-intentioned, I believe it's not the ideal place for this kind of configuration. Security policies like HSTS are an infrastructure concern and belong at the edge. Today, I'll show you a better way using Cloudflare and how to take it a step further by getting your site onto the HSTS preload list.
+
+## What is HSTS and Why Does It Matter?
+
+In simple terms, **HTTP Strict Transport Security (HSTS)** is a web security policy mechanism. When a user visits your site, your server can send back a response header that tells their browser to *only* communicate with your site using the secure HTTPS protocol from now on.
+
+Think of it like this: you give a friend your new, secure phone number and tell them, "For the next two years, forget my old number and *only* ever contact me on this one." The next time they try to use the old, insecure number, their phone will automatically correct it to the new one without even trying to connect.
+
+This single header effectively prevents **SSL stripping attacks**, a type of man-in-the-middle attack where a hacker intercepts a user's initial HTTP request and downgrades their connection to an unencrypted one, allowing them to read all the traffic. With HSTS, the browser never even gives the attacker a chance to do this.
+
+## The Hidden Danger of Application-Level HSTS
+
+A common and valid argument for keeping HSTS configuration in the application is for "defense-in-depth." What if you move hosting providers and forget to configure it at the edge? It seems like a good fallback.
+
+However, this approach has a significant, hidden pitfall in most modern hosting environments: **it can cause infinite redirect loops.** 😵‍💫
+
+The problem lies in a common architecture pattern called **SSL Offloading**. Here's how it typically works when you're using a container, a load balancer, or a reverse proxy:
+
+1.  A user connects to your site via **HTTPS**.
+2.  The connection hits the edge (your proxy, load balancer, or container host). This layer decrypts the traffic.
+3.  The edge then forwards the request to your application over **HTTP**.
+
+From your application's perspective, the request it received was insecure. If your `.UseHsts()` middleware sees an "insecure" HTTP request, it does its job: it issues a 301 or 302 redirect to the HTTPS version of the URL.
+
+The browser receives this redirect and dutifully makes a new request to the HTTPS URL, the proxy receives it, decrypts it, forwards it to your app over HTTP, and the cycle begins again. Your users are now stuck in a redirect loop, and your site is down.
+
+This isn't a theoretical problem. It's a common scenario when running apps in Docker/Kubernetes, behind an NGINX reverse proxy, or on many cloud platforms where SSL is terminated before the request reaches your code.
+
+This is why blindly adding HSTS middleware without considering the entire application architecture can be a little reckless. It's a decision that depends entirely on your hosting environment. Thankfully, by managing HSTS at the edge with a service like Cloudflare, we sidestep this entire problem.
+
+## Prerequisites: Don't Skip This\!
+
+Before you even think about enabling HSTS, you need to have your ducks in a row. Getting this wrong can make your site completely inaccessible. 😬
+
+✅ Your entire website **must** be served over HTTPS. No exceptions.\
+✅ You need a valid, non-expired SSL/TLS certificate.\
+✅ You must redirect all HTTP traffic to HTTPS. (In Cloudflare, the "Always Use HTTPS" setting under **SSL/TLS -\> Edge Certificates** handles this perfectly.)\
+✅ If you plan to preload (and you should\!), **all** subdomains (e.g., `www.`, `api.`, `blog.`) must also fully support HTTPS.
+
+⚠️ **Serious Warning:** Once a browser receives the HSTS header, it will **refuse** to connect to your site via HTTP for the entire duration (`max-age`) you specify. If your SSL certificate expires or you have HTTPS configuration issues, your site will be completely unavailable to returning visitors until it's fixed.
+
+## Part 1: Configuring HSTS in Cloudflare
+
+Now for the easy part. Cloudflare makes this a simple, "no-code" change.
+
+1.  Log in to your Cloudflare dashboard and select your domain.
+2.  Navigate to **SSL/TLS** \> **Edge Certificates**.
+3.  Scroll down to the **HTTP Strict Transport Security (HSTS)** card and click **Enable HSTS**.
+4.  You'll be presented with the settings. Click "Next" and then carefully configure the policy.
+
+<Figure key="/images/hsts-cloudflare-config.png" src="/images/hsts-cloudflare-config.png" alt="Cloudflare's HSTS configuration settings pane showing Max-Age, Include Subdomains, Preload, and No-Sniff options." width="0" height="0" caption="Configuring the HSTS policy in the Cloudflare dashboard" />
+
+Here's what each setting means:
+
+* **Max-Age:** This is the duration, in seconds, that the browser should cache the HSTS policy. While Cloudflare may indicate `6 months` as "(Recommended)", to be eligible for preloading, this **must be set to at least 1 year** (`31536000` seconds) is the recommended value for long-term security.
+* **Include subdomains:** This applies the HSTS policy to all subdomains of your site. This is a **mandatory requirement** for preloading. Only enable this if you are certain all your subdomains have HTTPS working correctly.
+* **Preload:** This adds the `preload` directive to the header. This is your signal to browsers that you consent to have your domain included in their hardcoded preload lists. This is also **mandatory** for preloading.
+* **No-Sniff:** This is a **bonus!** Cloudflare also adds the `X-Content-Type-Options: nosniff` header, which helps prevent browsers from MIME-sniffing a response away from the declared content-type.
+
+Once you have set the `Max-Age` to at least 1 year, and enabled both `Include subdomains` and `Preload`, save your configuration.
+
+## Part 2: Joining the HSTS Preload List
+
+With HSTS enabled in Cloudflare, you're protecting returning visitors. But what about someone visiting your site for the very first time? That initial HTTP request could still be vulnerable.
+
+The **HSTS Preload List** solves this. It's a list of domains that are hardcoded directly into major browsers like Chrome, Firefox, Edge, and Safari. If your site is on this list, the browser knows to *only* use HTTPS for it, even for the very first visit. This is the gold standard. 🏆
+
+Here’s how to get on it:
+
+1.  Ensure you have configured HSTS in Cloudflare as described above (1-year max-age, include subdomains, and preload enabled).
+2.  Go to the official submission site: [hstspreload.org](https://hstspreload.org).
+3.  Enter your domain name and click "Check HSTS status and eligibility".
+4.  The site will check your live headers. If everything is correct, you'll see a "Status: `[your-domain]` is eligible for preloading." message.
+5.  Follow the prompts to submit your domain to the list.
+
+<Figure key="/images/hsts-preload-check.png" src="/images/hsts-preload-check.png" alt="The hstspreload.org website showing a successful eligibility check for a domain." width="0" height="0" caption="Successful eligibility check on hstspreload.org" />
+
+Be aware that inclusion is not instant. It can take weeks or even months for your domain to be included in new browser releases.
+
+## Verification: Did It Work?
+
+You can easily verify that your new header is being sent correctly.
+
+1.  **Browser DevTools:** Open your website, open the browser's developer tools (F12 or Ctrl+Shift+I), go to the "Network" tab, and refresh the page. Click on the very first request (the HTML document) and look at the "Response Headers". You should see the `strict-transport-security` header with the values you configured.
+
+    ```http
+    strict-transport-security: max-age=63072000; includeSubDomains; preload
+    ```
+
+2.  **Online Tools:** Use a tool like [securityheaders.com](https://securityheaders.com) to scan your domain. It will analyze your headers and report on your HSTS configuration, among other things.
+
+## Conclusion
+
+By managing HSTS at the Cloudflare level, you centralize your security policies, keep infrastructure concerns out of your application code, and make your projects cleaner and easier to maintain. It's a simple change that provides a powerful security boost for your users.
+
+Taking the extra step to get on the HSTS preload list closes the final gap, ensuring that every connection to your site is secure from the very first visit. Go get it done\! 🚀

@@ -118,3 +118,17 @@ Gordon Beeming's blog demonstrates professional-grade responsive design. The sit
 *Test conducted on: August 20, 2025*  
 *Testing environment: Chrome browser with viewport simulation*  
 *Site version: Next.js 15.3.3 with TailwindCSS 4.1.8*
+
+## Test Screenshots
+
+### Mobile Homepage (320px × 568px)
+![Mobile Homepage](https://github.com/user-attachments/assets/68ec2f1b-344b-4cc1-a382-f7a2c2d2d8a9)
+
+### Mobile Navigation Menu
+![Mobile Navigation](https://github.com/user-attachments/assets/83650566-950a-41d0-9b52-79059e029ee8)
+
+### Mobile Blog Post View
+![Mobile Blog Post](https://github.com/user-attachments/assets/db3b4a8d-7c18-4c04-bb6c-05b2fa1b6ec7)
+
+### Tablet View (768px × 1024px)
+![Tablet View](https://github.com/user-attachments/assets/96498a00-ea98-4df2-9d8f-3aa85b6a7413)

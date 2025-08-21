@@ -181,6 +181,9 @@ function ListLayoutGridContent({
 
   const tagShownLimit = selectedYear ? 30 : 15
 
+  // Helper boolean to determine when to show year counts
+  const showYearCounts = !searchQuery && !selectedTag && !selectedYear
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -247,7 +250,7 @@ function ListLayoutGridContent({
                 }`}
               aria-pressed={selectedYear === year}
             >
-              {year} ({yearCounts[year]})
+              {year}{showYearCounts ? ` (${yearCounts[year]})` : ''}
             </button>
           ))}
         </div>

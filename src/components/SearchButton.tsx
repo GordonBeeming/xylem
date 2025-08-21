@@ -28,9 +28,11 @@ const SearchButton = () => {
   return (
     <div className="relative inline-block">
       <button
-        aria-label="Search"
+        aria-label={open ? "Close search" : "Open search"}
+        aria-expanded={open}
+        aria-haspopup="true"
         onClick={() => setOpen((v) => !v)}
-        className="focus:outline-none"
+        className="focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
         type="button"
       >
         <svg
@@ -40,6 +42,7 @@ const SearchButton = () => {
           strokeWidth={1.5}
           stroke="currentColor"
           className="hover:text-primary-500 dark:hover:text-primary-400 h-6 w-6 text-gray-900 dark:text-gray-100"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -52,8 +55,14 @@ const SearchButton = () => {
         <form
           onSubmit={handleSubmit}
           className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50 p-2 flex gap-2"
+          role="search"
+          aria-label="Quick search form"
         >
+          <label htmlFor="quick-search" className="sr-only">
+            Search blog posts
+          </label>
           <input
+            id="quick-search"
             ref={inputRef}
             type="text"
             value={query}
@@ -63,10 +72,15 @@ const SearchButton = () => {
             onKeyDown={(e) => {
               if (e.key === 'Escape') setOpen(false)
             }}
+            aria-describedby="search-instructions"
           />
+          <div id="search-instructions" className="sr-only">
+            Press Enter to search or Escape to close
+          </div>
           <button
             type="submit"
-            className="px-3 py-2 rounded bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900 hover:bg-primary-700 dark:hover:bg-primary-300 focus:outline-none"
+            className="px-3 py-2 rounded bg-primary-800 text-white dark:bg-primary-400 dark:text-gray-900 hover:bg-primary-700 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800"
+            aria-label="Submit search"
           >
             Search
           </button>

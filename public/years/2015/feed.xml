@@ -1,0 +1,174 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 07 Jan 2015 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/years/2015/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</guid>
+    <title>Failover or Restart Results in Reseed of Identity - FIX</title>
+    <link>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</link>
+    <description>This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.</description>
+    <pubDate>Wed, 07 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Adoption Blockers</category><category>Old Blog Posts</category><category>Data</category><category>SQL Server</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-13/know-it-prove-it-28-days-to-rock-your-skills</guid>
+    <title>Know it. Prove it. 28 days to rock your skills.</title>
+    <link>https://gordonbeeming.com/blog/2015-01-13/know-it-prove-it-28-days-to-rock-your-skills</link>
+    <description>If you haven&#39;t heard yet Microsoft Virtual Academy are running &quot;know it. Prove it&quot;. This is a great opportunity to learn something new or extend your current knowledge in one of the 8 topics available.</description>
+    <pubDate>Tue, 13 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Events</category><category>#KnowItProveIt</category><category>Microsoft Virtual Academy</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-15/windows-insider-program-changes-to-terms-of-use</guid>
+    <title>Windows Insider Program: Changes to Terms of Use</title>
+    <link>https://gordonbeeming.com/blog/2015-01-15/windows-insider-program-changes-to-terms-of-use</link>
+    <description>This is just an FYI</description>
+    <pubDate>Thu, 15 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Windows Insider Program</category><category>Read It Don't Read It</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-16/how-to-enable-alternate-credentials-in-visual-studio-online-vso</guid>
+    <title>How to Enable Alternate Credentials in Visual Studio Team Services (VSTS)</title>
+    <link>https://gordonbeeming.com/blog/2015-01-16/how-to-enable-alternate-credentials-in-visual-studio-online-vso</link>
+    <description>Ok so obviously the first you need is to have a VSO account. If you have one already, awesome, continue on and skip this section.</description>
+    <pubDate>Fri, 16 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-21/fixing-the-process-cannot-access-the-file-because-it-is-being-used-by-another-process-exception-from-hresult-0x80070020</guid>
+    <title>Fixing The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)</title>
+    <link>https://gordonbeeming.com/blog/2015-01-21/fixing-the-process-cannot-access-the-file-because-it-is-being-used-by-another-process-exception-from-hresult-0x80070020</link>
+    <description>I had some &quot;Weird&quot; things happening with IIS on one of my developer machines. After trouble shooting for a while I decided that was definitely not winning and removed all features from my pc that were even the slightest related to IIS, my pc required a restart so I did. When it came back I re-enabled all the features as I would normally do and then attempted to put my dev site in IIS. For some reason all the sites were stopped and when trying to start them I received the message</description>
+    <pubDate>Wed, 21 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>IIS</category><category>Skype</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</guid>
+    <title>Cleaning up the Taskbar on Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2015-03-26/cleaning-up-the-taskbar-on-windows-10</link>
+    <description>The number 1 thing voted for under Taskbar currently is to hide the new Search bar and task view buttons</description>
+    <pubDate>Thu, 26 Mar 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Tips</category><category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</guid>
+    <title>They said Select * was bad but...</title>
+    <link>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</link>
+    <description>So speaking to any smart database people they will generally tell you that the SELECT * FROM ... is a bad idea and should not be used. Today (well would of been if I didn&#39;t procrastinate) I spent many hours debugging something from the wrong places because I used SELECT *. Below is what I found out =). Rennie Moodley helped me understand what was happening after I figured out where the problem was, helped me create the sample code below and then the 2 of us and Christopher Swart poked at and improve the sample and found some more weirdness which you&#39;ll also see below.</description>
+    <pubDate>Thu, 09 Apr 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>T-SQL</category><category>Data</category><category>SQL Server</category><category>Grab Some Coffee</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</guid>
+    <title>Create a new VSTS account</title>
+    <link>https://gordonbeeming.com/blog/2015-05-11/create-a-new-vso-account</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Mon, 11 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</guid>
+    <title>Creating your first VSTS Team Project</title>
+    <link>https://gordonbeeming.com/blog/2015-05-15/creating-your-first-vso-team-project</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 15 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</guid>
+    <title>Connecting Visual Studio to VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-18/connecting-visual-studio-to-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Mon, 18 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</guid>
+    <title>Connecting Test Manager to VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-22/connecting-test-manager-to-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Fri, 22 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category><category>Test Manager</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-05-25/creating-iterations-in-vso</guid>
+    <title>Creating Iterations in VSTS</title>
+    <link>https://gordonbeeming.com/blog/2015-05-25/creating-iterations-in-vso</link>
+    <description>This post is part of an overall Series on Visual Studio Online.</description>
+    <pubDate>Mon, 25 May 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>VSTS Series</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</guid>
+    <title>A &#39;Hello World&#39; for VSTS Extensions</title>
+    <link>https://gordonbeeming.com/blog/2015-06-18/a-hello-world-for-vso-extensions</link>
+    <description>So if you haven&#39;t heard yet VSO Extensions are now in a private preview where you can sign up to get into the preview on extensions integration site. These extensions in the shortest sentence a supported way of doing customizations to VSO that will replace any of the &quot;hacky&quot; extensions that you may be playing around with at the moment like Tiago Pascal&#39;s Task Board Enhancer or maybe you have even created your own following similar steps to what I show in my TFS 2013 Customization book.</description>
+    <pubDate>Thu, 18 Jun 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>VSTS / TFS</category><category>VSTS Extensions</category><category>Getting Started</category><category>Rangers Research</category><category>Free Stuff</category><category>GitHub Projects</category><category>Grab Some Coffee</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</guid>
+    <title>Browsing localhost with the Microsoft Edge Browser</title>
+    <link>https://gordonbeeming.com/blog/2015-07-04/browsing-localhost-with-the-microsoft-edge-browser</link>
+    <description>So if you using windows 10 and doing some web development you would probably have noticed that you can&#39;t browse localhost for some reason. And there is a couple of feedback items for it in the Windows Feedback app.</description>
+    <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Microsoft Edge</category><category>Fiddler</category><category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-10-08/load-testing-using-azure</guid>
+    <title>Load testing using Azure</title>
+    <link>https://gordonbeeming.com/blog/2015-10-08/load-testing-using-azure</link>
+    <description>So everyone wants to have the ultimate system that never breaks can handle &#39;all&#39; the users and shows no strain when doing so. How do you accomplish something like this? Well you could hire developers that know all the best ways to do everything, experts in everything related to configuring applications to run the best that they can on the hardware and software it sits on but what&#39;s the odds of that happening. The other option is to have a bank account that is never ending and throw &#39;all&#39; the hardware at your application to make sure it doesn&#39;t ever have a slow day but then how are you making your money, how do you know when &#39;all&#39; the hardware isn&#39;t enough.</description>
+    <pubDate>Thu, 08 Oct 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Load Testing</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</guid>
+    <title>Setting up TFS Build Agents fast</title>
+    <link>https://gordonbeeming.com/blog/2015-10-16/setting-up-tfs-build-agents-fast</link>
+    <description>So you could make a script that can do the bits below but if you don&#39;t here is how you can easily create build agents fast for TFS 2015+ or VSO.</description>
+    <pubDate>Fri, 16 Oct 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Build</category>
+  </item>
+
+    </channel>
+  </rss>

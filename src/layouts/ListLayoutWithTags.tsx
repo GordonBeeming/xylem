@@ -97,10 +97,21 @@ export default function ListLayoutWithTags({
               {pathname.startsWith('/tags/') ? (
                 <>
                   <Link
-                    href={`https://feedly.com/i/subscription/feed/https://gordonbeeming.com${pathname}/feed.xml`}
+                    href={`https://feedly.com/i/subscription/${encodeURIComponent(`feed/https://gordonbeeming.com${pathname.replace(/\/page\/\d+$/, '')}/feed.xml`)}`}
                     className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
                   >
-                    RSS for {decodeURI(pathname.split('/tags/')[1])}
+                    RSS for {decodeURI(pathname.split('/tags/')[1].replace(/\/page\/\d+$/, ''))}
+                  </Link>
+                  <br />
+                  <br />
+                </>
+              ) : pathname.startsWith('/years/') ? (
+                <>
+                  <Link
+                    href={`https://feedly.com/i/subscription/${encodeURIComponent(`feed/https://gordonbeeming.com${pathname.replace(/\/page\/\d+$/, '')}/feed.xml`)}`}
+                    className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
+                  >
+                    RSS for {decodeURI(pathname.split('/years/')[1].replace(/\/page\/\d+$/, ''))}
                   </Link>
                   <br />
                   <br />

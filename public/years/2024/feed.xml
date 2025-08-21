@@ -1,0 +1,34 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Thu, 21 Mar 2024 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/years/2024/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</guid>
+    <title>Improving your git efficiency using git alias</title>
+    <link>https://gordonbeeming.com/blog/2024-03-21/improving-your-git-efficiency-using-git-alias</link>
+    <description>Have you ever felt like typing out git commands requires too much effort, yet you don&#39;t want to switch to a GUI because that brings it&#39;s own set of problems?  Have you tried using git aliases to make your workflow more efficient?  Over the last couple of weeks I&#39;ve shown many people how I&#39;m using git alias to improve my workflows, if you&#39;re interested in improving your workflow, watch this video 💪😅</description>
+    <pubDate>Thu, 21 Mar 2024 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>GitHub</category><category>Source Control. Git</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2024-05-16/goodbye-microsoft-teams-bar-hello-productivity</guid>
+    <title>Goodbye Microsoft Teams bar... Hello Productivity</title>
+    <link>https://gordonbeeming.com/blog/2024-05-16/goodbye-microsoft-teams-bar-hello-productivity</link>
+    <description>We&#39;ve all been there, you&#39;re in a meeting, you start sharing your screen and things are going great... next up you need to do something at the top of your screen and you can&#39;t because the Microsoft Teams bar is in the way. You can&#39;t move it, you can&#39;t hide it, you can&#39;t do anything about it.  Or can you?</description>
+    <pubDate>Thu, 16 May 2024 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Collaboration</category><category>Productivity</category><category>Microsoft Teams</category>
+  </item>
+
+    </channel>
+  </rss>

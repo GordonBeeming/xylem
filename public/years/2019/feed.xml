@@ -1,0 +1,54 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Sat, 16 Feb 2019 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/years/2019/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2019-02-16/adding-routes-to-strava-and-then-to-garmin-devices</guid>
+    <title>Adding routes to Strava and then to Garmin devices</title>
+    <link>https://gordonbeeming.com/blog/2019-02-16/adding-routes-to-strava-and-then-to-garmin-devices</link>
+    <description>I&#39;ve spoken to a couple of people who want to add routes to their Garmin devices but the path isn&#39;t as straight forward as you&#39;d imagine it should/can be.</description>
+    <pubDate>Sat, 16 Feb 2019 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Strava</category><category>Know your tools</category><category>Connect IQ</category><category>Garmin</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2019-03-18/missing-ctrl-enter-in-visual-studio-to-commit-changes-here-s-how-you-can-add-it</guid>
+    <title>Missing ctrl + enter in Visual Studio to commit changes? Here&#39;s how you can add it</title>
+    <link>https://gordonbeeming.com/blog/2019-03-18/missing-ctrl-enter-in-visual-studio-to-commit-changes-here-s-how-you-can-add-it</link>
+    <description>So something that you&#39;ve probably noticed when using dev tools in the web and Visual Studio Code is that you can hit ctrl + enter and with this you may have noticed that in Visual Studio you can&#39;t do that. Below you&#39;ll see how you can add this to your IDE.</description>
+    <pubDate>Mon, 18 Mar 2019 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>VSTS / TFS</category><category>Visual Studio</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2019-08-19/github-actions-ci-in-5-clicks</guid>
+    <title>GitHub actions… CI in 5 clicks</title>
+    <link>https://gordonbeeming.com/blog/2019-08-19/github-actions-ci-in-5-clicks</link>
+    <description>If you don&#39;t know yet what GitHub actions are you can read about it on the GitHub Actions feature on GitHub. In short on the 8th of August GitHub announced an update to their actions which you can read about in this blog post. it&#39;s a very easy way to automate anything from any event in GitHub.</description>
+    <pubDate>Mon, 19 Aug 2019 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub Actions</category><category>GitHub</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2019-12-10/find-organizations-linked-to-your-aad-tenant-in-azure-devops</guid>
+    <title>Find organizations linked to your AAD tenant in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2019-12-10/find-organizations-linked-to-your-aad-tenant-in-azure-devops</link>
+    <description>Did you know that you can get a list of all organizations linked to your Azure Active Directory tenant? Since august this has been possible 😁</description>
+    <pubDate>Tue, 10 Dec 2019 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure Active Directory</category>
+  </item>
+
+    </channel>
+  </rss>

@@ -20,6 +20,12 @@ export default function ColorPalettePage() {
       description: 'Primary text color'
     },
     {
+      name: 'Secondary Text',
+      hex: '#374151',
+      colorVar: '--color-gray-700',
+      description: 'Secondary text color for better contrast (WCAG AA compliant)'
+    },
+    {
       name: 'Primary',
       hex: '#0063B2',
       colorVar: '--color-primary-800',
@@ -51,6 +57,12 @@ export default function ColorPalettePage() {
       hex: '#E0E0E0',
       colorVar: '--color-gray-200',
       description: 'Primary text color'
+    },
+    {
+      name: 'Secondary Text',
+      hex: '#D1D5DB',
+      colorVar: '--color-gray-300',
+      description: 'Secondary text color for better contrast (WCAG AA compliant)'
     },
     {
       name: 'Primary',
@@ -126,9 +138,11 @@ export default function ColorPalettePage() {
           <ul className="space-y-2 text-gray-700 dark:text-gray-300">
             <li>• These colors are defined as CSS custom properties in the site's stylesheet</li>
             <li>• The theme automatically switches between light and dark variants based on user preference</li>
-            <li>• All colors are designed to meet WCAG accessibility standards for contrast</li>
+            <li>• All colors meet WCAG 2.1 AA accessibility standards for contrast (4.5:1 minimum ratio)</li>
+            <li>• Secondary Text colors have been optimized for enhanced readability and accessibility</li>
             <li>• Use Primary colors for interactive elements and branding</li>
             <li>• Use Accent colors sparingly for highlights and call-to-action elements</li>
+            <li>• Secondary Text colors are ideal for metadata, captions, and supplementary information</li>
           </ul>
         </div>
       </div>

@@ -27,9 +27,13 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   const nextPage = currentPage + 1 <= totalPages
 
   return (
-    <div className="flex justify-between items-center pt-8">
+    <nav className="flex justify-between items-center pt-8" aria-label="Blog posts pagination">
       {!prevPage && (
-        <button className="cursor-auto disabled:opacity-50 px-4 py-2 text-gray-500" disabled={!prevPage}>
+        <button 
+          className="cursor-auto disabled:opacity-50 px-4 py-2 text-gray-500" 
+          disabled={!prevPage}
+          aria-label="Previous page (disabled)"
+        >
           Previous
         </button>
       )}
@@ -37,16 +41,21 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         <Link
           href={currentPage - 1 === 1 ? `/blog/` : `/blog/page/${currentPage - 1}`}
           rel="prev"
-          className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300"
+          className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900"
+          aria-label={`Go to previous page (page ${currentPage - 1})`}
         >
           Previous
         </Link>
       )}
-      <span className="text-gray-600 dark:text-gray-400">
+      <span className="text-gray-700 dark:text-gray-300" aria-current="page" aria-label={`Current page ${currentPage} of ${totalPages}`}>
         {currentPage} of {totalPages}
       </span>
       {!nextPage && (
-        <button className="cursor-auto disabled:opacity-50 px-4 py-2 text-gray-500" disabled={!nextPage}>
+        <button 
+          className="cursor-auto disabled:opacity-50 px-4 py-2 text-gray-500" 
+          disabled={!nextPage}
+          aria-label="Next page (disabled)"
+        >
           Next
         </button>
       )}
@@ -54,12 +63,13 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         <Link
           href={`/blog/page/${currentPage + 1}`}
           rel="next"
-          className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300"
+          className="px-4 py-2 bg-primary-800 text-white rounded-md hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900"
+          aria-label={`Go to next page (page ${currentPage + 1})`}
         >
           Next
         </Link>
       )}
-    </div>
+    </nav>
   )
 }
 
@@ -90,7 +100,7 @@ function ListLayoutGridFallback({ posts, title }: { posts: CoreContent<Blog>[]; 
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
           {title}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
+        <p className="text-lg text-gray-700 dark:text-gray-300">
           Explore {posts.length} articles about development, technology, and more
         </p>
       </div>
@@ -191,7 +201,7 @@ function ListLayoutGridContent({
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
           {title}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
+        <p className="text-lg text-gray-700 dark:text-gray-300">
           Explore {posts.length} articles about development, technology, and more
         </p>
       </div>
@@ -217,14 +227,22 @@ function ListLayoutGridContent({
 
         {/* Search Button */}
         <div className="relative">
+          <label htmlFor="search-input" className="sr-only">
+            Search blog posts by title, tag, or content
+          </label>
           <input
+            id="search-input"
             ref={searchInputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title, tag, or content..."
             className="w-full px-4 py-3 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-400 focus:border-primary-800 dark:focus:border-primary-400"
+            aria-describedby="search-help"
           />
+          <div id="search-help" className="sr-only">
+            Type to search through all blog posts. Results will update automatically as you type.
+          </div>
         </div>
 
         {/* Year Filter Pills */}
@@ -285,7 +303,7 @@ function ListLayoutGridContent({
             {tagsWithDisplayPosts.length > tagShownLimit && (
               <Link
                 href="/tags"
-                className="px-3 py-1 text-sm text-gray-500 hover:text-primary-800 dark:text-gray-400 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
+                className="px-3 py-1 text-sm text-gray-600 hover:text-primary-800 dark:text-gray-300 dark:hover:text-primary-400 transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-md"
                 aria-label={`View all ${tagsWithDisplayPosts.length} tags`}
               >
                 +{tagsWithDisplayPosts.length - tagShownLimit} more
@@ -298,7 +316,7 @@ function ListLayoutGridContent({
 
       {/* Results Summary */}
       {(selectedTag || selectedYear || searchQuery) && (
-        <div className="text-center text-gray-600 dark:text-gray-400">
+        <div className="text-center text-gray-700 dark:text-gray-300" role="status" aria-live="polite">
           {displayPosts.length === 0 ? (
             <p>No posts found.</p>
           ) : (
@@ -306,6 +324,7 @@ function ListLayoutGridContent({
               Found {displayPosts.length} post{displayPosts.length !== 1 ? 's' : ''}
               {selectedTag && ` tagged with "${selectedTag}"`}
               {selectedYear && ` from ${selectedYear}`}
+              {searchQuery && ` matching "${searchQuery}"`}
             </p>
           )}
         </div>
@@ -313,7 +332,7 @@ function ListLayoutGridContent({
 
       {/* Posts Grid */}
       {displayPosts.length > 0 ? (
-        <section role="main" aria-label="Blog posts">
+        <section aria-label="Blog posts">
           <div className="grid gap-8 md:grid-cols-2">
             {displayPosts.map((post) => {
               const { path, date, title, summary, tags } = post
@@ -324,7 +343,7 @@ function ListLayoutGridContent({
                       {/* Date */}
                       <time
                         dateTime={date}
-                        className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        className="text-sm font-medium text-gray-600 dark:text-gray-300"
                         suppressHydrationWarning
                       >
                         {formatDate(date, siteMetadata.locale)}
@@ -341,26 +360,24 @@ function ListLayoutGridContent({
                       </h2>
 
                       {/* Summary */}
-                      <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
+                      <p className="text-gray-700 dark:text-gray-300 line-clamp-3">
                         {summary}
                       </p>
 
                       {/* Tags */}
-                      <ul className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+                      <div className="flex flex-wrap gap-2">
                         {tags?.slice(0, 3).map((tag) => (
-                          <li key={tag}>
-                            <Tag text={tag} />
-                          </li>
+                          <Tag key={tag} text={tag} />
                         ))}
                         {tags && tags.length > 3 && (
-                          <li
-                            className="text-sm text-gray-500 dark:text-gray-400"
+                          <span
+                            className="text-sm text-gray-600 dark:text-gray-300"
                             aria-label={`${tags.length - 3} more tags`}
                           >
                             +{tags.length - 3} more
-                          </li>
+                          </span>
                         )}
-                      </ul>
+                      </div>
                     </div>
                   </div>
                 </article>

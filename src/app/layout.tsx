@@ -5,6 +5,7 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
+import SkipLink from '@/components/SkipLink'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
@@ -88,9 +89,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-gray-50 pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-900 dark:text-white">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          
+          {/* Skip Links for Keyboard Navigation */}
+          <div className="sr-only focus-within:not-sr-only">
+            <SkipLink href="#main-content">Skip to main content</SkipLink>
+            <SkipLink href="#navigation">Skip to navigation</SkipLink>
+          </div>
+          
           <SectionContainer>
             <Header />
-            <main className="mb-auto">{children}</main>
+            <main id="main-content" className="mb-auto" role="main">
+              {children}
+            </main>
             <Footer />
           </SectionContainer>
         </ThemeProviders>

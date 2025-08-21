@@ -127,6 +127,40 @@ pnpm run build
 # Test manually in browser
 ```
 
+### UI/UX Changes Requirements:
+**CRITICAL:** When making any UI element changes, ALWAYS include Lighthouse performance and accessibility results in the PR description:
+
+1. **Run Lighthouse Analysis:**
+   - Test both desktop and mobile versions
+   - Include Performance, Accessibility, Best Practices, and SEO scores
+   - Take screenshots of the results
+   - Test key pages: homepage, blog post pages, blog listing
+
+2. **Include in PR Description:**
+   ```markdown
+   ## Lighthouse Results
+   
+   ### Homepage
+   - Performance: XX/100
+   - Accessibility: XX/100  
+   - Best Practices: XX/100
+   - SEO: XX/100
+   
+   ### Blog Post Page
+   - Performance: XX/100
+   - Accessibility: XX/100
+   - Best Practices: XX/100
+   - SEO: XX/100
+   
+   [Screenshots of Lighthouse results]
+   ```
+
+3. **Accessibility Testing:**
+   - Run axe DevTools scans on modified pages
+   - Ensure WCAG 2.1 AA compliance (4.5:1 contrast ratio minimum)
+   - Test keyboard navigation and screen reader compatibility
+   - Verify all interactive elements have proper focus indicators
+
 ## Important File Locations
 
 ### Configuration Files:

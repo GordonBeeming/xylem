@@ -1,0 +1,71 @@
+name: External Page Screenshots
+
+on:
+  pull_request:
+    branches: [ main, preview, 'copilot/*' ]
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js application
+        run: npm run build
+
+      - name: Start server in background
+        run: |
+          nohup npm run serve > .next-serve.log 2>&1 &
+          echo $! > .next-serve.pid
+
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to start..."
+          timeout=120
+          elapsed=0
+          while ! curl -s http://localhost:3000 > /dev/null; do
+            if [ $elapsed -ge $timeout ]; then
+              echo "Server failed to start within $timeout seconds"
+              echo "Server logs:"
+              cat .next-serve.log
+              exit 1
+            fi
+            sleep 2
+            elapsed=$((elapsed + 2))
+            echo "Waiting... ($elapsed/$timeout seconds)"
+          done
+          echo "Server is ready!"
+
+      - name: Install Playwright Chromium
+        run: npx playwright@latest install --with-deps chromium
+
+      - name: Take screenshots
+        run: node scripts/screenshot-external.mjs
+        env:
+          URL: http://localhost:3000/external?link=https%3A%2F%2Fexample.com
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-page-screenshots
+          path: artifacts/screens/*.png
+          retention-days: 30
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f .next-serve.pid ]; then
+            kill $(cat .next-serve.pid) || true
+          fi

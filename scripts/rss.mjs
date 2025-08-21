@@ -4,6 +4,7 @@ import { slug } from 'github-slugger'
 import { escape } from 'pliny/utils/htmlEscaper.js'
 import siteMetadata from '../data/siteMetadata.js'
 import tagData from '../src/app/tag-data.json' with { type: 'json' }
+import yearData from '../src/app/year-data.json' with { type: 'json' }
 import { allBlogs } from '../.contentlayer/generated/index.mjs'
 import { sortPosts } from 'pliny/utils/contentlayer.js'
 
@@ -50,6 +51,19 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
       const filteredPosts = allBlogs.filter((post) => post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag))
       const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
       const rssPath = path.join(outputFolder, 'tags', tag)
+      mkdirSync(rssPath, { recursive: true })
+      writeFileSync(path.join(rssPath, page), rss)
+    }
+  }
+
+  if (publishPosts.length > 0) {
+    for (const year of Object.keys(yearData)) {
+      const filteredPosts = allBlogs.filter((post) => {
+        const date = new Date(post.date)
+        return date.getFullYear() === parseInt(year)
+      })
+      const rss = generateRss(config, filteredPosts, `years/${year}/${page}`)
+      const rssPath = path.join(outputFolder, 'years', year)
       mkdirSync(rssPath, { recursive: true })
       writeFileSync(path.join(rssPath, page), rss)
     }

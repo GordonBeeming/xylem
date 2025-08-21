@@ -1,0 +1,444 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Fri, 03 Jan 2014 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/years/2014/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</guid>
+    <title>Cryptographic failure while signing assembly</title>
+    <link>https://gordonbeeming.com/blog/2014-01-03/cryptographic-failure-while-signing-assembly</link>
+    <description>Today I got a weird error on code that should just work.</description>
+    <pubDate>Fri, 03 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Requires Admin</category><category>Tips</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-04/start-bitstransfer-object-reference-not-set-to-an-instance-of-an-object</guid>
+    <title>Start-BitsTransfer : Object reference not set to an instance of an object.</title>
+    <link>https://gordonbeeming.com/blog/2014-01-04/start-bitstransfer-object-reference-not-set-to-an-instance-of-an-object</link>
+    <description>Today I find myself with yet another bit of functionality that only works when you are running in Administrator Mode. A while back I had Full Admin Mode always enabled, downside of this is the store apps don&#39;t work at all. Up side is your PC works as expected . I created a PowerShell script to download Channel 9 videos as described in my post Easily download Ch9 videos, this script worked perfectly but recently started breaking with the error</description>
+    <pubDate>Sat, 04 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Requires Admin</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-10/download-brian-kellers-vm-with-powershell</guid>
+    <title>Download Brian Keller&#39;s VM with PowerShell</title>
+    <link>https://gordonbeeming.com/blog/2014-01-10/download-brian-kellers-vm-with-powershell</link>
+    <description>So yesterday and update for Brian Keller&#39;s VM (Visual Studio 2013 Application Lifecycle Management Virtual Machine and Hands-on-Labs / Demo Scripts) was release</description>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Brian Keller VM</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</guid>
+    <title>How to Enforce Check-In Policies</title>
+    <link>https://gordonbeeming.com/blog/2014-01-10/how-to-enforce-check-in-policies</link>
+    <description>So one of the benefits of using Server side Plugins is that you can&#39;t override them. The problem with this is that the users don&#39;t know that the policy is in place until they check-in their code. Wouldn&#39;t it be nice if me as a user were told this is what I need to do as in see the requirements from check-in policies but then to make the administrators or business rules that require the policies to also be happy.</description>
+    <pubDate>Fri, 10 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Check-In Policies</category><category>TFS Server Plugins</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-16/creating-a-checkpoint-vpn-connection-on-windows-81</guid>
+    <title>Creating a CheckPoint VPN Connection on Windows 8.1</title>
+    <link>https://gordonbeeming.com/blog/2014-01-16/creating-a-checkpoint-vpn-connection-on-windows-81</link>
+    <description>So we use CheckPoint VPN, but the most frustrating part is that when a new version on windows is released the CheckPoint VPN client is incompatible with it and makes your computer weird when you do try use it.</description>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Windows 8.1</category><category>CheckPoint VPN</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-1</guid>
+    <title>Getting start with a Team Explorer Plugin for VS 2013 Part 1</title>
+    <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-1</link>
+    <description>In these posts we will be going through creating different elements that can be found in the Team Explorer, the aim is to give you the ground knowledge required to extend Team Explorer your way. For an example of some great Team Explorer plugins that demonstrate how much you can do take a look at Team Rooms for Visual Studio 2013 and News which were created by Utkarsh Shigihalli and Tarun Arora for Team Explorer in Visual Studio 2013.</description>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2</guid>
+    <title>Getting start with a Team Explorer Plugin for VS 2013 Part 2</title>
+    <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-2</link>
+    <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 1 we setup a base to start extending Team Explorer, this post assumes you have already have the base project setup. Creating a new Team Explorer Navigation Item Add a new const to the GuidList class (in the Guids file) like below</description>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-3</guid>
+    <title>Getting start with a Team Explorer Plugin for VS 2013 Part 3</title>
+    <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-3</link>
+    <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 2 we created a Team Explorer Navigation Item and we will be using that item in this post and therefore assume that you have been through it already and created the navigation item.</description>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Plugins</category><category>Team Explorer</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4</guid>
+    <title>Getting start with a Team Explorer Plugin for VS 2013 Part 4</title>
+    <link>https://gordonbeeming.com/blog/2014-01-16/getting-start-with-a-team-explorer-plugin-for-vs-2013-part-4</link>
+    <description>In Getting start with a Team Explorer Plugin for VS 2013 Part 3 we created a Team Explorer Page and we will be using that item in this post and therefore assume that you have been through it already and created the page.</description>
+    <pubDate>Thu, 16 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Plugin</category><category>Getting Started</category><category>Team Explorer</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-21/tf400324-team-foundation-services-are-not-available-from-server</guid>
+    <title>TF400324: Team Foundation services are not available from server...</title>
+    <link>https://gordonbeeming.com/blog/2014-01-21/tf400324-team-foundation-services-are-not-available-from-server</link>
+    <description>This post was originally found on my old blog at http://gbeeming.wordpress.com/2013/06/28/tf400324-team-foundation-services-are-not-available-from-server/.</description>
+    <pubDate>Tue, 21 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>Old Blog Posts</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-21/visual-studio-2013-update-1-released</guid>
+    <title>Visual Studio 2013 Update 1  Released</title>
+    <link>https://gordonbeeming.com/blog/2014-01-21/visual-studio-2013-update-1-released</link>
+    <description>Visual Studio 2013 Update 1 has been released and as usual you are able to use the /layout argument to download all the files so you can share them locally instead of everyone downloading them. As mentioned in Brian Harry&#39;s blog here there is no update for TFS this time round but good things are coming for TFS Update 2.</description>
+    <pubDate>Tue, 21 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Update</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</guid>
+    <title>Download #MVA Content with PowerShell</title>
+    <link>https://gordonbeeming.com/blog/2014-01-24/download-msva-content-with-powershell</link>
+    <description>So I&#39;m starting to go through some of the content on Microsoft Virtual Academy but I don&#39;t have time to do this when I&#39;m by a good internet connection and at the same time don&#39;t have time when by the good internet connection to run though all the content I need to download it to watch in my spare time.</description>
+    <pubDate>Fri, 24 Jan 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Microsoft Virtual Academy</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-02-18/using-application-insights-with-a-new-windows-store-app</guid>
+    <title>Using Application Insights with a new Windows Store App</title>
+    <link>https://gordonbeeming.com/blog/2014-02-18/using-application-insights-with-a-new-windows-store-app</link>
+    <description>If you haven&#39;t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.</description>
+    <pubDate>Tue, 18 Feb 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Application Insights</category><category>Windows Store App</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-02-25/visual-studio-hangs-systemcertificates-fiddler</guid>
+    <title>Visual Studio Hangs + SystemCertificates + Fiddler</title>
+    <link>https://gordonbeeming.com/blog/2014-02-25/visual-studio-hangs-systemcertificates-fiddler</link>
+    <description>For the last while I have been experiencing weird hangs with Visual Studio 2013. To try identify what was causing the hangs or at least where about the problem was I ran ProcMon.exe on devenv.exe and the point where Visual Studio hung I was getting the below output recursively</description>
+    <pubDate>Tue, 25 Feb 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Fiddler</category><category>System Certificates</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-03-03/increase-the-value-of-your-dashboard-with-tfs-2013-update-2</guid>
+    <title>Increase the value of your dashboard with TFS 2013 Update 2</title>
+    <link>https://gordonbeeming.com/blog/2014-03-03/increase-the-value-of-your-dashboard-with-tfs-2013-update-2</link>
+    <description>Did you hear? Somasegarblogged that Team Foundation Server 2013 RC is a go-live release. What does that mean for you and your customers? One word</description>
+    <pubDate>Mon, 03 Mar 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Pinned Items</category><category>TFS</category><category>Work Item Charting</category><category>TFS 2013</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-03-24/packt-publishing-celebrating-2000-titles</guid>
+    <title>Packt Publishing Celebrating 2000 Titles</title>
+    <link>https://gordonbeeming.com/blog/2014-03-24/packt-publishing-celebrating-2000-titles</link>
+    <description>Have you heard about the campaign that Packt Publishing is running at the moment? They are celebrating 2000 published titles, below are just 3 of the titles that you can get. For more info see http://bit.ly/1j26nPN.</description>
+    <pubDate>Mon, 24 Mar 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Packt Publishing</category><category>Chatter</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</guid>
+    <title>TF400917: The current configuration is not valid for this feature. This feature cannot be used until you correct the configuration</title>
+    <link>https://gordonbeeming.com/blog/2014-03-27/tf400917-the-current-configuration-is-not-valid-for-this-feature-this-feature-cannot-be-used-until-you-correct-the-configuration</link>
+    <description>UPDATE: This has been identified as a bug and will be fixed in the next release for on-premise</description>
+    <pubDate>Thu, 27 Mar 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>TFS</category><category>TFS Error Codes</category><category>TFS 2013</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-04-10/easily-download-ch9-videos</guid>
+    <title>Easily download Ch9 videos</title>
+    <link>https://gordonbeeming.com/blog/2014-04-10/easily-download-ch9-videos</link>
+    <description>I watch and download a lot of videos from Channel 9 and because I&#39;m a developer and always looking for ways to speed up anything I do I searched for a PowerShell script. I eventually found one (can&#39;t remember where) and immediately set it up to download This Week on Channel 9 and Ping Show. Over time I have added many other shows, events and series. The initial script I was found with some modifications was</description>
+    <pubDate>Thu, 10 Apr 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Channel 9</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</guid>
+    <title>Hubs.tt will save your life</title>
+    <link>https://gordonbeeming.com/blog/2014-04-24/hubstt-will-save-your-life</link>
+    <description>Updates have been made, see the end of the post</description>
+    <pubDate>Thu, 24 Apr 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>SignalR</category><category>Visual Studio</category><category>TypeScript</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</guid>
+    <title>Using Application Insights with an existing Windows Store App</title>
+    <link>https://gordonbeeming.com/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app</link>
+    <description>If you haven&#39;t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.</description>
+    <pubDate>Mon, 12 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Rangers Research</category><category>Application Insights</category><category>Windows Store App</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</guid>
+    <title>Sharing code that uses Application Insights</title>
+    <link>https://gordonbeeming.com/blog/2014-05-14/sharing-code-that-uses-application-insights</link>
+    <description>So you have a project that uses Application Insights and want to share it with the world. Sure you just post it to CodePlex, GitHub or some other place that allows publishing of code don&#39;t you.</description>
+    <pubDate>Wed, 14 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>My View</category><category>Rangers Research</category><category>Application Insights</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-05-15/sys-internals-updater</guid>
+    <title>Sys Internals Updater</title>
+    <link>https://gordonbeeming.com/blog/2014-05-15/sys-internals-updater</link>
+    <description>During Channel 9 Live: Defrag Tools Live – Mark Russinovich, Mark Russinovich mentioned that one of the apps might not have been up to date on the machine he was showing really cool things on . So then I thought hey I never update my sys internals apps.</description>
+    <pubDate>Thu, 15 May 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Sys-Internals</category><category>Cool Apps</category><category>GitHub Projects</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-06-02/how-to-get-your-identity-tokens</guid>
+    <title>How to get your identity tokens</title>
+    <link>https://gordonbeeming.com/blog/2014-06-02/how-to-get-your-identity-tokens</link>
+    <description>This post has been ported from http://gbeeming.wordpress.com/2013/10/08/how-to-get-your-identity-tokens/.</description>
+    <pubDate>Mon, 02 Jun 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Microsoft Account</category><category>Facebook</category><category>Old Blog Posts</category><category>Google</category><category>OAuth</category><category>Twitter</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-02/one-year-as-alm-ranger-and-first-day-as-alm-mvp</guid>
+    <title>One year as ALM Ranger and First day as ALM MVP</title>
+    <link>https://gordonbeeming.com/blog/2014-07-02/one-year-as-alm-ranger-and-first-day-as-alm-mvp</link>
+    <description>So a year ago today I joined the ALM Rangers family and have recently been &quot;promoted&quot; into an active ALM Ranger and worked on projects like Upgrade Guide, Version Control (ex Branching and Merging) Guide and Flight Plan.</description>
+    <pubDate>Wed, 02 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>MVP Stuff</category><category>Chatter</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-07/do-you-know-optional-parameters</guid>
+    <title>Do you know Optional Parameters?</title>
+    <link>https://gordonbeeming.com/blog/2014-07-07/do-you-know-optional-parameters</link>
+    <description>Up until about an hour ago I thought I knew how optional parameters worked but didn&#39;t actually. I thought (probably without giving it too much thought) that optional parameters would compile to something that would reflect having multiple overloads as when they came out I ripped out 100s of overloads across multiple libraries and replaces them with optional parameters because it replace code like</description>
+    <pubDate>Mon, 07 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Language Features</category><category>CSharp</category><category>Just Coding</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-16/organize-your-music-collection</guid>
+    <title>Organize your Music Collection</title>
+    <link>https://gordonbeeming.com/blog/2014-07-16/organize-your-music-collection</link>
+    <description>I was looking for a PowerShell script that would remove all media tags (post coming) from a folder of music that I have and along the way I came across a blog post called PowerShell - Automatically organizing your mp3-collection. Although this wasn&#39;t exactly what I was looking for right now I gave it a try and then thought to share it after I made a couple of changes to make it work on my machine and categorize a bit more . You can grab the script off GitHub Gist organise-music.ps1.</description>
+    <pubDate>Wed, 16 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub Projects</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</guid>
+    <title>Introduction to DotNet Pretty</title>
+    <link>https://gordonbeeming.com/blog/2014-07-17/introduction-to-dotnet-pretty</link>
+    <description>Another thing that come out of last weeks training was Visual Studio Debuggers. This lead to me finding the coolest visualizer ever called TPL Dataflow Debugger Visualizer which allows you to easily visualize your TPL Dataflow</description>
+    <pubDate>Thu, 17 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>Visual Studio Plugin</category><category>DotNet Pretty</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</guid>
+    <title>Creating &quot;fake&quot; TFS Builds</title>
+    <link>https://gordonbeeming.com/blog/2014-07-18/creating-fake-tfs-builds</link>
+    <description>This post has been ported from https://gbeeming.wordpress.com/2013/10/06/creating-fake-tfs-builds/.</description>
+    <pubDate>Fri, 18 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Adoption Blockers</category><category>TFS Build</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</guid>
+    <title>TFS Work Item Visualizers</title>
+    <link>https://gordonbeeming.com/blog/2014-07-28/tfs-work-item-visualizers</link>
+    <description>In my last post (Introduction to DotNet Pretty) I mentioned that I would be added more visualizers to DotNet Pretty soon . Today I finally managed to get around to that and added some visualizers for TFS Work Items.</description>
+    <pubDate>Mon, 28 Jul 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio</category><category>TFS</category><category>DotNet Pretty</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</guid>
+    <title>Upgrade/Publish TFS 2013 Process Templates with PowerShell</title>
+    <link>https://gordonbeeming.com/blog/2014-09-12/upgradepublish-tfs-2013-process-templates-with-powershell</link>
+    <description>I use to make a lot of TFS customizations and had to apply the template changes to multiple team projects which took a bit of time. Depending on the method you use it could be a quick or loooong process . When I first started doing customizations I used the TFS Power Tools to upload changes which is a lot of effort because you are uploading one work item definition at a time into one team project.</description>
+    <pubDate>Fri, 12 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Rangers Research</category><category>TFS 2013</category><category>GitHub Projects</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</guid>
+    <title>SQL Prompt 6.4 Release</title>
+    <link>https://gordonbeeming.com/blog/2014-09-23/sql-prompt-64-release</link>
+    <description>I used to highlight a bunch of text (a couple of statements) then press F5 to execute that statement. With this new release you are able to easily execute the current statement by pressing Shift + F5.</description>
+    <pubDate>Tue, 23 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>SQL Prompt</category><category>Product Release</category><category>Productivity</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-25/turning-on-local-cache-for-nuget</guid>
+    <title>Turning &quot;on&quot; local cache for NuGet</title>
+    <link>https://gordonbeeming.com/blog/2014-09-25/turning-on-local-cache-for-nuget</link>
+    <description>My internet connection is slow or down quite a lot. One of the things Robert MacLean pointed out today in a presentation at a Microsoft Dev Day event today is that is that you can make use of the local cache from previous downloaded packages. Below is how to do this</description>
+    <pubDate>Thu, 25 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Visual Studio</category><category>NuGet</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</guid>
+    <title>Creating a VSTS Account for Demos</title>
+    <link>https://gordonbeeming.com/blog/2014-09-26/creating-a-vso-account-for-demos</link>
+    <description>I need a VSO account for Demos which needs to be separate from my personal and business VSO accounts. The problem is though if you go to the Visual Studio Online page and click Get started for free</description>
+    <pubDate>Fri, 26 Sep 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Visual Studio Team Services</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-06/activating-your-windows-10</guid>
+    <title>Activating your Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2014-10-06/activating-your-windows-10</link>
+    <description>So you shouldn&#39;t need to do this but in my case for some reason I needed to activate windows after performing and upgrade from Windows 8.1.</description>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Just longer than a tweet</category><category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-06/changing-the-theme-in-windows-10</guid>
+    <title>Changing the theme in Windows 10</title>
+    <link>https://gordonbeeming.com/blog/2014-10-06/changing-the-theme-in-windows-10</link>
+    <description>In windows 10 when you go to Change the background and colors on Start</description>
+    <pubDate>Mon, 06 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Windows 10</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-28/configuring-a-chocolatey-install</guid>
+    <title>Configuring a Chocolatey Install</title>
+    <link>https://gordonbeeming.com/blog/2014-10-28/configuring-a-chocolatey-install</link>
+    <description>So yesterday I posted Pushing a new project to Chocolatey and I said I would create another post showing how to configure how the Chocolatey install runs and this is that post .</description>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>MyGet</category><category>DotNet Pretty</category><category>Chocolatey</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</guid>
+    <title>Pushing a new project to Chocolatey</title>
+    <link>https://gordonbeeming.com/blog/2014-10-28/pushing-a-new-project-to-chocolatey</link>
+    <description>Today my DotNet Pretty articles were featured on @coding4fun by Greg Duncan and one of the comments by Niner bc3tech (@bc3tech) requested that I share this solution on Chocolatey. I decided that this was a good idea and decided to share my experience .</description>
+    <pubDate>Tue, 28 Oct 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>MyGet</category><category>Channel 9</category><category>DotNet Pretty</category><category>Chocolatey</category><category>GitHub Projects</category><category>PowerShell</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-11-13/my-experience-with-codealike</guid>
+    <title>My Experience with Codealike</title>
+    <link>https://gordonbeeming.com/blog/2014-11-13/my-experience-with-codealike</link>
+    <description>I have been using Codealike for a while now and thought I&#39;d share my experience and things that I like about codealike with everyone. I did mention codealike on This Week on Ch9 when I hosted it last week with Greg Duncan.</description>
+    <pubDate>Thu, 13 Nov 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Codealike</category><category>Metrics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-03/webinar-performance-tuning-net-sql-code-using-ants-profiler</guid>
+    <title>Webinar - Performance Tuning .NET &amp; SQL Code using ANTS Profiler</title>
+    <link>https://gordonbeeming.com/blog/2014-12-03/webinar-performance-tuning-net-sql-code-using-ants-profiler</link>
+    <description>Friend of Red Gate (and .NET MVP) Mitchel Sellers will be hosting it for us alongside Red Gate&#39;s APP product manager Ben Emmett. We&#39;re running it in conjunction with LinkedIn group LIDNUG (LinkedIn .NET User Group) who have over 52,000 members so we&#39;re hoping to get a big list of people signed up! Feel free to sign up yourself or let anyone know who you think might be interested in registering.</description>
+    <pubDate>Wed, 03 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Events</category><category>Webinar</category><category>Red Gate</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-10/application-insights-for-windows-store-apps-in-azure-portal</guid>
+    <title>Application Insights for Windows Store Apps in Azure Portal</title>
+    <link>https://gordonbeeming.com/blog/2014-12-10/application-insights-for-windows-store-apps-in-azure-portal</link>
+    <description>If you&#39;ve been using Application Insights for a while now you would have noticed that with recent Visual Updates the Application Insights SDK had been updated to use a new version that logs AI data into the new Azure Portal. From this if you use Windows Store Apps you would probably have noticed that if you instrument a Windows Store application with the new SDK that you can&#39;t actually find your data anywhere although you can see it being logged from the Visual Studio Output window and using Fiddler. The good news is that you will soon be able to have a great experience with the new AI SDK for Windows Store apps as you do for your currently for your web applications, the better news is that below you&#39;ll see how to use the new SDK for your Store Apps and see the data in the Azure Portal.</description>
+    <pubDate>Wed, 10 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Adoption Blockers</category><category>Rangers Research</category><category>Application Insights</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-17/assign-a-azure-subscription-to-a-existing-user</guid>
+    <title>Assign a Azure Subscription to a existing user</title>
+    <link>https://gordonbeeming.com/blog/2014-12-17/assign-a-azure-subscription-to-a-existing-user</link>
+    <description>If you have logged into the Azure Management Portal and see a message like below then you need to have a azure subscription assigned to you in order to use the portal and this post is going to help you (probably your Administrator) assign a subscription to your account.</description>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Subscriptions</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-17/creating-a-new-azure-active-directory-user</guid>
+    <title>Creating a new Azure Active Directory User</title>
+    <link>https://gordonbeeming.com/blog/2014-12-17/creating-a-new-azure-active-directory-user</link>
+    <description>Open the Azure Management Portal, login and then navigate to the Active Directory tab and click on the Active Directory resource you want to add a user to, alternatively create a new Azure Active Directory resource and then come back to this post.</description>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Azure Active Directory</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</guid>
+    <title>Using Azure Resource Manager</title>
+    <link>https://gordonbeeming.com/blog/2014-12-17/using-azure-resource-manager</link>
+    <description>In the new Azure Portal you create all your resources in Resource Groups, there is also as part of the Azure SDK&#39;s a module called AzureResourceManager by default the module loaded for the Azure SDK is AzureServiceManagement. A blurb from one of the Azure documentation page reads</description>
+    <pubDate>Wed, 17 Dec 2014 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Azure Resource Manager</category><category>Rangers Research</category><category>PowerShell</category>
+  </item>
+
+    </channel>
+  </rss>

@@ -1,0 +1,194 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 18 Mar 2020 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/years/2020/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-18/the-importance-of-regression-testing-and-real-world-security-consequences</guid>
+    <title>The importance of regression testing and real world security consequences</title>
+    <link>https://gordonbeeming.com/blog/2020-03-18/the-importance-of-regression-testing-and-real-world-security-consequences</link>
+    <description>Organizations often put a lot of effort around testing their products, they&#39;ll put tons of effort in unit testing, integration testing across their UI and API layers but sometimes have a strategy of covering everything. This doesn&#39;t always add value to their pipelines because the metric that is being chased is not value which agreeably is a hard thing to measure but rather it&#39;s a coverage metric. To start with I don&#39;t know if testing strategy is what was happening for TicTocTrack but is something that is definitely highlighted as something that would have been valuable for them. A security vulnerability discovered around a year ago from a fellow MVP and security expert Troy Hunt was patched and then earlier this year I re-discovered it</description>
+    <pubDate>Wed, 18 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Testing</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</guid>
+    <title>Publish aspnet core sites to Azure easily using GitHub actions</title>
+    <link>https://gordonbeeming.com/blog/2020-03-23/publish-aspnet-core-sites-to-azure-easily-using-github-actions</link>
+    <description>Have a site sitting in GitHub that you currently maybe manually deploy to Azure or use some other tool? Why not useGitHub Actionsto quickly and easily publish to Azure. I was pushing a small site (Guid.Empty) to Azure through GitHub and decided to document the couple steps for future me 😋... oh and for you of course 😅</description>
+    <pubDate>Mon, 23 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>GitHub Actions</category><category>GitHub</category><category>dotnet core</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</guid>
+    <title>Create pfx certificate file for Azure Web Apps from Cloudflare origin cert using openssl</title>
+    <link>https://gordonbeeming.com/blog/2020-03-24/create-pfx-certificate-file-for-azure-web-apps-from-cloudflare-origin-cert-using-openssl</link>
+    <description>Every time I create a new project using Azure Web Apps or even IIS and I need to add a pfx file for end to end https, Cloudflare gives you a private key and certificate but you can&#39;t use those directly with Azure Web Apps and I keep forgetting how to do this exactly so as I do sometimes I&#39;m going to post the steps so that it&#39;s helpful to others as well as future me.</description>
+    <pubDate>Tue, 24 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Azure</category><category>Linux</category><category>Cloudflare</category><category>openssl</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-26/raising-awareness-and-reliable-information-sources-for-covid19-by-adding-a-banner-to-your-websites</guid>
+    <title>Raising awareness and reliable information sources for #COVID19 by adding a banner to your websites</title>
+    <link>https://gordonbeeming.com/blog/2020-03-26/raising-awareness-and-reliable-information-sources-for-covid19-by-adding-a-banner-to-your-websites</link>
+    <description>Recently talking to people it&#39;s obvious that a lot of people are either not following what is going on globally and in lots of cases have information that seems to have been obtained from unreliable sources MyBroadband released a post titled &quot;New rules for all co.za websites and ISPs during coronavirus outbreak&quot; which mentioned that ISPs needed a visible link to one of the South African information sites for corona virus so thought it would be a useful thing for more people to add banners in general to their sites linking to a trusted source for corona virus information</description>
+    <pubDate>Thu, 26 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Raising Awareness</category><category>COVID19</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</guid>
+    <title>How to lower the real cost of a SQL Server Virtual Machine in Azure</title>
+    <link>https://gordonbeeming.com/blog/2020-03-27/how-to-lower-the-real-cost-of-a-sql-server-virtual-machine-in-azure</link>
+    <description>Whenever you take out an Azure VM you generally get a single disk which is not that big, when you select a SQL Server based VM (even web edition) you automatically get a 1TB disk, if you are using managed disks you pay for that whole TB even if you are only using 1GB of it. This post will show you how you can lower the price of that virtual machine if you are in this situation</description>
+    <pubDate>Fri, 27 Mar 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Tips</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-05-20/2020-journey-to-120</guid>
+    <title>2020 Journey to 120</title>
+    <link>https://gordonbeeming.com/blog/2020-05-20/2020-journey-to-120</link>
+    <description>This post is just to kick off and mention that I will be doing a series of videos out on YouTube about my 2020 Journey to 120.</description>
+    <pubDate>Wed, 20 May 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>2020 Journey to 120</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-07-30/code-snippet-jsonpropertyconvertercs</guid>
+    <title>[ code snippet ] JsonPropertyConverter.cs</title>
+    <link>https://gordonbeeming.com/blog/2020-07-30/code-snippet-jsonpropertyconvertercs</link>
+    <description>JsonConverter that works with System.Text.Json allows having a string property that will just store the json element string instead of trying to parse the properties into a complex object</description>
+    <pubDate>Thu, 30 Jul 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>JSON</category><category>code snippet</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</guid>
+    <title>How to use the same editor as Visual Studio Code in your sites</title>
+    <link>https://gordonbeeming.com/blog/2020-08-12/how-to-use-the-same-editor-as-visual-studio-code-in-your-sites</link>
+    <description>Wondering how you can use the same editor as Visual Studio Code in your sites? In this video I&#39;ll show you how you can 😀. 0:00 - Introduction 0:25 - Setup basic HTML file 1:55 - Add monaco editor html tags 3:23 - Use monaco colorizeElement functionality 5:17 - Create a monaco editor 9:46 - Monaco editor &quot;Cannot read property &#39;AddEventListener&#39; of null 10:38 - Use npm to install monaco editor dependencies 12:19 - Exploring the monaco editor playground 13:52 - Thank you for watching</description>
+    <pubDate>Wed, 12 Aug 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Monaco Editor</category><category>NPM</category><category>YouTube Videos</category><category>Visual Studio Code</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-21/how-to-create-a-team-project-in-azure-devops</guid>
+    <title>How to create a team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-21/how-to-create-a-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to create a team project in Azure DevOps</description>
+    <pubDate>Mon, 21 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</guid>
+    <title>How to delete a team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-22/how-to-delete-a-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-22/how-to-recovery-a-deleted-team-project-in-azure-devops</guid>
+    <title>How to recovery a deleted team project in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-22/how-to-recovery-a-deleted-team-project-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to delete a team project in Azure DevOps</description>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>YouTube Videos</category><category>Azure DevOps Basics</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</guid>
+    <title>How to migrate git repositories to Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-migrate-git-repositories-to-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate git repositories to Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</guid>
+    <title>How to move Work Items between projects in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-23/how-to-move-work-items-between-projects-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to move Work Items between projects in Azure DevOps</description>
+    <pubDate>Wed, 23 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-24/how-to-migrate-svn-and-tfvc-repositories-to-git-repositories-in-azure-devops</guid>
+    <title>How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-24/how-to-migrate-svn-and-tfvc-repositories-to-git-repositories-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... How to migrate SVN and TFVC repositories to git repositories in Azure DevOps</description>
+    <pubDate>Thu, 24 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</guid>
+    <title>Migrating Test artifacts and all other work item types using the Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-27/migrating-test-artifacts-and-all-other-work-item-types-using-the-azure-devops</link>
+    <description>In this video I&#39;m going to show you... Migrating Test artifacts (and all other work item types) using the Azure DevOps Migration Tools</description>
+    <pubDate>Sun, 27 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</guid>
+    <title>Migrating pipelines and releases in Azure DevOps</title>
+    <link>https://gordonbeeming.com/blog/2020-09-29/migrating-pipelines-and-releases-in-azure-devops</link>
+    <description>In this video I&#39;m going to show you... Migrating pipelines and releases in Azure DevOps</description>
+    <pubDate>Tue, 29 Sep 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure DevOps</category><category>Azure DevOps Migrations</category><category>YouTube Videos</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</guid>
+    <title>Rethink your application boundary and use Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2020-10-21/rethink-your-application-boundary-and-use-cloudflare</link>
+    <description>In this video I&#39;m going to talk to you about... Rethinking your application boundary and using Cloudflare</description>
+    <pubDate>Wed, 21 Oct 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Azure</category><category>Cloudflare</category><category>GitHub Actions</category><category>GitHub</category><category>YouTube Videos</category><category>msdug</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</guid>
+    <title>MSB4019: Microsoft.Data.Tools.Schema.SqlTasks.targets was not found</title>
+    <link>https://gordonbeeming.com/blog/2020-11-20/msb4019-microsoft-data-tools-schema-sqltasks-targets-was-not-found</link>
+    <description>.</description>
+    <pubDate>Fri, 20 Nov 2020 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Automated Builds</category><category>dotnet core</category><category>MSBuild</category><category>SSDT</category>
+  </item>
+
+    </channel>
+  </rss>

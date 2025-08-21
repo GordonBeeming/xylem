@@ -56,22 +56,22 @@ export default function Home({ posts }) {
             <h2 id="blog-posts-heading" className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               Latest Blog Posts
             </h2>
-            <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
               Recent insights and technical deep-dives
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2" role="list" aria-label="Latest blog posts">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
             {posts.slice(0, MAX_DISPLAY).map((post) => {
               const { slug, date, title, summary, tags } = post
               return (
-                <article key={slug} className="group" role="listitem">
+                <article key={slug} className="group">
                   <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-50 dark:focus-within:ring-offset-gray-900">
                     <div className="space-y-4">
                       {/* Date */}
                       <time
                         dateTime={date}
-                        className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        className="text-sm font-medium text-gray-600 dark:text-gray-300"
                         suppressHydrationWarning
                       >
                         {formatDate(date, siteMetadata.locale)}
@@ -89,26 +89,24 @@ export default function Home({ posts }) {
                       </h3>
 
                       {/* Summary */}
-                      <p id={`post-summary-${slug}`} className="text-gray-600 dark:text-gray-400 line-clamp-3">
+                      <p id={`post-summary-${slug}`} className="text-gray-700 dark:text-gray-300 line-clamp-3">
                         {summary}
                       </p>
 
                       {/* Tags */}
-                      <ul className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+                      <div className="flex flex-wrap gap-2">
                         {tags.slice(0, 3).map((tag) => (
-                          <li key={tag}>
-                            <Tag text={tag} />
-                          </li>
+                          <Tag key={tag} text={tag} />
                         ))}
                         {tags.length > 3 && (
-                          <li 
-                            className="text-sm text-gray-500 dark:text-gray-400"
+                          <span 
+                            className="text-sm text-gray-600 dark:text-gray-300"
                             aria-label={`${tags.length - 3} more tags`}
                           >
                             +{tags.length - 3} more
-                          </li>
+                          </span>
                         )}
-                      </ul>
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -138,14 +136,14 @@ export default function Home({ posts }) {
             <h2 id="books-heading" className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               My Books
             </h2>
-            <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
               Technical books and publications I've authored
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list" aria-label="My published books">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {booksData.map((book) => (
-              <article key={book.title} className="group" role="listitem">
+              <article key={book.title} className="group">
                 <button
                   onClick={() => openBookModal(book)}
                   className="h-full w-full rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900"
@@ -172,7 +170,7 @@ export default function Home({ posts }) {
                     </h3>
 
                     {/* Description Preview */}
-                    <p id={`book-description-${book.title.replace(/\s+/g, '-').toLowerCase()}`} className="text-sm text-gray-600 dark:text-gray-400 line-clamp-4">
+                    <p id={`book-description-${book.title.replace(/\s+/g, '-').toLowerCase()}`} className="text-sm text-gray-700 dark:text-gray-300 line-clamp-4">
                       {book.description}
                     </p>
 

@@ -6,7 +6,7 @@ interface ExternalPageProps {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'External Link',
+    title: "You're leaving gordonbeeming.com",
     description: 'You are being redirected to an external website.',
     robots: {
       index: false,
@@ -47,22 +47,26 @@ export default async function ExternalPage({ searchParams }: ExternalPageProps) 
 
   if (!linkParam) {
     return (
-      <>
-        <style>{darkModeCSS}</style>
-        <div style={styles.container}>
-          <div style={styles.card}>
-            <h1 style={styles.title}>External Link</h1>
-            <p style={styles.message}>
-              No external link was provided. This page is used to safely redirect to external websites.
+      <div className="mx-auto max-w-3xl px-6 sm:px-8 xl:max-w-5xl xl:px-0">
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 max-w-2xl w-full shadow-sm">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              You're leaving gordonbeeming.com
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              No link was provided.
             </p>
-            <div style={styles.buttonContainer}>
-              <a href="/" style={styles.homeButton}>
-                Go Home
+            <div className="flex gap-3">
+              <a
+                href="/"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+              >
+                Go home
               </a>
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 
@@ -74,25 +78,31 @@ export default async function ExternalPage({ searchParams }: ExternalPageProps) 
       finalUrl = decodedUrl
     } else {
       return (
-        <>
-          <style>{darkModeCSS}</style>
-          <div style={styles.container}>
-            <div style={styles.card}>
-              <h1 style={styles.title}>Invalid Link</h1>
-              <p style={styles.message}>
-                The provided link is not valid or cannot be decoded. Please check the URL and try again.
+        <div className="mx-auto max-w-3xl px-6 sm:px-8 xl:max-w-5xl xl:px-0">
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 max-w-2xl w-full shadow-sm">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                You're leaving gordonbeeming.com
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                Invalid or unsupported link.
               </p>
-              <p style={styles.providedLink}>
-                Provided: <code style={styles.code}>{linkParam}</code>
-              </p>
-              <div style={styles.buttonContainer}>
-                <a href="/" style={styles.homeButton}>
-                  Go Home
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md p-4 mb-6">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  Provided: <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs font-mono">{linkParam}</code>
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <a
+                  href="/"
+                  className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+                >
+                  Go home
                 </a>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )
     }
   }
@@ -100,183 +110,54 @@ export default async function ExternalPage({ searchParams }: ExternalPageProps) 
   const hostname = getHostname(finalUrl)
 
   return (
-    <>
-      <style>{darkModeCSS}</style>
-      <div style={styles.container}>
-        <div style={styles.card}>
-          <h1 style={styles.title}>External Link Notice</h1>
-          <p style={styles.message}>
-            You previously used to be redirected through this page, but we no longer automatically redirect to external sites.
+    <div className="mx-auto max-w-3xl px-6 sm:px-8 xl:max-w-5xl xl:px-0">
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 max-w-2xl w-full shadow-sm">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            You're leaving gordonbeeming.com
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+            This link opens an external site ({hostname}). Please review the destination and only continue if you trust it. External sites may have different privacy or security practices.
           </p>
-          <div style={styles.linkInfo}>
-            <p style={styles.destinationLabel}>Destination:</p>
-            <p style={styles.destinationUrl}>{finalUrl}</p>
-            <p style={styles.destinationHost}>Host: {hostname}</p>
+          
+          <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md p-4 mb-6 space-y-3">
+            <div>
+              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                Destination
+              </p>
+              <p className="text-sm font-mono text-primary-700 dark:text-primary-400 break-all">
+                {finalUrl}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                Host
+              </p>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                {hostname}
+              </p>
+            </div>
           </div>
-          <div style={styles.buttonContainer}>
+          
+          <div className="flex gap-3 flex-wrap">
             <a
               href={finalUrl}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              style={styles.continueButton}
+              className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-800 dark:bg-primary-400 dark:text-gray-900 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
             >
-              Continue to External Site
+              Continue to external site
             </a>
-            <a href="/" style={styles.homeButton}>
-              Go Home
+            <a
+              href="/"
+              className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+            >
+              Go home
             </a>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
-// CSS for dark mode support
-const darkModeCSS = `
-  :root {
-    --color-gray-50: #f8f9fa;
-    --color-gray-100: #f3f4f6;
-    --color-gray-200: #e0e0e0;
-    --color-gray-300: #d1d5db;
-    --color-gray-600: #6b7280;
-    --color-gray-700: #374151;
-    --color-gray-900: #1a1a1a;
-    --color-white: #ffffff;
-    --color-primary-600: #2563eb;
-    --color-primary-700: #1e40af;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-gray-50: #1f2937;
-      --color-gray-100: #374151;
-      --color-gray-200: #4b5563;
-      --color-gray-300: #6b7280;
-      --color-gray-600: #9ca3af;
-      --color-gray-700: #d1d5db;
-      --color-gray-900: #f9fafb;
-      --color-white: #111827;
-      --color-primary-600: #3b82f6;
-      --color-primary-700: #60a5fa;
-    }
-  }
-
-  .dark {
-    --color-gray-50: #1f2937;
-    --color-gray-100: #374151;
-    --color-gray-200: #4b5563;
-    --color-gray-300: #6b7280;
-    --color-gray-600: #9ca3af;
-    --color-gray-700: #d1d5db;
-    --color-gray-900: #f9fafb;
-    --color-white: #111827;
-    --color-primary-600: #3b82f6;
-    --color-primary-700: #60a5fa;
-  }
-`
-
-// Inline styles with CSS custom properties for light/dark mode support
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '1rem',
-    backgroundColor: 'var(--color-gray-50)',
-    color: 'var(--color-gray-900)',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
-  } as React.CSSProperties,
-  card: {
-    backgroundColor: 'var(--color-white)',
-    border: '1px solid var(--color-gray-200)',
-    borderRadius: '8px',
-    padding: '2rem',
-    maxWidth: '600px',
-    width: '100%',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-  } as React.CSSProperties,
-  title: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-    color: 'var(--color-gray-900)',
-    margin: '0 0 1rem 0',
-  } as React.CSSProperties,
-  message: {
-    marginBottom: '1.5rem',
-    lineHeight: '1.5',
-    color: 'var(--color-gray-700)',
-    margin: '0 0 1.5rem 0',
-  } as React.CSSProperties,
-  linkInfo: {
-    backgroundColor: 'var(--color-gray-50)',
-    border: '1px solid var(--color-gray-200)',
-    borderRadius: '6px',
-    padding: '1rem',
-    marginBottom: '1.5rem',
-  } as React.CSSProperties,
-  destinationLabel: {
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    color: 'var(--color-gray-600)',
-    marginBottom: '0.5rem',
-    margin: '0 0 0.5rem 0',
-  } as React.CSSProperties,
-  destinationUrl: {
-    wordBreak: 'break-all' as const,
-    marginBottom: '0.5rem',
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-    color: 'var(--color-primary-700)',
-    margin: '0 0 0.5rem 0',
-  } as React.CSSProperties,
-  destinationHost: {
-    fontSize: '0.875rem',
-    color: 'var(--color-gray-600)',
-    margin: '0',
-  } as React.CSSProperties,
-  providedLink: {
-    marginBottom: '1.5rem',
-    fontSize: '0.875rem',
-    color: 'var(--color-gray-600)',
-    margin: '0 0 1.5rem 0',
-  } as React.CSSProperties,
-  code: {
-    backgroundColor: 'var(--color-gray-100)',
-    padding: '0.25rem 0.5rem',
-    borderRadius: '4px',
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-  } as React.CSSProperties,
-  buttonContainer: {
-    display: 'flex',
-    gap: '1rem',
-    flexWrap: 'wrap' as const,
-  } as React.CSSProperties,
-  continueButton: {
-    backgroundColor: 'var(--color-primary-600)',
-    color: 'white',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '6px',
-    textDecoration: 'none',
-    fontWeight: '500',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    display: 'inline-block',
-  } as React.CSSProperties,
-  homeButton: {
-    backgroundColor: 'var(--color-gray-100)',
-    color: 'var(--color-gray-700)',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '6px',
-    textDecoration: 'none',
-    fontWeight: '500',
-    border: '1px solid var(--color-gray-300)',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    display: 'inline-block',
-  } as React.CSSProperties,
-}

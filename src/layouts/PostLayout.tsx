@@ -38,14 +38,14 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
   return (
     <SectionContainer>
       <ScrollTopAndComment />
-      <article>
+      <article role="article" aria-labelledby="post-title">
         <div>
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
               <dl className="space-y-10">
                 <div>
                   <dt className="sr-only">Published on</dt>
-                  <dd className="text-base leading-6 font-medium text-gray-600 dark:text-gray-300">
+                  <dd className="text-base leading-6 font-medium text-gray-700 dark:text-gray-300">
                     <time dateTime={date}>
                       {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
                     </time>
@@ -53,7 +53,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </div>
               </dl>
               <div>
-                <PageTitle>{title}</PageTitle>
+                <PageTitle id="post-title">{title}</PageTitle>
               </div>
             </div>
           </header>
@@ -95,7 +95,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </ul>
               </dd>
             </dl>
-            <div className="xl:col-span-3 xl:row-span-2 xl:pb-0">
+            <section className="xl:col-span-3 xl:row-span-2 xl:pb-0" aria-label="Post content">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">
                 {children}
                 <CodeBlockEnhancer />
@@ -115,12 +115,12 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <Comments slug={slug} />
                 </div>
               )}
-            </div>
+            </section>
             <footer>
               <div className="text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2">
                 {tags && (
                   <section className="py-4 xl:py-8" aria-labelledby="post-tags-heading">
-                    <h2 id="post-tags-heading" className="text-xs tracking-wide text-gray-600 uppercase dark:text-gray-300 mb-3">
+                    <h2 id="post-tags-heading" className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-3">
                       Tags
                     </h2>
                     <ul className="flex flex-wrap gap-2">
@@ -145,7 +145,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       {prev && prev.path && (
                         <div className="w-full">
                           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-                            <h3 className="text-xs tracking-wide text-gray-600 uppercase dark:text-gray-300 mb-2 flex items-center">
+                            <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
                               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                               </svg>
@@ -164,7 +164,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       {next && next.path && (
                         <div className="w-full">
                           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-                            <h3 className="text-xs tracking-wide text-gray-600 uppercase dark:text-gray-300 mb-2 flex items-center">
+                            <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
                               Next Article
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

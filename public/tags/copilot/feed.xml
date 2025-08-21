@@ -21,6 +21,16 @@
   </item>
 
   <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</guid>
+    <title>A Guide to Mastering GitHub Copilot on github.com</title>
+    <link>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</link>
+    <description>Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.</description>
+    <pubDate>Wed, 13 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub</category><category>Copilot</category><category>AI</category><category>Productivity</category><category>DevOps</category>
+  </item>
+
+  <item>
     <guid>https://gordonbeeming.com/blog/2025-08-19/i-let-copilot-refactor-my-app-so-you-dont-have-to-the-wrong-way</guid>
     <title>I Let Copilot Refactor My App, So You Don&#39;t Have To (The Wrong Way)</title>
     <link>https://gordonbeeming.com/blog/2025-08-19/i-let-copilot-refactor-my-app-so-you-dont-have-to-the-wrong-way</link>
@@ -28,16 +38,6 @@
     <pubDate>Tue, 19 Aug 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>AI</category><category>Copilot</category><category>Refactoring</category><category>Productivity</category><category>Development</category>
-  </item>
-
-  <item>
-    <guid>https://gordonbeeming.com/blog/20250813/guide-to-mastering-github-copilot-on-github-com</guid>
-    <title>A Guide to Mastering GitHub Copilot on github.com</title>
-    <link>https://gordonbeeming.com/blog/20250813/guide-to-mastering-github-copilot-on-github-com</link>
-    <description>Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.</description>
-    <pubDate>Wed, 13 Aug 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>GitHub</category><category>Copilot</category><category>AI</category><category>Productivity</category><category>DevOps</category>
   </item>
 
     </channel>

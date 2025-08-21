@@ -100,5 +100,15 @@
     <category>Security</category><category>Azure</category><category>Azure SQL</category><category>Azure Web Apps</category><category>Terraform</category><category>Cloudflare</category><category>IaC</category><category>snyk</category><category>SecurityScanning</category><category>GitHub</category><category>YouTube Videos</category><category>GitHub Codespaces</category><category>DevSecOps</category>
   </item>
 
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-19/securing-your-site-a-practical-hsts-preloading-guide-for-cloudflare-users</guid>
+    <title>Securing Your Site: A Practical HSTS Preloading Guide for Cloudflare Users</title>
+    <link>https://gordonbeeming.com/blog/2025-08-19/securing-your-site-a-practical-hsts-preloading-guide-for-cloudflare-users</link>
+    <description>Learn why HSTS should not be an application concern and follow this practical guide to correctly configure it at the edge with Cloudflare, getting your site onto the HSTS preload list for maximum security.</description>
+    <pubDate>Tue, 19 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Security</category><category>Cloudflare</category><category>HSTS</category><category>WebDev</category><category>.NET</category>
+  </item>
+
     </channel>
   </rss>

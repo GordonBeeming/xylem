@@ -27,7 +27,7 @@ export default function Home({ posts }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="mb-8 bg-[#1A1A1A] px-6 py-20 text-white md:px-8" aria-labelledby="hero-heading">
+      <section className="mb-8 bg-primary-800 px-6 py-20 text-gray-100 md:px-8" aria-labelledby="hero-heading">
         <div className="mx-auto max-w-4xl text-center">
           {/* Profile Picture */}
           <div className="mb-6">
@@ -36,13 +36,13 @@ export default function Home({ posts }) {
               alt="Gordon Beeming - Profile photo"
               width={150}
               height={150}
-              className="mx-auto rounded-full shadow-lg"
+              className="mx-auto rounded-full shadow-xl ring-4 ring-gray-100 ring-opacity-30"
             />
           </div>
 
           {/* Name and Tagline */}
           <h1 id="hero-heading" className="mb-4 text-4xl font-bold md:text-5xl">Gordon Beeming</h1>
-          <p className="text-xl text-primary-100 md:text-2xl">
+          <p className="text-xl text-gray-100 md:text-2xl">
             Father • Husband • Triathlete • SSW Solution Architect
           </p>
         </div>

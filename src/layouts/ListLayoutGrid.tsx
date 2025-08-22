@@ -9,6 +9,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import yearData from 'src/app/year-data.json'
+import tagData from 'src/app/tag-data.json'
 
 interface PaginationProps {
   totalPages: number
@@ -149,10 +150,12 @@ function ListLayoutGridContent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedTag, selectedYear])
 
-  // Get all unique tags from posts
-  const allTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) =>
-    a.localeCompare(b)
-  )
+  // Get all unique tags from posts and sort by usage
+  const allTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) => {
+    const countA = posts.filter(post => post.tags?.includes(a)).length
+    const countB = posts.filter(post => post.tags?.includes(b)).length
+    return countB - countA // Sort by usage count (descending)
+  })
 
   // Get all unique years from posts
   const yearCounts = yearData as Record<string, number>
@@ -193,6 +196,9 @@ function ListLayoutGridContent({
 
   // Helper boolean to determine when to show year counts
   const showYearCounts = !searchQuery && !selectedTag && !selectedYear
+
+  // Helper boolean to determine when to show tag counts  
+  const showTagCounts = !searchQuery && !selectedTag && !selectedYear
 
   return (
     <div className="space-y-8">
@@ -297,7 +303,7 @@ function ListLayoutGridContent({
                   }`}
                 aria-pressed={selectedTag === tag}
               >
-                {tag}
+                {tag}{showTagCounts ? ` (${filteredPosts.filter(post => post.tags?.includes(tag)).length})` : ''}
               </button>
             ))}
             {tagsWithDisplayPosts.length > tagShownLimit && (

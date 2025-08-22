@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
+import siteMetadata from '@/data/siteMetadata'
 
 interface Props {
   children: ReactNode
@@ -18,12 +19,12 @@ export default function AuthorLayout({ children, content }: Props) {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-8">
           {/* Header */}
-          <div className="text-center pt-6 pb-8">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+          <div className="text-center pt-10 pb-8">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-2">
               About
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Learn more about {name} and their work
+              {siteMetadata.description.split(' - ')[1]}
             </p>
           </div>
         </div>

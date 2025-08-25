@@ -110,5 +110,15 @@
     <category>Security</category><category>Cloudflare</category><category>HSTS</category><category>WebDev</category><category>.NET</category>
   </item>
 
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-25/fail-fast-save-big-a-smarter-ci-testing-strategy</guid>
+    <title>Fail Fast, Save Big: A Smarter CI Testing Strategy</title>
+    <link>https://gordonbeeming.com/blog/2025-08-25/fail-fast-save-big-a-smarter-ci-testing-strategy</link>
+    <description>Our CI pipeline was burning through our budget and slowing developers down. The fix wasn&#39;t about chasing raw speed, but about finding a better balance by handling failures more intelligently. Here&#39;s how we did it.</description>
+    <pubDate>Mon, 25 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>DevOps</category><category>CI/CD</category><category>GitHub Actions</category><category>.NET</category><category>Testing</category>
+  </item>
+
     </channel>
   </rss>

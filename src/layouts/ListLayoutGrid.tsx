@@ -366,9 +366,15 @@ function ListLayoutGridContent({
                       </h2>
 
                       {/* Summary */}
-                      <p className="text-gray-700 dark:text-gray-300 line-clamp-3">
-                        {summary}
-                      </p>
+                      <Link
+                        href={`/${path}`}
+                        className="block focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                        aria-label={`Read full post: ${title}`}
+                      >
+                        <p className="text-gray-700 dark:text-gray-300 line-clamp-3 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                          {summary}
+                        </p>
+                      </Link>
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2">

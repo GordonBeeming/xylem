@@ -66,7 +66,7 @@ export default function Home({ posts }) {
               const { slug, date, title, summary, tags } = post
               return (
                 <article key={slug} className="group">
-                  <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-50 dark:focus-within:ring-offset-gray-900">
+                  <div className="h-full rounded-lg bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-50 dark:focus-within:ring-offset-gray-900">
                     <div className="space-y-4">
                       {/* Date */}
                       <time
@@ -89,9 +89,15 @@ export default function Home({ posts }) {
                       </h3>
 
                       {/* Summary */}
-                      <p id={`post-summary-${slug}`} className="text-gray-700 dark:text-gray-300 line-clamp-3">
-                        {summary}
-                      </p>
+                      <Link
+                        href={`/blog/${slug}`}
+                        className="block focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                        aria-label={`Read full post: ${title}`}
+                      >
+                        <p id={`post-summary-${slug}`} className="text-gray-700 dark:text-gray-300 line-clamp-3 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                          {summary}
+                        </p>
+                      </Link>
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2">

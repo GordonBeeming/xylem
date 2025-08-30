@@ -97,11 +97,11 @@ function ListLayoutGridFallback({ posts, title }: { posts: CoreContent<Blog>[]; 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+      <div className="text-center pt-10 pb-8">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-2">
           {title}
         </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300">
+        <p className="text-lg text-gray-600 dark:text-gray-400">
           Explore {posts.length} articles about development, technology, and more
         </p>
       </div>
@@ -203,11 +203,11 @@ function ListLayoutGridContent({
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+      <div className="text-center pt-10 pb-8">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-2">
           {title}
         </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300">
+        <p className="text-lg text-gray-600 dark:text-gray-400">
           Explore {posts.length} articles about development, technology, and more
         </p>
       </div>

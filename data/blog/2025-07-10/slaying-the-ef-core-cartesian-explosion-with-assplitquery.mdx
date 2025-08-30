@@ -6,6 +6,8 @@ draft: false
 summary: 'You built a rich domain model with aggregates and child collections, but now your queries are painfully slow. Learn how a one-line change in Entity Framework Core, .AsSplitQuery(), can fix the dreaded "Cartesian Explosion" and make your app fly.'
 ---
 
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
 You've done everything right. You've designed a beautiful, rich domain model using DDD principles. You have an aggregate root, and you're using Entity Framework Core to load it and all its related child entities. But when you run the application, loading a single record takes 30 seconds. What gives? 🐌
 
 I was in this exact spot recently. After a significant refactoring, our main query performance fell off a cliff, and I was dreading the complex debugging session ahead.

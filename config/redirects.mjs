@@ -1,6 +1,11 @@
 // redirects.js
 const redirects = [
   {
+    source: '/:path*.mdx',
+    destination: '/:path*',
+    permanent: true,
+  },
+  {
     source: '/blog/tags/:slug*',
     destination: '/tags/:slug*',
     permanent: true,

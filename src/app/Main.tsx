@@ -7,6 +7,7 @@ import siteMetadata from '@/data/siteMetadata'
 import booksData from '@/data/booksData'
 import { formatDate } from 'pliny/utils/formatDate'
 import Image from '@/components/Image'
+import Avatar from '@/components/Avatar'
 import BookModal from '@/components/BookModal'
 
 const MAX_DISPLAY = 10
@@ -31,12 +32,12 @@ export default function Home({ posts }) {
         <div className="mx-auto max-w-4xl text-center">
           {/* Profile Picture */}
           <div className="mb-6">
-            <Image
-              src="/static/images/avatar.jpg"
-              alt="Gordon Beeming - Profile photo"
-              width={150}
-              height={150}
-              className="mx-auto rounded-full shadow-xl ring-4 ring-gray-100 ring-opacity-30"
+            <Avatar
+              videoSrc="/static/videos/avatar.mp4"
+              fallbackAnimatedWebP="/static/videos/avatar.webp"
+              poster="/static/images/avatar.jpg"
+              alt="Gordon Beeming - Profile video avatar"
+              size={150}
             />
           </div>
 

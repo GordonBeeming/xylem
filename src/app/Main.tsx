@@ -50,6 +50,18 @@ export default function Home({ posts }) {
 
       {/* Content Hub */}
       <div className="space-y-16">
+        {/* Why Xylem Quote */}
+        <section aria-labelledby="why-xylem-heading" className="mb-0">
+          <h2 id="why-xylem-heading" className="sr-only">Why Xylem</h2>
+          <div className="prose dark:prose-invert max-w-none">
+            <blockquote>
+              <p title='Xylem: In plants, xylem is the vascular tissue that transports water and nutrients from roots to the rest of the plant. This is a great metaphor for a blog that disseminates foundational knowledge and supports growth.'>
+                Xylem: Transporting foundational knowledge from root concepts to growing ideas
+              </p>
+            </blockquote>
+          </div>
+        </section>
+
         {/* Latest Blog Posts Section */}
         <section aria-labelledby="blog-posts-heading">
           <div className="mb-8">
@@ -105,7 +117,7 @@ export default function Home({ posts }) {
                           <Tag key={tag} text={tag} />
                         ))}
                         {tags.length > 3 && (
-                          <span 
+                          <span
                             className="text-sm text-gray-600 dark:text-gray-300"
                             aria-label={`${tags.length - 3} more tags`}
                           >

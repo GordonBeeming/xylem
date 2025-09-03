@@ -21,16 +21,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</guid>
-    <title>Visual Studio Item Templates vs .NET Templates in 2023</title>
-    <link>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</link>
-    <description>Long ago, one of the ways we&#39;d get some reuse out of standard and utility files would be by exporting item templates. Since the .NET CLI rolled around, the approach has been different and much easier. </description>
-    <pubDate>Sun, 29 Oct 2023 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>git</category><category>nuget.org</category><category>.NET</category><category>.NET CLI</category><category>.editorconfig</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
     <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
     <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
@@ -38,6 +28,16 @@
     <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</guid>
+    <title>Visual Studio Item Templates vs .NET Templates in 2023</title>
+    <link>https://gordonbeeming.com/blog/2023-10-29/visual-studio-item-templates-vs-net-templates-in-2023</link>
+    <description>Long ago, one of the ways we&#39;d get some reuse out of standard and utility files would be by exporting item templates. Since the .NET CLI rolled around, the approach has been different and much easier. </description>
+    <pubDate>Sun, 29 Oct 2023 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>git</category><category>nuget.org</category><category>.NET</category><category>.NET CLI</category><category>.editorconfig</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
   </item>
 
   <item>

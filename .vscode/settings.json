@@ -19,7 +19,8 @@
 		"opennextjs",
 		"sigstore",
 		"Tiani",
-		"Tiani's"
+		"Tiani's",
+		"XACT"
 	],
 	"markdown.copyFiles.destination": {
 		"**/*": "images/"

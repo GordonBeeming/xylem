@@ -81,16 +81,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</guid>
-    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
-    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</link>
-    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
-    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2025-08-04/redesigning-my-blog-with-an-ai-powered-workflow</guid>
     <title>Redesigning My Blog with an AI-Powered Workflow</title>
     <link>https://gordonbeeming.com/blog/2025-08-04/redesigning-my-blog-with-an-ai-powered-workflow</link>
@@ -121,13 +111,13 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</guid>
-    <title>A Guide to Mastering GitHub Copilot on github.com</title>
-    <link>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</link>
-    <description>Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.</description>
-    <pubDate>Wed, 13 Aug 2025 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</guid>
+    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
+    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</link>
+    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
+    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>GitHub</category><category>Copilot</category><category>AI</category><category>Productivity</category><category>DevOps</category>
+    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
   </item>
 
   <item>
@@ -168,6 +158,26 @@
     <pubDate>Mon, 25 Aug 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>DevOps</category><category>CI/CD</category><category>GitHub Actions</category><category>.NET</category><category>Testing</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</guid>
+    <title>A Guide to Mastering GitHub Copilot on github.com</title>
+    <link>https://gordonbeeming.com/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com</link>
+    <description>Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.</description>
+    <pubDate>Wed, 13 Aug 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>GitHub</category><category>Copilot</category><category>AI</category><category>Productivity</category><category>DevOps</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</guid>
+    <title>The Double-Edged Sword of Conveniently Named Exceptions</title>
+    <link>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</link>
+    <description>Choosing a C# exception because its name sounds right is a common anti-pattern. Learn why this leads to confusing logs, unnecessary costs, and better ways to handle errors.</description>
+    <pubDate>Wed, 03 Sep 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>Clean Code</category><category>Error Handling</category><category>Exceptions</category>
   </item>
 
     </channel>

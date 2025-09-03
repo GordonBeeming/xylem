@@ -7,19 +7,9 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Wed, 07 Jan 2015 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Thu, 09 Apr 2015 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/tags/data/feed.xml" rel="self" type="application/rss+xml"/>
       
-  <item>
-    <guid>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</guid>
-    <title>Failover or Restart Results in Reseed of Identity - FIX</title>
-    <link>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</link>
-    <description>This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.</description>
-    <pubDate>Wed, 07 Jan 2015 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Adoption Blockers</category><category>Old Blog Posts</category><category>Data</category><category>SQL Server</category>
-  </item>
-
   <item>
     <guid>https://gordonbeeming.com/blog/2015-04-09/they-said-select-was-bad-but</guid>
     <title>They said Select * was bad but...</title>
@@ -28,6 +18,16 @@
     <pubDate>Thu, 09 Apr 2015 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>T-SQL</category><category>Data</category><category>SQL Server</category><category>Grab Some Coffee</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</guid>
+    <title>Failover or Restart Results in Reseed of Identity - FIX</title>
+    <link>https://gordonbeeming.com/blog/2015-01-07/failover-or-restart-results-in-reseed-of-identity-fix</link>
+    <description>This post has been ported from http://www.sqlservercentral.com/scripts/MS+SQL+2012/93043/ which I then repeated on https://gbeeming.wordpress.com/2013/02/12/failover-or-restart-results-in-reseed-of-identity-fix/.</description>
+    <pubDate>Wed, 07 Jan 2015 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Adoption Blockers</category><category>Old Blog Posts</category><category>Data</category><category>SQL Server</category>
   </item>
 
   <item>

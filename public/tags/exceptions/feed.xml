@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>xylem | Gordon Beeming</title>
+      <link>https://gordonbeeming.com/blog</link>
+      <description>Gordon Beeming - Father • Husband • Triathlete • SSW Solution Architect</description>
+      <language>en-us</language>
+      <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
+      <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
+      <lastBuildDate>Wed, 03 Sep 2025 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gordonbeeming.com/tags/exceptions/feed.xml" rel="self" type="application/rss+xml"/>
+      
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</guid>
+    <title>The Double-Edged Sword of Conveniently Named Exceptions</title>
+    <link>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</link>
+    <description>Choosing a C# exception because its name sounds right is a common anti-pattern. Learn why this leads to confusing logs, unnecessary costs, and better ways to handle errors.</description>
+    <pubDate>Wed, 03 Sep 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>Clean Code</category><category>Error Handling</category><category>Exceptions</category>
+  </item>
+
+    </channel>
+  </rss>

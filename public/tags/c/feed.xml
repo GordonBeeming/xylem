@@ -61,16 +61,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</guid>
-    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
-    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</link>
-    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
-    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</guid>
     <title>Architecting C# Domain Models for Human and AI Collaboration</title>
     <link>https://gordonbeeming.com/blog/2025-08-05/architecting-csharp-domain-models-for-human-and-ai-collaboration</link>
@@ -81,6 +71,16 @@
   </item>
 
   <item>
+    <guid>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</guid>
+    <title>Keep Your Domain Clean: Deserializing with Private Setters in C#</title>
+    <link>https://gordonbeeming.com/blog/2025-07-22/keep-your-domain-clean-deserializing-with-private-setters-in-csharp</link>
+    <description>Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can&#39;t deserialize data back into it? You don&#39;t have to expose your setters! Let&#39;s explore a clean solution.</description>
+    <pubDate>Tue, 22 Jul 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>System.Text.Json</category><category>Serialization</category><category>Domain-Driven Design</category>
+  </item>
+
+  <item>
     <guid>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</guid>
     <title>My Epic Battle with FFmpeg: A C# Video Overlay Story</title>
     <link>https://gordonbeeming.com/blog/2025-08-14/my-epic-battle-with-ffmpeg-a-csharp-video-overlay-story</link>
@@ -88,6 +88,16 @@
     <pubDate>Thu, 14 Aug 2025 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>C#</category><category>FFmpeg</category><category>Video Processing</category><category>Debugging</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</guid>
+    <title>The Double-Edged Sword of Conveniently Named Exceptions</title>
+    <link>https://gordonbeeming.com/blog/2025-09-03/the-double-edged-sword-of-conveniently-named-exceptions</link>
+    <description>Choosing a C# exception because its name sounds right is a common anti-pattern. Learn why this leads to confusing logs, unnecessary costs, and better ways to handle errors.</description>
+    <pubDate>Wed, 03 Sep 2025 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>C#</category><category>.NET</category><category>Clean Code</category><category>Error Handling</category><category>Exceptions</category>
   </item>
 
     </channel>

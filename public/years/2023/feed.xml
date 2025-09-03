@@ -7,17 +7,17 @@
       <language>en-us</language>
       <managingEditor>website@gordonbeeming.com (Gordon Beeming)</managingEditor>
       <webMaster>website@gordonbeeming.com (Gordon Beeming)</webMaster>
-      <lastBuildDate>Fri, 20 Oct 2023 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 15 Aug 2023 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://gordonbeeming.com/years/2023/feed.xml" rel="self" type="application/rss+xml"/>
       
   <item>
-    <guid>https://gordonbeeming.com/blog/2023-10-20/is-this-thing-on</guid>
-    <title>Is this thing on?</title>
-    <link>https://gordonbeeming.com/blog/2023-10-20/is-this-thing-on</link>
-    <description>Sometimes you just need an accountability partner... or 2, and then you&#39;ll start course-correcting</description>
-    <pubDate>Fri, 20 Oct 2023 00:00:00 GMT</pubDate>
+    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
+    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
+    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
+    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
+    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Blogging</category><category>Commitment</category><category>YouTube</category><category>Making Videos</category>
+    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
   </item>
 
   <item>
@@ -31,16 +31,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</guid>
-    <title>Blazor Server events not triggering when hosted behind Cloudflare</title>
-    <link>https://gordonbeeming.com/blog/2023-08-15/blazor-server-events-not-triggering-when-hosted-behind-cloudflare</link>
-    <description>Are you hosting your Blazor Server app behind Cloudflare? Are you having issues with events not triggering? Check your configuration 😉.</description>
-    <pubDate>Tue, 15 Aug 2023 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>Cloudflare</category><category>Blazor</category><category>.NET</category><category>Blazor Server</category><category>dotnet</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</guid>
     <title>Deploying .NET templates using GitHub Actions</title>
     <link>https://gordonbeeming.com/blog/2023-11-05/deploying-net-templates-using-github-actions</link>
@@ -48,6 +38,16 @@
     <pubDate>Sun, 05 Nov 2023 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>git</category><category>nuget.org</category><category>GitHub Actions</category><category>GitHub</category><category>.NET</category><category>.NET CLI</category><category>NuGet</category><category>dotnet</category><category>dotnet new</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2023-10-20/is-this-thing-on</guid>
+    <title>Is this thing on?</title>
+    <link>https://gordonbeeming.com/blog/2023-10-20/is-this-thing-on</link>
+    <description>Sometimes you just need an accountability partner... or 2, and then you&#39;ll start course-correcting</description>
+    <pubDate>Fri, 20 Oct 2023 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>Blogging</category><category>Commitment</category><category>YouTube</category><category>Making Videos</category>
   </item>
 
     </channel>

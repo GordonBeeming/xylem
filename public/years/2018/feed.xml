@@ -131,16 +131,6 @@
   </item>
 
   <item>
-    <guid>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</guid>
-    <title>How to Tweet Azure Pipeline activity easily</title>
-    <link>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</link>
-    <description>A while back I created a service linked to Twitter that tweets when your pipeline has completed in Azure Pipelines. This post is going to show you how you can easily tweet when your builds complete .</description>
-    <pubDate>Thu, 20 Sep 2018 00:00:00 GMT</pubDate>
-    <author>website@gordonbeeming.com (Gordon Beeming)</author>
-    <category>VSTS / TFS</category><category>Azure DevOps</category><category>Web Online Tools</category>
-  </item>
-
-  <item>
     <guid>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</guid>
     <title>#TYMHKON: How do I follow what&#39;s happening with Azure DevOps?</title>
     <link>https://gordonbeeming.com/blog/2018-09-24/tymhkon-how-do-i-follow-what-s-happening-with-azure-devops</link>
@@ -148,6 +138,16 @@
     <pubDate>Mon, 24 Sep 2018 00:00:00 GMT</pubDate>
     <author>website@gordonbeeming.com (Gordon Beeming)</author>
     <category>VSTS / TFS</category><category>TYMHKON</category><category>Azure DevOps</category>
+  </item>
+
+  <item>
+    <guid>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</guid>
+    <title>How to Tweet Azure Pipeline activity easily</title>
+    <link>https://gordonbeeming.com/blog/2018-09-20/how-to-tweet-azure-pipeline-activity-easily</link>
+    <description>A while back I created a service linked to Twitter that tweets when your pipeline has completed in Azure Pipelines. This post is going to show you how you can easily tweet when your builds complete .</description>
+    <pubDate>Thu, 20 Sep 2018 00:00:00 GMT</pubDate>
+    <author>website@gordonbeeming.com (Gordon Beeming)</author>
+    <category>VSTS / TFS</category><category>Azure DevOps</category><category>Web Online Tools</category>
   </item>
 
   <item>

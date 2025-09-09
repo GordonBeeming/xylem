@@ -30,7 +30,7 @@ const Header = () => {
       </Link>
       <nav 
         id="navigation" 
-        className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6 flex-shrink-0" 
+        className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6 flex-shrink-0 sm:w-full sm:justify-between xl:justify-start xl:w-auto" 
         role="navigation" 
         aria-label="Main navigation"
       >
@@ -47,9 +47,11 @@ const Header = () => {
               </Link>
             ))}
         </div>
-        <SearchButton />
-        <ThemeSwitch />
-        <MobileNav />
+        <div className="flex flex-row flex-end items-center gap-x-4">
+          <SearchButton />
+          <ThemeSwitch />
+          <MobileNav />
+        </div>
       </nav>
     </header>
   )

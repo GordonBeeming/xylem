@@ -57,45 +57,114 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] pb-8 xl:grid xl:grid-cols-4 xl:gap-x-4">
-            <dl className="pt-6 pb-10 xl:pt-11">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
-                  {authorDetails.map((author) => (
-                    <li key={`${author.name}`} className="flex items-center space-x-2">
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
-                            </Link>
-                          )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <section className="xl:col-span-3 xl:row-span-2 xl:pb-0" aria-label="Post content">
+          <div className="clearfix pb-8">
+            <aside className="pt-6 pb-10 md:float-left md:w-60 md:mr-6 mb-6">
+              <dl>
+                <dt className="sr-only">Authors</dt>
+                <dd>
+                  <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 md:block md:space-y-8 md:space-x-0">
+                    {authorDetails.map((author) => (
+                      <li key={`${author.name}`} className="flex items-center space-x-2">
+                        {author.avatar && (
+                          <Image
+                            src={author.avatar}
+                            width={38}
+                            height={38}
+                            alt="avatar"
+                            className="h-10 w-10 rounded-full"
+                          />
+                        )}
+                        <dl className="text-sm leading-5 font-medium whitespace-nowrap">
+                          <dt className="sr-only">Name</dt>
+                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                          <dt className="sr-only">Twitter</dt>
+                          <dd>
+                            {author.twitter && (
+                              <Link
+                                href={author.twitter}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              >
+                                {author.twitter
+                                  .replace('https://twitter.com/', '@')
+                                  .replace('https://x.com/', '@')}
+                              </Link>
+                            )}
+                          </dd>
+                        </dl>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </dl>
+              
+              {tags && (
+                <section className="py-4 md:py-8" aria-labelledby="sidebar-tags-heading">
+                  <h2 id="sidebar-tags-heading" className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-3">
+                    Tags
+                  </h2>
+                  <ul className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <li key={tag}>
+                        <Link
+                          href={`/tags/${slugFn(tag).replace(/--+/g, '-')}`}
+                          className="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900"
+                          aria-label={`View all posts tagged with ${tag}`}
+                        >
+                          {tag}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+              
+              {(next || prev) && (
+                <nav className="py-4 md:py-8" aria-labelledby="sidebar-navigation-heading">
+                  <h2 id="sidebar-navigation-heading" className="sr-only">Post Navigation</h2>
+                  <div className="flex flex-col space-y-4">
+                    {prev && prev.path && (
+                      <div className="w-full">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
+                          <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous Article
+                          </h3>
+                          <Link 
+                            href={`/${prev.path}`}
+                            className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                            aria-label={`Previous article: ${prev.title}`}
+                          >
+                            {prev.title}
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                    {next && next.path && (
+                      <div className="w-full">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
+                          <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
+                            Next Article
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </h3>
+                          <Link 
+                            href={`/${next.path}`}
+                            className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
+                            aria-label={`Next article: ${next.title}`}
+                          >
+                            {next.title}
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </nav>
+              )}
+            </aside>
+            <section aria-label="Post content">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">
                 {children}
                 <CodeBlockEnhancer />
@@ -116,75 +185,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </div>
               )}
             </section>
-            <footer>
-              <div className="text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2">
-                {tags && (
-                  <section className="py-4 xl:py-8" aria-labelledby="post-tags-heading">
-                    <h2 id="post-tags-heading" className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-3">
-                      Tags
-                    </h2>
-                    <ul className="flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <li key={tag}>
-                          <Link
-                            href={`/tags/${slugFn(tag).replace(/--+/g, '-')}`}
-                            className="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900"
-                            aria-label={`View all posts tagged with ${tag}`}
-                          >
-                            {tag}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                )}
-                {(next || prev) && (
-                  <nav className="py-4 xl:py-8" aria-labelledby="post-navigation-heading">
-                    <h2 id="post-navigation-heading" className="sr-only">Post Navigation</h2>
-                    <div className="flex flex-col space-y-4">
-                      {prev && prev.path && (
-                        <div className="w-full">
-                          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-                            <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
-                              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                              </svg>
-                              Previous Article
-                            </h3>
-                            <Link 
-                              href={`/${prev.path}`}
-                              className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
-                              aria-label={`Previous article: ${prev.title}`}
-                            >
-                              {prev.title}
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                      {next && next.path && (
-                        <div className="w-full">
-                          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-                            <h3 className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-2 flex items-center">
-                              Next Article
-                              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </h3>
-                            <Link 
-                              href={`/${next.path}`}
-                              className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
-                              aria-label={`Next article: ${next.title}`}
-                            >
-                              {next.title}
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </nav>
-                )}
-              </div>
-              <div className="pt-4 xl:pt-8">
+            <footer className="clear-left">
+              <div className="pt-4 md:pt-8">
                 <Link
                   href={`/${basePath}`}
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"

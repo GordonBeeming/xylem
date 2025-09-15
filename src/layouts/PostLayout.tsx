@@ -57,45 +57,47 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] pb-8 xl:grid xl:grid-cols-4 xl:gap-x-4">
-            <dl className="pt-6 pb-10 xl:pt-11">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
-                  {authorDetails.map((author) => (
-                    <li key={`${author.name}`} className="flex items-center space-x-2">
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
-                            </Link>
-                          )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <section className="xl:col-span-3 xl:row-span-2 xl:pb-0" aria-label="Post content">
+          <div className="clearfix pb-8">
+            <aside className="pt-6 pb-10 md:float-left md:w-60 md:mr-6 mb-6">
+              <dl>
+                <dt className="sr-only">Authors</dt>
+                <dd>
+                  <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 md:block md:space-y-8 md:space-x-0">
+                    {authorDetails.map((author) => (
+                      <li key={`${author.name}`} className="flex items-center space-x-2">
+                        {author.avatar && (
+                          <Image
+                            src={author.avatar}
+                            width={38}
+                            height={38}
+                            alt="avatar"
+                            className="h-10 w-10 rounded-full"
+                          />
+                        )}
+                        <dl className="text-sm leading-5 font-medium whitespace-nowrap">
+                          <dt className="sr-only">Name</dt>
+                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                          <dt className="sr-only">Twitter</dt>
+                          <dd>
+                            {author.twitter && (
+                              <Link
+                                href={author.twitter}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              >
+                                {author.twitter
+                                  .replace('https://twitter.com/', '@')
+                                  .replace('https://x.com/', '@')}
+                              </Link>
+                            )}
+                          </dd>
+                        </dl>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </dl>
+            </aside>
+            <section aria-label="Post content">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">
                 {children}
                 <CodeBlockEnhancer />
@@ -116,10 +118,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </div>
               )}
             </section>
-            <footer>
-              <div className="text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2">
+            <footer className="clear-left">
+              <div className="text-sm leading-5 font-medium">
                 {tags && (
-                  <section className="py-4 xl:py-8" aria-labelledby="post-tags-heading">
+                  <section className="py-4 md:py-8" aria-labelledby="post-tags-heading">
                     <h2 id="post-tags-heading" className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-3">
                       Tags
                     </h2>
@@ -139,7 +141,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </section>
                 )}
                 {(next || prev) && (
-                  <nav className="py-4 xl:py-8" aria-labelledby="post-navigation-heading">
+                  <nav className="py-4 md:py-8" aria-labelledby="post-navigation-heading">
                     <h2 id="post-navigation-heading" className="sr-only">Post Navigation</h2>
                     <div className="flex flex-col space-y-4">
                       {prev && prev.path && (
@@ -184,7 +186,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </nav>
                 )}
               </div>
-              <div className="pt-4 xl:pt-8">
+              <div className="pt-4 md:pt-8">
                 <Link
                   href={`/${basePath}`}
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"

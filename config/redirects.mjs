@@ -710,6 +710,11 @@ const redirects = [
     destination: '/blog/2025-08-13/guide-to-mastering-github-copilot-on-github-com',
     permanent: true,
   },
+  {
+    source: '/blog/2026-09-15/the-conprism-the-illusion-of-precision-in-estimates-and-star-ratings',
+    destination: '/blog/2025-09-15/the-conprism-the-illusion-of-precision-in-estimates-and-star-ratings',
+    permanent: true,
+  },
 ];
 
 export default redirects;

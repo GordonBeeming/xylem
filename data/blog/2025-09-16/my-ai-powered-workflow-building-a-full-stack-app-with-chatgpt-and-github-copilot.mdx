@@ -1,0 +1,62 @@
+---
+title: 'My AI-Powered Workflow: Building a Full-Stack App with ChatGPT and GitHub Copilot'
+date: 2025-09-16
+tags: ['AI', 'GitHub Copilot', 'ChatGPT', 'Productivity', 'Development']
+draft: false
+summary: 'What if you could build a complete application without writing most of the code? I put that to the test by building a URL shortener where I acted as the architect, ChatGPT as the project manager, and GitHub Copilot as the developer. This is how it went.'
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+I've always been fascinated by tools that can boost productivity, but the recent advancements in AI have felt like a completely different league. I wanted to see just how far I could push this new way of working.
+
+So, I set myself a challenge: build a complete, full-stack URL shortener from scratch, but with a rule. I would write as little code as possible myself.
+
+My role would be the **Architect**. My team? Two AI agents:
+* **ChatGPT** as my Project Manager, responsible for planning.
+* **GitHub Copilot** as my Developer, responsible for implementation.
+
+Here's a breakdown of the workflow that followed.
+
+## Step 1: The Blueprint from ChatGPT
+
+Every good project starts with a plan. Instead of spending hours brainstorming user stories and technical tasks, I had a conversation with ChatGPT. I gave it a high-level brief for the application: a modern URL shortener with a React frontend, a Rust backend, and features like custom domains and passkey authentication.
+
+I asked it to break this down into a detailed list of Product Backlog Items (PBIs).
+
+<Figure key="/images/chatgpt-pbis.png" src="/images/chatgpt-pbis.png" alt="A screenshot of a ChatGPT conversation showing a detailed list of Product Backlog Items for a URL shortener project." width="0" height="0" caption="ChatGPT acting as my Project Manager, generating a surprisingly solid project plan." />
+
+The result was a comprehensive roadmap. I simply copied and pasted that plan directly into my repository, creating a GitHub Issue for each PBI. Just like that, my entire project backlog was planned out by my AI PM.
+
+---
+## Step 2: The AI Agent Development Loop
+
+With the plan in place, it was time to build. This is where my role shifted from a hands-on coder to a director. For each feature, my workflow was the same:
+
+1.  Open the GitHub Issue for the PBI.
+2.  Assign it directly to the GitHub Copilot from the assignees section.
+
+<Figure key="/images/assign-to-copilot.png" src="/images/assign-to-copilot.png" alt="A screenshot of a GitHub Issue with a comment assigning the task to the @github-copilot user." width="0" height="0" caption="Delegating the implementation directly to the GitHub Copilot agent." />
+
+After some time, anywhere from a few minutes for simple tasks to nearly an hour for more complex ones, Copilot would automatically create a Pull Request with a full implementation of the feature. It handled the Rust backend, the React components, database logic... everything.
+
+## Step 3: The Human in the Loop
+
+Now, this wasn't a fire-and-forget process. This is where the real collaboration happened, and it's important to be honest about it: the workflow isn't perfect. I'd review the PR just like I would with a human team member and leave comments.
+
+My feedback was a mix of refinement and, yes, sometimes bug fixes. While Copilot's code was often impressive, it wasn't always perfect. Seeing the feature come to life also sparked new ideas for improvements I hadn't thought of initially.
+
+<Figure key="/images/pr-review-loop.png" src="/images/pr-review-loop.png" alt="A screenshot of a GitHub Pull Request showing a conversation between a user and the GitHub Copilot bot, with review comments and subsequent commits." width="0" height="0" caption="The back-and-forth review cycle is where the magic happens." />
+
+I'd leave comments like:
+* "the test url button stopped working... please fix"
+* "Don't leave TODOs... add this to the instructions too... fix it rather"
+* "fetch configuration... no hardcoded urls"
+
+Copilot would then go away, make the requested changes, and update the PR with new commits. This iterative loop was the core of the entire project.
+
+## A New Way of Working
+
+This workflow is a game-changer. By offloading the "how" to Copilot, I was free to focus entirely on the "what" and the "why." My time was spent on architecture, user experience, and the high-level direction of the project, not on writing boilerplate code.
+
+This is what I consider "Level 1" of AI-assisted development. It's an incredibly powerful way to accelerate a project. But what happens when you start running multiple AI agents in parallel? Well, that's a story for the next post. 😉

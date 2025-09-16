@@ -3,6 +3,7 @@ import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayoutGrid from '@/layouts/ListLayoutGrid'
 import { allBlogs } from 'contentlayer/generated'
+import { filterPublishedPosts } from '@/utils/contentUtils'
 import yearData from 'src/app/year-data.json'
 import { genPageMetadata } from 'src/app/seo'
 import { Metadata } from 'next'
@@ -38,8 +39,9 @@ export default async function yearPage(props: { params: Promise<{ year: string }
   const resolvedParams = await props.params
   const year = parseInt(resolvedParams.year)
   const title = `Posts from ${year}`
+  const filteredBlogs = filterPublishedPosts(allBlogs)
   const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => {
+    sortPosts(filteredBlogs.filter((post) => {
       let date = new Date(post.date)
       return date.getFullYear() === year
     }))

@@ -2,6 +2,7 @@ import { slug } from 'github-slugger'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allBlogs } from 'contentlayer/generated'
+import { filterPublishedPosts } from '@/utils/contentUtils'
 import yearData from 'src/app/year-data.json'
 import { notFound } from 'next/navigation'
 
@@ -24,8 +25,9 @@ export default async function YearPage(props: { params: Promise<{ year: string; 
   const year = parseInt(resolvedParams.year)
   const title = resolvedParams.year.toString()
   const pageNumber = parseInt(resolvedParams.page)
+  const filteredBlogs = filterPublishedPosts(allBlogs)
   const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => {
+    sortPosts(filteredBlogs.filter((post) => {
       let date = new Date(post.date)
       return date.getFullYear() === year
     })

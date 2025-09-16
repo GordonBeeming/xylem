@@ -3,6 +3,7 @@ import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayoutGrid from '@/layouts/ListLayoutGrid'
 import { allBlogs } from 'contentlayer/generated'
+import { filterPublishedPosts } from '@/utils/contentUtils'
 import tagData from 'src/app/tag-data.json'
 import { genPageMetadata } from 'src/app/seo'
 import { Metadata } from 'next'
@@ -38,8 +39,9 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
   const resolvedParams = await props.params
   const tag = decodeURI(resolvedParams.tag)
   const title = `Posts tagged "${tag}"`
+  const filteredBlogs = filterPublishedPosts(allBlogs)
   const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag)))
+    sortPosts(filteredBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag)))
   )
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
   const initialDisplayPosts = filteredPosts.slice(0, POSTS_PER_PAGE)

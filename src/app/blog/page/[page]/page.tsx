@@ -1,6 +1,7 @@
 import ListLayoutGrid from '@/layouts/ListLayoutGrid' // Reverted to ListLayoutGrid as per your original file
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
+import { filterPublishedPosts } from '@/utils/contentUtils'
 import { genPageMetadata } from '@/app/seo' // FIXED: Corrected the import path
 import { notFound } from 'next/navigation'
 
@@ -18,7 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ page: str
 }
 
 export const generateStaticParams = async () => {
-  const totalPages = Math.ceil(allBlogs.length / POSTS_PER_PAGE)
+  const filteredBlogs = filterPublishedPosts(allBlogs)
+  const totalPages = Math.ceil(filteredBlogs.length / POSTS_PER_PAGE)
   const paths = Array.from({ length: totalPages }, (_, i) => ({ page: (i + 1).toString() }))
 
   return paths
@@ -26,7 +28,8 @@ export const generateStaticParams = async () => {
 
 export default async function Page({ params }: { params: Promise<{ page: string }> }) {
   const resolvedParams = await params
-  const posts = allCoreContent(sortPosts(allBlogs))
+  const filteredBlogs = filterPublishedPosts(allBlogs)
+  const posts = allCoreContent(sortPosts(filteredBlogs))
   const pageNumber = parseInt(resolvedParams.page as string)
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 

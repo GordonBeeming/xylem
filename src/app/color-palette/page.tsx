@@ -86,7 +86,7 @@ export default function ColorPalettePage() {
 
   return (
     <SectionContainer>
-      <div className="space-y-8 py-8 md:py-12">
+      <div className="flex flex-col gap-8 pt-8 md:pt-12">
         <div>
           <PageTitle>My Color Palette</PageTitle>
           <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
@@ -131,7 +131,7 @@ export default function ColorPalettePage() {
         </div>
 
         {/* Usage Notes */}
-        <div className="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
             Usage Notes
           </h3>

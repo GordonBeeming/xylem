@@ -57,8 +57,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="clearfix pb-8">
-            <aside className="pt-6 pb-10 md:float-left md:w-60 md:mr-6 mb-6">
+          <div className="clearfix pt-12 pb-8">
+            <aside className="flex flex-col gap-4 pb-10 md:pb-0 md:float-left md:w-60 md:mr-10 mb-0 md:mb-10">
               <dl>
                 <dt className="sr-only">Authors</dt>
                 <dd>
@@ -96,9 +96,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </ul>
                 </dd>
               </dl>
-              
+
               {tags && (
-                <section className="py-4 md:py-8" aria-labelledby="sidebar-tags-heading">
+                <section aria-labelledby="sidebar-tags-heading">
                   <h2 id="sidebar-tags-heading" className="text-xs tracking-wide text-gray-700 uppercase dark:text-gray-300 mb-3">
                     Tags
                   </h2>
@@ -117,9 +117,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </ul>
                 </section>
               )}
-              
+
               {(next || prev) && (
-                <nav className="py-4 md:py-8" aria-labelledby="sidebar-navigation-heading">
+                <nav aria-labelledby="sidebar-navigation-heading">
                   <h2 id="sidebar-navigation-heading" className="sr-only">Post Navigation</h2>
                   <div className="flex flex-col space-y-4">
                     {prev && prev.path && (
@@ -131,7 +131,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             </svg>
                             Previous Article
                           </h3>
-                          <Link 
+                          <Link
                             href={`/${prev.path}`}
                             className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
                             aria-label={`Previous article: ${prev.title}`}
@@ -150,7 +150,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                           </h3>
-                          <Link 
+                          <Link
                             href={`/${next.path}`}
                             className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium line-clamp-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 rounded-md"
                             aria-label={`Next article: ${next.title}`}
@@ -165,7 +165,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               )}
             </aside>
             <section aria-label="Post content">
-              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">
+              <div className="prose dark:prose-invert max-w-none pb-8">
                 {children}
                 <CodeBlockEnhancer />
               </div>

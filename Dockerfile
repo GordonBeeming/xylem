@@ -37,8 +37,9 @@ FROM node:24-alpine AS runner
 
 WORKDIR /app
 
-# Set production environment
+# Set production environment and timezone
 ENV NODE_ENV=production
+ENV TZ="Australia/Brisbane"
 ENV HOSTNAME="0.0.0.0"
 
 # Disable telemetry

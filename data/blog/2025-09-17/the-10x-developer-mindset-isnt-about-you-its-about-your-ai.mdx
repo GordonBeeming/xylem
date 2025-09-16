@@ -1,0 +1,102 @@
+---
+title: "The 10x Developer Mindset Isn't About You, It's About Your AI"
+date: 2025-09-17
+tags: ['AI', 'GitHub Spark', 'Gemini', 'Productivity', '10x Developer', 'Leadership']
+draft: false
+summary: "For 10 years, I promised my wife a new portfolio website. I finally built it in 5 hours. The secret wasn't coding faster; it was realizing that the 10x developer mindset has nothing to do with me, and everything to do with how I lead my AI."
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+For about 10 years, I'd been promising my wife, [Tiani Beeming](https://tianibeeming.com), that I'd build her a new portfolio website. Like many personal projects, it was one of those "I'll get to it eventually" things that never quite happened.
+
+Then, I finished it in about five hours. 🤯
+
+The secret wasn't a sudden burst of productivity or a new JavaScript framework. It was a fundamental change in my workflow. I stopped being the "doer" and became the "orchestrator," directing a team of AI agents to do the heavy lifting. This is the story of how that worked.
+
+## The Frustration with "Prototype" AI
+
+Now, for those of you who know me, you'll know that I am *not* a UI guy. My design sense probably peaked with the gun-metal grey of Windows Forms. For me, it's always been function over form. 😅
+
+So, a big part of that 10-year delay was the pressure to create something that actually looked modern and professional for Tiani's portfolio. That's a high bar for a backend-focused developer, and it's a big reason I was so excited by the promise of AI UI generators.
+
+But my initial attempts were frustrating. You've probably seen the tools that promise to build an app from a prompt. I tried v0 and got a cool-looking UI, but I couldn't get the code to actually work in my project. I tried B0lt, and the exported code wouldn't even run locally. It was all prototype, no product. It felt like a waste of time.
+
+Then I tried a new workflow, and everything clicked.
+
+## Step 1: The AI as Product Manager (Gemini)
+
+Instead of just diving in, I started by treating a conversational AI, Gemini, as my Product Manager. A good project starts with a good plan. I didn't just give it a one-liner; I had a detailed conversation to build out a real specification for Tiani's site.
+
+<Figure key="/images/gemini-spec.png" src="/images/gemini-spec.png" alt="A screenshot of a Gemini chat, showing a back-and-forth conversation that results in a detailed project specification for a portfolio website." width="0" height="0" caption="Having a real conversation with Gemini to hash out the details was key to getting a solid plan." />
+
+We clarified details about the portfolio gallery, the filter labels, and the contact page. The result was a solid, consolidated spec. The better the input, the better the output.
+
+## Step 2: The AI as UI Designer (GitHub Spark)
+
+With the spec in hand, it was time to create the visual foundation. I went over to GitHub Spark. I didn't summarize the plan; I pasted the *entire requirement document* from Gemini directly into the prompt.
+
+The result was honestly shocking. In a good way.
+
+<Figure key="/images/spark-generation.png" src="/images/spark-generation.png" alt="A screenshot of the GitHub Spark UI showing a beautifully generated portfolio website based on the spec from Gemini." width="0" height="0" caption="This was the 'wow' moment. A complete, great-looking starting point in seconds." />
+
+In less than 5 minutes, I had a beautiful, functional React frontend that I could push directly to a new GitHub repository. This wasn't a flimsy prototype; it was a solid foundation.
+
+## Step 3: The Critical Refactor - Unlocking Parallel Work
+
+Okay, so I have a great starting point, but it's all in one giant `App.tsx` file. Now, I've known for a long time that a monolithic structure is a roadblock. The key lesson I've learned from my recent experiments with AI agents, like the ones I [covered in my last post](https://gordonbeeming.com/blog/2025-09-16/my-ai-powered-workflow-building-a-full-stack-app-with-chatgpt-and-github-copilot), is about *how* you direct the AI to solve this problem.
+
+Giving a specific, well-defined task to an agent like GitHub Copilot yields a much better result than a vague, high-level prompt.
+
+So, armed with that knowledge, my first step wasn't to hack at the code myself. I went straight back to my AI Product Manager, Gemini, and asked it to create a PBI specifically for this task: "Refactor the application from a single monolithic component into a true multi-page app structure using React Router DOM."
+
+With that clear, focused PBI in hand, I created a new GitHub issue and assigned it directly to Copilot.
+
+<Figure key="/images/multi-page-refactor-pr.png" src="/images/multi-page-refactor-pr.png" alt="A screenshot of the GitHub Pull Request where Copilot refactored the single-page app into a multi-page structure with React Router, showing a detailed summary of the changes." width="0" height="0" caption="The key was getting the AI to write a specific PBI for the AI developer to execute. Better instructions lead to better outcomes." />
+
+This step was the key that unlocked the next, most powerful part of the workflow.
+
+## Step 4: The Human/AI Parallel Workflow
+
+Now that the codebase was modular, I could stop working sequentially. I could finally work in parallel. I was no longer the bottleneck, but that didn't mean I was hands-off.
+
+While the AI was working on a feature in its own branch, I would be in the codebase myself. This was my chance to really get a feel for the code that Spark and Copilot were generating, making small styling tweaks, and building my own mental model of the architecture.
+
+At one point, I even cloned the repository twice on my machine: one directory for the Copilot agent to work in, and a separate one for me. It was true parallel development, a genuine team effort between human and AI. This is where the massive speed increase came from.
+
+<Figure key="/images/parallel-work.gif" src="/images/parallel-work.gif" alt="A GIF showing a split screen of a GitHub Issue being worked on by Copilot while the developer is actively coding in VS Code." width="0" height="0" caption="True parallel development: the AI agent works on its branch while I work on mine. No more waiting." />
+
+## The Bonus Round: From React POC to Working Blazor
+
+After the portfolio site was live, I decided to push the limits. I had another project where Spark had generated a great React Proof of Concept for a piece of UI, but the target project used Blazor with a standard control library.
+
+So, I gave Copilot a challenge. I didn't just ask it to "convert" the code. I asked it to re-implement the React POC as a fully working Blazor component, using the project's control library.
+
+The initial result was a good first pass, but it wasn't perfect. It took several rounds of iterative feedback in the Pull Request to get it right. I'd review the changes, point out a styling issue or a missing piece of logic, and the agent would go away and refine it.
+
+<Figure key="/images/blazor-conversion-pr.png" src="/images/blazor-conversion-pr.png" alt="A screenshot of the GitHub Pull Request showing multiple review sessions and feedback loops to convert a component to Blazor." width="0" height="0" caption="It wasn't a single shot. It took a genuine back-and-forth review process to get the Blazor component perfect." />
+
+This process revealed a powerful new workflow. Specialized tools like GitHub Spark are understandably focused on hyper-popular frameworks like React for initial generation. But the real magic wasn't the React code itself, it was using that fully-formed UI as a high-fidelity blueprint. This workflow allows you to rapidly prototype a UI in one technology, and then use that POC as a detailed, unambiguous spec for an AI agent to re-implement in any other framework. It's an incredible way to bridge the gap between UI design and implementation in your target tech stack.
+
+## The Leadership Parallel: Mentoring Your AI
+
+So, I was chatting with [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) (again)... 😅 and we landed on a surprising parallel. I'm paraphrasing here because I don't remember our exact words, but the conversation was about how this new way of working with AI agents feels incredibly similar to mentoring a junior developer.
+
+Think about it. To get the best out of a junior dev, you need:
+* **Patience:** You don't expect their first attempt to be perfect.
+* **Clear Instructions:** You give them well-defined tasks, not vague ideas.
+* **Constructive Feedback:** You review their code, explain the "why" behind your suggestions, and guide them toward a better solution.
+* **Trust:** You believe in their ability to grow and learn from that feedback loop.
+
+This is the *exact* same skillset you need to work with AI agents effectively. The quality of the outcome is a direct reflection of your ability to lead and guide. You need to write clear PBIs (the instructions), and remember, using another agent to help you craft those is a smart move that leads to a higher quality PBI, review the PRs (the feedback), and have the patience to iterate. This whole process is incredible practice for becoming a more effective technical leader. You have to work *with* your AI, not against it.
+
+## Conclusion: The 10x Orchestrator Mindset
+
+So, what does it mean to be a "10x developer" in the age of AI? It's not about typing faster. It's about how much leverage you can create.
+
+* **Be the Architect:** Use tools like Gemini to think through the 'what' and the 'why'. A good spec is everything.
+* **Be the Director:** Use tools like GitHub Spark and Copilot to handle the 'how'. Delegate the execution.
+* **Parallelize Everything (Within Reason):** Don't wait. While your AI agent is building a feature, you should be planning the next one. Of course, you should only parallelize to the degree you can effectively keep track of what's going on. Like any skill, this gets easier and more effective with practice.
+* **Always Be the Human-in-the-Loop:** You are the quality control. You have the vision.
+
+This workflow is about changing your role from a doer to an orchestrator. That's the new 10x developer mindset.

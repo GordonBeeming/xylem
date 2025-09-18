@@ -2,6 +2,9 @@ name: 😱 Build, Publish & Deploy
 
 on:
   workflow_dispatch:
+  schedule:
+    # Run every 15 minutes to automatically publish scheduled posts
+    - cron: '*/15 * * * *'
   push:
     branches: ["main", "preview", "copilot/*"]
     paths:

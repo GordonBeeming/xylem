@@ -32,6 +32,25 @@ import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
 
+// Function to check if a post should be included (excludes drafts and future-dated posts)
+function shouldIncludePost(post) {
+  // In development, include all posts except drafts
+  if (!isProduction) {
+    return post.draft !== true
+  }
+  
+  // In production, exclude drafts and future-dated posts
+  if (post.draft === true) {
+    return false
+  }
+  
+  const now = new Date()
+  now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
+  const postDate = new Date(post.date)
+  
+  return postDate <= now
+}
+
 // heroicon mini link
 const icon = fromHtmlIsomorphic(
   `
@@ -68,7 +87,7 @@ const computedFields: ComputedFields = {
 async function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
-    if (file.tags && (!isProduction || file.draft !== true)) {
+    if (file.tags && shouldIncludePost(file)) {
       file.tags.forEach((tag) => {
         const initialSlug = slug(tag);
         const formattedTag = initialSlug.replace(/--+/g, '-');
@@ -95,7 +114,7 @@ async function createYearsCount(allBlogs) {
   const yearCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
     let date = new Date(file.date)
-    if (date && (!isProduction || file.draft !== true)) {
+    if (date && shouldIncludePost(file)) {
       const year = date.getFullYear().toString()
       if (year !== '1970') {
         if (year in yearCount) {

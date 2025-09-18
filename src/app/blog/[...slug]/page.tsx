@@ -13,6 +13,7 @@ import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
 import { genPageMetadata } from '@/app/seo'
+import { filterPublishedPosts } from '@/utils/contentUtils'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -94,14 +95,16 @@ export async function generateMetadata({
 }
 
 export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  const filteredBlogs = filterPublishedPosts(allBlogs)
+  return filteredBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
   const resolvedParams = await params
   const slug = decodeURI(resolvedParams.slug.join('/'))
-  // Filter out drafts in production
-  const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
+  // Filter out drafts and future-dated posts for navigation consistency
+  const filteredBlogs = filterPublishedPosts(allBlogs)
+  const sortedCoreContents = allCoreContent(sortPosts(filteredBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
     return notFound()

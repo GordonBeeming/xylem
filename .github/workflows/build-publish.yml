@@ -127,7 +127,7 @@ jobs:
     needs: build
     runs-on: self-hosted
     environment:
-      name: ${{ github.event_name == 'schedule' && 'production-auto' || 'production' }}
+      name: production
       url: https://gordonbeeming.com
 
     steps:

@@ -8,7 +8,16 @@ import yearData from '../src/app/year-data.json' with { type: 'json' }
 import { allBlogs } from '../.contentlayer/generated/index.mjs'
 import { sortPosts } from 'pliny/utils/contentlayer.js'
 
-// Function to filter published posts (excludes drafts and future-dated posts)
+/**
+ * Filters out future-dated posts to prevent them from showing in listings and RSS feeds.
+ * Only shows posts that are published (not draft) and have a date <= current date.
+ * 
+ * Note: This function duplicates the logic in src/utils/contentUtils.ts but is needed
+ * for the post-build RSS generation script. Keep in sync with the TypeScript version.
+ * 
+ * @param posts - Array of blog posts to filter
+ * @returns Filtered array containing only published posts from current date or earlier
+ */
 function filterPublishedPosts(posts) {
   const now = new Date()
   now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today

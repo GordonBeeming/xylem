@@ -26,30 +26,12 @@ import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
+import { filterPublishedPosts } from './src/utils/contentUtils.js'
 
 
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
-
-// Function to check if a post should be included (excludes drafts and future-dated posts)
-function shouldIncludePost(post) {
-  // In development, include all posts (including drafts and future-dated posts)
-  if (!isProduction) {
-    return true
-  }
-  
-  // In production, exclude drafts and future-dated posts
-  if (post.draft === true) {
-    return false
-  }
-  
-  const now = new Date()
-  now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
-  const postDate = new Date(post.date)
-  
-  return postDate <= now
-}
 
 // heroicon mini link
 const icon = fromHtmlIsomorphic(
@@ -86,8 +68,10 @@ const computedFields: ComputedFields = {
  */
 async function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
-    if (file.tags && shouldIncludePost(file)) {
+  const filteredBlogs = filterPublishedPosts(allBlogs, { includeAllInDev: true })
+  
+  filteredBlogs.forEach((file) => {
+    if (file.tags) {
       file.tags.forEach((tag) => {
         const initialSlug = slug(tag);
         const formattedTag = initialSlug.replace(/--+/g, '-');
@@ -112,9 +96,11 @@ async function createTagCount(allBlogs) {
 
 async function createYearsCount(allBlogs) {
   const yearCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
+  const filteredBlogs = filterPublishedPosts(allBlogs, { includeAllInDev: true })
+  
+  filteredBlogs.forEach((file) => {
     let date = new Date(file.date)
-    if (date && shouldIncludePost(file)) {
+    if (date) {
       const year = date.getFullYear().toString()
       if (year !== '1970') {
         if (year in yearCount) {

@@ -5,9 +5,19 @@ import type { Blog } from 'contentlayer/generated'
  * Only shows posts that are published (not draft) and have a date <= current date.
  * 
  * @param posts - Array of blog posts to filter
+ * @param options - Configuration options for filtering
+ * @param options.includeAllInDev - If true, includes all posts (including drafts and future-dated) in development mode
  * @returns Filtered array containing only published posts from current date or earlier
  */
-export function filterPublishedPosts(posts: Blog[]): Blog[] {
+export function filterPublishedPosts(posts: Blog[], options: { includeAllInDev?: boolean } = {}): Blog[] {
+  const { includeAllInDev = false } = options
+  const isProduction = process.env.NODE_ENV === 'production'
+  
+  // In development mode with includeAllInDev flag, return all posts for preview
+  if (!isProduction && includeAllInDev) {
+    return posts
+  }
+  
   const now = new Date()
   now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
   

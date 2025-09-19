@@ -33,7 +33,7 @@ This blog supports automatic publishing of scheduled posts. Posts with a future 
    - Sitemap generation
    - Static site generation
 
-2. **Automatic Publishing**: GitHub Actions runs every 15 minutes to rebuild and deploy the site, ensuring scheduled posts go live automatically at their designated time.
+2. **Automatic Publishing**: GitHub Actions runs daily at 6:00 AM Brisbane time to rebuild and deploy the site, ensuring scheduled posts go live automatically on their designated date.
 
 3. **Date Format**: Use ISO 8601 format for post dates: `date: '2025-12-31T12:00:00Z'`
 
@@ -44,9 +44,9 @@ To schedule a post for future publication:
 1. Create your blog post in the appropriate `data/blog/YYYY-MM-DD/` directory
 2. Set the `date` field in the frontmatter to your desired publish time
 3. Ensure `draft: false` (drafts are always excluded regardless of date)
-4. The post will remain hidden until the scheduled date/time
+4. The post will remain hidden until the scheduled date
 
-The automated build process will publish the post without requiring any manual intervention.
+The automated build process will publish the post without requiring any manual intervention. Posts are published daily, so any post dated for today or earlier will become visible in the next daily build.
 
 ## Learn More
 

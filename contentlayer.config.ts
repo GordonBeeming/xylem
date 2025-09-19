@@ -34,9 +34,9 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 // Function to check if a post should be included (excludes drafts and future-dated posts)
 function shouldIncludePost(post) {
-  // In development, include all posts except drafts
+  // In development, include all posts (including drafts and future-dated posts)
   if (!isProduction) {
-    return post.draft !== true
+    return true
   }
   
   // In production, exclude drafts and future-dated posts

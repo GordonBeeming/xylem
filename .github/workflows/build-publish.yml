@@ -2,9 +2,6 @@ name: 😱 Build, Publish & Deploy
 
 on:
   workflow_dispatch:
-  schedule:
-    # Run daily at 6:00 AM Brisbane time (20:00 UTC) to automatically publish scheduled posts
-    - cron: '0 20 * * *'
   push:
     branches: ["main", "preview", "copilot/*"]
     paths:

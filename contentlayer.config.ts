@@ -26,6 +26,7 @@ import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
+import { filterPublishedPosts } from './src/utils/contentUtils.js'
 
 
 
@@ -67,8 +68,10 @@ const computedFields: ComputedFields = {
  */
 async function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
-    if (file.tags && (!isProduction || file.draft !== true)) {
+  const filteredBlogs = filterPublishedPosts(allBlogs, { includeAllInDev: true })
+  
+  filteredBlogs.forEach((file) => {
+    if (file.tags) {
       file.tags.forEach((tag) => {
         const initialSlug = slug(tag);
         const formattedTag = initialSlug.replace(/--+/g, '-');
@@ -93,9 +96,11 @@ async function createTagCount(allBlogs) {
 
 async function createYearsCount(allBlogs) {
   const yearCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
+  const filteredBlogs = filterPublishedPosts(allBlogs, { includeAllInDev: true })
+  
+  filteredBlogs.forEach((file) => {
     let date = new Date(file.date)
-    if (date && (!isProduction || file.draft !== true)) {
+    if (date) {
       const year = date.getFullYear().toString()
       if (year !== '1970') {
         if (year in yearCount) {

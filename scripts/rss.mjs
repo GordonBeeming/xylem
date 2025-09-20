@@ -8,6 +8,36 @@ import yearData from '../src/app/year-data.json' with { type: 'json' }
 import { allBlogs } from '../.contentlayer/generated/index.mjs'
 import { sortPosts } from 'pliny/utils/contentlayer.js'
 
+/**
+ * Filters out future-dated posts to prevent them from showing in listings and RSS feeds.
+ * Only shows posts that are published (not draft) and have a date <= current date.
+ * 
+ * Note: This function duplicates the logic in src/utils/contentUtils.ts but is needed
+ * for the post-build RSS generation script. Keep in sync with the TypeScript version.
+ * 
+ * @param posts - Array of blog posts to filter
+ * @returns Filtered array containing only published posts from current date or earlier
+ */
+function filterPublishedPosts(posts) {
+  const now = new Date()
+  now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
+  
+  return posts.filter(post => {
+    // Skip draft posts
+    if (post.draft === true) {
+      return false
+    }
+    
+    // Skip future-dated posts
+    const postDate = new Date(post.date)
+    if (postDate > now) {
+      return false
+    }
+    
+    return true
+  })
+}
+
 const outputFolder = process.env.EXPORT ? 'out' : 'public'
 
 const generateRssItem = (config, post) => `
@@ -39,7 +69,7 @@ const generateRss = (config, posts, page = 'feed.xml') => `
 `
 
 async function generateRSS(config, allBlogs, page = 'feed.xml') {
-  const publishPosts = allBlogs.filter((post) => post.draft !== true)
+  const publishPosts = filterPublishedPosts(allBlogs)
   // RSS for blog post
   if (publishPosts.length > 0) {
     const rss = generateRss(config, sortPosts(publishPosts))
@@ -48,7 +78,7 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
 
   if (publishPosts.length > 0) {
     for (const tag of Object.keys(tagData)) {
-      const filteredPosts = allBlogs.filter((post) => post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag))
+      const filteredPosts = publishPosts.filter((post) => post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag))
       const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
       const rssPath = path.join(outputFolder, 'tags', tag)
       mkdirSync(rssPath, { recursive: true })
@@ -58,7 +88,7 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
 
   if (publishPosts.length > 0) {
     for (const year of Object.keys(yearData)) {
-      const filteredPosts = allBlogs.filter((post) => {
+      const filteredPosts = publishPosts.filter((post) => {
         const date = new Date(post.date)
         return date.getFullYear() === parseInt(year)
       })

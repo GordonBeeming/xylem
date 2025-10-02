@@ -10,7 +10,7 @@ import { sortPosts } from 'pliny/utils/contentlayer.js'
 
 /**
  * Filters out future-dated posts to prevent them from showing in listings and RSS feeds.
- * Only shows posts that are published (not draft) and have a date <= current date.
+ * Only shows posts that are published (not draft) and have a date <= current date in the configured timezone.
  * 
  * Note: This function duplicates the logic in src/utils/contentUtils.ts but is needed
  * for the post-build RSS generation script. Keep in sync with the TypeScript version.
@@ -19,8 +19,11 @@ import { sortPosts } from 'pliny/utils/contentlayer.js'
  * @returns Filtered array containing only published posts from current date or earlier
  */
 function filterPublishedPosts(posts) {
-  const now = new Date()
-  now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
+  // Get current date in the configured timezone (defaults to Australia/Brisbane)
+  const timezone = siteMetadata.timezone || 'Australia/Brisbane'
+  
+  // Get current date in configured timezone as ISO date string (YYYY-MM-DD)
+  const nowInTimezone = new Date().toLocaleDateString('en-CA', { timeZone: timezone })
   
   return posts.filter(post => {
     // Skip draft posts
@@ -28,9 +31,13 @@ function filterPublishedPosts(posts) {
       return false
     }
     
-    // Skip future-dated posts
-    const postDate = new Date(post.date)
-    if (postDate > now) {
+    // Get post date as ISO date string (YYYY-MM-DD)
+    // Post dates from frontmatter are ISO strings like "2025-10-03T00:00:00.000Z"
+    const postDateStr = post.date.substring(0, 10)
+    
+    // Compare date strings: show post if post date <= current date in timezone
+    // String comparison works because ISO date format (YYYY-MM-DD) sorts correctly
+    if (postDateStr > nowInTimezone) {
       return false
     }
     
@@ -52,7 +59,12 @@ const generateRssItem = (config, post) => `
   </item>
 `
 
-const generateRss = (config, posts, page = 'feed.xml') => `
+const generateRss = (config, posts, page = 'feed.xml') => {
+  const lastBuildDate = posts.length > 0 
+    ? new Date(posts[0].date).toUTCString()
+    : new Date().toUTCString()
+    
+  return `
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>${escape(config.title)}</title>
@@ -61,12 +73,13 @@ const generateRss = (config, posts, page = 'feed.xml') => `
       <language>${config.language}</language>
       <managingEditor>${config.email} (${config.author})</managingEditor>
       <webMaster>${config.email} (${config.author})</webMaster>
-      <lastBuildDate>${new Date(posts[0].date).toUTCString()}</lastBuildDate>
+      <lastBuildDate>${lastBuildDate}</lastBuildDate>
       <atom:link href="${config.siteUrl}/${page}" rel="self" type="application/rss+xml"/>
       ${posts.map((post) => generateRssItem(config, post)).join('')}
     </channel>
   </rss>
 `
+}
 
 async function generateRSS(config, allBlogs, page = 'feed.xml') {
   const publishPosts = filterPublishedPosts(allBlogs)
@@ -79,10 +92,12 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
   if (publishPosts.length > 0) {
     for (const tag of Object.keys(tagData)) {
       const filteredPosts = publishPosts.filter((post) => post.tags.map((t) => slug(t).replace(/--+/g, '-')).includes(tag))
-      const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
-      const rssPath = path.join(outputFolder, 'tags', tag)
-      mkdirSync(rssPath, { recursive: true })
-      writeFileSync(path.join(rssPath, page), rss)
+      if (filteredPosts.length > 0) {
+        const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
+        const rssPath = path.join(outputFolder, 'tags', tag)
+        mkdirSync(rssPath, { recursive: true })
+        writeFileSync(path.join(rssPath, page), rss)
+      }
     }
   }
 
@@ -92,10 +107,12 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
         const date = new Date(post.date)
         return date.getFullYear() === parseInt(year)
       })
-      const rss = generateRss(config, filteredPosts, `years/${year}/${page}`)
-      const rssPath = path.join(outputFolder, 'years', year)
-      mkdirSync(rssPath, { recursive: true })
-      writeFileSync(path.join(rssPath, page), rss)
+      if (filteredPosts.length > 0) {
+        const rss = generateRss(config, filteredPosts, `years/${year}/${page}`)
+        const rssPath = path.join(outputFolder, 'years', year)
+        mkdirSync(rssPath, { recursive: true })
+        writeFileSync(path.join(rssPath, page), rss)
+      }
     }
   }
 }

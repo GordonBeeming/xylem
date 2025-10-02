@@ -1,8 +1,9 @@
 import type { Blog } from 'contentlayer/generated'
+import siteMetadata from '@/data/siteMetadata'
 
 /**
  * Filters out future-dated posts to prevent them from showing in listings and search.
- * Only shows posts that are published (not draft) and have a date <= current date.
+ * Only shows posts that are published (not draft) and have a date <= current date in the configured timezone.
  * 
  * @param posts - Array of blog posts to filter
  * @param options - Configuration options for filtering
@@ -18,8 +19,11 @@ export function filterPublishedPosts(posts: Blog[], options: { includeAllInDev?:
     return posts
   }
   
-  const now = new Date()
-  now.setHours(23, 59, 59, 999) // Set to end of current day to include posts from today
+  // Get current date in the configured timezone (defaults to Australia/Brisbane)
+  const timezone = siteMetadata.timezone || 'Australia/Brisbane'
+  
+  // Get current date in Brisbane timezone as ISO date string (YYYY-MM-DD)
+  const nowInBrisbane = new Date().toLocaleDateString('en-CA', { timeZone: timezone })
   
   return posts.filter(post => {
     // Skip draft posts
@@ -27,9 +31,13 @@ export function filterPublishedPosts(posts: Blog[], options: { includeAllInDev?:
       return false
     }
     
-    // Skip future-dated posts
-    const postDate = new Date(post.date)
-    if (postDate > now) {
+    // Get post date as ISO date string (YYYY-MM-DD)
+    // Post dates from frontmatter are ISO strings like "2025-10-03T00:00:00.000Z"
+    const postDateStr = post.date.substring(0, 10)
+    
+    // Compare date strings: show post if post date <= current date in Brisbane
+    // String comparison works because ISO date format (YYYY-MM-DD) sorts correctly
+    if (postDateStr > nowInBrisbane) {
       return false
     }
     

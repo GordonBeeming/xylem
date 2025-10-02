@@ -23,6 +23,7 @@ const siteMetadata = {
   medium: '',
   bluesky: 'https://bsky.app/profile/gordon.beeming.net',
   locale: 'en-US',
+  timezone: 'Australia/Brisbane', // Timezone for date calculations (AEST/AEDT)
   // set to true if you want a navbar fixed to the top
   stickyNav: true,
   analytics: {

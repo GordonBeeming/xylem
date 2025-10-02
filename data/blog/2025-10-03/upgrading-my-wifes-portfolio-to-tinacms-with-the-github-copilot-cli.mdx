@@ -1,0 +1,72 @@
+---
+title: "Upgrading My Wife's Portfolio to TinaCMS with the GitHub Copilot CLI"
+date: 2025-10-03
+tags: ['AI', 'GitHub Copilot', 'TinaCMS', 'Productivity', 'CLI', 'Web Development']
+draft: false
+summary: "A task estimated to take 5 hours was to convert my wife's portfolio to use TinaCMS. I decided to see if the new GitHub Copilot CLI could do it for me. The result was surprising."
+---
+
+Not long ago, I wrote about how I finally built my wife, [Tiani Beeming](https://tianibeeming.com)'s, portfolio website in about five hours after a 10-year delay, all thanks to an AI-driven workflow. The site looked great, and it was a huge win.
+
+But... there's always a "but", isn't there? 😅
+
+While the site was live, updating the content, like adding new portfolio pieces or tweaking text, was still a manual process for me. It required pulling down the code, making changes, and redeploying. The goal was always to empower Tiani to manage her own content easily. That's where **TinaCMS** comes in, a Git-based headless CMS that seemed perfect for the job.
+
+## The Plan: A Few Hours of Manual Work
+
+As I've mentioned before, I'm a backend dev, not a UI guy. So my first step was to scope out what it would take to integrate TinaCMS manually. I had a quick chat with [Jack Pettit](https://au.linkedin.com/in/jackdevau) from the TinaCMS team to get a realistic estimate.
+
+He figured it would be a couple of hours, maybe 5 or so, to get everything installed, configured, and hooked up to the components. A solid, achievable task, but still a decent chunk of an evening or a weekend afternoon.
+
+## The Experiment: "Hey Copilot, Can You Do This?"
+
+Then, while playing with the new **GitHub Copilot CLI**, a thought popped into my head. Instead of me following the docs, what if I just... asked Copilot to do it for me?
+
+I opened my terminal and typed in a single, simple prompt. I didn't give it a step-by-step plan; I just told it the end goal.
+
+```
+I'd like to completely convert this project to use tina.io cms... 
+please do the complete conversion for me... 
+any json files in the data folder should be able to be managed using the 
+tina interfaces as normal content
+```
+
+<Figure
+key="/images/copilot-cli-initial-prompt.png"
+src="/images/copilot-cli-initial-prompt.png"
+alt="A terminal window showing the GitHub Copilot CLI prompt being entered to start the TinaCMS conversion."
+width="0" height="0"
+caption="Just a single, high-level prompt to kick things off. Let's see what happens..."
+/>
+
+## The AI Takes the Wheel 🧑‍✈️
+
+What happened next was pretty wild. The Copilot CLI didn't come back with a list of instructions for me to follow. It just started *working*.
+
+It began suggesting shell commands to run, one by one. My role immediately shifted from "developer" to "supervisor." It would propose a command, and I would review and approve it.
+
+<Figure
+key="/images/copilot-cli-approving-command.png"
+src="/images/copilot-cli-approving-command.png"
+alt="A screenshot of the Copilot CLI prompting the user for permission to run a command like 'npm install'."
+width="0" height="0"
+caption="My main job was to review and approve the commands Copilot wanted to run."
+/>
+
+The best part was the built-in safety net. For a safe, read-only command like `grep`, Copilot gives you the option to approve the command just once, or trust it for the entire session. However, for anything more destructive, like deleting files or removing the entire `node_modules` directory, that "approve for session" option isn't available. It would force me to give a specific `yes/no` confirmation each and every time it wanted to perform a risky action. This meant I was always in control, just without having to do any of the thinking or typing.
+
+## The Result: A Flawless Five-Hour Job Done in Minutes
+
+I was expecting some friction. I thought I'd have to intervene, correct a mistake, or guide it. But I didn't. It just... worked.
+
+In a fraction of the time I had budgeted, the entire site was converted to use TinaCMS. The packages were installed, the schema was defined from my JSON files, and the React components were wrapped so they could be edited visually.
+
+But the real cherry on top was the documentation. I was expecting maybe an updated `README.md`, but it generated a whole suite of files, including a detailed `TINA_CMS_GUIDE.md`. What blew me away was that it also created supporting documents and correctly placed them in my project's custom `/docs` and `/tasks` folders 🤯
+
+This wasn't magic; it was because in a previous session, I had asked a Copilot agent to update the repository's `copilot` instructions file with these conventions. The CLI simply read that file and followed the rules I had already set out for it.
+
+## Conclusion: The New Standard for Complex Tasks
+
+This experience solidified the "developer as orchestrator" mindset for me. The GitHub Copilot CLI isn't just a tool for asking questions; it's an active agent capable of executing complex, multi-step refactoring tasks on your behalf.
+
+I still need to do some final checks and get the updated site deployed this weekend, but this workflow is a game-changer. The big, daunting tasks on the backlog suddenly seem a lot less scary. I'm excited to see what else I can throw at it. 🚀

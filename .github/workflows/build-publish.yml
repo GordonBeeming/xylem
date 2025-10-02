@@ -15,6 +15,10 @@ on:
       - "config/redirects.mjs"
       - "contentlayer.config.ts"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}

@@ -98,16 +98,38 @@ exec gosu appuser "$@"
 
 ## Choose Your Comfort Level: Two Functions to Rule Them All
 
-With the image built (or pulled), you just need a shell function to make it easy to use. Here are two options depending on your security preference.
+With the image built (or pulled), you just need a shell function to make it easy to use. Here are two options depending on your security preference. I recommend adding both to your shell profile so you can choose the right tool for the job.
 
-### Option 1: The Safe Version (Recommended)
+### Option 1: The Safe Version (Your Default `copilot_here`)
 
-This version will always ask for your confirmation before executing commands in non-interactive mode.
+This version will always ask for your confirmation before executing commands in non-interactive mode. It's the one I recommend for day-to-day use.
 
 1.  **Add the function to your shell profile.**
     Open your shell's startup file (e.g., `~/.zshrc`, `~/.bashrc`, or `~/.config/fish/config.fish`) and add the following code:
     ```bash
-    copilot_here_safe() {
+    copilot_here() {
+      # --- SECURITY CHECK ---
+      # 1. Ensure the 'copilot' scope is present using a robust grep check.
+      if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
+        echo "❌ Error: Your gh token is missing the required 'copilot' scope."
+        echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+        return 1
+      fi
+
+      # 2. Warn if the token has highly privileged scopes.
+      if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'admin:org'|'admin:enterprise'"; then
+        echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
+        printf "Are you sure you want to proceed with this token? [y/N]: "
+        read confirmation
+        local lower_confirmation
+        lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
+        if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
+          echo "Operation cancelled by user."
+          return 1
+        fi
+      fi
+      # --- END SECURITY CHECK ---
+
       # Define the image name for easy reference
       local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
 
@@ -147,13 +169,35 @@ This version will always ask for your confirmation before executing commands in 
     ```
 2.  **Reload your shell** (e.g., `source ~/.zshrc`).
 
-### Option 2: The Auto-Approve Version
+### Option 2: The Auto-Approve Version (Your `copilot_yolo`)
 
 This is the "power user" option. It adds the `--allow-all-tools` flag to automatically execute suggested commands.
 
-1.  **Add the function to your shell profile.** Use this function instead of the safe one.
+1.  **Add the function to your shell profile.** Add this function alongside the safe one.
     ```bash
-    copilot_here() {
+    copilot_yolo() {
+      # --- SECURITY CHECK ---
+      # 1. Ensure the 'copilot' scope is present using a robust grep check.
+      if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
+        echo "❌ Error: Your gh token is missing the required 'copilot' scope."
+        echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+        return 1
+      fi
+
+      # 2. Warn if the token has highly privileged scopes.
+      if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'admin:org'|'admin:enterprise'"; then
+        echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
+        printf "Are you sure you want to proceed with this token? [y/N]: "
+        read confirmation
+        local lower_confirmation
+        lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
+        if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
+          echo "Operation cancelled by user."
+          return 1
+        fi
+      fi
+      # --- END SECURITY CHECK ---
+
       # Define the image name for easy reference
       local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
 
@@ -197,8 +241,8 @@ This is the "power user" option. It adds the `--allow-all-tools` flag to automat
 
 For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
 
-This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. In my own daily workflow, I'll have both versions installed as aliases: the default, `copilot_here`, will be the safe version that always asks for confirmation. For those moments where I'm working in a trusted project and value speed above all, I'll have an alternate alias, `copilot_yolo`, for the convenient auto-approving mode.
+This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. It doesn't mean my caution disappears entirely, I'll still keep a close eye on the configurations of the specific projects I run this in, but it provides a valuable safety net. In my own daily workflow, I have both versions installed: the default `copilot_here` for safe, everyday use, and `copilot_yolo` for when I'm working in a trusted project and value speed above all.
 
-Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
+Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too\!
 
-You can find all the source code for this project on my GitHub repo at [gordonbeeming.com/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!
+You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot\_here](https://www.google.com/url?sa=E&source=gmail&q=https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think\!

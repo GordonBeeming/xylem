@@ -1,0 +1,204 @@
+---
+title: 'Taming the AI: My Paranoid Guide to Running Copilot CLI in a Secure Docker Sandbox'
+date: 2025-10-03
+tags: ['Docker', 'GitHub', 'Copilot', 'Security', 'DevOps']
+draft: false
+summary: 'I love the new GitHub Copilot CLI, but as someone who is a little paranoid about security, I needed a way to use it with more confidence. Here''s how I built a secure, isolated Docker environment for it.'
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+I love the new GitHub Copilot CLI. It feels like magic. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me... uneasy. 😅
+
+The real power of the Copilot CLI comes from its ability to execute commands, but that requires a level of trust. I wanted the power of Copilot without giving it the keys to my entire kingdom. The goal was to use powerful features like `--allow-all-tools` with more confidence.
+
+What if I could build a secure cage for it? A place where it can be helpful, but where its ability to cause chaos is strictly limited. So, I decided to put it in Docker.
+
+## The "Why": My Wishlist for a Perfect Copilot Environment
+
+Before diving in, I had a clear set of goals for what the ideal setup would look like:
+
+* ✅ **Secure Isolation:** The tool should only see the files in my current project directory. Nothing else.
+* ✅ **Auto-Authentication:** It must seamlessly use my existing `gh` login without any extra steps.
+* ✅ **Portability & Cleanliness:** No global Node.js or `npm` packages on my host machine.
+* ✅ **Cognitive Ease:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
+
+## The Breakthrough: Why the Cage Makes the Tiger Safer
+
+After a bit of trial and error (and a lot of debugging!), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which dramatically reduces the "blast radius" of any potential mistakes.
+
+You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" And you'd be absolutely right. It would.
+
+The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your **current project directory**. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
+
+It's also important to note that this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. This means if you have a secure local network, Copilot inherits that, but it can also access local resources, which is something to be aware of.
+
+This isolation is what provides the **cognitive ease**. The container provides a strong safety net, which makes me optimistically more comfortable using a powerful but risky feature like `--allow-all-tools`. The risk isn't eliminated, but it's lowered to a level I'm comfortable with. For me, that trade-off is a worthy option.
+
+<Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="The final, working setup! It took a while to get here, but it was worth it." />
+
+## The Final Setup: The Code
+
+The complete solution is hosted on GitHub at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). The setup consists of two files: a `Dockerfile` to build the environment and an `entrypoint.sh` script to handle user permissions.
+
+Here's the `Dockerfile`:
+```dockerfile
+# Use a slim Node.js base image, which gives us `npm`.
+FROM node:20-slim
+
+# Set non-interactive frontend to avoid prompts during package installation.
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install git, curl, gpg, and gosu for the entrypoint script.
+RUN apt-get update && apt-get install -y \
+  curl \
+  gpg \
+  git \
+  gosu \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install the standalone GitHub Copilot CLI via npm.
+RUN npm install -g @github/copilot
+
+# Set the working directory for the container.
+WORKDIR /work
+
+# Copy the entrypoint script into the container and make it executable.
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# The entrypoint script will handle user creation and command execution.
+ENTRYPOINT [ "entrypoint.sh" ]
+
+# The default command to run if none is provided.
+CMD [ "copilot", "--banner" ]
+````
+
+And the `entrypoint.sh` script:
+
+```bash
+#!/bin/bash
+set -e
+
+# Get the user and group IDs from environment variables, default to 1000 if not set.
+USER_ID=${PUID:-1000}
+GROUP_ID=${PGID:-1000}
+
+# Create a group and user with the specified IDs.
+groupadd --gid $GROUP_ID appuser_group >/dev/null 2>&1 || true
+useradd --uid $USER_ID --gid $GROUP_ID --shell /bin/bash --create-home appuser >/dev/null 2>&1 || true
+
+# Set up the .copilot directory and ensure ownership of the entire home dir.
+mkdir -p /home/appuser/.copilot
+chown -R $USER_ID:$GROUP_ID /home/appuser
+
+# Switch to the new user and execute the command passed to the script.
+exec gosu appuser "$@"
+```
+
+## Choose Your Comfort Level: Two Functions to Rule Them All
+
+With the image built (or pulled), you just need a shell function to make it easy to use. Here are two options depending on your security preference.
+
+### Option 1: The Safe Version (Recommended)
+
+This version will always ask for your confirmation before executing commands in non-interactive mode.
+
+1.  **Add the function to your shell profile.**
+    Open your shell's startup file (e.g., `~/.zshrc`, `~/.bashrc`, or `~/.config/fish/config.fish`) and add the following code:
+    ```bash
+    copilot_here_safe() {
+      # Define the image name for easy reference
+      local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
+
+      # Pull the latest version of the image to stay up-to-date.
+      echo "Checking for the latest version of copilot_here..."
+      docker pull "$image_name" > /dev/null 2>&1
+
+      # Define path for our persistent copilot config on the host machine.
+      local copilot_config_path="$HOME/.config/copilot-cli-docker"
+      mkdir -p "$copilot_config_path"
+
+      # Use the 'gh' CLI itself to reliably get the current auth token.
+      local token=$(gh auth token 2>/dev/null)
+      if [ -z "$token" ]; then
+        echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
+      fi
+
+      # Base Docker command arguments
+      local docker_args=(
+        --rm -it
+        -v "$(pwd)":/work
+        -v "$copilot_config_path":/home/appuser/.copilot
+        -e PUID=$(id -u)
+        -e PGID=$(id -g)
+        -e GITHUB_TOKEN="$token"
+        "$image_name"
+      )
+
+      if [ $# -eq 0 ]; then
+        # No arguments provided, start interactive mode with the banner.
+        docker run "${docker_args[@]}" copilot --banner
+      else
+        # Arguments provided, run in non-interactive (but safe) mode.
+        docker run "${docker_args[@]}" copilot -p "$*"
+      fi
+    }
+    ```
+2.  **Reload your shell** (e.g., `source ~/.zshrc`).
+
+### Option 2: The Auto-Approve Version
+
+This is the "power user" option. It adds the `--allow-all-tools` flag to automatically execute suggested commands.
+
+1.  **Add the function to your shell profile.** Use this function instead of the safe one.
+    ```bash
+    copilot_here() {
+      # Define the image name for easy reference
+      local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
+
+      # Pull the latest version of the image to stay up-to-date.
+      echo "Checking for the latest version of copilot_here..."
+      docker pull "$image_name" > /dev/null 2>&1
+
+      # Define path for our persistent copilot config on the host machine.
+      local copilot_config_path="$HOME/.config/copilot-cli-docker"
+      mkdir -p "$copilot_config_path"
+
+      # Use the 'gh' CLI itself to reliably get the current auth token.
+      local token=$(gh auth token 2>/dev/null)
+      if [ -z "$token" ]; then
+        echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
+      fi
+
+      # Base Docker command arguments
+      local docker_args=(
+        --rm -it
+        -v "$(pwd)":/work
+        -v "$copilot_config_path":/home/appuser/.copilot
+        -e PUID=$(id -u)
+        -e PGID=$(id -g)
+        -e GITHUB_TOKEN="$token"
+        "$image_name"
+      )
+
+      if [ $# -eq 0 ]; then
+        # No arguments provided, start interactive mode with banner and auto-approval.
+        docker run "${docker_args[@]}" copilot --banner --allow-all-tools
+      else
+        # Arguments provided, run in non-interactive mode with auto-approval.
+        docker run "${docker_args[@]}" copilot -p "$*" --allow-all-tools
+      fi
+    }
+    ```
+2.  **Reload your shell** (e.g., `source ~/.zshrc`).
+
+## Conclusion: Security and Convenience Can Coexist
+
+For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
+
+This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. In my own daily workflow, I'll have both versions installed as aliases: the default, `copilot_here`, will be the safe version that always asks for confirmation. For those moments where I'm working in a trusted project and value speed above all, I'll have an alternate alias, `copilot_yolo`, for the convenient auto-approving mode.
+
+Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
+
+You can find all the source code for this project on my GitHub repo at [gordonbeeming.com/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!

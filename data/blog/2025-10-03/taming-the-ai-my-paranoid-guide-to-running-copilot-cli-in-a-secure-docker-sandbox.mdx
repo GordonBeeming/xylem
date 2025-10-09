@@ -57,8 +57,12 @@ RUN apt-get update && apt-get install -y \
   gosu \
   && rm -rf /var/lib/apt/lists/*
 
+# ARG for the Copilot CLI version - passed from build process
+# This ensures cache invalidation when a new version is available
+ARG COPILOT_VERSION=latest
+
 # Install the standalone GitHub Copilot CLI via npm.
-RUN npm install -g @github/copilot
+RUN npm install -g @github/copilot@${COPILOT_VERSION}
 
 # Set the working directory for the container.
 WORKDIR /work
@@ -72,7 +76,7 @@ ENTRYPOINT [ "entrypoint.sh" ]
 
 # The default command to run if none is provided.
 CMD [ "copilot", "--banner" ]
-````
+```
 
 And the `entrypoint.sh` script:
 
@@ -237,12 +241,38 @@ This is the "power user" option. It adds the `--allow-all-tools` flag to automat
     ```
 2.  **Reload your shell** (e.g., `source ~/.zshrc`).
 
+## Beyond the Basics: Specialized Docker Image Variants
+
+As the project evolved, I realized that different development scenarios call for different tools. That's why I created specialized image variants that build on the secure foundation of the base image while adding language-specific capabilities.
+
+### Available Image Variants
+
+**Base Image (`latest`)**: The standard Copilot CLI environment with Node.js 20, Git, and essential tools. Perfect for general-purpose development and scripting.
+
+**.NET Image (`dotnet`)**: Extends the base image with .NET 8.0 and 9.0 SDKs, along with ASP.NET Core runtimes. Ideal for .NET development without the overhead of browser testing tools. Simply change your image name to `ghcr.io/gordonbeeming/copilot_here:dotnet`.
+
+**.NET + Playwright Image (`dotnet-playwright`)**: The full-featured variant that includes everything from the .NET image plus Playwright 1.56.0 and Chromium browser with all dependencies. This is perfect for end-to-end testing and browser automation scenarios. Note that this image is approximately 500-600MB larger due to the Chromium binaries. Use `ghcr.io/gordonbeeming/copilot_here:dotnet-playwright` as your image name.
+
+To use any variant, simply update the `image_name` variable in your shell function:
+
+```bash
+# For .NET development
+local image_name="ghcr.io/gordonbeeming/copilot_here:dotnet"
+
+# For .NET with Playwright
+local image_name="ghcr.io/gordonbeeming/copilot_here:dotnet-playwright"
+```
+
+Future variants may include Python, Java, and other language-specific toolchains, following the same pattern of building specialized capabilities on top of the secure base environment.
+
 ## Conclusion: Security and Convenience Can Coexist
 
 For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
 
 This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. It doesn't mean my caution disappears entirely, I'll still keep a close eye on the configurations of the specific projects I run this in, but it provides a valuable safety net. In my own daily workflow, I have both versions installed: the default `copilot_here` for safe, everyday use, and `copilot_yolo` for when I'm working in a trusted project and value speed above all.
 
-Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too\!
+The specialized image variants add another layer of flexibility, allowing me to choose the right tool for the job. When I'm working on a .NET project, I can use the `dotnet` variant for a cleaner, lighter environment. When I need to run browser tests, the `dotnet-playwright` variant has everything ready to go.
 
-You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think\!
+Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
+
+You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!

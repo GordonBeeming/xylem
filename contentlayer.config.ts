@@ -26,12 +26,39 @@ import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 import { visit } from 'unist-util-visit' // <-- ADD THIS IMPORT
-import { filterPublishedPosts } from './src/utils/contentUtils.js'
 
 
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
+
+/**
+ * Filters out draft posts to prevent them from showing in listings, search, and RSS feeds.
+ * This is an inline version needed for contentlayer build-time processing.
+ * Keep in sync with src/utils/contentUtils.ts
+ * 
+ * @param posts - Array of blog posts to filter
+ * @param options - Configuration options for filtering
+ * @param options.includeAllInDev - If true, includes all posts (including drafts) in development mode
+ * @returns Filtered array containing only published posts (excludes drafts)
+ */
+function filterPublishedPosts(posts: any[], options: { includeAllInDev?: boolean } = {}): any[] {
+  const { includeAllInDev = false } = options
+  
+  // In development mode with includeAllInDev flag, return all posts for preview
+  if (!isProduction && includeAllInDev) {
+    return posts
+  }
+  
+  return posts.filter(post => {
+    // Skip draft posts
+    if (post.draft === true) {
+      return false
+    }
+    
+    return true
+  })
+}
 
 // heroicon mini link
 const icon = fromHtmlIsomorphic(
@@ -127,9 +154,11 @@ function createSearchIndex(allBlogs: any[]): void {
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig?.searchDocumentsPath
   ) {
+    // Filter out draft posts from search index
+    const filteredBlogs = filterPublishedPosts(allBlogs, { includeAllInDev: true })
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
+      JSON.stringify(allCoreContent(sortPosts(filteredBlogs)))
     )
     console.log('Local search index generated...')
   } else {

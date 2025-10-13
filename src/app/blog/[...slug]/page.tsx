@@ -95,24 +95,28 @@ export async function generateMetadata({
 }
 
 export const generateStaticParams = async () => {
-  const filteredBlogs = filterPublishedPosts(allBlogs)
-  return filteredBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  // Include ALL posts (including drafts) so they're accessible by direct URL
+  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
   const resolvedParams = await params
   const slug = decodeURI(resolvedParams.slug.join('/'))
+  
+  // Find the requested post (including drafts)
+  const post = allBlogs.find((p) => p.slug === slug) as Blog
+  if (!post) {
+    return notFound()
+  }
+  
   // Filter out drafts and future-dated posts for navigation consistency
   const filteredBlogs = filterPublishedPosts(allBlogs)
   const sortedCoreContents = allCoreContent(sortPosts(filteredBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
-  if (postIndex === -1) {
-    return notFound()
-  }
-
-  const prev = sortedCoreContents[postIndex + 1]
-  const next = sortedCoreContents[postIndex - 1]
-  const post = allBlogs.find((p) => p.slug === slug) as Blog
+  
+  // Only provide prev/next navigation if this is a published post
+  const prev = postIndex !== -1 ? sortedCoreContents[postIndex + 1] : undefined
+  const next = postIndex !== -1 ? sortedCoreContents[postIndex - 1] : undefined
   const authorList = post?.authors || ['authors/gordon-beeming']
   const authorDetails = authorList.map((author) => {
     const authorResults = allAuthors.find((p) => p.slug === author)

@@ -1,0 +1,258 @@
+---
+title: 'Adding Tina CMS Visual Editing to My Recipe Site'
+date: '2025-10-13'
+tags: ['React', 'Tina CMS', 'Web Development', 'Debugging']
+draft: true
+summary: 'I had Tina CMS working for content management, but wanted that slick visual editing experience. Turns out adding the useTina hook broke my custom interactive components. Here''s the journey from "it should just work" to actually making it work.'
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+You know that feeling when you add one seemingly simple feature and suddenly your working app breaks in mysterious ways? Yeah, that was me adding Tina CMS visual editing to my recipe site ([recipes.gordonbeeming.com](https://recipes.gordonbeeming.com)).
+
+## The Starting Point
+
+I already had Tina CMS integrated into my recipe site. I could edit recipes in the `/admin` panel, save changes, and they'd show up on the site. But there was no visual preview, I had to switch between the editor and the live site to see how changes looked. Not ideal.
+
+I wanted that modern CMS experience where you can see your changes live as you type. So I reached out to [Jack Pettit](https://au.linkedin.com/in/jackdevau) from the TinaCMS team, and he pointed me to two key pieces:
+
+1. The `useTina()` hook
+2. Adding a `router()` function to my Tina config
+
+## The "Easy" Implementation
+
+The router config was straightforward, add this to your collection in `tina/config.ts`:
+
+```typescript
+export default defineConfig({
+  //...
+  schema: {
+    collections: [
+      {
+        //...
+        ui: {
+          //...
+          router(args) {
+            return `/recipe/${args.document._sys.filename}`;
+          },
+        },
+        //...
+      },
+    ],
+  },
+});
+
+```
+
+This tells Tina where to navigate when you're editing a document. Simple enough.
+
+Next, I needed to use the `useTina()` hook and switch from `ReactMarkdown` to `TinaMarkdown` for rendering content:
+
+```typescript
+import { useTina } from 'tinacms/dist/react'
+import { TinaMarkdown } from 'tinacms/dist/rich-text'
+
+export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailProps) {
+  // Always use Tina for live editing
+  const { data: tinaData } = useTina({ data, query, variables })
+  
+  const recipe = tinaData.recipe
+  const content = recipe.body
+
+  return (
+    <div>
+      {/* ... other content ... */}
+      <TinaMarkdown content={content} />
+    </div>
+  )
+}
+```
+
+I fired it up, opened `/admin`, clicked on a recipe, and... 🎉 visual editing worked! I could see my changes live!
+
+But then I tried using my checkboxes (I have interactive checkboxes for recipe steps that persist your progress)... and they were gone.
+
+## When Custom Components Meet TinaMarkdown
+
+Here's the thing nobody tells you: `TinaMarkdown` and `ReactMarkdown` are completely different beasts (especially for a none UI guy like me 😅). They both render markdown, but they have their own systems for handling custom components.
+
+I had custom components set up for `ReactMarkdown`:
+
+```typescript
+const components = {
+  li: ({ children, node }: any) => {
+    // Custom checkbox logic for list items
+    return <CheckboxListItem>{children}</CheckboxListItem>
+  }
+}
+
+<ReactMarkdown components={components}>{content}</ReactMarkdown>
+```
+
+But `TinaMarkdown` needs its own configuration:
+
+```typescript
+const tinaComponents = {
+  ul: (props: any) => (
+    <ul className="space-y-1 list-none pl-0">
+      {props.children}
+    </ul>
+  ),
+  li: (props: any) => {
+    // Your custom logic here
+    return <CheckboxListItem>{props.children}</CheckboxListItem>
+  }
+}
+
+<TinaMarkdown content={content} components={tinaComponents} />
+```
+
+Okay, checkboxes are back! I clicked one and... nothing happened. Clicked another... still nothing. Tried again... nope.
+
+## The Real Problem: React Element Structure vs Text Content
+
+After way too much debugging (shoutout to `console.log`, the real MVP... and I thought those days of Windows Forms dev had stopped being valuable 😉), I discovered the core issue.
+
+I was generating unique keys for each checkbox based on the text content:
+
+```typescript
+const ListItem = (props: any) => {
+  const itemText = String(props.children)  // ❌ This was the problem
+  const itemKey = itemText.slice(0, 50)
+  
+  return <CheckboxListItem key={itemKey} itemKey={itemKey}>
+    {props.children}
+  </CheckboxListItem>
+}
+```
+
+The console showed me this:
+
+```
+ListItem key: "durban-beef-curry-" text: ""
+ListItem key: "durban-beef-curry-" text: ""
+ListItem key: "durban-beef-curry-" text: ""
+```
+
+Every. Single. Checkbox. Had. The. Same. Key. 😱
+
+Why? Because `props.children` from TinaMarkdown isn't a string, it's a complex React element:
+
+```javascript
+{
+  $$typeof: Symbol(react.transitional.element),
+  type: function,
+  props: {...},
+  // ... more React internals
+}
+```
+
+When you call `String()` on that, you get... nothing useful. So all my checkboxes shared the same empty key, which meant React treated them as the same component. Click one, they all respond.
+
+## The Solution: Index-Based Keys
+
+The fix? Stop trying to extract text from complex React elements. Use a stable index instead:
+
+```typescript
+// Add a ref to track the counter
+const listItemCountRef = useRef(0)
+
+const tinaComponents = useMemo(() => {
+  // Reset counter when components recreate
+  listItemCountRef.current = 0
+  
+  const ListItem = (props: any) => {
+    // Generate unique key using slug + index
+    const itemKey = `${slug}-item-${listItemCountRef.current++}`
+    
+    return (
+      <CheckboxListItem key={itemKey} itemKey={itemKey}>
+        {props.children}
+      </CheckboxListItem>
+    )
+  }
+  
+  return {
+    ul: (props: any) => (
+      <ul className="space-y-1 list-none pl-0">{props.children}</ul>
+    ),
+    li: ListItem,
+  }
+}, []) // Empty deps - components never change
+```
+
+Now each checkbox gets a unique, stable key like `durban-beef-curry-item-0`, `durban-beef-curry-item-1`, etc.
+
+## Bonus: Making State Reactive with Context
+
+There was one more gotcha. Even with unique keys, the checkboxes weren't visually updating when clicked. The state was changing (confirmed with more `console.log` adventures), but the UI wasn't re-rendering.
+
+The issue? TinaMarkdown aggressively memoizes its content for performance. When I passed checkbox state as props, TinaMarkdown wasn't re-rendering to propagate those changes.
+
+The solution? React Context. Instead of passing state down as props, provide it through context so each checkbox can subscribe to changes:
+
+```typescript
+// Create context for checkbox state
+const CheckboxContext = createContext<{
+  checkedItems: Record<string, boolean>
+  onToggle: (key: string, checked: boolean) => void
+} | null>(null)
+
+// CheckboxListItem reads from context
+const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
+  const context = useContext(CheckboxContext)
+  const { checkedItems, onToggle } = context
+  const checked = checkedItems[itemKey] || false
+  
+  return (
+    <li>
+      <Checkbox 
+        checked={checked} 
+        onCheckedChange={(c) => onToggle(itemKey, c)} 
+      />
+      <label className={checked ? 'line-through' : ''}>
+        {children}
+      </label>
+    </li>
+  )
+}
+
+// Wrap TinaMarkdown in the provider
+<CheckboxContext.Provider value={{ checkedItems, onToggle: handleCheckboxChange }}>
+  <TinaMarkdown content={content} components={tinaComponents} />
+</CheckboxContext.Provider>
+```
+
+Now when state changes, the context updates, and all subscribed checkboxes re-render immediately.
+
+## The Takeaway
+
+If you're adding TinaCMS (or any CMS) visual editing to a React app with custom interactive components, here's what to remember:
+
+**1. Don't assume `props.children` structure**
+- Rich-text renderers pass complex React elements, not plain strings
+- Always `console.log(props.children)` to see what you're actually working with
+
+**2. Use index-based keys for CMS-rendered lists**
+- Text extraction from React elements is fragile and unreliable  
+- Stable indices work as long as content order doesn't change dramatically
+- Format: `${documentId}-item-${index}` keeps keys unique per document
+
+**3. Use Context for state with memoized renderers**
+- If your CMS renderer aggressively memoizes (and many do for performance)
+- Props might not flow through re-renders
+- Context lets components subscribe directly to state changes
+
+**4. Test with the actual CMS, not just static content**
+- Things that work with static data might break with live editing
+- The rendering pipeline is completely different
+
+This pattern isn't specific to checkboxes or even Tina, it applies to any custom interactive component you want to work with a CMS's visual editor. Whether it's accordions, tabs, interactive code blocks, or anything else that manages its own state, you'll run into similar challenges.
+
+The key is understanding that CMS renderers have their own rules, and your components need to play by them. Once you know that, the solutions follow naturally.
+
+Now if you'll excuse me, I have some recipes to edit... *visually*. 😎
+
+<Figure key="/images/visual-editing-my-recipe-using-tinacms.png" src="/images/visual-editing-my-recipe-using-tinacms.png" alt="Tina CMS visual 
+   editor showing a Durban Beef Curry recipe with live preview and interactive checkboxes working" width="0" height="0" caption="Visual editing in 
+   action - making changes and seeing them live with fully functional interactive checkboxes" />

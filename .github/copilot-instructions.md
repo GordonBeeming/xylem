@@ -217,3 +217,174 @@ pnpm run build
 - **Linting:** ~3 seconds
 
 **Remember: NEVER CANCEL long-running operations. This application processes extensive content and requires time to complete builds properly.**
+
+## CLI Task Documentation
+
+When creating documentation files (MD files) during CLI tasks, follow these guidelines to avoid unnecessary documentation noise:
+
+### When to Create New Documentation
+
+**DO create new documentation for**:
+- Significant architectural changes or new features
+- Major refactorings that affect multiple modules
+- New patterns or conventions being established
+- Implementation guides that will be referenced by others
+- Complex changes that need detailed explanation for future reference
+
+**DO NOT create new documentation for**:
+- Minor bug fixes or corrections
+- Small adjustments to existing code
+- Clarifications or improvements to existing implementations
+- Changes that can be adequately explained in commit messages
+
+**When unsure**: Ask if documentation should be created before writing it. It's better to update existing documentation than create redundant files.
+
+### Documentation File Naming Format
+All documentation files created during CLI tasks should be saved to `docs/cli-tasks/` with the following format:
+
+```
+yyyyMMdd-II-XX-description.md
+```
+
+Where:
+- `yyyyMMdd` = Current date (e.g., 20251002)
+- `II` = Author's initials from git config (e.g., GB for Gordon Beeming)
+- `XX` = Sequential number starting at 01 for the day (01, 02, 03, etc.)
+- `description` = Kebab-case description of the task/document
+
+### Examples
+- `20251002-GB-01-graceful-row-failure-implementation-summary.md`
+- `20251002-GB-02-graceful-row-failure-refactoring-guide.md`
+- `20251002-GB-03-graceful-row-failure-changes-summary.md`
+
+### Process
+1. **Determine if documentation is needed** - Is this a significant change?
+2. Get current date: `date +%Y%m%d`
+3. Get author initials from git config: `git config user.name`
+4. Check existing files in `docs/cli-tasks/` for today's date to determine next sequence number
+5. **Check if existing documentation should be updated instead** of creating new
+6. Create file with proper naming format only if genuinely needed
+7. If multiple related documents, use sequential numbers to maintain order
+
+### Updating Existing Documentation
+
+Prefer updating existing documentation when:
+- The change is related to a recent task documented today
+- It's a bug fix or improvement to something recently implemented
+- It adds clarification or correction to existing docs
+- The change is minor and fits within the scope of existing documentation
+
+### Purpose
+This approach:
+- Reduces documentation noise and clutter
+- Keeps related information together
+- Makes documentation easier to navigate and maintain
+- Ensures only significant changes are documented separately
+- Maintains high signal-to-noise ratio in documentation
+
+## Git Commit Guidelines
+
+### Commit Frequently
+Commit changes incrementally as you complete logical units of work.
+
+**Why commit frequently:**
+- ✅ Creates small, focused commits that are easy to review and understand
+- ✅ Enables vertical slicing - each commit represents a single logical change
+- ✅ Avoids one giant commit at the end of a session with dozens of unrelated changes
+- ✅ Makes it easier to track progress and document work in task documentation
+- ✅ Allows reverting specific changes without losing other work
+- ✅ Provides clear checkpoints during development
+
+**When to commit:**
+- ✅ After adding a new feature or component
+- ✅ After fixing a bug
+- ✅ After updating documentation (including task documentation in `docs/cli-tasks/`)
+- ✅ After refactoring code
+- ✅ Before making major changes (safety checkpoint)
+- ✅ After successful test runs
+
+**Exception:** Do not commit when working on the `gitbutler/workspace` branch - GitButler manages commits on this branch.
+
+### Commit Message Format
+Follow conventional commit format:
+
+```
+[Type]: Brief description
+
+Examples:
+- feat: Add recipe search functionality
+- fix: Correct dark mode toggle behavior
+- docs: Update Tina CMS setup guide
+- refactor: Simplify recipe card component
+- style: Fix accessibility contrast issues
+- test: Add keyboard navigation tests
+```
+
+### Co-Author Attribution
+
+**ALWAYS add the requester as a co-author on commits** to ensure proper attribution.
+
+**How to identify the requester:**
+1. **Git config**: Check `git config user.name` and `git config user.email`
+2. **GitHub user**: If running in GitHub Codespaces, use the logged-in GitHub user
+3. **GitHub Actions**: When triggered by a comment/issue, use the comment author's details
+4. **Manual request**: When someone asks you to make changes, use their information
+
+**Co-Author Format:**
+```bash
+git commit -m "Type: Brief description
+
+Co-authored-by: Name <email@example.com>"
+```
+
+**Example:**
+```bash
+git commit -m "feat: Add authentication module
+
+Co-authored-by: Gordon Beeming <me@gordonbeeming.com>"
+```
+
+**Multiple co-authors:**
+```bash
+git commit -m "feat: Add authentication module
+
+Co-authored-by: Gordon Beeming <me@gordonbeeming.com>
+Co-authored-by: Daniel Mackay <daniel@example.com>"
+```
+
+**When to add co-authors:**
+- ✅ When implementing a requested feature
+- ✅ When fixing a reported bug
+- ✅ When making changes based on feedback
+- ✅ When pair programming or collaborating
+- ❌ Not needed for automated updates (dependency bumps, etc.)
+- ❌ Not needed for your own self-initiated refactoring (unless requested)
+
+## Working Directory and File Management
+
+### Repository Boundaries
+All work, including temporary files, must be done within the repository boundaries:
+
+**DO**:
+- Create temporary files/directories within the repository root
+- Use `/tmp/` directory at repository root for temporary work files
+- Add temporary directories to `.gitignore` if they shouldn't be committed
+- Clean up temporary files after completing tasks
+
+**DO NOT**:
+- Create files outside the repository directory
+- Work in system temp directories or home directory
+- Leave temporary files scattered throughout the repository
+
+### Temporary Files
+- Use `/tmp/` at the repository root for scratch work
+- This directory is already in `.gitignore`
+- Always clean up temporary files when done
+- Document any temporary files that need to persist
+
+### Purpose
+This approach:
+- Keeps all work contained within the project
+- Prevents pollution of system directories
+- Makes cleanup easier and more predictable
+- Ensures proper git ignore handling

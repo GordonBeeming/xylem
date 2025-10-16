@@ -92,6 +92,13 @@ GROUP_ID=${PGID:-1000}
 groupadd --gid $GROUP_ID appuser_group >/dev/null 2>&1 || true
 useradd --uid $USER_ID --gid $GROUP_ID --shell /bin/bash --create-home appuser >/dev/null 2>&1 || true
 
+# Verify the user was created successfully
+if ! id appuser >/dev/null 2>&1; then
+    echo "Warning: Failed to create appuser, running as root" >&2
+    mkdir -p /home/appuser/.copilot
+    exec "$@"
+fi
+
 # Set up the .copilot directory and ensure ownership of the entire home dir.
 mkdir -p /home/appuser/.copilot
 chown -R $USER_ID:$GROUP_ID /home/appuser
@@ -100,204 +107,441 @@ chown -R $USER_ID:$GROUP_ID /home/appuser
 exec gosu appuser "$@"
 ```
 
-## Choose Your Comfort Level: Two Functions to Rule Them All
+## Understanding the Two Modes
 
-With the image built (or pulled), you just need a shell function to make it easy to use. Here are two options depending on your security preference. I recommend adding both to your shell profile so you can choose the right tool for the job.
+Before diving into the setup, it's important to understand the two approaches available. You can install both side-by-side with different command names to give yourself options.
 
-### Option 1: The Safe Version (Your Default `copilot_here`)
+**Safe Mode (Recommended)** - Always asks for confirmation before executing commands. Use this for general development work where you want control over what gets executed.
 
-This version will always ask for your confirmation before executing commands in non-interactive mode. It's the one I recommend for day-to-day use.
+**YOLO Mode (Auto-Approve)** - Automatically approves all tool usage without confirmation. Convenient for trusted workflows but use with caution as it can execute commands without prompting.
 
-1.  **Add the function to your shell profile.**
-    Open your shell's startup file (e.g., `~/.zshrc`, `~/.bashrc`, or `~/.config/fish/config.fish`) and add the following code:
-    ```bash
-    copilot_here() {
-      # --- SECURITY CHECK ---
-      # 1. Ensure the 'copilot' scope is present using a robust grep check.
-      if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
-        echo "❌ Error: Your gh token is missing the required 'copilot' scope."
-        echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
-        return 1
-      fi
+Both modes include security checks for proper GitHub token scopes and warn about overly privileged tokens. The YOLO mode adds the `--allow-all-tools` flag which bypasses execution confirmation.
 
-      # 2. Warn if the token has highly privileged scopes.
-      if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"; then
-        echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
-        printf "Are you sure you want to proceed with this token? [y/N]: "
-        read confirmation
-        local lower_confirmation
-        lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
-        if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
-          echo "Operation cancelled by user."
-          return 1
-        fi
-      fi
-      # --- END SECURITY CHECK ---
+## Setup Instructions
 
-      # Define the image name for easy reference
-      local image_name="ghcr.io/gordonbeeming/copilot_here:dotnet-playwright"
+Choose your platform and preferred mode below. I recommend setting up both modes so you can choose the right tool for the job.
 
-      # Pull the latest version of the image, showing a spinner for feedback.
-      printf "Checking for the latest version of copilot_here... "
-      
-      # Run docker pull in the background and capture its process ID (PID)
-      (docker pull "$image_name" > /dev/null 2>&1) &
-      local pull_pid=$!
-      local spin='|/-\'
-      
-      # While the pull process is running, display a spinner
-      local i=0
-      while ps -p $pull_pid > /dev/null; do
-        i=$(( (i+1) % 4 ))
-        # Print the spinner character, then move the cursor back
-        printf "%s\b" "${spin:$i:1}"
-        sleep 0.1
-      done
+### Option 1: Safe Mode (Recommended)
 
-      # Wait for the process to finish and get its exit code
-      wait $pull_pid
-      local pull_status=$?
-      
-      # Replace the spinner with a final status and add a newline
-      if [ $pull_status -eq 0 ]; then
-        echo "✅"
-      else
-        echo "❌"
-        echo "Error: Failed to pull the Docker image. Please check your Docker setup and network."
-        return 1
-      fi
+This mode asks for confirmation before executing any commands, giving you full control.
 
-      # Define path for our persistent copilot config on the host machine.
-      local copilot_config_path="$HOME/.config/copilot-cli-docker"
-      mkdir -p "$copilot_config_path"
+**For Linux/macOS (Bash/Zsh):**
 
-      # Use the 'gh' CLI itself to reliably get the current auth token.
-      local token=$(gh auth token 2>/dev/null)
-      if [ -z "$token" ]; then
-        echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
-      fi
+Add the following function to your shell profile (e.g., `~/.zshrc`, `~/.bashrc`):
 
-      # Base Docker command arguments
-      local docker_args=(
-        --rm -it
-        -v "$(pwd)":/work
-        -v "$copilot_config_path":/home/appuser/.copilot
-        -e PUID=$(id -u)
-        -e PGID=$(id -g)
-        -e GITHUB_TOKEN="$token"
-        "$image_name"
-      )
+```bash
+copilot_here() {
+  # --- SECURITY CHECK ---
+  if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
+    echo "❌ Error: Your gh token is missing the required 'copilot' scope."
+    echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+    return 1
+  fi
 
-      if [ $# -eq 0 ]; then
-        # No arguments provided, start interactive mode with the banner.
-        docker run "${docker_args[@]}" copilot --banner
-      else
-        # Arguments provided, run in non-interactive (but safe) mode.
-        docker run "${docker_args[@]}" copilot -p "$*"
-      fi
+  if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"; then
+    echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
+    printf "Are you sure you want to proceed with this token? [y/N]: "
+    read confirmation
+    local lower_confirmation
+    lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
+    if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
+      echo "Operation cancelled by user."
+      return 1
+    fi
+  fi
+  # --- END SECURITY CHECK ---
+
+  local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
+
+  printf "Checking for the latest version of copilot_here... "
+  (docker pull "$image_name" > /dev/null 2>&1) &
+  local pull_pid=$!
+  local spin='|/-\'
+  
+  local i=0
+  while ps -p $pull_pid > /dev/null; do
+    i=$(( (i+1) % 4 ))
+    printf "%s\b" "${spin:$i:1}"
+    sleep 0.1
+  done
+
+  wait $pull_pid
+  local pull_status=$?
+  
+  if [ $pull_status -eq 0 ]; then
+    echo "✅"
+  else
+    echo "❌"
+    echo "Error: Failed to pull the Docker image. Please check your Docker setup and network."
+    return 1
+  fi
+
+  local copilot_config_path="$HOME/.config/copilot-cli-docker"
+  mkdir -p "$copilot_config_path"
+
+  local token=$(gh auth token 2>/dev/null)
+  if [ -z "$token" ]; then
+    echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
+  fi
+
+  local docker_args=(
+    --rm -it
+    -v "$(pwd)":/work
+    -v "$copilot_config_path":/home/appuser/.copilot
+    -e PUID=$(id -u)
+    -e PGID=$(id -g)
+    -e GITHUB_TOKEN="$token"
+    "$image_name"
+  )
+
+  if [ $# -eq 0 ]; then
+    docker run "${docker_args[@]}" copilot --banner
+  else
+    docker run "${docker_args[@]}" copilot -p "$*"
+  fi
+}
+```
+
+Then reload your shell (e.g., `source ~/.zshrc`).
+
+**For Windows (PowerShell):**
+
+Save the following as `copilot_here.ps1` in a location of your choice (e.g., `C:\Users\YourName\Documents\PowerShell\`):
+
+```powershell
+function Copilot-Here {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromRemainingArguments=$true)]
+        [string[]]$Prompt
+    )
+
+    # --- SECURITY CHECK ---
+    Write-Host "Verifying GitHub CLI authentication..."
+    $authStatus = gh auth status 2>$null
+    if (-not ($authStatus | Select-String -Quiet "'copilot'")) {
+        Write-Host "❌ Error: Your gh token is missing the required 'copilot' scope." -ForegroundColor Red
+        Write-Host "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+        return
     }
-    ```
-2.  **Reload your shell** (e.g., `source ~/.zshrc`).
 
-### Option 2: The Auto-Approve Version (Your `copilot_yolo`)
-
-This is the "power user" option. It adds the `--allow-all-tools` flag to automatically execute suggested commands.
-
-1.  **Add the function to your shell profile.** Add this function alongside the safe one.
-    ```bash
-    copilot_yolo() {
-      # --- SECURITY CHECK ---
-      # 1. Ensure the 'copilot' scope is present using a robust grep check.
-      if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
-        echo "❌ Error: Your gh token is missing the required 'copilot' scope."
-        echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
-        return 1
-      fi
-
-      # 2. Warn if the token has highly privileged scopes.
-      if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"; then
-        echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
-        printf "Are you sure you want to proceed with this token? [y/N]: "
-        read confirmation
-        local lower_confirmation
-        lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
-        if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
-          echo "Operation cancelled by user."
-          return 1
-        fi
-      fi
-      # --- END SECURITY CHECK ---
-
-      # Define the image name for easy reference
-      local image_name="ghcr.io/gordonbeeming/copilot_here:dotnet-playwright"
-
-      # Pull the latest version of the image, showing a spinner for feedback.
-      printf "Checking for the latest version of copilot_here... "
-      
-      # Run docker pull in the background and capture its process ID (PID)
-      (docker pull "$image_name" > /dev/null 2>&1) &
-      local pull_pid=$!
-      local spin='|/-\'
-      
-      # While the pull process is running, display a spinner
-      local i=0
-      while ps -p $pull_pid > /dev/null; do
-        i=$(( (i+1) % 4 ))
-        # Print the spinner character, then move the cursor back
-        printf "%s\b" "${spin:$i:1}"
-        sleep 0.1
-      done
-
-      # Wait for the process to finish and get its exit code
-      wait $pull_pid
-      local pull_status=$?
-      
-      # Replace the spinner with a final status and add a newline
-      if [ $pull_status -eq 0 ]; then
-        echo "✅"
-      else
-        echo "❌"
-        echo "Error: Failed to pull the Docker image. Please check your Docker setup and network."
-        return 1
-      fi
-
-      # Define path for our persistent copilot config on the host machine.
-      local copilot_config_path="$HOME/.config/copilot-cli-docker"
-      mkdir -p "$copilot_config_path"
-
-      # Use the 'gh' CLI itself to reliably get the current auth token.
-      local token=$(gh auth token 2>/dev/null)
-      if [ -z "$token" ]; then
-        echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
-      fi
-
-      # Base Docker command arguments
-      local docker_args=(
-        --rm -it
-        -v "$(pwd)":/work
-        -v "$copilot_config_path":/home/appuser/.copilot
-        -e PUID=$(id -u)
-        -e PGID=$(id -g)
-        -e GITHUB_TOKEN="$token"
-        "$image_name"
-      )
-
-      if [ $# -eq 0 ]; then
-        # No arguments provided, start interactive mode with banner and auto-approval.
-        docker run "${docker_args[@]}" copilot --banner --allow-all-tools
-      else
-        # Arguments provided, run in non-interactive mode with auto-approval.
-        docker run "${docker_args[@]}" copilot -p "$*" --allow-all-tools
-      fi
+    $privilegedScopesPattern = "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"
+    if ($authStatus | Select-String -Quiet $privilegedScopesPattern) {
+        Write-Host "⚠️  Warning: Your GitHub token has highly privileged scopes." -ForegroundColor Yellow
+        $confirmation = Read-Host "Are you sure you want to proceed with this token? [y/N]"
+        if ($confirmation.ToLower() -ne 'y' -and $confirmation.ToLower() -ne 'yes') {
+            Write-Host "Operation cancelled by user."
+            return
+        }
     }
-    ```
-2.  **Reload your shell** (e.g., `source ~/.zshrc`).
+    Write-Host "✅ Security checks passed."
+    # --- END SECURITY CHECK ---
+
+    $imageName = "ghcr.io/gordonbeeming/copilot_here:latest"
+
+    Write-Host -NoNewline "Checking for the latest version of copilot_here... "
+    $pullJob = Start-Job -ScriptBlock { param($img) docker pull $img } -ArgumentList $imageName
+    $spinner = '|', '/', '-', '\'
+    $i = 0
+    while ($pullJob.State -eq 'Running') {
+        Write-Host -NoNewline "$($spinner[$i])`b"
+        $i = ($i + 1) % 4
+        Start-Sleep -Milliseconds 100
+    }
+
+    Wait-Job $pullJob | Out-Null
+    $pullOutput = Receive-Job $pullJob
+    
+    if ($pullJob.State -eq 'Completed') {
+        Write-Host "✅"
+    } else {
+        Write-Host "❌" -ForegroundColor Red
+        Write-Host "Error: Failed to pull the Docker image." -ForegroundColor Red
+        if (-not [string]::IsNullOrEmpty($pullOutput)) {
+            Write-Host "Docker output:`n$pullOutput"
+        }
+        Remove-Job $pullJob
+        return
+    }
+    Remove-Job $pullJob
+
+    $copilotConfigPath = Join-Path $env:USERPROFILE ".config\copilot-cli-docker"
+    if (-not (Test-Path $copilotConfigPath)) {
+        New-Item -Path $copilotConfigPath -ItemType Directory -Force | Out-Null
+    }
+
+    $token = gh auth token 2>$null
+    if ([string]::IsNullOrEmpty($token)) {
+        Write-Host "⚠️  Could not retrieve token using 'gh auth token'." -ForegroundColor Yellow
+    }
+
+    $dockerBaseArgs = @(
+        "--rm", "-it",
+        "-v", "$((Get-Location).Path):/work",
+        "-v", "$($copilotConfigPath):/home/appuser/.copilot",
+        "-e", "GITHUB_TOKEN=$token",
+        $imageName
+    )
+
+    $copilotCommand = @("copilot")
+    if ($Prompt.Length -eq 0) {
+        $copilotCommand += "--banner"
+    } else {
+        $copilotCommand += "-p", ($Prompt -join ' ')
+    }
+
+    $finalDockerArgs = $dockerBaseArgs + $copilotCommand
+    docker run $finalDockerArgs
+}
+
+Set-Alias -Name copilot_here -Value Copilot-Here
+```
+
+Then add it to your PowerShell profile. Open your profile for editing:
+
+```powershell
+notepad $PROFILE
+```
+
+Add this line (adjust the path to where you saved the file):
+
+```powershell
+. C:\Users\YourName\Documents\PowerShell\copilot_here.ps1
+```
+
+Reload your PowerShell profile:
+
+```powershell
+. $PROFILE
+```
+
+### Option 2: YOLO Mode (Auto-Approve)
+
+This mode automatically approves all tool usage. Use with caution!
+
+**For Linux/macOS (Bash/Zsh):**
+
+Add this function alongside the safe version with a different name like `copilot_yolo`:
+
+```bash
+copilot_yolo() {
+  # --- SECURITY CHECK ---
+  if ! gh auth status 2>/dev/null | grep "Token scopes:" | grep -q "'copilot'"; then
+    echo "❌ Error: Your gh token is missing the required 'copilot' scope."
+    echo "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+    return 1
+  fi
+
+  if gh auth status 2>/dev/null | grep "Token scopes:" | grep -q -E "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"; then
+    echo "⚠️  Warning: Your GitHub token has highly privileged scopes (e.g., admin:org, admin:enterprise)."
+    printf "Are you sure you want to proceed with this token? [y/N]: "
+    read confirmation
+    local lower_confirmation
+    lower_confirmation=$(echo "$confirmation" | tr '[:upper:]' '[:lower:]')
+    if [[ "$lower_confirmation" != "y" && "$lower_confirmation" != "yes" ]]; then
+      echo "Operation cancelled by user."
+      return 1
+    fi
+  fi
+  # --- END SECURITY CHECK ---
+
+  local image_name="ghcr.io/gordonbeeming/copilot_here:latest"
+
+  printf "Checking for the latest version of copilot_here... "
+  (docker pull "$image_name" > /dev/null 2>&1) &
+  local pull_pid=$!
+  local spin='|/-\'
+  
+  local i=0
+  while ps -p $pull_pid > /dev/null; do
+    i=$(( (i+1) % 4 ))
+    printf "%s\b" "${spin:$i:1}"
+    sleep 0.1
+  done
+
+  wait $pull_pid
+  local pull_status=$?
+  
+  if [ $pull_status -eq 0 ]; then
+    echo "✅"
+  else
+    echo "❌"
+    echo "Error: Failed to pull the Docker image. Please check your Docker setup and network."
+    return 1
+  fi
+
+  local copilot_config_path="$HOME/.config/copilot-cli-docker"
+  mkdir -p "$copilot_config_path"
+
+  local token=$(gh auth token 2>/dev/null)
+  if [ -z "$token" ]; then
+    echo "⚠️  Could not retrieve token using 'gh auth token'. Please ensure you are logged in."
+  fi
+
+  local docker_args=(
+    --rm -it
+    -v "$(pwd)":/work
+    -v "$copilot_config_path":/home/appuser/.copilot
+    -e PUID=$(id -u)
+    -e PGID=$(id -g)
+    -e GITHUB_TOKEN="$token"
+    "$image_name"
+  )
+
+  if [ $# -eq 0 ]; then
+    docker run "${docker_args[@]}" copilot --banner --allow-all-tools
+  else
+    docker run "${docker_args[@]}" copilot -p "$*" --allow-all-tools
+  fi
+}
+```
+
+Then reload your shell (e.g., `source ~/.zshrc`).
+
+**For Windows (PowerShell):**
+
+Save the following as `copilot_yolo.ps1` (or add to your existing file):
+
+```powershell
+function Copilot-Yolo {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromRemainingArguments=$true)]
+        [string[]]$Prompt
+    )
+
+    # --- SECURITY CHECK ---
+    Write-Host "Verifying GitHub CLI authentication..."
+    $authStatus = gh auth status 2>$null
+    if (-not ($authStatus | Select-String -Quiet "'copilot'")) {
+        Write-Host "❌ Error: Your gh token is missing the required 'copilot' scope." -ForegroundColor Red
+        Write-Host "Please run 'gh auth refresh -h github.com -s copilot' to add it."
+        return
+    }
+
+    $privilegedScopesPattern = "'(admin:|manage_|write:public_key|delete_repo|(write|delete)_packages)'"
+    if ($authStatus | Select-String -Quiet $privilegedScopesPattern) {
+        Write-Host "⚠️  Warning: Your GitHub token has highly privileged scopes." -ForegroundColor Yellow
+        $confirmation = Read-Host "Are you sure you want to proceed with this token? [y/N]"
+        if ($confirmation.ToLower() -ne 'y' -and $confirmation.ToLower() -ne 'yes') {
+            Write-Host "Operation cancelled by user."
+            return
+        }
+    }
+    Write-Host "✅ Security checks passed."
+    # --- END SECURITY CHECK ---
+
+    $imageName = "ghcr.io/gordonbeeming/copilot_here:latest"
+
+    Write-Host -NoNewline "Checking for the latest version of copilot_here... "
+    $pullJob = Start-Job -ScriptBlock { param($img) docker pull $img } -ArgumentList $imageName
+    $spinner = '|', '/', '-', '\'
+    $i = 0
+    while ($pullJob.State -eq 'Running') {
+        Write-Host -NoNewline "$($spinner[$i])`b"
+        $i = ($i + 1) % 4
+        Start-Sleep -Milliseconds 100
+    }
+
+    Wait-Job $pullJob | Out-Null
+    $pullOutput = Receive-Job $pullJob
+    
+    if ($pullJob.State -eq 'Completed') {
+        Write-Host "✅"
+    } else {
+        Write-Host "❌" -ForegroundColor Red
+        Write-Host "Error: Failed to pull the Docker image." -ForegroundColor Red
+        if (-not [string]::IsNullOrEmpty($pullOutput)) {
+            Write-Host "Docker output:`n$pullOutput"
+        }
+        Remove-Job $pullJob
+        return
+    }
+    Remove-Job $pullJob
+
+    $copilotConfigPath = Join-Path $env:USERPROFILE ".config\copilot-cli-docker"
+    if (-not (Test-Path $copilotConfigPath)) {
+        New-Item -Path $copilotConfigPath -ItemType Directory -Force | Out-Null
+    }
+
+    $token = gh auth token 2>$null
+    if ([string]::IsNullOrEmpty($token)) {
+        Write-Host "⚠️  Could not retrieve token using 'gh auth token'." -ForegroundColor Yellow
+    }
+
+    $dockerBaseArgs = @(
+        "--rm", "-it",
+        "-v", "$((Get-Location).Path):/work",
+        "-v", "$($copilotConfigPath):/home/appuser/.copilot",
+        "-e", "GITHUB_TOKEN=$token",
+        $imageName
+    )
+
+    $copilotCommand = @("copilot")
+    if ($Prompt.Length -eq 0) {
+        $copilotCommand += "--banner", "--allow-all-tools"
+    } else {
+        $copilotCommand += "-p", ($Prompt -join ' '), "--allow-all-tools"
+    }
+
+    $finalDockerArgs = $dockerBaseArgs + $copilotCommand
+    docker run $finalDockerArgs
+}
+
+Set-Alias -Name copilot_yolo -Value Copilot-Yolo
+```
+
+Add it to your PowerShell profile (same process as Option 1) and reload.
+
+## Usage
+
+Once set up, using it is simple on any platform.
+
+**Interactive Mode:**
+
+Start a full chat session with the welcome banner:
+
+```bash
+# Linux/macOS
+copilot_here
+
+# Windows PowerShell (same command!)
+copilot_here
+```
+
+**Non-Interactive Mode:**
+
+Pass a prompt directly to get a quick response.
+
+Safe Mode (asks for confirmation before executing):
+
+```bash
+# Linux/macOS
+copilot_here "suggest a git command to view the last 5 commits"
+copilot_here "explain the code in ./my-script.js"
+
+# Windows PowerShell (same commands work!)
+copilot_here "suggest a git command to view the last 5 commits"
+copilot_here "explain the code in ./my-script.js"
+```
+
+YOLO Mode (auto-approves execution):
+
+```bash
+# Linux/macOS
+copilot_yolo "write a C# function that takes a string and returns it in reverse"
+copilot_yolo "run the tests and fix any failures"
+
+# Windows PowerShell (same commands work!)
+copilot_yolo "write a C# function that takes a string and returns it in reverse"
+copilot_yolo "run the tests and fix any failures"
+```
 
 ## Beyond the Basics: Specialized Docker Image Variants
 
 As the project evolved, I realized that different development scenarios call for different tools. That's why I created specialized image variants that build on the secure foundation of the base image while adding language-specific capabilities.
 
-### Available Image Variants
+**Available Image Variants:**
 
 **Base Image (`latest`)**: The standard Copilot CLI environment with Node.js 20, Git, and essential tools. Perfect for general-purpose development and scripting.
 

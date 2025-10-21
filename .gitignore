@@ -69,3 +69,6 @@ next-env.d.ts
 # Screenshots for demonstration
 /screenshots/
 /artifacts/
+
+user-group.md
+context.md

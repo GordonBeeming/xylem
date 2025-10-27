@@ -1,0 +1,172 @@
+---
+title: 'Your AI Copilot Has a ''Mental Workday'', Too'
+date: 2025-10-28
+tags: ['AI', 'Productivity', 'Development', 'Copilot', 'CLI', 'LLM']
+draft: false
+summary: 'I kept hitting a wall with the Copilot CLI, finding my AI assistant getting ''stuck'' or ''slow''. The problem wasn''t the AI... it was my workflow. Here''s why you need to let your AI ''call it a day''.'
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+Ever been deep in a coding session with an AI, like the Copilot CLI, and everything is just... *flowing*? 🌊 You're building, iterating, and solving problems.
+
+Then, an hour later, you ask a simple question, and the response is... weird. It's slow, overly complex, or just completely misses the point.
+
+You try rephrasing. You get frustrated. You think the AI is 'stuck' or 'broken'.
+
+I've been falling into this trap *constantly*. It turns out, the problem wasn't the AI. It was me.
+
+I was forgetting to let my AI 'go home' for the day.
+
+Keep reading, this one's a game-changer for your AI-powered workflow. 😅
+
+## The Context Trap: My "Tired" AI
+
+I'm a big fan of the [Copilot CLI](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) (which I run using my `copilot_yolo` alias). Lately, I've been using it with models like `claude-sonnet-4.5`.
+
+My typical workflow starts with me jumping into an interactive session:
+
+```bash
+# This starts my sandboxed, interactive session
+copilot_yolo
+````
+
+Now I'm *inside* the Copilot CLI, and my prompt changes. My workflow would go something like this (imagine this as **one continuous terminal session**):
+
+```text
+(copilot) Create a C# 'Person' class. Also, create a 'PersonRepository' 
+   class that can save a List<Person> to a JSON file and read it back.
+```
+
+The AI responds with the perfect classes, maybe in two separate code blocks.
+
+```csharp
+public class Person
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+}
+```
+
+```csharp
+using System.Text.Json;
+
+public class PersonRepository
+{
+    private readonly string _filePath = "people.json";
+
+    public List<Person> LoadPeople()
+    {
+        if (!File.Exists(_filePath))
+        {
+            return new List<Person>();
+        }
+        string json = File.ReadAllText(_filePath);
+        return JsonSerializer.Deserialize<List<Person>>(json) ?? new List<Person>();
+    }
+
+    public void SavePeople(List<Person> people)
+    {
+        string json = JsonSerializer.Serialize(people, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(_filePath, json);
+    }
+}
+```
+
+This is great\! Task 1 of my PBI is done.
+
+Now, imagine I *keep going*. In the same chat, I add unit tests for the repository. Then I add a validation class for the `Person` model. Then I refactor the `SavePeople` method to be async. Then I add logging...
+
+This is where the trap is set. I've now stacked *dozens* of small, related-but-separate tasks on top of each other. I've left the chat open all morning. The context is now *massive*. It's loaded with my model, my repo, my unit tests, my async logic, a validation class, and logging configuration.
+
+Now I'm ready to start the *next* PBI task: building the API.
+
+I'm still in the **same terminal window** and I type:
+
+```text
+(copilot) Now, create a simple ASP.NET Core Minimal API endpoint 
+   that uses this repository to get all people and add a new person.
+```
+
+This *feels* like the right next step. But the AI is now 'thinking' about *everything* we've done. It's trying to process this new task through the lens of file I/O, unit test frameworks, my logging setup, and the `FluentValidation` library I added 20 prompts ago.
+
+The result I get back might be... weird.
+
+```csharp
+// This is the "confused" output
+using FluentValidation; // <-- Why is this here?
+using Serilog; // <-- I don't need this in my API file
+
+var builder = WebApplication.CreateBuilder(args);
+
+// It might try to inject things I don't need for this task
+builder.Host.UseSerilog(); 
+builder.Services.AddScoped<IValidator<Person>, PersonValidator>();
+
+var app = builder.Build();
+
+app.MapGet("/people", (PersonRepository repo) => {
+    // It might copy-paste the *old* sync file logic 
+    // instead of using the async method we refactored
+    string json = File.ReadAllText("people.json"); 
+    return JsonSerializer.Deserialize<List<Person>>(json); 
+});
+// ...and so on...
+```
+
+The AI is "confused" by the sheer weight of the context baggage. It's trying to be helpful by remembering everything, but it ends up mixing concerns and grabbing irrelevant details from 30 prompts ago.
+
+## The Solution: Let Your AI Call It a Day
+
+This brings me to my analogy: **An AI chat context is like a mental workday.**
+
+Think about your own brain. You start the day fresh. You work on 'Task A' (the repository). You load that context. Then 'Task B' (the tests). Then 'Task C' (validation). By the time you're on 'Task M' (the API), your "mental RAM" is full. You're carrying the baggage of an entire morning's work.
+
+But with the AI, I was asking it to start 'Task M' while still holding all the mental baggage from 'Task A' through 'Task L'. It's like trying to start a new, complex project at 4:55 PM on a Friday. You're just not going to get good results. 😫
+
+The fix is ridiculously simple. Right there **inside your running Copilot session**:
+
+```text
+(copilot) /clear
+```
+
+The context is wiped. The "workday" is over. The AI is "fresh" and ready for a brand new, clean briefing. ☀️
+
+Now, in that **same session** (just after clearing it), I give it a *clean brief* for the new task:
+
+```text
+(copilot) Create a simple ASP.NET Core Minimal API. Assume I have an 
+   'IPersonRepository' registered for DI. Create endpoints to 
+   GET /people (using LoadPeople) and POST /people (using SavePeople).
+```
+
+The result is clean, fast, and perfect. It focuses *only* on the API task.
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// It assumes the DI is set up elsewhere (which is good!)
+builder.Services.AddSingleton<IPersonRepository, PersonRepository>(); // Or whatever
+
+var app = builder.Build();
+
+app.MapGet("/people", (IPersonRepository repo) => {
+    return repo.LoadPeople();
+});
+
+app.MapPost("/people", (Person person, IPersonRepository repo) => {
+    var people = repo.LoadPeople();
+    people.Add(person);
+    repo.SavePeople(people);
+    return Results.Created($"/people/{person.Email}", person); // Good API practice
+});
+
+app.Run();
+```
+
+No logging. No validation. No file logic. Just the task I asked for. 💡
+
+This isn't a failure or 'giving up' on the AI. It's just good workflow hygiene. Even if tasks are related, they often deserve their own fresh context.
+
+A new task deserves a new context.

@@ -1,0 +1,499 @@
+---
+title: 'Deep Code Archaeology with GitHub Copilot CLI: Tracing a Bug Through 6 Months of Git History'
+date: 2025-10-27
+tags: ['GitHub Copilot', 'Debugging', 'Git', 'DevOps']
+draft: false
+summary: 'An archival operation failing on templates created months ago. The kind of investigation that traditionally takes hours of git archaeology. I wondered, could GitHub Copilot CLI handle this kind of deep historical analysis? Turns out, yes. While I made coffee.'
+---
+
+🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
+I came across something interesting: template archival was failing with "Cleanup Handlers Invalid" for templates created back in June, but templates from September onwards worked fine. A quick database check showed `CleanupFlagsJson` was NULL for the older ones.
+
+This had all the hallmarks of a refactor that fixed new records but left old data behind, the kind of investigation that traditionally means hours of `git log`, `git show`, and `git diff` across months of history, connecting dots across multiple commits, and building a mental timeline of what changed when.
+
+Always looking to leverage my AI team to the fullest, I thought: can GitHub Copilot CLI handle this kind of deep historical analysis?
+
+Spoiler: It absolutely can.
+
+## The Investigation Challenge
+
+The scenario: A document generation platform where some templates created between May and August couldn't be archived. Templates from September onwards? No problems.
+
+When you archive a template, the system runs cleanup workflows, detach shared resources, notify dependent systems, archive generated documents. Different templates need different cleanup based on their configuration. The `CleanupFlagsJson` field tells the system which workflows to run.
+
+For the affected templates, that field was NULL. Not all templates from that period, just certain ones. An edge case we needed to understand.
+
+```csharp
+public class DocumentTemplate
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Content { get; set; }
+    public DateTime? ArchivedOn { get; set; }
+    
+    // This is NULL for some templates created May-August (edge case)
+    // Should contain flags indicating which cleanup workflows to run
+    public string? CleanupFlagsJson { get; set; }
+}
+```
+
+The questions:
+- **When** was this introduced?
+- **Why** weren't the old records migrated?
+- **What's the blast radius?**
+
+The challenge: 50K+ lines of code, 200+ commits in the last 6 months, 15+ files potentially involved in template operations.
+
+## The Experiment
+
+Traditional approach: 4-6 hours of manual git investigation, `git log` through 200+ commits, `git show` on each suspect commit, `git diff` to compare states, reading through code changes, building a mental timeline, documenting findings.
+
+What I wanted to test: Could Copilot CLI handle this kind of deep investigation autonomously?
+
+The setup: I'm running Copilot CLI in a secure Docker container using my `copilot_yolo -dotnet` configuration ([detailed here](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox)). This sandboxes Copilot's access while still letting it work with the codebase.
+
+```bash
+copilot_yolo -dotnet
+```
+
+**My prompt:**
+
+> I have a bug where archiving templates created in June gives me the error "Cleanup Handlers Invalid". In the database, these templates have a null value for CleanupFlagsJson. The template was created on 2025-06-15. Can you investigate how the data could have become like this? Search through git history to identify changes to create/update/archive templates since May, and trace where it went wrong. I need to know the blast radius.
+
+Then I walked away to work on other things.
+
+**Active time I spent:** ~5 minutes (writing the prompt)  
+**Time Copilot spent investigating:** ~25 minutes (in background)  
+**Time I spent waiting:** 0 minutes (worked on other things)
+
+## What Copilot Did Autonomously
+
+### Phase 1: Find the Current State
+
+Copilot started by mapping the landscape:
+
+```bash
+# It ran commands like this in parallel
+find /src -type f -name "*.cs" | grep -i "template"
+find /src -type f -name "*.cs" | xargs grep -l "CleanupFlagsJson"
+```
+
+**Found:**
+- 12 files referencing `CleanupFlagsJson`
+- `CreateTemplate.cs` endpoint
+- `ArchiveTemplate.cs` endpoint (where the error occurred)
+- `CleanupWorkflowRegistry.cs` service
+
+### Phase 2: Search Git History
+
+Next, it traced the timeline through git commits:
+
+```bash
+git log --all --since="2025-05-01" --oneline -- src/Templates/CreateTemplate.cs
+git log --all --since="2025-05-01" --oneline -- src/Templates/ArchiveTemplate.cs
+```
+
+**Key commits identified across 6 months:**
+- `2ef4a91` (July 10, 2025): "Fix template preview rendering"
+- `7c2b8a3` (Sept 3, 2025): "Add cleanup workflow registry for template archival"
+
+### Phase 3: The Code Comparison Across Git History
+
+Copilot then used `git show` to compare the code before and after the September refactor:
+
+**Before September 3rd (The Edge Case):**
+
+```csharp
+// CreateTemplate.cs - circa June 2025
+public async Task<Result<TemplateResponse>> Execute(CreateTemplateRequest request)
+{
+    // Create the template
+    var template = new DocumentTemplate
+    {
+        Id = Guid.NewGuid(),
+        Name = request.Name,
+        Content = request.Content,
+        // CleanupFlagsJson not yet populated
+    };
+    
+    // Determine template features
+    var hasSharedAssets = request.SharedAssetIds?.Any() ?? false;
+    var hasExternalIntegrations = request.Webhooks?.Any() ?? false;
+    var hasScheduledJobs = request.ScheduleConfig != null;
+    
+    // Store feature flags for general use
+    var features = new List<string>();
+    if (hasSharedAssets) features.Add("SharedAssets");
+    if (hasExternalIntegrations) features.Add("Webhooks");
+    if (hasScheduledJobs) features.Add("Scheduled");
+    
+    await _db.TemplateFeatures.AddAsync(new TemplateFeatures
+    {
+        TemplateId = template.Id,
+        Features = features
+    });
+    
+    await _db.SaveChangesAsync();
+    
+    // ⚠️ Edge case: Some code paths didn't populate CleanupFlagsJson
+    // This meant certain templates couldn't determine cleanup workflows on archival
+    return Result.Ok(new TemplateResponse(template.Id));
+}
+```
+
+**After September 3rd (The Fix):**
+
+```csharp
+// CreateTemplate.cs - after September 3, 2025
+public async Task<Result<TemplateResponse>> Execute(CreateTemplateRequest request)
+{
+    var template = new DocumentTemplate
+    {
+        Id = Guid.NewGuid(),
+        Name = request.Name,
+        Content = request.Content,
+    };
+    
+    // Determine template features
+    var hasSharedAssets = request.SharedAssetIds?.Any() ?? false;
+    var hasExternalIntegrations = request.Webhooks?.Any() ?? false;
+    var hasScheduledJobs = request.ScheduleConfig != null;
+    
+    // Store feature flags for general use
+    var features = new List<string>();
+    if (hasSharedAssets) features.Add("SharedAssets");
+    if (hasExternalIntegrations) features.Add("Webhooks");
+    if (hasScheduledJobs) features.Add("Scheduled");
+    
+    await _db.TemplateFeatures.AddAsync(new TemplateFeatures
+    {
+        TemplateId = template.Id,
+        Features = features
+    });
+    
+    // ✅ NEW: Build cleanup flags for archival workflows
+    var cleanupFlags = new CleanupFlags();
+    
+    if (hasSharedAssets)
+    {
+        // Need to detach shared assets before archiving
+        cleanupFlags.RequireAssetDetachment = true;
+    }
+    
+    if (hasExternalIntegrations)
+    {
+        // Need to notify webhooks and clean up external registrations
+        cleanupFlags.RequireWebhookNotification = true;
+        cleanupFlags.RequireExternalCleanup = true;
+    }
+    
+    if (hasScheduledJobs)
+    {
+        // Need to cancel scheduled jobs
+        cleanupFlags.RequireScheduleCancellation = true;
+    }
+    
+    // ✅ NEW: Populate the cleanup flags JSON
+    template.CleanupFlagsJson = JsonSerializer.Serialize(cleanupFlags);
+    
+    await _db.SaveChangesAsync();
+    
+    return Result.Ok(new TemplateResponse(template.Id));
+}
+```
+
+### The Archive Operation (Where It Broke)
+
+The archival endpoint expected cleanup flags to exist:
+
+```csharp
+// ArchiveTemplate.cs
+public async Task<Result> Execute(Guid templateId)
+{
+    var template = await _db.Templates
+        .Include(t => t.Features)
+        .FirstAsync(t => t.Id == templateId);
+    
+    // This fails for old templates
+    var cleanupFlags = JsonSerializer.Deserialize<CleanupFlags>(
+        template.CleanupFlagsJson // ← NULL for June templates
+    );
+    
+    if (cleanupFlags == null)
+    {
+        return Result.Fail("Cleanup Handlers Invalid");
+    }
+    
+    // Run cleanup workflows based on flags
+    if (cleanupFlags.RequireAssetDetachment)
+    {
+        await _assetService.DetachFromTemplate(templateId);
+    }
+    
+    if (cleanupFlags.RequireWebhookNotification)
+    {
+        await _webhookService.NotifyArchival(templateId);
+    }
+    
+    if (cleanupFlags.RequireExternalCleanup)
+    {
+        await _integrationService.CleanupExternalRefs(templateId);
+    }
+    
+    if (cleanupFlags.RequireScheduleCancellation)
+    {
+        await _scheduler.CancelTemplateJobs(templateId);
+    }
+    
+    // Mark as archived
+    template.ArchivedOn = _timeProvider.GetUtcNow();
+    await _db.SaveChangesAsync();
+    
+    return Result.Ok();
+}
+```
+
+## The Complete Timeline (Built by Copilot)
+
+```
+May 15, 2025
+ Template system launched
+ Bug introduced: CleanupFlagsJson not populated
+
+June 15, 2025  
+ Affected template created
+
+July 10, 2025 (Commit 2ef4a91)
+ "Fix template preview rendering"
+   └─ Fixed UI bug, data model issue remained
+
+September 3, 2025 (Commit 7c2b8a3)
+ "Add cleanup workflow registry for template archival"
+   ├─ Added cleanup workflow orchestration
+   ├─ New templates get CleanupFlagsJson populated
+   └─ ❌ No migration for OLD templates
+
+October 27, 2025
+ Archival attempted, issue discovered
+```
+
+## The Blast Radius
+
+Copilot didn't stop at finding the bug. It generated SQL queries to assess the damage:
+
+```sql
+-- Find affected templates
+SELECT 
+    t.Id,
+    t.Name,
+    t.CreatedOn,
+    tf.Features
+FROM Templates t
+LEFT JOIN TemplateFeatures tf ON tf.TemplateId = t.Id
+WHERE t.CleanupFlagsJson IS NULL
+  AND t.CreatedOn >= '2025-05-01'
+  AND t.CreatedOn < '2025-09-03'
+  AND t.ArchivedOn IS NULL
+ORDER BY t.CreatedOn;
+```
+
+**Results:**
+- 47 templates affected (not all templates from that period, just those that hit the edge case)
+- All created between May 15 and September 2
+- All currently active (not archived)
+- Archival blocked for all 47
+
+Copilot also checked related operations:
+
+```sql
+-- Check if template editing/duplication is affected
+SELECT 
+    t.Name,
+    te.EditedOn,
+    te.UserId
+FROM Templates t
+JOIN TemplateEdits te ON te.TemplateId = t.Id
+WHERE t.CleanupFlagsJson IS NULL
+  AND te.EditedOn > '2025-09-03'
+ORDER BY te.EditedOn DESC;
+```
+
+Good news: Editing and duplication still worked. Only archival was blocked.
+
+## The Solution
+
+Copilot provided three options:
+
+### Option 1: Data Migration (Recommended)
+
+Backfill the missing cleanup flags by reconstructing them from the `TemplateFeatures` table:
+
+```csharp
+// Migration script
+public async Task BackfillCleanupFlags()
+{
+    var affectedTemplates = await _db.Templates
+        .Where(t => t.CleanupFlagsJson == null 
+                 && t.CreatedOn >= new DateTime(2025, 5, 1)
+                 && t.CreatedOn < new DateTime(2025, 9, 3))
+        .Include(t => t.Features)
+        .ToListAsync();
+    
+    foreach (var template in affectedTemplates)
+    {
+        var cleanupFlags = new CleanupFlags();
+        
+        // Reconstruct flags from existing feature data
+        if (template.Features.Features.Contains("SharedAssets"))
+        {
+            cleanupFlags.RequireAssetDetachment = true;
+        }
+        
+        if (template.Features.Features.Contains("Webhooks"))
+        {
+            cleanupFlags.RequireWebhookNotification = true;
+            cleanupFlags.RequireExternalCleanup = true;
+        }
+        
+        if (template.Features.Features.Contains("Scheduled"))
+        {
+            cleanupFlags.RequireScheduleCancellation = true;
+        }
+        
+        template.CleanupFlagsJson = JsonSerializer.Serialize(cleanupFlags);
+    }
+    
+    await _db.SaveChangesAsync();
+}
+```
+
+### Option 2: Defensive Archival
+
+Make `ArchiveTemplate` handle NULL cleanup flags:
+
+```csharp
+public async Task<Result> Execute(Guid templateId)
+{
+    var template = await _db.Templates
+        .Include(t => t.Features)
+        .FirstAsync(t => t.Id == templateId);
+    
+    CleanupFlags cleanupFlags;
+    
+    if (template.CleanupFlagsJson == null)
+    {
+        // Fallback: Reconstruct from TemplateFeatures
+        cleanupFlags = ReconstructCleanupFlags(template.Features);
+    }
+    else
+    {
+        cleanupFlags = JsonSerializer.Deserialize<CleanupFlags>(
+            template.CleanupFlagsJson
+        );
+    }
+    
+    // ... rest of archival with cleanup workflows
+}
+```
+
+### Option 3: Block Archival of Old Templates
+
+Prevent archival of legacy templates:
+
+```csharp
+if (template.CleanupFlagsJson == null)
+{
+    return Result.Fail(
+        "This template uses a legacy format and cannot be archived automatically. " +
+        "Please contact support for manual archival."
+    );
+}
+```
+
+For these specific templates, we went with **Option 1**, clean fix, no technical debt. For other templates where the feature data was more complex or missing, we implemented a combination of Options 1 and 2 to handle different scenarios gracefully.
+
+## The Results
+
+After ~25 minutes running in the background, Copilot delivered:
+
+**Investigation Artifacts:**
+- 3,200-word investigation document with complete timeline
+- 5 key commits identified and analyzed
+- SQL queries to find all affected records (ready to run)
+- 3 remediation options with code samples
+- Blast radius: 47 affected templates
+- Root cause: Edge case in template creation code path (May-August)
+- Edge case resolved: September 3, 2025
+- Why records remained: No migration for existing NULL records
+
+**Time Comparison:**
+- Traditional manual approach: 4-6 hours
+- Copilot CLI approach: 5 minutes active time, 0 minutes waiting
+- Investigation depth: 6 months of git history, 50+ commits analyzed
+
+## What Made This Work
+
+### 1. Parallel Processing
+Copilot ran multiple git commands simultaneously:
+
+```bash
+# All running at the same time
+git log --since="2025-05-01" -- CreateTemplate.cs &
+git log --since="2025-05-01" -- ArchiveTemplate.cs &
+git log --since="2025-05-01" -- CleanupWorkflowRegistry.cs &
+find . -name "*.cs" | xargs grep -l "CleanupFlagsJson" &
+```
+
+### 2. Pattern Recognition Across Git History
+It connected:
+- Error message → Code location
+- Code location → Git commits over time
+- Commit history → Related refactors
+- Refactors → The September change that split old/new behavior
+
+### 3. Context Retention
+Once it found the September refactor, it automatically:
+- Compared before/after states
+- Checked for data migrations
+- Identified the vulnerable time window
+- Generated validation queries
+
+### 4. Auto-Documentation
+The entire investigation was documented in a structured markdown file, including:
+- Timeline diagrams
+- Code snippets
+- SQL queries
+- Remediation options
+
+## What This Means for Complex Investigations
+
+The ability to delegate deep historical analysis to Copilot CLI changes how we approach certain types of work:
+
+**Time-to-insight:** 5 minutes of setup vs. half a workday of archaeology
+
+**Parallel processing:** Git history analysis runs concurrently while you work on something else
+
+**Context retention:** AI excels at connecting dots across months of commits, something humans struggle with
+
+**Documentation bonus:** The investigation report becomes a permanent artifact
+
+**Best applications:**
+- "It worked last month" mysteries
+- Data corruption root cause analysis
+- Blast radius assessments
+- Multi-file architectural change audits
+- Production bug origin stories
+
+This isn't replacing developers, it's augmenting our ability to understand complex codebases across time.
+
+The investigation that would traditionally consume half a workday now takes 5 minutes to initiate and runs while you're productive elsewhere. That's a productivity multiplier worth paying attention to.
+
+**Tools used:**
+- GitHub Copilot CLI
+- Git
+- SQL Server
+
+**Time saved:** ~4 hours  
+**Coffee consumed:** 1 cup  
+**Investigation quality:** Complete

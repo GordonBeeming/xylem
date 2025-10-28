@@ -20,8 +20,6 @@ Here's a quick summary of the major updates. Skip to any section that interests 
 6. **[YOLO Mode Enhancements](#6-yolo-mode-enhancements)** - Auto-approve everything with `--allow-all-paths`
 7. **[Smart Image Cleanup](#7-smart-image-cleanup)** - Only removes images older than 7 days, saves bandwidth and time
 
----
-
 ## 1. Windows Docker Desktop Support
 
 ### The "It Works On My Machine" Problem
@@ -53,8 +51,6 @@ fi
 Is running as root in a local development container ideal? No. But it's a reasonable fallback for Windows users, and the warning message lets them know what's happening. Sometimes "works everywhere" beats "theoretically more secure but broken."
 
 This also meant Windows needed to be a first-class citizen in the documentation, not an afterthought. So I restructured the entire README to show PowerShell instructions alongside bash/zsh, with equal prominence.
-
----
 
 ## 2. Auto-Updating Scripts
 
@@ -93,8 +89,6 @@ The beauty is that it updates the file *and* reloads the function in your curren
 
 **Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file. This way your dotfiles stay in sync automatically.
 
----
-
 ## 3. Quick Install Method
 
 I had this elaborate setup where users needed to copy shell function code from the README and paste it into their config files. It worked, but it was clunky. Then I realized: why not just let them download and source a script file?
@@ -124,8 +118,6 @@ if ! grep -q "source ~/.copilot_here.sh" ~/.zshrc 2>/dev/null; then
   echo 'source ~/.copilot_here.sh' >> ~/.zshrc
 fi
 ```
-
----
 
 ## 4. Argument Pass-Through: Unlocking Native Copilot Features
 
@@ -169,8 +161,6 @@ This is incredibly useful for long-running tasks where you don't want to start o
 
 When you run `copilot_here --help`, it shows both the wrapper's help AND the underlying Copilot CLI help, so you can discover features like `--resume` naturally.
 
----
-
 ## 5. Script Versioning
 
 One thing I learned from maintaining scripts in the wild: you need to know which version someone is running when they report an issue. So every script now has a version header:
@@ -195,8 +185,6 @@ copilot_yolo "fix all the linting errors in this project"
 ```
 
 I added a `--allow-all-paths` flag specifically for YOLO mode, which combines with auto-approval to create a fully automated experience. It's genuinely useful for trusted workflows, though I wouldn't recommend it for production systems 😅
-
----
 
 ## 7. Smart Image Cleanup
 
@@ -241,8 +229,6 @@ Benefits:
 
 The cleanup runs AFTER pulling the new image, so it can never remove what it just downloaded. Smart, right?
 
----
-
 ## Lessons Learned
 
 ### 1. **Cross-Platform Is Hard**
@@ -274,8 +260,6 @@ The core functionality is solid now, but there are a few ideas I'm exploring:
 - Maybe a configurable cleanup period (though 7 days seems to work well)
 
 But honestly? It works really well now. Sometimes the best feature is knowing when to stop adding features.
-
----
 
 If you want to try it out, the project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here)
 

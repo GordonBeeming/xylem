@@ -77,6 +77,10 @@
 
 /* Base layer overrides using the new color theme */
 @layer base {
+  /* Enable smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
 
   *,
   ::after,
@@ -129,6 +133,11 @@
 /* Utility layer overrides for prose (markdown content) */
 @layer utilities {
   .prose {
+    /* Fix for anchor links with sticky header - adds scroll margin to all headings */
+    & :where(h1, h2, h3, h4, h5, h6) {
+      scroll-margin-top: 6rem;
+    }
+
     & a {
       color: var(--color-primary-800);
       /* #003353 */

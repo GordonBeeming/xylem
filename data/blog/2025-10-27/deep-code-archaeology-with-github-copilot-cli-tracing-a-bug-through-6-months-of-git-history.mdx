@@ -6,7 +6,7 @@ draft: false
 summary: 'An archival operation failing on templates created months ago. The kind of investigation that traditionally takes hours of git archaeology. I wondered, could GitHub Copilot CLI handle this kind of deep historical analysis? Turns out, yes. While I made coffee.'
 ---
 
-🤝 A Human-AI Collaboration - I worked with my AI assistant to bring this post to life. Think of it as a brainstorming partner that helps structure thoughts and smooth out the prose. The core message and the experience behind it? That's all me.
+
 
 I came across something interesting: template archival was failing with "Cleanup Handlers Invalid" for templates created back in June, but templates from September onwards worked fine. A quick database check showed `CleanupFlagsJson` was NULL for the older ones.
 

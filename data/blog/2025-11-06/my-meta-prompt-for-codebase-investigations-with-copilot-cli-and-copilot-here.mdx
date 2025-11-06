@@ -1,0 +1,126 @@
+---
+title: 'My "Meta-Prompt" for Codebase Investigations with Copilot CLI and copilot_here'
+date: 2025-11-06
+tags: ['GitHub Copilot', 'DevOps', 'Developer Experience', 'CLI Tools', 'Prompt Engineering', 'AI']
+draft: false
+summary: 'How I use a specific "meta-prompt" with my copilot_here tool to get high-quality, structured investigation reports from GitHub Copilot CLI. Includes the prompt, the workflow, and the results.'
+---
+
+Getting good, *structured* output from an AI is all about the prompt. When I need to dive into a large, unfamiliar part of a codebase, I don't want a conversational chat, I want a detailed, structured report.
+
+To solve this, I use a "meta-prompt" that I keep in my clipboard history (I use [Paste](https://pasteapp.io/)) so it's always ready. It's a template that tells GitHub Copilot CLI *exactly* how to behave, what to produce, and where to put it.
+
+In this post, I'll share the exact prompt, the `copilot_yolo` mode I use to run it, and the high-quality results you can expect. `copilot_yolo` is a more flexible investigation mode that's part of my broader `copilot_here` tool, which you can find on [GitHub](https://github.com/GordonBeeming/copilot_here).
+
+## The "Meta-Prompt" for Investigations
+
+When I start an investigation, I paste this from my clipboard history into my terminal session. It's the first thing the AI sees.
+
+> I need help with an investigation report.
+> I need you to place a markdown file in `~/investigations/`, the format of the name of the markdown file should be `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md` where YYYY is the year, MM is the month, and DD is the day.
+> The core important details is a summary of what the ask is, if I ask for further details change the summary accordingly, if the there is just clarification then no need to update anything, any new updates should change the summary to be bullet points so it's easy to digest.
+> Next up I need a high level summary of the investigation, then followed by detailed findings, and finally any recommendations (if applicable).
+> Always ask for clarification if the ask is not clear enough, you can do this repetitively until you have enough information to complete the task. Please always number questions so that it's easier for me to reply to you.
+
+### Why This Prompt Works
+
+This "meta-prompt" is effective because it's not a question, it's a set of commands:
+
+1.  **Defines the Output:** It explicitly asks for a markdown file.
+2.  **Enforces Naming Standards:** It gives a clear file naming convention: `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md`.
+3.  **Sets the Report Structure:** It demands a specific structure: `high level summary`, `detailed findings`, and `recommendations`.
+4.  **Encourages Iteration:** It tells the AI to `Always ask for clarification` and `number questions`, turning a one-shot query into a collaborative investigation session.
+
+## The Tool: `copilot_yolo` with a Global Mount
+
+A prompt is great, but it needs a good execution environment. The prompt's first instruction is to "place a markdown file in `~/investigations/`". How does the Copilot container, which is sandboxed, know where that is?
+
+This is where my `copilot_here` project comes in. For these deep investigations, I use the `copilot_yolo` mode. It's a "yolo version" that's still part of the `copilot_here` toolset, but it gives Copilot more flexibility and access to all tools to figure out the investigation.
+
+The `copilot_yolo` mode still benefits from the `copilot_here` configuration, like the **flexible directory mount system**. I don't want to type `--mount-rw ~/investigations` every time. Instead, I use the global config to set it up *once*, permanently.
+
+```bash
+# Run this command one time
+copilot_here --save-mount-global ~/investigations:rw
+````
+
+Now, **no matter what project directory I'm in**, when I run `copilot_yolo`, it will always have my `~/investigations` folder mounted with read/write access. When I'm in a project repo and run my meta-prompt, the AI has full context of the code *and* a safe, persistent place to write its report.
+
+It's the perfect, clean workflow:
+
+  * The AI can write its findings.
+  * The report lives in a central `~/investigations` folder on my host machine.
+  * It doesn't pollute my project's `git status` with a large, un-committed markdown file.
+
+This global mount feature is part of the new November 2025 updates to `copilot_here`. You can read all about it here:
+**[Copilot CLI in Docker: November 2025 Updates - Better Context and Flexible Mounts](https://www.google.com/search?q=https://gordonbeeming.com/blog/2025-11-30/copilot-cli-in-docker-november-2025-updates-better-context-and-flexible-mounts)**
+
+## The Workflow in Action: Investigating a Xero Integration
+
+Here's the full, end-to-end workflow.
+
+**Step 1: Change to the project directory**
+
+```bash
+cd ~/projects/SSW.TimePRO
+```
+
+**Step 2: Start the tool**
+
+```bash
+copilot_yolo
+```
+
+(That's it\! The global mount for `~/investigations` is loaded automatically.)
+
+**Step 3: Paste the full prompt**
+I paste my meta-prompt from my clipboard, immediately followed by my specific query.
+
+> I need help with an investigation report.
+> I need you to place a markdown file in `~/investigations/`, the format of the name of the markdown file should be `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md` where YYYY is the year, MM is the month, and DD is the day.
+> The core important details is a summary of what the ask is, if I ask for further details change the summary accordingly, if the there is just clarification then no need to update anything, any new updates should change the summary to be bullet points so it'S easy to digest.
+> Next up I need a high level summary of the investigation, then followed by detailed findings, and finally any recommendations (if applicable).
+> Always ask for clarification if the ask is not clear enough, you can do this repetitively until you have enough information to complete the task. Please always number questions so that it's easier for me to reply to you.
+>
+> I'm interested in the xero integrations we have, specifically how it's configured and what interactions
+> we have with it... if you can give me any sql scripts to check config that would be useful too
+
+## The Result: A Detailed 31-Page Report
+
+After a few follow-up questions, Copilot had all the context. It then generated the file `~/investigations/20251106-SSW.TimePRO-Xero-Integration-Configuration-And-Interactions.md`.
+
+The AI-generated report was incredibly comprehensive. It saved me *hours* of manual digging.
+
+Here are a few snippets to show the quality of the output:
+
+> **Key Finding:** The integration is designed as a pluggable adapter in the Ports layer (hexagonal architecture), making it replaceable with other accounting systems.
+
+It didn't just find files; it understood the *architectural pattern*.
+
+> **1.1 Application Settings (appsettings.Development.json)**
+> ...
+> **1.2 Database Configuration (AuthConnection Table)**
+
+It correctly identified the two main sources of configuration: flat files and the database.
+
+> `### Script 1: Check if Xero is Configured`
+
+It fulfilled my specific request for SQL scripts, generating 10 different scripts I could use to check the system's state.
+
+> **2.1 HIGH PRIORITY - Background Jobs** \> **Finding:** Code comment says "TODO: Move to a background task" in `XeroInvoiceSyncService.SyncInvoice()`.  
+> **Recommendations:** ✅ Move invoice sync to Hangfire background job
+
+This was the most impressive part. It found a "TODO" comment in the codebase and correctly identified it as a high-priority performance recommendation.
+
+<Figure key="/images/copilot-investigation-report-length.png" src="/images/copilot-investigation-report-length.png" alt="A screenshot of the 31-page markdown report generated by Copilot, showing a tiny scrollbar on the side." width="0" height="0" caption="The final report was over 31 pages long and saved hours of manual digging." />
+
+## Summary: Stop Digging, Start Investigating
+
+This workflow has changed how I approach codebase analysis.
+
+  * **Use a "Meta-Prompt":** Don't just ask simple questions. Tell the AI *how* to answer you and *what* to produce.
+  * **Run Securely (but flexibly):** Pair your prompt with a sandboxed tool like `copilot_yolo` to give the AI the power it needs while managing its file access.
+  * **Try the Tool:** You can get `copilot_here` (which includes `copilot_yolo`) from the [GitHub repository](https://github.com/GordonBeeming/copilot_here).
+  * **Read More:** Learn about the powerful new global mounts and path-mapping features in the [full `copilot_here` November 2025 update post](https://www.google.com/search?q=https://gordonbeeming.com/blog/2025-11-30/copilot-cli-in-docker-november-2025-updates-better-context-and-flexible-mounts).
+
+What are your killer Copilot prompts? Share them in the comments\!

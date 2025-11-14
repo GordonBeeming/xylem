@@ -1,0 +1,228 @@
+---
+title: 'Your ADRs are Missing the "How" - A Guide to Implementation Snapshots'
+date: 2025-11-14
+tags: ['Architecture', 'Documentation', 'ADR', 'Software Design', 'Practical', 'CSharp', '.NET']
+draft: false
+summary: 'You''re already writing Architecture Decision Records (ADRs). That''s great. But are they *useful*? If your ADRs only capture the "why" but not the "how," they''re only doing half the job. Let''s explore how to add concrete implementation details, whether you write your ADRs before or after you code.'
+---
+
+Most teams who adopt Architecture Decision Records (ADRs) get the first part right: they document the context, the options, and the chosen path. You get an ADR that says, "We will implement a distributed cache for the web app."
+
+And then... nothing.
+
+A new developer reads this and has more questions than answers:
+* *How* was that implemented?
+* *What* pattern did we use? Cache-Aside?
+* *Where* is it registered? *How* is it abstracted?
+
+Your ADR captured the "why," but it's missing the "how." It's an "ivory tower" document, disconnected from the codebase it's supposed to describe.
+
+The solution is to include the "how," but the *way* you do this depends entirely on *when* you write your ADR.
+
+## When Do You Write the "How"? Proactive vs. Reactive
+
+This is the key distinction. Are you writing the ADR *before* implementation (proactive) or *after* (reactive)? Both are valid, but the "how" section serves a different purpose.
+
+### Scenario 1: ADR Up-Front (The "Expected Touchpoints")
+
+This is the recommended approach. You write the ADR as part of the design phase, *before* a single line of code is written.
+
+In this case, the "how" section should be called **"Expected Implementation Touchpoints"** or **"Implementation Plan."**
+
+* **What it is:** A high-level list of the files, modules, and classes you *expect* to change. It's your *plan* for implementing the decision.
+* **Its Value:** It defines the *scope* of the work. It forces the team to think through the "blast radius" of the change and creates a checklist for the developer.
+* **Crucial Rule:** You **do not** go back and update this section after the work is done. Its value is as a snapshot of the *plan*, not the final implementation. If the implementation differed, that's a valuable piece of information in itself (and might be worth a comment in the PR).
+
+### Scenario 2: ADR After-the-Fact (The "Implementation Snapshot")
+
+Sometimes, you're documenting a decision that was already made, or you're just getting started with ADRs and are "back-filling" your decision log.
+
+In this case, the "how" section should be called **"Implementation Snapshot."**
+
+* **What it is:** A set of small, illustrative code snippets that capture the *actual pattern* that was implemented.
+* **Its Value:** It's a concrete record of the "how." It connects the abstract decision to the real code, dramatically reducing "digital archaeology" for future developers.
+* **Crucial Rule:** This is a *snapshot*, not a live-updating document. You are capturing the *pattern*, not creating a maintenance burden.
+
+## The Pros and Cons of Adding the "How"
+
+Adding this extra detail has massive benefits, but you must be aware of the trade-offs.
+
+✅ **Provides Concrete Context**
+Whether it's a *plan* or a *snapshot*, it makes the abstract decision concrete. "We will add caching" becomes "We will register `IDistributedCache` in `Program.cs` and implement the Cache-Aside pattern in the `WeatherService`."
+
+✅ **Illustrates the *Architectural Pattern***
+This is the main benefit of the "Implementation Snapshot" (Scenario 2). You demonstrate the *how* (e.g., showing the Cache-Aside logic). This pattern is the "architecture" you want to preserve.
+
+✅ **Defines Scope and Reduces "Archeology"**
+The "Expected Touchpoints" (Scenario 1) defines the scope of a new change. The "Implementation Snapshot" (Scenario 2) eliminates the need for future devs to dig through PR history to understand the original implementation.
+
+❌ **Risk: Staleness / Maintenance Burden**
+This is the biggest fear, but it's easily managed by following the rules.
+* **Mitigation (Scenario 1):** It *cannot* get stale. It is a snapshot of the *plan*. It is *designed* to be immutable.
+* **Mitigation (Scenario 2):** It's a snapshot of the *pattern*, not the *values*. If your cache expiration time changes, the ADR is still 100% correct because the *pattern* of using the cache is unchanged. If the *conceptual pattern* changes (e.g., you switch to "Read-Through" cache), that's a new architectural decision and requires a **new ADR** to supersede the old one.
+
+❌ **Risk: Too Much Noise**
+If you paste 200 lines of code, you'll obscure the *decision*.
+* **Mitigation:** Be ruthless. Show only illustrative snippets. Think key signature changes, DI registration, and high-level patterns, not a line-by-line diff.
+
+## A Concrete Example: The "Weather API" Caching ADR
+
+Let's look at an ADR for our hypothetical "Weather API" that was written *after the fact* (Scenario 2) and uses the "Implementation Snapshot" pattern.
+
+---
+
+# Caching - Implement Redis Distributed Cache for Weather API
+
+- Status: accepted
+- Deciders: Gordon Beeming
+- Date: 2025-11-14
+- Tags: caching, performance, redis, .net, csharp
+
+Technical Story: [PBI 42 - Product API is slow under load](https://github.com/example/issues/42)
+
+## Context and Problem Statement
+
+The Weather API is performing poorly under load, specifically when fetching detailed forecasts. Each request results in a complex SQL query. The application is hosted in a scaled-out, multi-instance environment (e.g., Azure Container Apps with 2+ replicas). We need to reduce database load and improve API response times.
+
+## Considered Options
+
+1.  **In-Memory Cache (`IMemoryCache`):** Use the built-in .NET in-memory cache.
+2.  **Distributed Cache (`IDistributedCache` with Redis):** Use a shared, external cache.
+3.  **No Cache:** Continue hitting the database for all requests.
+
+## Decision Outcome
+
+Chosen option: **"Distributed Cache (`IDistributedCache` with Redis)"**, because `IMemoryCache` is in-process. In our scaled-out environment, this would lead to data inconsistency, as one instance's cache would not be shared with the others. A distributed cache provides a single, shared source of truth for all instances.
+
+### Consequences
+
+-   ✅ API response times for forecasts will be significantly faster.
+-   ✅ Load on the SQL database will be dramatically reduced.
+-   ❌ Adds new infrastructure: a Redis instance (increased cost and maintenance).
+-   ❌ Adds a new point of failure (if Redis is down, we must handle cache misses gracefully).
+-   ⚠️ We now have a cache invalidation strategy to manage (a new source of complexity).
+
+---
+## 💡 Implementation Snapshot 💡
+
+*(This ADR was written after the fact. If it had been written up-front, this section would be "Expected Touchpoints" and might just list the files: `Program.cs` and `Services/WeatherService.cs`.)*
+
+To implement this, we registered the Redis cache service in `Program.cs` and modified the `WeatherService` to implement the **Cache-Aside Pattern**.
+
+**Pattern 1: DI Service Registration (`Program.cs`)**
+This snippet shows how we registered the `IDistributedCache` implementation with .NET's dependency injection container.
+
+```csharp
+//
+// File: Program.cs
+//
+var builder = WebApplication.CreateBuilder(args);
+
+// ... other services
+
+// Add Redis Distributed Cache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "WeatherAPI_";
+});
+
+// ...
+````
+
+**Pattern 2: The Cache-Aside Pattern (`WeatherService.cs`)**
+This shows the core logic. We modified the existing service to check the cache *before* doing the expensive database call.
+
+```csharp
+//
+// File: Services/WeatherService.cs
+//
+public class WeatherService : IWeatherService
+{
+    private readonly IDistributedCache _cache;
+    private readonly WeatherDbContext _db;
+    // ... other dependencies
+
+    public WeatherService(
+        IDistributedCache cache,
+        WeatherDbContext db,
+        ILogger<WeatherService> logger)
+    {
+        _cache = cache;
+        _db = db;
+        // ...
+    }
+
+    public async Task<Forecast> GetForecastAsync(string location)
+    {
+        string cacheKey = $"forecast:{location}";
+        
+        // 1. Try to get from cache
+        var json = await _cache.GetStringAsync(cacheKey);
+        if (json is not null)
+        {
+            return JsonSerializer.Deserialize<Forecast>(json);
+        }
+
+        // 2. Cache Miss: Get from "real" service (the existing logic)
+        var forecast = await _db.Forecasts
+            .Where(f => f.Location == location)
+            .FirstOrDefaultAsync(); // <-- This is the expensive part
+        
+        // ... (assume null handling)
+
+        // 3. Set in cache for next time
+        var options = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
+        };
+        json = JsonSerializer.Serialize(forecast);
+        await _cache.SetStringAsync(cacheKey, json, options);
+
+        return forecast;
+    }
+}
+```
+
+## Links
+
+  - [PR \#58 - Add Redis Caching](https://www.google.com/search?q=https://github.com/example/pull/58)
+  - [Microsoft Docs: `IDistributedCache`](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
+  - [Pattern: Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)
+
+-----
+
+## The ADR as a Funnel: Progressive Disclosure
+
+The structure of a good ADR is not an accident. It's a "funnel" of progressive disclosure, designed to serve different audiences who will stop reading at different levels.
+
+1.  **Level 1: The "What" (Title, Status, Date)**
+
+      * **Audience:** Anyone scanning the list of ADRs.
+      * **Question Answered:** "What decisions have been made recently?"
+
+2.  **Level 2: The "Why" (Context, Decision Outcome, Consequences)**
+
+      * **Audience:** Product Managers, Team Leads, Architects, new Developers.
+      * **Question Answered:** "What was the problem, what did we decide, and why?"
+      * *This is where most people stop reading.*
+
+3.  **Level 3: The "How" (Implementation Snapshot/Touchpoints)**
+
+      * **Audience:** Developers implementing the feature, or future developers implementing a *similar* feature.
+      * **Question Answered:** "What is the approved pattern? How does this look in our code?"
+      * *This is the a-ha\! section for engineers.*
+
+4.  **Level 4: The "Deep Dive" (Links)**
+
+      * **Audience:** Future Maintainers, Debuggers, "Code Archaeologists."
+      * **Question Answered:** "Where is the *exact* code? What was the discussion in the PR? What other docs relate to this?"
+      * *This is the escape hatch for "I need to know everything."*
+
+By structuring your ADRs this way, you make them efficient. You don't force a Product Manager to read code snippets, and you don't force a developer to hunt for the original PR.
+
+## Conclusion
+
+Stop writing ADRs that get filed away and forgotten. By structuring them as a "funnel of disclosure" and adding a small "how" section, whether it's an **"Expected Touchpoints"** plan or an **"Implementation Snapshot"** record, you transform your ADR from a simple "why" document into a powerful "why *and* how" guide.
+
+This small change makes your documentation exponentially more valuable, connects your architecture to your code, and saves your future team members countless hours of digital archaeology.

@@ -69,8 +69,6 @@ If you paste 200 lines of code, you'll obscure the *decision*.
 
 Let's look at an ADR for our hypothetical "Weather API" that was written *after the fact* (Scenario 2) and uses the "Implementation Snapshot" pattern.
 
----
-
 # Caching - Implement Redis Distributed Cache for Weather API
 
 - Status: accepted
@@ -102,7 +100,6 @@ Chosen option: **"Distributed Cache (`IDistributedCache` with Redis)"**, because
 -   ❌ Adds a new point of failure (if Redis is down, we must handle cache misses gracefully).
 -   ⚠️ We now have a cache invalidation strategy to manage (a new source of complexity).
 
----
 ## 💡 Implementation Snapshot 💡
 
 *(This ADR was written after the fact. If it had been written up-front, this section would be "Expected Touchpoints" and might just list the files: `Program.cs` and `Services/WeatherService.cs`.)*
@@ -189,8 +186,6 @@ public class WeatherService : IWeatherService
   - [PR \#58 - Add Redis Caching](https://www.google.com/search?q=https://github.com/example/pull/58)
   - [Microsoft Docs: `IDistributedCache`](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
   - [Pattern: Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)
-
------
 
 ## The ADR as a Funnel: Progressive Disclosure
 

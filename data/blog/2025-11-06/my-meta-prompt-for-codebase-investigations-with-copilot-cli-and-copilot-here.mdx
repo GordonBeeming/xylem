@@ -20,7 +20,7 @@ When I start an investigation, I paste this from my clipboard history into my te
 > I need you to place a markdown file in `~/investigations/`, the format of the name of the markdown file should be `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md` where YYYY is the year, MM is the month, and DD is the day.
 > The core important details is a summary of what the ask is, if I ask for further details change the summary accordingly, if the there is just clarification then no need to update anything, any new updates should change the summary to be bullet points so it's easy to digest.
 > Next up I need a high level summary of the investigation, then followed by detailed findings, and finally any recommendations (if applicable).
-> Always ask for clarification if the ask is not clear enough, you can do this repetitively until you have enough information to complete the task. Please always number questions so that it's easier for me to reply to you.
+> Ask me if you have any questions before you start. Ask each question one at a time. Wait for an answer before asking the next question. If there are several options, show these in a table with options labeled A, B, C, etc.
 
 ### Why This Prompt Works
 
@@ -29,7 +29,7 @@ This "meta-prompt" is effective because it's not a question, it's a set of comma
 1.  **Defines the Output:** It explicitly asks for a markdown file.
 2.  **Enforces Naming Standards:** It gives a clear file naming convention: `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md`.
 3.  **Sets the Report Structure:** It demands a specific structure: `high level summary`, `detailed findings`, and `recommendations`.
-4.  **Encourages Iteration:** It tells the AI to `Always ask for clarification` and `number questions`, turning a one-shot query into a collaborative investigation session.
+4.  **Encourages Iteration:** The questioning technique is inspired by [Daniel Mackay's approach to efficient vibe coding](https://www.dandoescode.com/blog/efficient-vibe-coding-with-clarifying-questions). I used to ask the AI to "always ask for clarification" and "number questions," but Daniel's version works much better. His approach of asking one question at a time, waiting for answers, and using tables for multiple options creates a more natural, focused conversation that gets to the heart of the investigation faster.
 
 ## The Tool: `copilot_yolo` with a Global Mount
 
@@ -80,7 +80,7 @@ I paste my meta-prompt from my clipboard, immediately followed by my specific qu
 > I need you to place a markdown file in `~/investigations/`, the format of the name of the markdown file should be `YYYYMMDD-{{ Current working directory name }}-{{ Summary of investigation }}.md` where YYYY is the year, MM is the month, and DD is the day.
 > The core important details is a summary of what the ask is, if I ask for further details change the summary accordingly, if the there is just clarification then no need to update anything, any new updates should change the summary to be bullet points so it's easy to digest.
 > Next up I need a high level summary of the investigation, then followed by detailed findings, and finally any recommendations (if applicable).
-> Always ask for clarification if the ask is not clear enough, you can do this repetitively until you have enough information to complete the task. Please always number questions so that it's easier for me to reply to you.
+> Ask me if you have any questions before you start. Ask each question one at a time. Wait for an answer before asking the next question. If there are several options, show these in a table with options labeled A, B, C, etc.
 >
 > I'm interested in the xero integrations we have, specifically how it's configured and what interactions
 > we have with it... if you can give me any sql scripts to check config that would be useful too

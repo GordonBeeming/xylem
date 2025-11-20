@@ -1,0 +1,208 @@
+---
+title: 'Copilot CLI in Docker: November 2025 Updates - ARM64, .NET 10, Smart Titles & More'
+date: 2025-11-30
+tags: ['Docker', 'GitHub Copilot', 'DevOps', 'ARM64', '.NET', 'PowerShell']
+draft: true
+summary: 'November 2025 is a massive release for copilot_here: Native ARM64 support for Apple Silicon, .NET 10 SDKs, PowerShell Core integration, plus the game-changing path mapping and flexible mount systems.'
+---
+
+November has been a busy month for [copilot_here](https://github.com/GordonBeeming/copilot_here). What started as a quality-of-life update for path mapping has evolved into a major platform expansion.
+
+We now have native support for **Apple Silicon** and other ARM64 devices, **.NET 10** support, and a fully integrated **PowerShell** experience inside the container.
+
+If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
+
+## What's New in November 2025
+
+1. **[Native ARM64 Support](#1-native-arm64-support-apple-silicon--raspberry-pi)** - fast, native performance on Mac and ARM devices
+2. **[.NET 10 & PowerShell](#2-net-10-sdk--powershell-integration)** - Bleeding edge .NET and cross-platform scripting
+3. **[Actual Path Mapping](#3-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
+4. **[Flexible Directory Mounts](#4-flexible-directory-mounts-access-what-you-need)** - Mount additional directories with granular control
+5. **[Smart Window Titles](#5-smart-window-titles-cleaner-terminal-tabs)** - Auto-updating titles with mode indicators
+6. **[Default Image Config](#6-default-image-configuration-pin-your-version)** - Lock your team to a specific image version
+7. **[Auto-Update Checks](#7-auto-update-checks-stay-current)** - Get notified when new features land
+
+---
+
+## 1. Native ARM64 Support: Apple Silicon
+
+This is the big one. Until now, Mac users on Apple Silicon were running the AMD64 image via Rosetta emulation. It worked, but it wasn't optimal.
+
+As of version `2025-11-19`, we now publish multi-arch images for both `linux/amd64` and `linux/arm64`.
+
+### What this means for you:
+- **Performance**: Native execution means faster startup and response times.
+- **Efficiency**: Lower memory and CPU usage on Mac and ARM devices.
+- **Compatibility**: You can now run `copilot_here` on other ARM Linux devices!
+
+Docker will automatically pull the correct image for your architecture. No configuration needed.
+
+## 2. .NET 10 SDK & PowerShell Integration
+
+### .NET 10
+For the .NET developers wanting the latest features, we now have specific image variants for each .NET version:
+
+- `dotnet-8`: Previous LTS
+- `dotnet-9`: Standard Term Support
+- `dotnet-10`: Latest LTS
+
+The main `dotnet` tag includes all three SDKs, but if you want a lighter image or specific version, you can now choose exactly what you need.
+
+```bash
+# Use the .NET 10 specific image
+copilot_here --set-image dotnet-10
+```
+
+### PowerShell Core Everywhere
+We've added PowerShell Core (`pwsh`) to the base image. This isn't just for Windows users—it means you can write and execute cross-platform automation scripts inside the container regardless of your host OS.
+
+Combined with the new ARM64 support, you have a powerful, portable scripting environment that works identically on an x64 Windows PC and Apple Silicon.
+
+---
+
+## 3. Actual Path Mapping: Know Where You Are
+
+### The Multi-Instance Confusion Problem
+
+Picture this: You're investigating a bug with three terminal windows open:
+- One in `/Users/me/projects/api`
+- One in `/Users/me/projects/frontend`
+- One in `/Users/me/investigations/bug-123`
+
+Previously, `copilot_here` mapped all of these to `/work`. Inside the container, they all looked identical. Which project were you in? 🤔
+
+### The Fix
+
+The container now uses your **actual host path**.
+
+**Before:**
+```bash
+# In /Users/me/projects/api
+copilot_here
+# Container sees: /work/src/...
+```
+
+**After:**
+```bash
+# In /Users/me/projects/api
+copilot_here
+# Container sees: /Users/me/projects/api/src/...
+```
+
+This simple change reduces mental overhead and makes copy-pasting paths between host and container seamless.
+
+---
+
+## 4. Flexible Directory Mounts: Access What You Need
+
+Sometimes you need more than just the current directory. Maybe you need to reference architecture docs in `~/docs` or save logs to `~/investigations`.
+
+We've introduced a three-tier mounting system:
+
+### 1. CLI Flags (Quick & Temporary)
+```bash
+# Read-only mount (default)
+copilot_here --mount ~/investigations
+
+# Read-write mount
+copilot_here --mount-rw ~/notes
+```
+
+### 2. Local Config (Project-Specific)
+Save mounts for a specific project in `.copilot_here/mounts.conf`:
+```bash
+copilot_here --save-mount ~/investigations
+```
+
+### 3. Global Config (User-Wide)
+Always have your notes available:
+```bash
+copilot_here --save-mount-global ~/common-notes
+```
+
+### Security First
+Mounts default to **read-only**. You must explicitly request write access (`--mount-rw`), and the tool will warn you if you try to mount sensitive system paths (like `/` or `~/.ssh`).
+
+---
+
+## 5. Smart Window Titles: Cleaner Terminal Tabs
+
+When running interactive CLI tools, your terminal tab usually just shows the raw command (e.g., `docker run ...`). This isn't helpful when you have multiple tabs open.
+
+We've added **Smart Window Titles** that automatically update your terminal tab while Copilot is running:
+
+- **Safe Mode**: `🤖 directory-name`
+- **YOLO Mode**: `🤖⚡️ directory-name`
+
+This makes it instantly obvious which tab is running Copilot and which mode it's in, without cluttering your view with long Docker commands. The title automatically reverts when you exit.
+
+---
+
+## 6. Default Image Configuration: Variants & Pinning
+
+By default, `copilot_here` uses the `latest` tag. But you might want to use a specialized variant (like `dotnet` or `dotnet-playwright`) or pin a specific version for team consistency.
+
+You can now configure a default image tag globally or per-project:
+
+```bash
+# List all available image variants
+copilot_here --list-images
+
+# Use the .NET variant for this project
+copilot_here --set-image dotnet
+
+# Pin to a specific SHA (recommended for strict team consistency)
+copilot_here --set-image sha256:e73a13e...
+
+# Clear configuration to revert to default
+copilot_here --clear-image
+```
+
+Check your current configuration:
+```bash
+copilot_here --show-image
+# Output:
+# 🖼️  Current image: sha256:e73a13e... (from local config)
+```
+
+## 7. Auto-Update Checks: Stay Current
+
+With the pace of updates (like this one!), it's easy to fall behind. The scripts now include a non-intrusive pre-run check.
+
+If a new version is available, you'll see a subtle notification:
+```text
+📦 Update available: 2025-11-20.3 → 2025-11-20.15
+Run 'copilot_here --update-scripts' to upgrade
+```
+
+It won't block your work, but it keeps you in the loop.
+
+---
+
+## Version Information
+
+These changes are available in version **2025-11-20.15** and later.
+
+Update your scripts to get all these features:
+
+```bash
+# Bash/Zsh
+copilot_here --update-scripts
+
+# PowerShell
+Copilot-Here -UpdateScripts
+```
+
+## Try It Out
+
+Installation is just three commands:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/GordonBeeming/copilot_here/main/copilot_here.sh -o ~/.copilot_here.sh
+echo 'source ~/.copilot_here.sh' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Check out the project on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here)
+
+*Questions? Suggestions? Drop a comment below or open an issue on GitHub!*

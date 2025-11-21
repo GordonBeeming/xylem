@@ -1,0 +1,50 @@
+---
+title: 'Video: How I Became a 10x Dev Using AI Agents, GitHub Copilot & Gemini'
+date: 2025-11-21
+tags: ['Video', 'AI', 'GitHub Copilot', 'Gemini', 'Developer Productivity']
+draft: false
+summary: 'I recently spoke at the SSW Brisbane User Group about shifting from writing code to orchestrating AI agents. Here is the recording and a breakdown of the specific tools, workflows, and security sandboxes I use to ship faster.'
+---
+
+We are moving past the point of just asking a chatbot to write a function. We are entering the era of **orchestration**, where the developer's role shifts from typing every line to managing a team of AI agents to get the job done.
+
+Below is the recording of my talk at the [SSW Brisbane User Group](https://www.meetup.com/en-AU/brisbane-full-stack-user-group/events/311865539/) where I demonstrate the tools I use (including a custom Dockerized CLI) to become a "10x developer"—not by typing faster, but by working smarter.
+
+<YouTubeEmbed height="315" src="//www.youtube.com/embed/4DrWJybHl54" frameborder="0" width="560" allowfullscreen />
+
+## Key Concepts
+
+If you don't have time to watch the full session, here are the core facts and workflows discussed:
+
+* **Orchestration over Coding:** The goal is to fail fast and ship faster by managing agents rather than writing boilerplate.
+* **Context is King:** AI models like Gemini have massive context windows. Instead of short prompts, "brain dump" your entire messy thought process. The AI cleans it up and challenges your assumptions.
+* **Documentation Tax is Gone:** Use conversational AI to generate Architecture Decision Records (ADRs) and specs from your brainstorming sessions.
+
+## The Tooling Ecosystem
+
+Don't use one tool for everything. I break down my workflow based on the risk and creativity required:
+
+* **IDE (Visual Studio / VS Code):** Use for **Deterministic** tasks. Renaming, refactoring, and moving files should be done here because it's guaranteed to be correct.
+* **Gemini:** Use for **Creative** tasks and **Planning**. Best for generating new services from scratch or high-level architecture discussions.
+* **GitHub Spark:** Use for **Prototyping**. Great for spinning up React apps (like my wife's portfolio) to get a visual base quickly.
+* **Tina CMS:** Use for **Content**. Decouples content management from the code so you can use a visual editor while keeping data in Git.
+
+## The "Fix": Securing the Copilot CLI
+
+The GitHub Copilot CLI is powerful but risky. Giving an AI agent full read/write access to your file system and terminal can lead to it nuking files or hallucinating commands.
+
+To use the CLI safely and efficiently, I built a **Secure Portable Copilot CLI Environment**.
+
+<Figure key="/images/docker-copilot-cli-sandbox.png" src="/images/docker-copilot-cli-sandbox.png" alt="Terminal showing the Docker container startup for the Copilot CLI sandbox." width="0" height="0" caption="My secure Docker sandbox for the Copilot CLI" />
+
+### How it works:
+1.  **Dockerized Sandbox:** The CLI runs inside a container, not on my host machine.
+2.  **Read-Only Mounts:** Critical paths (like `.git` folders or core domain logic) are mounted as read-only. The AI can read them for context but cannot modify them.
+3.  **"YOLO Mode":** Because the environment is sandboxed, I can disable the constant "Are you sure?" confirmation prompts. This allows the agent to work in the background autonomously while I focus on other tasks.
+
+## Summary
+
+A modern "10x developer" isn't a lone wolf coding in the dark. It's someone who:
+1.  Knows the boundaries of their tools.
+2.  Orchestrates agents to do the heavy lifting.
+3.  Shares these workflows (and `copilot-instructions.md` files) with their team.

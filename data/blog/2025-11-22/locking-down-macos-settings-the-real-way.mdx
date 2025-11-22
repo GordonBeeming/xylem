@@ -14,6 +14,28 @@ macOS Screen Time is great for app limits, but it doesn't natively stop a smart 
 
 I looked at three ways to solve this.
 
+## Contents
+
+1. **[Before You Start: Check Account Types](#before-you-start-check-account-types)**
+2. **[Option 1: The "Hidden" Menu (Too Weak)](#option-1-the-hidden-menu-too-weak)**
+3. **[Option 2: The "Enterprise" Way (Profiles)](#option-2-the-enterprise-way-profiles)**
+4. **[Option 3: The "Developer" Way (My Pick)](#option-3-the-developer-way-my-pick)**
+5. **[What did we just do?](#what-did-we-just-do)**
+6. **[How to Revert](#how-to-revert)**
+
+---
+
+## 🛑 Before You Start: Check Account Types
+
+There is one golden rule before we touch a single configuration file: **Your child must be a Standard user.**
+
+If they are an **Administrator**, they have `sudo` privileges. This means that with a little bit of Googling (which we know they are good at 😅), they can override or delete the restrictions we are about to set up.
+
+**Double check this now:**
+1.  Open **System Settings** > **Users & Groups**.
+2.  Make sure your account is set to **Admin**.
+3.  Ensure their account is set to **Standard**.
+
 ## Option 1: The "Hidden" Menu (Too Weak)
 
 The easiest way is just to hide the settings pane.

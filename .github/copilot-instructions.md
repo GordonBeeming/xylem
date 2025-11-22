@@ -218,6 +218,34 @@ pnpm run build
 
 **Remember: NEVER CANCEL long-running operations. This application processes extensive content and requires time to complete builds properly.**
 
+## SSW Content Rules
+
+### Figure Captions
+**Source:** [SSW Rules - Add useful and concise figure captions](https://www.ssw.com.au/rules/add-useful-and-concise-figure-captions/)
+
+*   **General Formatting:**
+    *   Captions must be **bolded**.
+    *   Do not end captions with a full stop.
+    *   Capitalize the first word after the prefix.
+*   **Prefixes & Formats:**
+    *   **Images:** `Figure: {Description}`
+    *   **Videos:** `Video: {Title} ({Duration})`
+    *   **Code:** `Code: {Description}`
+    *   **GIFs:** `GIF: {Description}`
+*   **Specific Guidelines:**
+    *   **Videos:** Always include duration (e.g., `Video: Intro to Scrum (9 min)`).
+    *   **AI Images:** Include the prompt (e.g., `Figure: Description. Prompt: ...`).
+    *   **Screenshots:** Describe the action the user would take.
+
+### Video Time Lengths
+**Source:** [SSW Rules - Right format to write videos time length](https://www.ssw.com.au/rules/right-format-to-write-videos-time-length/)
+
+*   **< 1 minute:** `{{x}} sec` (e.g., `30 sec`)
+*   **1 - 59 minutes:** `{{x}} min` (e.g., `25 min`)
+*   **1 hour:** `1 hr`
+*   **> 1 hour:** `{{x}} hr {{x}} min` (e.g., `3 hr 5 min`)
+*   **Note:** Ignore seconds for durations longer than 1 minute.
+
 ## CLI Task Documentation
 
 When creating documentation files (MD files) during CLI tasks, follow these guidelines to avoid unnecessary documentation noise:

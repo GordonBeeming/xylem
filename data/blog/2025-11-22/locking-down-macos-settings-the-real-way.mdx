@@ -1,0 +1,94 @@
+---
+title: 'Locking Down macOS Settings (The Real Way)'
+date: 2025-11-22
+tags: ['macOS', 'Parenting', 'Security', 'Terminal']
+draft: false
+summary: 'iOS makes it easy to stop kids from changing passcodes. macOS? Not so much. I explored 3 ways to lock down a Mac, and here is the best solution for a technical parent.'
+---
+
+If you have kids in the Apple ecosystem, you know that iOS is pretty great at restrictions. You can toggle "Don't Allow Account Changes" or "Don't Allow Passcode Changes" and relax.
+
+But then you open their Mac... and those options are missing.
+
+macOS Screen Time is great for app limits, but it doesn't natively stop a smart kid from adding a new Fingerprint to TouchID or changing the system time to bypass your downtime schedules.
+
+I looked at three ways to solve this.
+
+## Option 1: The "Hidden" Menu (Too Weak)
+
+The easiest way is just to hide the settings pane.
+
+1. Open **System Settings**.
+2. Go to **View** > **Customize...**
+3. Uncheck **Touch ID & Password**.
+
+**The Verdict:** ❌
+Any smart kid can just go back to that menu and re-check the box. It's security through obscurity, and that never lasts long.
+
+## Option 2: The "Enterprise" Way (Profiles)
+
+You can create a `.mobileconfig` file (an Apple Configuration Profile) that uses the `DisabledSystemSettings` payload. This is how schools and businesses do it.
+
+You write an XML file, double-click it to install, and it hard-locks those settings.
+
+**The Verdict:** ⚠️
+It works great, but managing XML files for simple settings toggles is a bit of a hassle if you aren't running a full MDM server. I decided to save the "Profile" approach for something more important (NextDNS).
+
+## Option 3: The "Developer" Way (My Pick)
+
+We can use the `defaults` command to modify the **Global Preferences** (`/Library/Preferences`). This affects *all* users on the machine, so you can run this from your Admin account and it locks down their Standard account instantly.
+
+It allows for much faster scripting and toggling than installing/removing profiles.
+
+### The Strategy: "The Wi-Fi Gap"
+
+I had a specific requirement: **They need to be able to join Wi-Fi at school.**
+
+If you lock the "Network" pane, they can't join new networks. But if you leave the "Network" pane open, they could theoretically change their DNS to bypass my content filters (NextDNS).
+
+**The Solution:**
+1.  **Unlock** the Network pane (so they can join Wi-Fi).
+2.  **Lock** the Profiles pane (so they can't remove the NextDNS config).
+3.  **Lock** the Security panes (so they can't change passwords).
+
+### Step 1: Install NextDNS as System
+
+First, I installed the NextDNS profile, but I did it via terminal to force it to the **System** level (so a Standard user can't touch it).
+
+```bash
+sudo profiles -I -F /path/to/nextdns.mobileconfig
+````
+
+### Step 2: Lock the Settings
+
+Now, run this command to lock the specific panes. Notice I intentionally left out `com.apple.Network-Settings.extension`.
+
+```bash
+sudo defaults write /Library/Preferences/com.apple.systempreferences DisabledSystemSettings -array "com.apple.Touch-ID-Settings.extension" "com.apple.Date-Time-Settings.extension" "com.apple.Users-Groups-Settings.extension" "com.apple.Profiles-Settings.extension"
+```
+
+### Step 3: Apply
+
+For this to take effect immediately without a reboot, kill the settings app:
+
+```bash
+sudo killall "System Settings"
+```
+
+## What did we just do?
+
+  * ✅ **Wi-Fi / Network:** **UNLOCKED.** They can join school Wi-Fi.
+  * ❌ **Touch ID & Passcode:** **LOCKED.** They can't change their password or add a finger to bypass you.
+  * ❌ **Date & Time:** **LOCKED.** Prevents the "set the clock back 3 hours" trick to bypass downtime.
+  * ❌ **Users & Groups:** **LOCKED.** Prevents creating a new "Standard User" to get a fresh set of screen time limits.
+  * ❌ **Profiles (MDM):** **LOCKED.** This is the secret sauce. They can't remove the NextDNS profile because the "Remove Profile" button lives in this locked pane.
+
+## How to Revert
+
+If you need to add a fingerprint later or change a setting yourself, you can revert this easily.
+
+```bash
+sudo defaults delete /Library/Preferences/com.apple.systempreferences DisabledSystemSettings
+```
+
+Happy parenting\! 🚀

@@ -16,11 +16,12 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 
 1. **[Native ARM64 Support](#1-native-arm64-support-apple-silicon)** - fast, native performance on Mac and ARM devices
 2. **[.NET 10 & PowerShell](#2-net-10-sdk--powershell-integration)** - Bleeding edge .NET and cross-platform scripting
-3. **[Actual Path Mapping](#3-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
-4. **[Flexible Directory Mounts](#4-flexible-directory-mounts-access-what-you-need)** - Mount additional directories with granular control
-5. **[Smart Window Titles](#5-smart-window-titles-cleaner-terminal-tabs)** - Auto-updating titles with mode indicators
-6. **[Default Image Config](#6-default-image-configuration-variants--pinning)** - Lock your team to a specific image version
-7. **[Auto-Update Checks](#7-auto-update-checks-stay-current)** - Get notified when new features land
+3. **[Playwright Image](#3-playwright-image)** - Browser automation without the .NET overhead
+4. **[Actual Path Mapping](#4-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
+5. **[Flexible Directory Mounts](#5-flexible-directory-mounts-access-what-you-need)** - Mount additional directories with granular control
+6. **[Smart Window Titles](#6-smart-window-titles-cleaner-terminal-tabs)** - Auto-updating titles with mode indicators
+7. **[Default Image Config](#7-default-image-configuration-variants--pinning)** - Lock your team to a specific image version
+8. **[Auto-Update Checks](#8-auto-update-checks-stay-current)** - Get notified when new features land
 
 ---
 
@@ -60,7 +61,27 @@ Combined with the new ARM64 support, you have a powerful, portable scripting env
 
 ---
 
-## 3. Actual Path Mapping: Know Where You Are
+## 3. Playwright Image
+
+For those sites that use node apps but don't require dotnet, we've added a new image that extends the base image with Playwright capabilities.
+
+**Tag:** `playwright`
+
+**Includes:**
+- Playwright (latest)
+- Chromium browser with dependencies
+- All base image features
+
+**Usage:**
+```bash
+copilot_here -pw
+# or
+copilot_here --playwright
+```
+
+---
+
+## 4. Actual Path Mapping: Know Where You Are
 
 ### The Multi-Instance Confusion Problem
 
@@ -93,7 +114,7 @@ This simple change reduces mental overhead and makes copy-pasting paths between 
 
 ---
 
-## 4. Flexible Directory Mounts: Access What You Need
+## 5. Flexible Directory Mounts: Access What You Need
 
 Sometimes you need more than just the current directory. Maybe you need to reference architecture docs in `~/docs` or save logs to `~/investigations`.
 
@@ -125,7 +146,7 @@ Mounts default to **read-only**. You must explicitly request write access (`--mo
 
 ---
 
-## 5. Smart Window Titles: Cleaner Terminal Tabs
+## 6. Smart Window Titles: Cleaner Terminal Tabs
 
 When running interactive CLI tools, your terminal tab usually just shows the raw command (e.g., `docker run ...`). This isn't helpful when you have multiple tabs open.
 
@@ -138,7 +159,7 @@ This makes it instantly obvious which tab is running Copilot and which mode it's
 
 ---
 
-## 6. Default Image Configuration: Variants & Pinning
+## 7. Default Image Configuration: Variants & Pinning
 
 By default, `copilot_here` uses the `latest` tag. But you might want to use a specialized variant (like `dotnet` or `dotnet-playwright`) or pin a specific version for team consistency.
 
@@ -165,7 +186,7 @@ copilot_here --show-image
 # 🖼️  Current image: sha256:e73a13e... (from local config)
 ```
 
-## 7. Auto-Update Checks: Stay Current
+## 8. Auto-Update Checks: Stay Current
 
 With the pace of updates (like this one!), it's easy to fall behind. The scripts now include a non-intrusive pre-run check.
 

@@ -124,7 +124,7 @@ export default function Home({ posts }) {
           {posts.length > MAX_DISPLAY && (
             <div className="mt-8 text-center">
               <Link
-                href="/blog"
+                href="/blog/page/2"
                 className="inline-flex items-center gap-2 rounded-lg bg-primary-800 px-6 py-3 text-white hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900"
                 aria-label="View all blog posts"
               >

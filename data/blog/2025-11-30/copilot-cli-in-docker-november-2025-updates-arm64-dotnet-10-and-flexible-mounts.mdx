@@ -1,14 +1,14 @@
 ---
-title: 'Copilot CLI in Docker: November 2025 Updates - ARM64, .NET 10, Smart Titles & More'
+title: 'Copilot CLI in Docker: November 2025 Updates - ARM64, .NET 10, Airlock & More'
 date: 2025-11-30
-tags: ['Docker', 'GitHub Copilot', 'DevOps', 'ARM64', '.NET', 'PowerShell']
+tags: ['Docker', 'GitHub Copilot', 'DevOps', 'ARM64', '.NET', 'PowerShell', 'Security']
 draft: true
-summary: 'November 2025 is a massive release for copilot_here: Native ARM64 support for Apple Silicon, .NET 10 SDKs, PowerShell Core integration, plus the game-changing path mapping and flexible mount systems.'
+summary: 'November 2025 is a massive release for copilot_here: Native ARM64 support for Apple Silicon, .NET 10 SDKs, PowerShell Core integration, the game-changing Airlock network isolation feature, plus path mapping and flexible mount systems.'
 ---
 
-November has been a busy month for [copilot_here](https://github.com/GordonBeeming/copilot_here). What started as a quality-of-life update for path mapping has evolved into a major platform expansion.
+November has been a busy month for [copilot_here](https://github.com/GordonBeeming/copilot_here). What started as a quality-of-life update for path mapping has evolved into a major platform expansion with a significant security enhancement.
 
-We now have native support for **Apple Silicon** and other ARM64 devices, **.NET 10** support, and a fully integrated **PowerShell** experience inside the container.
+We now have native support for **Apple Silicon** and other ARM64 devices, **.NET 10** support, a fully integrated **PowerShell** experience inside the container, and **Airlock** - a powerful network isolation feature that gives you complete control over what the AI can access.
 
 If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
 
@@ -17,11 +17,12 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 1. **[Native ARM64 Support](#1-native-arm64-support-apple-silicon)** - fast, native performance on Mac and ARM devices
 2. **[.NET 10 & PowerShell](#2-net-10-sdk--powershell-integration)** - Bleeding edge .NET and cross-platform scripting
 3. **[Playwright Image](#3-playwright-image)** - Browser automation without the .NET overhead
-4. **[Actual Path Mapping](#4-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
-5. **[Flexible Directory Mounts](#5-flexible-directory-mounts-access-what-you-need)** - Mount additional directories with granular control
-6. **[Smart Window Titles](#6-smart-window-titles-cleaner-terminal-tabs)** - Auto-updating titles with mode indicators
-7. **[Default Image Config](#7-default-image-configuration-variants--pinning)** - Lock your team to a specific image version
-8. **[Auto-Update Checks](#8-auto-update-checks-stay-current)** - Get notified when new features land
+4. **[Airlock Network Isolation](#4-airlock-network-isolation)** - Control exactly what the AI can access on the network
+5. **[Actual Path Mapping](#5-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
+6. **[Flexible Directory Mounts](#6-flexible-directory-mounts-access-what-you-need)** - Mount additional directories with granular control
+7. **[Smart Window Titles](#7-smart-window-titles-cleaner-terminal-tabs)** - Auto-updating titles with mode indicators
+8. **[Default Image Config](#8-default-image-configuration-variants--pinning)** - Lock your team to a specific image version
+9. **[Auto-Update Checks](#9-auto-update-checks-stay-current)** - Get notified when new features land
 
 ---
 
@@ -81,7 +82,106 @@ copilot_here --playwright
 
 ---
 
-## 4. Actual Path Mapping: Know Where You Are
+## 4. Airlock Network Isolation
+
+This is the big security feature of this release. While `copilot_here` already sandboxes file system access, the container still had unrestricted network access. **Airlock** changes that by routing all network traffic through a custom Rust-based HTTPS proxy that enforces an allowlist.
+
+### Why Airlock?
+
+When you give an AI tool access to your codebase, you're trusting it not to exfiltrate data. While GitHub Copilot is trustworthy, defense-in-depth is a good practice. Airlock ensures that even if something goes wrong, the AI can only talk to the endpoints you've explicitly approved.
+
+### How It Works
+
+Airlock uses Docker Compose to create two containers:
+1. **Proxy Container** - A Rust HTTPS proxy that intercepts all traffic and enforces rules
+2. **App Container** - The Copilot CLI, isolated on an internal network that can *only* reach the proxy
+
+The app container has no direct internet access. All traffic must go through the proxy, which:
+- Generates a CA certificate on startup (trusted by the app container)
+- Performs HTTPS interception to inspect request paths
+- Allows or blocks requests based on your configuration
+- Optionally logs all traffic for auditing
+
+### Quick Start
+
+```bash
+# Enable Airlock for the current project (you'll choose enforce or monitor mode)
+copilot_here --enable-airlock
+
+# Or enable globally
+copilot_here --enable-global-airlock
+```
+
+When you first enable Airlock, you'll be prompted to choose a mode:
+- **Enforce** (`e`): Blocks requests not matching the allowlist
+- **Monitor** (`m`): Allows all requests but logs them for review
+
+### Configuration
+
+Airlock uses JSON configuration files:
+
+**Global:** `~/.config/copilot_here/network.json`  
+**Local:** `.copilot_here/network.json`
+
+```json
+{
+  "enabled": true,
+  "inherit_default_rules": true,
+  "mode": "enforce",
+  "enable_logging": false,
+  "allowed_rules": [
+    {
+      "host": "api.github.com",
+      "allowed_paths": ["/user", "/graphql"]
+    },
+    {
+      "host": "api.individual.githubcopilot.com",
+      "allowed_paths": ["/models", "/mcp/readonly", "/chat/completions"]
+    }
+  ]
+}
+```
+
+The default rules include the essential GitHub and Copilot API endpoints. Setting `inherit_default_rules: true` means your config will automatically get updates when new endpoints are required.
+
+### Management Commands
+
+```bash
+# View current configuration
+copilot_here --show-airlock-rules
+
+# Edit local rules (opens in $EDITOR)
+copilot_here --edit-airlock-rules
+
+# Edit global rules
+copilot_here --edit-global-airlock-rules
+
+# Disable Airlock
+copilot_here --disable-airlock
+```
+
+### Traffic Logging
+
+When `enable_logging` is true (or automatically in monitor mode), all requests are logged to `.copilot_here/logs/traffic.jsonl`:
+
+```json
+{"action":"ALLOW","host":"api.github.com","path":"/user","method":"GET","mode":"enforce","reason":"Path Match"}
+{"action":"BLOCK","host":"evil.com","path":"/exfil","method":"POST","mode":"enforce","reason":"Host Not Allowed"}
+```
+
+This is invaluable for auditing what the AI is actually doing on the network.
+
+### Security Model
+
+The proxy is written in Rust for memory safety and performance. Key security features:
+- **Internal network isolation**: The app container cannot bypass the proxy
+- **Path-level control**: Allow specific API paths, not just hosts
+- **HTTPS interception**: Full visibility into encrypted traffic
+- **Optional HTTP blocking**: Force HTTPS-only unless explicitly allowed
+
+---
+
+## 5. Actual Path Mapping: Know Where You Are
 
 ### The Multi-Instance Confusion Problem
 
@@ -114,7 +214,7 @@ This simple change reduces mental overhead and makes copy-pasting paths between 
 
 ---
 
-## 5. Flexible Directory Mounts: Access What You Need
+## 6. Flexible Directory Mounts: Access What You Need
 
 Sometimes you need more than just the current directory. Maybe you need to reference architecture docs in `~/docs` or save logs to `~/investigations`.
 
@@ -146,7 +246,7 @@ Mounts default to **read-only**. You must explicitly request write access (`--mo
 
 ---
 
-## 6. Smart Window Titles: Cleaner Terminal Tabs
+## 7. Smart Window Titles: Cleaner Terminal Tabs
 
 When running interactive CLI tools, your terminal tab usually just shows the raw command (e.g., `docker run ...`). This isn't helpful when you have multiple tabs open.
 
@@ -159,7 +259,7 @@ This makes it instantly obvious which tab is running Copilot and which mode it's
 
 ---
 
-## 7. Default Image Configuration: Variants & Pinning
+## 8. Default Image Configuration: Variants & Pinning
 
 By default, `copilot_here` uses the `latest` tag. But you might want to use a specialized variant (like `dotnet` or `dotnet-playwright`) or pin a specific version for team consistency.
 
@@ -186,7 +286,7 @@ copilot_here --show-image
 # 🖼️  Current image: sha256:e73a13e... (from local config)
 ```
 
-## 8. Auto-Update Checks: Stay Current
+## 9. Auto-Update Checks: Stay Current
 
 With the pace of updates (like this one!), it's easy to fall behind. The scripts now include a non-intrusive pre-run check.
 

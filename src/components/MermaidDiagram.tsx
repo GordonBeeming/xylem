@@ -8,6 +8,52 @@ interface MermaidDiagramProps {
   chart: string
 }
 
+// Color mappings for dark mode (light color -> dark equivalent)
+const darkModeColorMap: Record<string, string> = {
+  '#F8F9FA': '#1f2937', // gray-100 -> gray-800
+  '#f8f9fa': '#1f2937',
+  '#FFFFFF': '#374151', // white -> gray-700
+  '#ffffff': '#374151',
+  '#E9ECEF': '#374151', // gray-200 -> gray-700
+  '#e9ecef': '#374151',
+  '#1A1A1A': '#f3f4f6', // near-black -> gray-100 (for text)
+  '#1a1a1a': '#f3f4f6',
+}
+
+const transformSvgForDarkMode = (svgString: string): string => {
+  let transformed = svgString
+
+  // Replace fill colors
+  Object.entries(darkModeColorMap).forEach(([lightColor, darkColor]) => {
+    // Match fill in style attributes
+    transformed = transformed.replace(
+      new RegExp(`fill:\\s*${lightColor}`, 'gi'),
+      `fill:${darkColor}`
+    )
+    // Match fill as attribute
+    transformed = transformed.replace(
+      new RegExp(`fill="${lightColor}"`, 'gi'),
+      `fill="${darkColor}"`
+    )
+    // Match stroke colors
+    transformed = transformed.replace(
+      new RegExp(`stroke:\\s*${lightColor}`, 'gi'),
+      `stroke:${darkColor}`
+    )
+    transformed = transformed.replace(
+      new RegExp(`stroke="${lightColor}"`, 'gi'),
+      `stroke="${darkColor}"`
+    )
+    // Match color (for text)
+    transformed = transformed.replace(
+      new RegExp(`color:\\s*${lightColor}`, 'gi'),
+      `color:${darkColor}`
+    )
+  })
+
+  return transformed
+}
+
 const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [svg, setSvg] = useState<string>('')
@@ -19,38 +65,26 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
       if (!containerRef.current || !chart) return
 
       try {
-        // Configure mermaid based on theme with custom variables for better visibility
         const isDark = resolvedTheme === 'dark'
+
         mermaid.initialize({
           startOnLoad: false,
           theme: isDark ? 'dark' : 'default',
           securityLevel: 'loose',
           fontFamily: 'inherit',
-          themeVariables: isDark
-            ? {
-                // Dark theme overrides for better visibility
-                background: '#1f2937', // gray-800
-                primaryColor: '#3b82f6', // blue-500
-                primaryTextColor: '#f9fafb', // gray-50
-                primaryBorderColor: '#60a5fa', // blue-400
-                lineColor: '#9ca3af', // gray-400
-                secondaryColor: '#374151', // gray-700
-                tertiaryColor: '#4b5563', // gray-600
-                textColor: '#f3f4f6', // gray-100
-                mainBkg: '#1f2937', // gray-800
-                nodeBorder: '#60a5fa', // blue-400
-                clusterBkg: '#374151', // gray-700
-                clusterBorder: '#6b7280', // gray-500
-                edgeLabelBackground: '#374151', // gray-700
-              }
-            : {},
         })
 
         // Generate unique ID for this diagram
         const id = `mermaid-${Math.random().toString(36).substring(2, 11)}`
 
         // Render the diagram
-        const { svg: renderedSvg } = await mermaid.render(id, chart)
+        let { svg: renderedSvg } = await mermaid.render(id, chart)
+
+        // Transform inline styles for dark mode
+        if (isDark) {
+          renderedSvg = transformSvgForDarkMode(renderedSvg)
+        }
+
         setSvg(renderedSvg)
         setError(null)
       } catch (err) {
@@ -78,7 +112,7 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
   return (
     <div
       ref={containerRef}
-      className="my-4 flex justify-center overflow-x-auto"
+      className="my-4 flex justify-center overflow-x-auto rounded-lg p-4"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   )

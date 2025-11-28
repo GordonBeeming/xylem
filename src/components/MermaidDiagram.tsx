@@ -19,12 +19,31 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
       if (!containerRef.current || !chart) return
 
       try {
-        // Configure mermaid based on theme
+        // Configure mermaid based on theme with custom variables for better visibility
+        const isDark = resolvedTheme === 'dark'
         mermaid.initialize({
           startOnLoad: false,
-          theme: resolvedTheme === 'dark' ? 'dark' : 'default',
+          theme: isDark ? 'dark' : 'default',
           securityLevel: 'loose',
           fontFamily: 'inherit',
+          themeVariables: isDark
+            ? {
+                // Dark theme overrides for better visibility
+                background: '#1f2937', // gray-800
+                primaryColor: '#3b82f6', // blue-500
+                primaryTextColor: '#f9fafb', // gray-50
+                primaryBorderColor: '#60a5fa', // blue-400
+                lineColor: '#9ca3af', // gray-400
+                secondaryColor: '#374151', // gray-700
+                tertiaryColor: '#4b5563', // gray-600
+                textColor: '#f3f4f6', // gray-100
+                mainBkg: '#1f2937', // gray-800
+                nodeBorder: '#60a5fa', // blue-400
+                clusterBkg: '#374151', // gray-700
+                clusterBorder: '#6b7280', // gray-500
+                edgeLabelBackground: '#374151', // gray-700
+              }
+            : {},
         })
 
         // Generate unique ID for this diagram

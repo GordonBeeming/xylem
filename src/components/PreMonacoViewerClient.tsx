@@ -17,6 +17,16 @@ const DynamicMonacoViewer = dynamic(() => import('./MonacoCodeViewer'), {
   ),
 })
 
+// Dynamically import the MermaidDiagram with SSR turned off.
+const DynamicMermaidDiagram = dynamic(() => import('./MermaidDiagram'), {
+  ssr: false,
+  loading: () => (
+    <div className="my-4 h-32 w-full rounded-md border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+      <div className="h-full w-full animate-pulse rounded-md bg-gray-200 dark:bg-gray-700"></div>
+    </div>
+  ),
+})
+
 // Type definitions for the props passed from MDX
 interface CodeBlockProps {
   className?: string
@@ -43,7 +53,12 @@ const PreMonacoViewerClient = ({ children, ...rest }: PreWrapperProps) => {
   // We default to an empty string to prevent the .trim() error during build.
   const codeString = typeof code === 'string' ? code : ''
 
-  // Render the dynamically loaded Monaco viewer
+  // Render mermaid diagrams using the MermaidDiagram component
+  if (language === 'mermaid') {
+    return <DynamicMermaidDiagram chart={codeString.trim()} />
+  }
+
+  // Render the dynamically loaded Monaco viewer for other languages
   return <DynamicMonacoViewer code={codeString.trim()} language={language} {...rest} />
 }
 

@@ -13,6 +13,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-from-html-isomorphic": "^2.0.0",
     "image-size": "^2.0.2",
+    "mermaid": "^11.12.1",
     "next": "15.5.2",
     "next-contentlayer2": "^0.5.8",
     "next-mdx-remote": "^5.0.0",

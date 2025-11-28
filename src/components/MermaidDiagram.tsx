@@ -18,6 +18,8 @@ const darkModeColorMap: Record<string, string> = {
   '#e9ecef': '#374151',
   '#1A1A1A': '#f3f4f6', // near-black -> gray-100 (for text)
   '#1a1a1a': '#f3f4f6',
+  '#0063B2': '#60a5fa', // dark blue -> lighter blue-400 for better visibility
+  '#0063b2': '#60a5fa',
 }
 
 const transformSvgForDarkMode = (svgString: string): string => {
@@ -50,6 +52,12 @@ const transformSvgForDarkMode = (svgString: string): string => {
       `color:${darkColor}`
     )
   })
+
+  // Make edge label backgrounds darker for readability
+  transformed = transformed.replace(
+    /class="edgeLabel[^"]*"[^>]*style="[^"]*background-color:[^;]+/gi,
+    (match) => match.replace(/background-color:[^;]+/, 'background-color:#1f2937')
+  )
 
   return transformed
 }

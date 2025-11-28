@@ -216,6 +216,15 @@ graph LR
     linkStyle 1 stroke:#0063B2,stroke-width:3px,color:#0063B2
 ```
 
+1.  **🔒 The Sealed Chamber (Airlock Network):**
+    The `copilot_here` container is launched into a private, internal-only network. It has **zero** direct access to the internet. If an application tries to bypass the proxy, the connection simply fails because there is no route out.
+
+2.  **🛡️ The Sentry (Secure Proxy):**
+    The Proxy is the only component with a "key" to the outside world. It sits with one foot in the Airlock (to listen for requests) and one foot in the Bridge network (to reach GitHub).
+
+3.  **✅ The Controlled Exit:**
+    Traffic can only leave the Airlock if it explicitly asks the Proxy to carry it. The Proxy inspects the destination against your allow-list and decides whether to let the request pass or block it.
+
 ---
 
 ## 5. Actual Path Mapping: Know Where You Are

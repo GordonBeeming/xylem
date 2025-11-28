@@ -337,21 +337,21 @@ copilot_here --show-image
 
 ## 9. Auto-Update Checks: Stay Current
 
-With the pace of updates (like this one!), it's easy to fall behind. The scripts now include a non-intrusive pre-run check.
+With the pace of updates (like this one!), it's easy to fall behind. The scripts now include a pre-run check that prompts you when updates are available.
 
-If a new version is available, you'll see a subtle notification:
+If a new version is available, you'll be asked if you want to update:
 ```text
-📦 Update available: 2025-11-20.3 → 2025-11-20.15
-Run 'copilot_here --update-scripts' to upgrade
+📢 Update available: 2025-11-20.3 → 2025-11-20.15
+Would you like to update now? [y/N]: 
 ```
 
-It won't block your work, but it keeps you in the loop.
+Type `y` to update immediately, or just press Enter to skip and continue with your current version. This keeps you informed without forcing updates when you're in the middle of something.
 
 ---
 
 ## Version Information
 
-These changes are available in version **2025-11-20.15** and later.
+These changes are available in version **2025-11-28.4** and later.
 
 Update your scripts to get all these features:
 
@@ -365,13 +365,9 @@ Copilot-Here -UpdateScripts
 
 ## Try It Out
 
-Installation is just three commands:
+Check out the [copilot_here marketing site](http://copilot_here.gordonbeeming.com) - which I vibed up using `copilot_yolo` and the new Gemini 3 Pro model (in preview) in just under 90 minutes... while watching TV 😅!
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/GordonBeeming/copilot_here/main/copilot_here.sh -o ~/.copilot_here.sh
-echo 'source ~/.copilot_here.sh' >> ~/.zshrc
-source ~/.zshrc
-```
+<Figure key="/images/copilot_here-site.png" src="/images/copilot_here-site.png" alt="A screenshot of the copilot_here marketing site." width="0" height="0" caption="The copilot_here marketing site showcases the tool's features and capabilities." />
 
 Check out the project on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here)
 

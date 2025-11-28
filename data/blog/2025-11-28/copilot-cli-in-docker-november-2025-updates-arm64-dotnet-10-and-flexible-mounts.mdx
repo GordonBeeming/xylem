@@ -57,11 +57,6 @@ The main `dotnet` tag includes all three SDKs, but if you want a lighter image o
 copilot_here --set-image dotnet-10
 ```
 
-### PowerShell Core Everywhere
-We've added PowerShell Core (`pwsh`) to the base image. This isn't just for Windows users—it means you can write and execute cross-platform automation scripts inside the container regardless of your host OS.
-
-Combined with the new ARM64 support, you have a powerful, portable scripting environment that works identically on an x64 Windows PC and Apple Silicon.
-
 ---
 
 ## 3. Playwright Image
@@ -103,6 +98,50 @@ The app container has no direct internet access. All traffic must go through the
 - Performs HTTPS interception to inspect request paths
 - Allows or blocks requests based on your configuration
 - Optionally logs all traffic for auditing
+
+**Network Topology View**
+
+```mermaid
+graph LR
+    subgraph Docker_Host [🐳 Docker Host]
+        style Docker_Host fill:#F8F9FA,stroke:#1A1A1A,color:#1A1A1A
+        
+        subgraph Airlock_Net [🔒 Network: airlock_net]
+            style Airlock_Net fill:#E9ECEF,stroke:#1A1A1A,stroke-width:2px,stroke-dasharray: 5 5,color:#1A1A1A
+            
+            App[("🤖 Copilot Container<br/>(Single Homed)")]
+            style App fill:#FFFFFF,stroke:#0063B2,stroke-width:2px,color:#1A1A1A
+            
+            ProxyInt["Proxy Interface<br/>(eth0)"]
+            style ProxyInt fill:none,stroke:none,color:#1A1A1A
+        end
+
+        subgraph Proxy_Container [🛡️ Secure Proxy Container]
+            style Proxy_Container fill:#46CBFF,stroke:#0063B2,stroke-width:3px,color:#1A1A1A
+            ProxyApp["Proxy Process"]
+            style ProxyApp fill:#F8F9FA,stroke:#0063B2,color:#1A1A1A
+        end
+
+        App == "1. Traffic via Airlock" ==> ProxyApp
+    end
+
+    Internet((☁️ Internet / GitHub))
+    style Internet fill:#F8F9FA,stroke:#1A1A1A,stroke-width:2px,color:#1A1A1A
+
+    ProxyApp == "2. Traffic via Bridge" ==> Internet
+
+    linkStyle 0 stroke:#0063B2,stroke-width:3px,color:#0063B2
+    linkStyle 1 stroke:#0063B2,stroke-width:3px,color:#0063B2
+```
+
+1.  **🔒 The Sealed Chamber (Airlock Network):**
+    The `copilot_here` container is launched into a private, internal-only network. It has **zero** direct access to the internet. If an application tries to bypass the proxy, the connection simply fails because there is no route out.
+
+2.  **🛡️ The Sentry (Secure Proxy):**
+    The Proxy is the only component with a "key" to the outside world. It sits with one foot in the Airlock (to listen for requests) and one foot in the Bridge network (to reach GitHub).
+
+3.  **✅ The Controlled Exit:**
+    Traffic can only leave the Airlock if it explicitly asks the Proxy to carry it. The Proxy inspects the destination against your allow-list and decides whether to let the request pass or block it.
 
 ### Quick Start
 
@@ -180,50 +219,6 @@ The proxy is written in Rust for memory safety and performance. Key security fea
 - **Path-level control**: Allow specific API paths, not just hosts
 - **HTTPS interception**: Full visibility into encrypted traffic
 - **Optional HTTP blocking**: Force HTTPS-only unless explicitly allowed
-
-**Network Topology View**
-
-```mermaid
-graph LR
-    subgraph Docker_Host [🐳 Docker Host]
-        style Docker_Host fill:#F8F9FA,stroke:#1A1A1A,color:#1A1A1A
-        
-        subgraph Airlock_Net [🔒 Network: airlock_net]
-            style Airlock_Net fill:#E9ECEF,stroke:#1A1A1A,stroke-width:2px,stroke-dasharray: 5 5,color:#1A1A1A
-            
-            App[("🤖 Copilot Container<br/>(Single Homed)")]
-            style App fill:#FFFFFF,stroke:#0063B2,stroke-width:2px,color:#1A1A1A
-            
-            ProxyInt["Proxy Interface<br/>(eth0)"]
-            style ProxyInt fill:none,stroke:none,color:#1A1A1A
-        end
-
-        subgraph Proxy_Container [🛡️ Secure Proxy Container]
-            style Proxy_Container fill:#46CBFF,stroke:#0063B2,stroke-width:3px,color:#1A1A1A
-            ProxyApp["Proxy Process"]
-            style ProxyApp fill:#F8F9FA,stroke:#0063B2,color:#1A1A1A
-        end
-
-        App == "1. Traffic via Airlock" ==> ProxyApp
-    end
-
-    Internet((☁️ Internet / GitHub))
-    style Internet fill:#F8F9FA,stroke:#1A1A1A,stroke-width:2px,color:#1A1A1A
-
-    ProxyApp == "2. Traffic via Bridge" ==> Internet
-
-    linkStyle 0 stroke:#0063B2,stroke-width:3px,color:#0063B2
-    linkStyle 1 stroke:#0063B2,stroke-width:3px,color:#0063B2
-```
-
-1.  **🔒 The Sealed Chamber (Airlock Network):**
-    The `copilot_here` container is launched into a private, internal-only network. It has **zero** direct access to the internet. If an application tries to bypass the proxy, the connection simply fails because there is no route out.
-
-2.  **🛡️ The Sentry (Secure Proxy):**
-    The Proxy is the only component with a "key" to the outside world. It sits with one foot in the Airlock (to listen for requests) and one foot in the Bridge network (to reach GitHub).
-
-3.  **✅ The Controlled Exit:**
-    Traffic can only leave the Airlock if it explicitly asks the Proxy to carry it. The Proxy inspects the destination against your allow-list and decides whether to let the request pass or block it.
 
 ---
 

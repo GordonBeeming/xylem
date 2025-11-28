@@ -10,26 +10,34 @@ interface MermaidDiagramProps {
 
 // Color mappings for dark mode (light color -> dark equivalent)
 const darkModeColorMap: Record<string, string> = {
+  // Background colors (light -> dark)
   '#F8F9FA': '#1f2937', // gray-100 -> gray-800
   '#f8f9fa': '#1f2937',
   '#FFFFFF': '#374151', // white -> gray-700
   '#ffffff': '#374151',
   '#E9ECEF': '#374151', // gray-200 -> gray-700
   '#e9ecef': '#374151',
-  '#1A1A1A': '#f3f4f6', // near-black -> gray-100 (for text)
+  '#46CBFF': '#0ea5e9', // light cyan -> sky-500 (keep bright)
+  '#46cbff': '#0ea5e9',
+  // Text colors (dark -> light)
+  '#1A1A1A': '#f3f4f6', // near-black -> gray-100
   '#1a1a1a': '#f3f4f6',
-  '#0063B2': '#60a5fa', // dark blue -> lighter blue-400 for better visibility
-  '#0063b2': '#60a5fa',
+  // Blue accents (dark blue -> lighter blue)
+  '#0063B2': '#93c5fd', // dark blue -> blue-300 for better visibility
+  '#0063b2': '#93c5fd',
 }
 
 const transformSvgForDarkMode = (svgString: string): string => {
   let transformed = svgString
 
-  // Replace fill colors
+  // Replace colors in SVG
   Object.entries(darkModeColorMap).forEach(([lightColor, darkColor]) => {
-    // Match fill in style attributes
+    // Escape # for regex
+    const escapedLight = lightColor.replace('#', '\\#')
+    
+    // Match fill in style attributes (fill:#COLOR or fill: #COLOR)
     transformed = transformed.replace(
-      new RegExp(`fill:\\s*${lightColor}`, 'gi'),
+      new RegExp(`fill:\\s*${escapedLight}`, 'gi'),
       `fill:${darkColor}`
     )
     // Match fill as attribute
@@ -37,26 +45,31 @@ const transformSvgForDarkMode = (svgString: string): string => {
       new RegExp(`fill="${lightColor}"`, 'gi'),
       `fill="${darkColor}"`
     )
-    // Match stroke colors
+    // Match stroke in style attributes
     transformed = transformed.replace(
-      new RegExp(`stroke:\\s*${lightColor}`, 'gi'),
+      new RegExp(`stroke:\\s*${escapedLight}`, 'gi'),
       `stroke:${darkColor}`
     )
+    // Match stroke as attribute
     transformed = transformed.replace(
       new RegExp(`stroke="${lightColor}"`, 'gi'),
       `stroke="${darkColor}"`
     )
-    // Match color (for text)
+    // Match color in style (for text)
     transformed = transformed.replace(
-      new RegExp(`color:\\s*${lightColor}`, 'gi'),
-      `color:${darkColor}`
+      new RegExp(`([^-])color:\\s*${escapedLight}`, 'gi'),
+      `$1color:${darkColor}`
     )
   })
 
   // Make edge label backgrounds darker for readability
   transformed = transformed.replace(
-    /class="edgeLabel[^"]*"[^>]*style="[^"]*background-color:[^;]+/gi,
-    (match) => match.replace(/background-color:[^;]+/, 'background-color:#1f2937')
+    /background-color:\s*rgb\([^)]+\)/gi,
+    'background-color:#1f2937'
+  )
+  transformed = transformed.replace(
+    /background-color:\s*#[a-fA-F0-9]{3,6}/gi,
+    'background-color:#1f2937'
   )
 
   return transformed

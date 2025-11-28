@@ -112,7 +112,7 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
   return (
     <div
       ref={containerRef}
-      className="my-4 flex justify-center overflow-x-auto rounded-lg p-4"
+      className="my-4 flex justify-center overflow-x-auto rounded-lg bg-gray-50 p-4 dark:bg-gray-800"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   )

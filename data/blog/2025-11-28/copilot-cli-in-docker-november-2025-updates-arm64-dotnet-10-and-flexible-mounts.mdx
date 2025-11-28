@@ -1,8 +1,8 @@
 ---
 title: 'Copilot CLI in Docker: November 2025 Updates - ARM64, .NET 10, Airlock & More'
-date: 2025-11-30
+date: 2025-11-28
 tags: ['Docker', 'GitHub Copilot', 'DevOps', 'ARM64', '.NET', 'PowerShell', 'Security']
-draft: true
+draft: false
 summary: 'November 2025 is a massive release for copilot_here: Native ARM64 support for Apple Silicon, .NET 10 SDKs, PowerShell Core integration, the game-changing Airlock network isolation feature, plus path mapping and flexible mount systems.'
 ---
 
@@ -38,6 +38,8 @@ As of version `2025-11-19`, we now publish multi-arch images for both `linux/amd
 - **Compatibility**: You can now run `copilot_here` on other ARM Linux devices!
 
 Docker will automatically pull the correct image for your architecture. No configuration needed.
+
+---
 
 ## 2. .NET 10 SDK & PowerShell Integration
 
@@ -179,6 +181,41 @@ The proxy is written in Rust for memory safety and performance. Key security fea
 - **HTTPS interception**: Full visibility into encrypted traffic
 - **Optional HTTP blocking**: Force HTTPS-only unless explicitly allowed
 
+**Network Topology View**
+
+```mermaid
+graph LR
+    subgraph Docker_Host [🐳 Docker Host]
+        style Docker_Host fill:#F8F9FA,stroke:#1A1A1A,color:#1A1A1A
+        
+        subgraph Airlock_Net [🔒 Network: airlock_net]
+            style Airlock_Net fill:#E9ECEF,stroke:#1A1A1A,stroke-width:2px,stroke-dasharray: 5 5,color:#1A1A1A
+            
+            App[("🤖 Copilot Container<br/>(Single Homed)")]
+            style App fill:#FFFFFF,stroke:#0063B2,stroke-width:2px,color:#1A1A1A
+            
+            ProxyInt["Proxy Interface<br/>(eth0)"]
+            style ProxyInt fill:none,stroke:none,color:#1A1A1A
+        end
+
+        subgraph Proxy_Container [🛡️ Secure Proxy Container]
+            style Proxy_Container fill:#46CBFF,stroke:#0063B2,stroke-width:3px,color:#1A1A1A
+            ProxyApp["Proxy Process"]
+            style ProxyApp fill:#F8F9FA,stroke:#0063B2,color:#1A1A1A
+        end
+
+        App == "1. Traffic via Airlock" ==> ProxyApp
+    end
+
+    Internet((☁️ Internet / GitHub))
+    style Internet fill:#F8F9FA,stroke:#1A1A1A,stroke-width:2px,color:#1A1A1A
+
+    ProxyApp == "2. Traffic via Bridge" ==> Internet
+
+    linkStyle 0 stroke:#0063B2,stroke-width:3px,color:#0063B2
+    linkStyle 1 stroke:#0063B2,stroke-width:3px,color:#0063B2
+```
+
 ---
 
 ## 5. Actual Path Mapping: Know Where You Are
@@ -285,6 +322,8 @@ copilot_here --show-image
 # Output:
 # 🖼️  Current image: sha256:e73a13e... (from local config)
 ```
+
+---
 
 ## 9. Auto-Update Checks: Stay Current
 

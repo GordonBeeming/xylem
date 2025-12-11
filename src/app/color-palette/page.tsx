@@ -66,7 +66,7 @@ export default function ColorPalettePage() {
     },
     {
       name: 'Primary',
-      hex: '#0075A3',
+      hex: '#46CBFF',
       colorVar: '--color-primary-400',
       description: 'Primary brand color for links and accents'
     },

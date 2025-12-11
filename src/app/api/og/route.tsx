@@ -149,7 +149,7 @@ export async function GET(req: NextRequest) {
                   key={tag}
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    color: '#0075A3',
+                    color: '#46CBFF',
                     padding: '8px 16px',
                     borderRadius: '9999px',
                     fontSize: 24,

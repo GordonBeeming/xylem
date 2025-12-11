@@ -17,8 +17,8 @@ const darkModeColorMap: Record<string, string> = {
   '#ffffff': '#374151',
   '#E9ECEF': '#374151', // gray-200 -> gray-700
   '#e9ecef': '#374151',
-  '#0075A3': '#0ea5e9', // blue accent -> sky-500 (keep bright)
-  '#0075a3': '#0ea5e9',
+  '#46CBFF': '#0ea5e9', // light cyan -> sky-500 (keep bright)
+  '#46cbff': '#0ea5e9',
   // Text colors (dark -> light)
   '#1A1A1A': '#f3f4f6', // near-black -> gray-100
   '#1a1a1a': '#f3f4f6',

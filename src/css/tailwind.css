@@ -24,10 +24,10 @@
   /* Lighter blue */
   --color-primary-300: oklch(0.84 0.11 230);
   /* Light blue */
-  --color-primary-400: oklch(0.55 0.14 245);
-  /* #0075A3 - Main Blue Accent (Dark Mode Primary) */
-  --color-primary-500: oklch(0.55 0.14 245);
-  /* #0075A3 - Default link color */
+  --color-primary-400: oklch(0.8 0.15 230);
+  /* #46CBFF - Main Light Blue Accent (Dark Mode Primary) */
+  --color-primary-500: oklch(0.8 0.15 230);
+  /* #46CBFF - Default link color */
   --color-primary-600: oklch(0.55 0.12 258.4);
   /* Mid-tone between light and dark blue */
   --color-primary-700: oklch(0.42 0.1 258.4);
@@ -94,7 +94,7 @@
   a,
   button {
     outline-color: var(--color-primary-500);
-    /* #0075A3 */
+    /* #46CBFF */
   }
 
   a:focus-visible,
@@ -102,7 +102,7 @@
     outline: 2px solid;
     border-radius: var(--radius-sm);
     outline-color: var(--color-primary-500);
-    /* #0075A3 */
+    /* #46CBFF */
   }
 
   /* Default link colors using official brand palette */
@@ -120,7 +120,7 @@
   /* Dark mode link colors */
   .dark a {
     color: var(--color-primary-400);
-    /* Dark Mode: #0075A3 */
+    /* Dark Mode: #46CBFF */
     
     &:hover,
     &:focus {
@@ -146,7 +146,7 @@
       &:hover,
       &:focus {
         color: var(--color-primary-400);
-        /* #0075A3 */
+        /* #46CBFF */
         text-decoration: none;
       }
 
@@ -217,7 +217,7 @@
   .prose-invert {
     & a {
       color: var(--color-primary-400);
-      /* #0075A3 */
+      /* #46CBFF */
       text-decoration: underline;
 
       &:hover,
@@ -244,7 +244,7 @@
 
     & :where(blockquote) {
       border-left-color: var(--color-primary-400) !important;
-      /* #0075A3 */
+      /* #46CBFF */
       background-color: var(--color-gray-800) !important;
       /* #2C2C2C */
       color: var(--color-gray-200) !important;
@@ -257,7 +257,7 @@
 html.dark .prose blockquote,
 .dark .prose-invert blockquote {
   border-left-color: var(--color-primary-400) !important;
-  /* #0075A3 */
+  /* #46CBFF */
   background-color: var(--color-gray-800) !important;
   /* #2C2C2C */
   color: var(--color-gray-200) !important;
@@ -422,7 +422,7 @@ input:-webkit-autofill:focus {
 */
 .dark .prose a {
   color: var(--color-primary-400);
-  /* Applies Blue (#0075A3) */
+  /* Applies Light Blue (#46CBFF) */
 }
 
 /* Ensure hover/focus states are also correct */

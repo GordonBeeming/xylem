@@ -124,8 +124,14 @@ The setup provides flexible options to match different workflows and security pr
 
 All functions support switching between Docker image variants using flags:
 - **No flag** - Base image (Node.js, Git, basic tools)
-- **`-d` or `--dotnet`** - .NET image (includes .NET 8 & 9 SDKs)
-- **`-dp` or `--dotnet-playwright`** - .NET + Playwright image (includes browser automation)
+- **`--dotnet`** (`-d`) - .NET image (includes .NET 8, 9 & 10 SDKs)
+- **`--dotnet8`** (`-d8`) - .NET 8 image (includes .NET 8 SDK)
+- **`--dotnet9`** (`-d9`) - .NET 9 image (includes .NET 9 SDK)
+- **`--dotnet10`** (`-d10`) - .NET 10 image (includes .NET 10 SDK)
+- **`--playwright`** (`-pw`) - Playwright image (includes browser automation)
+- **`--dotnet-playwright`** (`-dp`) - .NET + Playwright image (includes browser automation)
+- **`--rust`** (`-rs`) - Rust image (includes Rust toolchain)
+- **`--dotnet-rust`** (`-dr`) - .NET + Rust image
 
 ### Additional Options
 
@@ -178,25 +184,21 @@ if (-not (Select-String -Path $PROFILE -Pattern "copilot_here.ps1" -Quiet -Error
 The scripts include automatic update functionality:
 
 ```bash
-# Linux/macOS
-copilot_here --update-scripts
-
-# Windows PowerShell
-Copilot-Here -UpdateScripts
+# Linux/macOS or Windows PowerShell
+copilot_here --update
 ```
 
 This will:
-- Show you the version change (e.g., `📌 Version: 2025-10-27.5 → 2025-10-27.6`)
-- Create a backup of your current configuration
-- Download and install the latest version
+- Download and install the latest version of the CLI binary
+- Show you the version change
 - Automatically reload the updated functions
 
 ### Manual Installation
 
 For manual installation or to see all available options and features, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo includes:
 - Detailed documentation on all command-line flags
-- Information about image variants (base, .NET, .NET + Playwright)
-- Advanced configuration options
+- Information about image variants (base, .NET, .NET + Playwright, Rust, and more)
+- Advanced configuration options including Airlock network isolation
 - Manual installation code blocks if you prefer to copy/paste directly
 
 ## Usage

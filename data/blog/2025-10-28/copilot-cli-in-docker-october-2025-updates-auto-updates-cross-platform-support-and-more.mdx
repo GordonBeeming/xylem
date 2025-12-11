@@ -66,14 +66,14 @@ I wanted users to be able to update their shell functions without:
 
 ### The Solution
 
-I created standalone script files (`copilot_here.sh` and `copilot_here.ps1`) that users can download once and source in their shell profiles. Then I added an `--update-scripts` flag that:
+I created standalone script files (`copilot_here.sh` and `copilot_here.ps1`) that users can download once and source in their shell profiles. Then I added an update flag that:
 
 1. Downloads the latest version from GitHub
 2. Shows you the version change
 3. Automatically reloads your current shell session
 
 ```bash
-copilot_here --update-scripts
+copilot_here --update
 ```
 
 Output:
@@ -109,7 +109,7 @@ echo 'source ~/.copilot_here.sh' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-Three commands. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update-scripts`.
+Three commands. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update`.
 
 I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
 
@@ -128,7 +128,7 @@ I was basically re-implementing argument parsing for no reason. So I added autom
 ```bash
 # Built-in wrapper args
 WRAPPER_ARGS=("--help" "-h" "--no-cleanup" "--no-pull" "-d" "--dotnet" 
-              "-dp" "--dotnet-playwright" "--update-scripts" "--upgrade-scripts")
+              "-dp" "--dotnet-playwright" "--update" "--upgrade")
 
 # Check if arg is wrapper-specific or should pass through
 for arg in "$@"; do

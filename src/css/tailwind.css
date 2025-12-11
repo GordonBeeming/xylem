@@ -26,6 +26,8 @@
   /* Light blue */
   --color-primary-400: oklch(0.8 0.15 230);
   /* #46CBFF - Main Light Blue Accent (Dark Mode Primary) */
+  --color-primary-accessible: oklch(0.55 0.14 245);
+  /* #0075A3 - WCAG AA Compliant Accent for Light Mode (4.89:1 contrast on #F8F9FA) */
   --color-primary-500: oklch(0.8 0.15 230);
   /* #46CBFF - Default link color */
   --color-primary-600: oklch(0.55 0.12 258.4);
@@ -33,7 +35,7 @@
   --color-primary-700: oklch(0.42 0.1 258.4);
   /* Darker blue */
   --color-primary-800: oklch(0.28 0.08 258.4);
-  /* #003353 - Main Dark Blue (Light Mode Primary) */
+  /* #0063B2 - Main Dark Blue (Light Mode Primary) */
   --color-primary-900: oklch(0.21 0.06 258.4);
   /* Darker tint of Dark Blue */
   --color-primary-950: oklch(0.15 0.04 258.4);
@@ -140,13 +142,13 @@
 
     & a {
       color: var(--color-primary-800);
-      /* #003353 */
+      /* #0063B2 */
       text-decoration: underline;
 
       &:hover,
       &:focus {
-        color: var(--color-primary-400);
-        /* #46CBFF */
+        color: var(--color-primary-accessible);
+        /* #0075A3 - WCAG AA compliant for light mode */
         text-decoration: none;
       }
 

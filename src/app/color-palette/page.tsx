@@ -33,9 +33,9 @@ export default function ColorPalettePage() {
     },
     {
       name: 'Accent',
-      hex: '#46CBFF',
+      hex: '#0075A3',
       colorVar: '--color-primary-400',
-      description: 'Light blue accent color'
+      description: 'Blue accent color (WCAG AA compliant)'
     },
     {
       name: 'UI Accents',
@@ -66,7 +66,7 @@ export default function ColorPalettePage() {
     },
     {
       name: 'Primary',
-      hex: '#46CBFF',
+      hex: '#0075A3',
       colorVar: '--color-primary-400',
       description: 'Primary brand color for links and accents'
     },

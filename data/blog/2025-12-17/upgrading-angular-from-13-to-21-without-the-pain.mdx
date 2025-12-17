@@ -56,17 +56,19 @@ Here's the loop I follow (and what I had Copilot CLI do for me).
 
 You want the AI to behave like a senior engineer doing an upgrade: incremental, conservative, build-first.
 
-Paste a prompt like this into Copilot CLI:
+Paste a prompt like this into Copilot CLI (this was tested with the GPT-5.2 model, but the structure matters more than the model):
 
-> I need help upgrading an Angular app from v13 to v21.
-> 
-> Rules:
-> - Do upgrades one major version at a time.
-> - After each upgrade, run `npm run build` and fix whatever breaks.
-> - Make the smallest possible changes.
-> - If you need clarification, ask one question at a time.
-> 
-> Start by checking the current Angular version and identifying the Angular workspace.
+```text
+I need help upgrading an Angular app from v13 to v21.
+
+Rules:
+- Do upgrades one major version at a time.
+- After each upgrade, run `npm run build` and fix whatever breaks.
+- Make the smallest possible changes.
+- If you need clarification, ask one question at a time.
+
+Start by checking the current Angular version and identifying the Angular workspace.
+```
 
 A good agent will do exactly what you'd do:
 

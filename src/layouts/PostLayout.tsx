@@ -38,7 +38,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
     <SectionContainer>
       <ScrollTopAndComment />
       <article role="article" aria-labelledby="post-title">
-        <div className="mx-auto max-w-3xl">
+        <div className="w-full">
           <header className="pt-6 pb-8">
             <div className="space-y-4 text-center">
               <div>

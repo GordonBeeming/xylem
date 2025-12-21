@@ -99,17 +99,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               {` • `}
               <Link href={editUrl(filePath)}>View on GitHub</Link>
             </div>
-            {siteMetadata.comments && (
-              <div
-                className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
-                id="comment"
-              >
-                <Comments slug={slug} />
-              </div>
-            )}
           </div>
           {(next || prev) && (
-            <nav aria-labelledby="post-navigation-heading" className="border-t border-gray-200 dark:border-gray-700 pt-8">
+            <nav aria-labelledby="post-navigation-heading" className="border-t border-gray-200 dark:border-gray-700 pt-8 pb-8">
               <h2 id="post-navigation-heading" className="sr-only">Post Navigation</h2>
               <div className="grid gap-8 md:grid-cols-2">
                 {prev && prev.path && (
@@ -152,6 +144,14 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 )}
               </div>
             </nav>
+          )}
+          {siteMetadata.comments && (
+            <div
+              className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
+              id="comment"
+            >
+              <Comments slug={slug} />
+            </div>
           )}
           <footer className="pt-8 pb-8 border-t border-gray-200 dark:border-gray-700 mt-8">
             <Link

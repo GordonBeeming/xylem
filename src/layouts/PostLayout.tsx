@@ -91,13 +91,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             {children}
             <CodeBlockEnhancer />
           </div>
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-            <Link href={discussUrl(path)} rel="nofollow">
-              Discuss on Twitter
-            </Link>
-            {` • `}
-            <Link href={editUrl(filePath)}>View on GitHub</Link>
-          </div>
           {(next || prev) && (
             <nav aria-labelledby="post-navigation-heading" className="pt-8 pb-8">
               <h2 id="post-navigation-heading" className="sr-only">Post Navigation</h2>

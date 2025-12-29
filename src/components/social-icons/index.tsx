@@ -11,6 +11,9 @@ import {
   Instagram,
   Medium,
   Bluesky,
+  Patreon,
+  BuyMeACoffee,
+  GitHubSponsors,
 } from './icons'
 
 const components = {
@@ -26,6 +29,9 @@ const components = {
   instagram: Instagram,
   medium: Medium,
   bluesky: Bluesky,
+  patreon: Patreon,
+  buymeacoffee: BuyMeACoffee,
+  githubsponsors: GitHubSponsors,
 }
 
 type SocialIconProps = {

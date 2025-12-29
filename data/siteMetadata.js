@@ -22,6 +22,9 @@ const siteMetadata = {
   instagram: 'https://www.instagram.com/gordonbeeming/',
   medium: '',
   bluesky: 'https://bsky.app/profile/gordon.beeming.net',
+  patreon: 'https://www.patreon.com/GordonBeeming',
+  buymeacoffee: 'https://www.buymeacoffee.com/gordonbeeming',
+  githubsponsors: 'https://github.com/sponsors/GordonBeeming',
   locale: 'en-US',
   timezone: 'Australia/Brisbane', // Timezone for date calculations (AEST/AEDT)
   // set to true if you want a navbar fixed to the top

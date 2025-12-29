@@ -167,8 +167,7 @@ source ~/.zshrc  # or source ~/.bashrc
 
 ```powershell
 # Download the script
-$scriptPath = "$env:USERPROFILE\Documents\PowerShell\copilot_here.ps1"
-New-Item -ItemType Directory -Force -Path (Split-Path $scriptPath) | Out-Null
+$scriptPath = "$env:USERPROFILE\.copilot_here.ps1"
 Invoke-WebRequest -Uri "https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/copilot_here.ps1" -OutFile $scriptPath
 
 # Add to your PowerShell profile - only if not already there

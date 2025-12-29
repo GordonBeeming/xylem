@@ -150,35 +150,16 @@ Getting started is now easier than ever with automatic installation options for 
 **For Linux/macOS (Bash/Zsh):**
 
 ```bash
-# Download the script
-curl -fsSL https://raw.githubusercontent.com/GordonBeeming/copilot_here/main/copilot_here.sh -o ~/.copilot_here.sh
-
-# Add to your shell profile (~/.zshrc or ~/.bashrc) - only if not already there
-if ! grep -q "source ~/.copilot_here.sh" ~/.zshrc 2>/dev/null; then
-  echo '' >> ~/.zshrc
-  echo 'source ~/.copilot_here.sh' >> ~/.zshrc
-fi
-
-# Reload your shell
-source ~/.zshrc  # or source ~/.bashrc
+curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
 ```
 
 **For Windows (PowerShell):**
 
 ```powershell
-# Download the script
-$scriptPath = "$env:USERPROFILE\.copilot_here.ps1"
-Invoke-WebRequest -Uri "https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/copilot_here.ps1" -OutFile $scriptPath
-
-# Add to your PowerShell profile - only if not already there
-if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE | Out-Null }
-if (-not (Select-String -Path $PROFILE -Pattern "copilot_here.ps1" -Quiet -ErrorAction SilentlyContinue)) {
-    Add-Content $PROFILE "`n. $scriptPath"
-}
-
-# Reload your profile
-. $PROFILE
+iex ([System.Text.Encoding]::UTF8.GetString((iwr -UseBasicParsing 'https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.ps1').Content))
 ```
+
+This will download the script and configure your PowerShell profile automatically.
 
 ### Keeping Up-to-Date
 

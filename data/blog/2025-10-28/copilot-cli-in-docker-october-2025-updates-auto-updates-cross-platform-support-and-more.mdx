@@ -104,12 +104,10 @@ I had this elaborate setup where users needed to copy shell function code from t
 
 ### After (Quick Install):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/GordonBeeming/copilot_here/main/copilot_here.sh -o ~/.copilot_here.sh
-echo 'source ~/.copilot_here.sh' >> ~/.zshrc
-source ~/.zshrc
+curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
 ```
 
-Three commands. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update`.
+One command. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update`.
 
 I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
 

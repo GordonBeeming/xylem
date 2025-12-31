@@ -833,7 +833,21 @@ const redirects = [
     source:
       "/blog/2025-11-30/copilot-cli-in-docker-november-2025-updates-arm64-dotnet-10-and-flexible-mounts",
     destination:
+      "/blog/2025-11-28/copilot_here-november-2025-updates-arm64-dotnet-10-and-flexible-mounts",
+    permanent: true,
+  },
+  {
+    source:
+      "/blog/2025-10-28/copilot-cli-in-docker-october-2025-updates-auto-updates-cross-platform-support-and-more",
+    destination:
+      "/blog/2025-10-28/copilot_here-october-2025-updates-auto-updates-cross-platform-support-and-more",
+    permanent: true,
+  },
+  {
+    source:
       "/blog/2025-11-28/copilot-cli-in-docker-november-2025-updates-arm64-dotnet-10-and-flexible-mounts",
+    destination:
+      "/blog/2025-11-28/copilot_here-november-2025-updates-arm64-dotnet-10-and-flexible-mounts",
     permanent: true,
   },
 ];

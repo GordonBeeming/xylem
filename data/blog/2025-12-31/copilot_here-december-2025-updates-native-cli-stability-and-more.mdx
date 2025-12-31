@@ -1,0 +1,127 @@
+---
+title: 'copilot_here: December 2025 Updates - Native CLI, Stability & More'
+date: 2025-12-31
+tags: ['copilot_here', 'DevOps', 'Native AOT', 'Windows', 'PowerShell']
+draft: false
+summary: 'December brings a massive architectural shift with a new Native AOT CLI binary, replacing brittle shell scripts for improved stability. We also ironed out edge cases for Windows PowerShell 5.1 and introduced cross-shell installation tools.'
+---
+
+I'd like to start off by saying thanks to [@NenoLoje](https://github.com/NenoLoje), [@gparrello](https://github.com/gparrello), and [@mattrandles](https://github.com/mattrandles) for logging issues for bugs they found or feature requests (that made it into this milestone).
+
+December has been a transformative month for [copilot_here](https://github.com/GordonBeeming/copilot_here). We've moved from a collection of shell scripts to a robust, compiled Native AOT application.
+
+Previously, relying purely on shell scripts meant we were constantly fighting subtle differences between Bash, Zsh, and various PowerShell versions. It simply wasn't stable enough for the reliability we wanted. The switch to a native binary provides a solid foundation, and we've spent the weeks following the release ironing out stability issues to ensure a rock-solid experience.
+
+We've also doubled down on our Windows support, ensuring that users on legacy PowerShell 5.1 have a first-class experience, and introduced new tools to help you manage your shell integrations.
+
+If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
+
+## What's New in December 2025
+
+1. **[Native AOT CLI](#1-native-aot-cli)** - The core logic is now a compiled binary
+2. **[Enhanced Windows Support](#2-enhanced-windows-support)** - No more "too many colons" errors
+3. **[Cross-Shell Installation](#3-cross-shell-installation)** - One command to rule them all
+4. **[Session Info](#4-session-info)** - Give your AI context about its environment
+5. **[Quality of Life Improvements](#5-quality-of-life-improvements)** - Fixes for updates, mounts, and more
+6. **[License Update](#6-license-update)** - Moving to the Functional Source License
+7. **[Completed PBIs](#completed-pbis)** - Full list of changes and contributors
+
+---
+
+## 1. Native AOT CLI
+
+The biggest change this month is under the hood. We've migrated the core orchestration logic from Bash/PowerShell scripts to a **.NET 10 Native AOT** application.
+
+### Why the switch?
+The previous shell-script-only approach was becoming difficult to maintain. Differences in how shells handle arrays, quoting, and error handling led to "works on my machine" bugs. By moving to a compiled binary, we eliminated entire classes of these issues.
+
+- **Stability**: We can now write robust, type-safe code with proper error handling and unit tests.
+- **Speed**: Native AOT compiles to machine code, giving us instant startup times without needing a .NET runtime installed.
+- **Consistency**: The same binary logic runs on Linux, macOS, and Windows, reducing platform-specific bugs.
+
+The shell scripts (`copilot_here.sh` and `copilot_here.ps1`) are now just thin wrappers that download and execute this binary.
+
+---
+
+## 2. Enhanced Windows Support
+
+We've always supported Windows, but we wanted to ensure the experience was bulletproof. We used fresh Windows installations as our "worst-case" testing ground to verify that everything works flawlessly on both the legacy PowerShell 5.1 and modern PowerShell Core.
+
+Even though the core application is now a native binary, the wrapper scripts that handle updates and initial execution are still PowerShell. We've hardened these scripts to handle dependency checks and path conversions correctly across all versions.
+
+- **Path Conversion**: Fixed the "too many colons" error by correctly converting Windows paths (e.g., `C:\Projects`) to Docker-compatible paths (e.g., `/c/Projects`).
+- **Unicode Support**: Replaced emojis with compatible characters on older terminals to prevent the `????` display issues.
+- **Installation**: The install script now handles missing directories and profiles gracefully.
+
+---
+
+## 3. Cross-Shell Installation
+
+Using `copilot_here` across multiple shells (Bash, Zsh, PowerShell) used to require manual setup for each. Now, you can set them all up at once:
+
+```bash
+copilot_here --install-shells
+```
+
+This command detects which shells you have installed and automatically configures the necessary profiles and integrations for all of them.
+
+---
+
+## 4. Session Info
+
+When you're working with an AI agent, it often needs to know about its environment. We've added a new `session-info` command (and a `COPILOT_HERE_SESSION_INFO` environment variable) that provides a JSON summary of the current session:
+
+```bash
+!session-info
+```
+
+This gives you (and the AI) details about:
+- Current working directory
+- Mounted paths (and their read/write status)
+- Active Docker image
+- Airlock network status
+
+---
+
+## 5. Quality of Life Improvements
+
+- **Mount Deduplication**: We now smartly handle duplicate mount requests, preferring read-only over read-write if specified multiple times (instead of the usual "first wins" logic) for better security.
+- **Symlink Support**: The updater now respects symlinked scripts (common in dotfiles setups) instead of overwriting them.
+- **Update Loops**: Fixed a bug where `copilot_here` would repeatedly prompt for the same update.
+- **NPM Cache**: Fixed permission issues with `~/.npm` inside the container.
+
+---
+
+## 6. License Update
+
+We've updated the project license to the **Functional Source License (FSL-1.1-MIT)**.
+
+This is a "source available" license that converts to MIT after 2 years. It allows you to use, copy, modify, and redistribute the code for any purpose, **except** for creating a competing software-as-a-service product.
+
+For the vast majority of users, this changes nothing. You can still use `copilot_here` freely for personal and commercial projects. If you have any questions or concerns, feel free to ping me!
+
+---
+
+## Completed PBIs
+
+Here is the list of Product Backlog Items (PBIs) completed in the [December 2025 milestone](https://github.com/GordonBeeming/copilot_here/milestone/2):
+
+- [Getting "Warning: Failed to create appuser, running as root" with latest version.](https://github.com/GordonBeeming/copilot_here/issues/40) - ([@gparrello](https://github.com/gparrello))
+- [Example does not work](https://github.com/GordonBeeming/copilot_here/issues/35) - ([@NenoLoje](https://github.com/NenoLoje))
+- [`copilot_here` or `copilot-here`](https://github.com/GordonBeeming/copilot_here/issues/34) - ([@NenoLoje](https://github.com/NenoLoje))
+- [README needs update: Command line parameter mismatch](https://github.com/GordonBeeming/copilot_here/issues/33) - ([@NenoLoje](https://github.com/NenoLoje))
+- [WARNING: ⚠️ Failed to download compose template (non-fatal)](https://github.com/GordonBeeming/copilot_here/issues/32) - ([@NenoLoje](https://github.com/NenoLoje))
+- [ERROR after update: Unexpected token '}' in expression or statement](https://github.com/GordonBeeming/copilot_here/issues/31) - ([@NenoLoje](https://github.com/NenoLoje))
+- [Feature: sandbox flags](https://github.com/GordonBeeming/copilot_here/issues/29) - ([@mattrandles](https://github.com/mattrandles))
+- [Fix container home directory ownership for npm cache](https://github.com/GordonBeeming/copilot_here/issues/48)
+- [Install Script Should Clean Up Rogue Profile Entries on Reinstall](https://github.com/GordonBeeming/copilot_here/issues/47)
+- [Standardize PowerShell Script Location to ~/.copilot_here.ps1](https://github.com/GordonBeeming/copilot_here/issues/46)
+- [Windows PowerShell 5.1: Docker Mount Path Conversion Error](https://github.com/GordonBeeming/copilot_here/issues/45)
+- [Windows PowerShell 5.1 - Unicode Display Issues](https://github.com/GordonBeeming/copilot_here/issues/44)
+- [Windows PowerShell Installation Fails on Fresh Machines](https://github.com/GordonBeeming/copilot_here/issues/43)
+- [Add session information environment variable for easy AI context access](https://github.com/GordonBeeming/copilot_here/issues/42)
+- [Duplicate Mount Points Not Being Removed](https://github.com/GordonBeeming/copilot_here/issues/41)
+- [Bug: Bash updater breaks/fails with symlinked ~/.copilot_here.sh](https://github.com/GordonBeeming/copilot_here/issues/39)
+- [Update prompt loop: `copilot_here` repeatedly offers same update after successful update](https://github.com/GordonBeeming/copilot_here/issues/38)
+- [Add cross-shell auto-install for copilot_here integrations (--install-shells)](https://github.com/GordonBeeming/copilot_here/issues/37)
+- [Refactor Orchestration: Migrate Shell Scripts to a Compiled CLI Application](https://github.com/GordonBeeming/copilot_here/issues/27)

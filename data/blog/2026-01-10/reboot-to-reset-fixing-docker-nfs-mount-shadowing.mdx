@@ -1,0 +1,97 @@
+---
+title: 'Reboot to Reset? Fixing Docker NFS Mount Shadowing'
+date: 2026-01-11
+tags: ['Docker', 'NFS', 'Home Assistant', 'UniFi', 'Self-Hosted']
+draft: false
+summary: 'Everything was working perfectly off the NAS... then you rebooted. Suddenly, Home Assistant is asking for a "New Install." Here is why your data is hiding and how to fix it.'
+---
+
+I finally bit the bullet and got a NAS at home; I ended up going the UniFi route to add to the rest of my UniFi gear 🤩. Naturally, the first thing I wanted to do was get my home automation data off my server's local SSD and onto that new storage. 
+
+Everything was humming along perfectly... until I did a routine server reboot.
+
+When the system came back up, I navigated to my Home Assistant URL expecting my usual dashboard, but instead, I was greeted with the "Welcome! Let's get started" screen. 😱
+
+How did a working NAS setup turn into a fresh install in the time it took to reboot?
+
+## The Scenario: The Race Condition
+
+This usually happens because of a simple race condition. When your server reboots, Docker is often faster than the network mount. If the NAS isn't "there" the exact second Docker tries to start the container, Docker doesn't wait, it just assumes you want to store data locally. 
+
+It creates a new folder on your local drive and starts a fresh installation right there. If you check your mount point, you'll see the folders exist, but they are just empty "ghosts" on your local disk:
+
+```bash
+oak@pokedex:~$ ls -la /mnt/
+drwxr-xr-x 3 root root 4096 Jan 10 23:16 homeassistant
+drwxr-xr-x 3 root root 4096 Jan 10 23:16 homebridge
+
+```
+
+## The "Shadow" Effect
+
+This is where it gets confusing. When I browsed directly to the network share in my file explorer, I could see all my files were safe and sound. But back on the server, Docker was already running with a file handle to those local "ghost" directories.
+
+Because Docker started before the mount was ready, the NAS data effectively "covered up" the local folder once it finally connected. But Docker stayed trapped looking at the hidden local version on the SSD.
+
+## How to Verify
+
+If you suspect your local drive has "shadowed" your mount, you can run this command to see which physical drive is actually holding that folder:
+
+```bash
+df -h /mnt/homeassistant/homeassistant_data
+
+```
+
+### The "Ghost" Output (Local SSD)
+
+If you see your local system drive (like `/dev/nvme0n1p2`), you are looking at ghost data on your SSD:
+
+```text
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  1.8T   42G  1.7T   3% /
+
+```
+
+### The "Real" Output (NAS)
+
+This is what you **want** to see. If the NAS is correctly mounted, the output will show the NAS IP:
+
+```text
+Filesystem                            Size  Used Avail Use% Mounted on
+10.42.40.101:/var/nfs/shared/pokedex  9.1T  284G  8.9T   4% /mnt
+
+```
+
+## The Fix: Clearing the Shadows
+
+To get your real data back, you have to clear the local "landing zone" so the NAS has a clean place to land.
+
+1. **Stop the containers:** Run `docker compose down`.
+2. **Unmount the NAS:** Run `sudo umount -l /mnt`.
+3. **Delete the local 'ghosts':** Now that the NAS is unmounted, look at the `/mnt` folder again. If there are files there, delete them.
+4. **Remount:** Run `sudo mount -a`.
+
+## The Permanent Safety Switch
+
+To prevent this from happening after the next reboot, change your `docker-compose.yml` to use a **Bind Mount** with a safety check. This tells Docker: "If the source doesn't exist, do NOT start."
+
+```yaml
+services:
+  homeassistant:
+    # ...
+    volumes:
+      - type: bind
+        source: /mnt/homeassistant/homeassistant_data
+        target: /config
+        bind:
+          create_host_path: false # The Safety Switch 🛑
+
+```
+
+With `create_host_path: false`, the container will fail to start if the NAS is missing. It's much easier to fix a mount than it is to wonder where your entire configuration went!
+
+## Wrapping Up
+
+Reboots shouldn't be stressful. By setting these boundaries for Docker, you ensure that your server waits for your NAS to be ready instead of "helping" you into a fresh install loop.
+
+Happy hosting! 🏠🍏

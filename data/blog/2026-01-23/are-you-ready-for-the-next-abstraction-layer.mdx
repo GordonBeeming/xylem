@@ -1,0 +1,127 @@
+---
+title: 'Are you ready for the next abstraction layer?'
+date: 2026-01-23
+tags: ['AI', 'Development', 'MCP', 'Productivity']
+draft: false
+summary: 'The pace of AI is changing how we think about code. We are moving from verifying every block of logic to verifying if the functionality works. Are we witnessing the birth of a new abstraction layer, and more importantly, are you ready for it?'
+---
+
+I was grabbing a coffee yesterday with [Sam Wagner](https://www.linkedin.com/in/sam-b-wagner/) and our conversation really sparked my thinking on this topic, helping it form a little more concretely (at least for today 🥴) than it has been for a while.
+
+How old were you when you realized you don't actually care how your email gets sent? 📬
+
+It sounds like a weird question... and hey, maybe you're too young to remember a time when it wasn't easy! Don't worry, I'm in the same boat; for a long time, I also had it easy with SMTP libraries already in place and didn't have to think about the "how." But the logic is sound across almost every part of our stack. 
+
+Think about **Authentication**. 🔐 
+
+A decade or two ago, you might have tried to "roll your own" auth. You'd manage the salt, the hashing, if you even did that... 🫣 🥸 🧐, or whatever other "security" measures you had in place. Today? You'd be called crazy for not using a proven provider or a battle-tested library. 
+
+We moved from "writing auth" to "implementing identity." We shifted from the engine to the outcome. 
+
+## The Evolution of Sending a Mail
+
+Let's look at SMTP (Simple Mail Transfer Protocol) as our guide to see how we got here. 🚀
+
+### 1. The "Handshake" Era
+Long ago, if you wanted to send an email, you basically had to speak the language of the server directly. You'd open a TCP connection and start a manual dialogue. In this example, **S** is the Server and **C** is you, the Client:
+
+```text
+S: 220 smtp.gordonbeeming.com ESMTP Postfix
+C: HELO mycomputer.local
+S: 250 Hello mycomputer.local, pleased to meet you
+C: MAIL FROM:<me@gordonbeeming.com>
+S: 250 2.1.0 Ok
+C: RCPT TO:<friend@example.com>
+S: 250 2.1.5 Ok
+C: DATA
+S: 354 End data with <CR><LF>.<CR><LF>
+C: Subject: Hello from the past!
+C:
+C: This is a manual email.
+C: .
+S: 250 2.0.0 Ok: queued as 12345
+C: QUIT
+S: 221 2.0.0 Bye
+
+```
+
+If you missed a character or the server timed out, you were stuck. You weren't just "sending mail"; you were managing a state machine over a socket. 🛠️
+
+### 2. Building the Trusted Library (The "Black Box" Struggle)
+
+We didn't just jump from raw text to magic APIs overnight. First, we started scripting these complexities away. We wrote our own internal wrappers so we didn't have to remember the `HELO` handshake every time.
+
+Then, package management became popular. 📦
+
+Suddenly, there were SMTP packages on the internet written by people we didn't know. I remember the pushback: *"We shouldn't just use some random person's code in a black box! If we write it ourselves, we can maintain it."* 🤨
+
+But a fundamental shift happened in our industry: **The move from "Write Everything" to "Buy/Reuse."** We realized that spending time writing custom SMTP retry logic didn't actually add any unique value to our business. If the core outcome is "the customer gets a notification," then writing the transport layer is just overhead. We started prioritizing code that directly drives business value and outsourcing the "plumbing" to packages like `SmtpClient`.
+
+And yes, this was full framework days 😅:
+
+```csharp
+using System.Net.Mail;
+
+// ... 
+
+using (var client = new SmtpClient("smtp.gordonbeeming.com"))
+{
+    var mail = new MailMessage("me@gordonbeeming.com", "friend@example.com");
+    mail.Subject = "Hello from .NET";
+    mail.Body = "The library handles the handshake now!";
+    client.Send(mail);
+}
+
+```
+
+Once this mindset took hold, **Open Source** really stepped in to carry the load. 🌐 Because the code for these packages was "out there" and transparent, we felt we could finally trust the abstraction. We stopped looking at the raw SMTP logs (and yes I did my fair share of that 😪) because we had more important business problems to solve. Sure, maybe we trusted it a bit too blindly at times 😬 🤓, but the productivity gains were undeniable. 🤝
+
+### 3. The API & SaaS Era (Total Decoupling)
+
+Today, we've moved even further. We use services like SendGrid. We don't even care about transient errors, managing mail servers, or deliverability anymore. We send a JSON object over a simple HTTP request, and the SaaS provider handles the heavy lifting, tracking bounces, managing IP reputations, and giving us fancy graphs of our success rates. 📈
+
+The "how" is gone. Only the outcome remains.
+
+## AI is the New Abstraction Layer
+
+We are reaching that same point with "bespoke" code.
+
+Low-code platforms tried to sell us this dream for years. The problem was they always hit a "complexity ceiling." As soon as you needed something custom, the abstraction leaked, and you were back to writing "real" code. 🧱
+
+**AI doesn't have that ceiling.** Yes, we have current hurdles like context windows, but AI is a reasoning engine, not a rigid drag-and-drop tool. We are moving to a stage where it doesn't matter if the code "looks bad" because **nobody is looking at it.** If the functionality is verified and the business outcome is achieved, the implementation details become as secondary as those old SMTP handshakes.
+
+## Making AI Deterministic: The Role of MCP
+
+So, how do we make AI agents actually "good" teammates? How do we ensure they stay focused on that business value without getting lost in the weeds? 🤖
+
+They need to know **exactly** when to do "what."
+
+Take a basic **GitHub MCP** for example. Normally, if you wanted an agent to create an issue, it would have to know how to interact with the GitHub API, handle the OAuth, and pass all the right data in the correct format.
+
+With an MCP pre-configured, that entire process is handled outside the LLM's immediate "thought process." The MCP server exposes exactly what **parameters** are needed for the `create_issue` tool. The agent just sees the requirement: "I need a title and a body." It doesn't need to know the endpoint; it just needs to know the **intent**.
+
+### So, what's the difference between MCP and the .NET SDK?
+
+The .NET SDK is essentially the same concept, just on a much larger scale. When you look at the thousands of method signatures in .NET, they are effectively a massive collection of "tool definitions." 🧰
+
+Today, it might be complicated to imagine all that information functioning as tools. We are still limited by context windows and "context rot", where a model's reasoning starts to degrade because it's drowning in too much documentation or irrelevant noise.
+
+But we're heading toward a future where large (and effective) context windows, combined with smarter ways to index tools, will change everything.
+
+MCP is the **Standardized Interface** that allows an agent to see what tools are available and how to call them without needing to keep the entire SDK documentation in its "head" at once. It turns those rich method signatures we use every day into something an agent can navigate deterministically.
+
+This works even better when combined with **sub-agents** for overall context management. Instead of one agent trying to "know" everything, you use a swarm where each specialist operates in its own clean context window. Each sub-agent gets a specific set of tools and only the information it needs for its sub-task.
+
+To be clear: I'm not talking about some "AI slop" landing in a codebase. I'm saying the code written would be as if you had a real specialist for every part of the codebase and .NET framework, seamlessly handing work between each other. They work harmoniously, and yes, I mean that, it's not just AI being fancy or putting a bunch of extra words in my post. ✨
+
+I'm talking about creating beautiful code that you could only imagine writing today. Everything is baked in: the security, the "right" opinionated practices (even if we're still figuring out what those look like in this new world). In this future, you aren't fighting the syntax. You are judging the outcome. You test, you verify, and you decide if that outcome is good enough to merge to main, or whatever source control even looks like by then.
+
+## Are you ready?
+
+Some people feel this will never happen. They argue that "real" developers will always need to see the code. But we said the same thing about assembly, then about C++, then about SMTP libraries, and eventually about Auth providers.
+
+History says the abstraction always wins because productivity and business value always win. 🏁
+
+So I ask you... are you ready for the next layer? Or are you still trying to manually type `HELO` to the server?
+
+Let me know what you think in the comments! 💬

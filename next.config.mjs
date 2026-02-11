@@ -36,6 +36,7 @@ const nextConfig = () => {
       return [
       ]
     },
+    turbopack: {},
     webpack: (config, options) => {
       config.module.rules.push({
         test: /\.svg$/,

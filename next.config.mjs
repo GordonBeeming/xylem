@@ -36,6 +36,9 @@ const nextConfig = () => {
       return [
       ]
     },
+    // Empty turbopack config to satisfy Next.js 16 requirement
+    // We explicitly use webpack (via --webpack flag in package.json) for SVG handling with @svgr/webpack
+    turbopack: {},
     webpack: (config, options) => {
       config.module.rules.push({
         test: /\.svg$/,

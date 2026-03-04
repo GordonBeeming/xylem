@@ -5,6 +5,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import booksData from '@/data/booksData'
+import projectsData from '@/data/projectsData'
 import { formatDate } from 'pliny/utils/formatDate'
 import Image from '@/components/Image'
 import Avatar from '@/components/Avatar'
@@ -135,6 +136,100 @@ export default function Home({ posts }) {
               </Link>
             </div>
           )}
+        </section>
+
+        {/* Featured Projects Section */}
+        <section aria-labelledby="projects-heading">
+          <div className="mb-8">
+            <h2 id="projects-heading" className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              Featured Projects
+            </h2>
+            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
+              Side projects and open-source tools I build and maintain
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projectsData
+              .filter((project) => project.featured)
+              .map((project) => (
+                <article key={project.title} className="group">
+                  <div className="flex h-full flex-col rounded-lg bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 dark:bg-gray-800">
+                    <div className="space-y-4">
+                      {/* Header: Title + Stars + Logo */}
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h3 className="text-lg font-bold leading-tight text-gray-900 group-hover:text-primary-800 dark:text-gray-100 dark:group-hover:text-primary-400">
+                            <Link
+                              href={project.href || project.github || '#'}
+                              className="focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
+                            >
+                              {project.title}
+                            </Link>
+                          </h3>
+                          {project.githubStars && (
+                            <Link
+                              href={`https://github.com/${project.githubStars}/stargazers`}
+                              className="mt-1 inline-block hover:opacity-80 transition-opacity"
+                              aria-label={`Star ${project.title} on GitHub`}
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={`https://img.shields.io/github/stars/${project.githubStars}?style=social`}
+                                alt="GitHub Stars"
+                                className="h-5"
+                              />
+                            </Link>
+                          )}
+                        </div>
+                        {project.imgSrc && (
+                          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                            <Image
+                              src={project.imgSrc}
+                              alt={`${project.title} logo`}
+                              width={48}
+                              height={48}
+                              className="h-full w-full object-contain"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
+                        {project.description}
+                      </p>
+
+                      {/* Tech Stack */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.techStack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-800 dark:text-primary-200"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+                </article>
+              ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary-800 px-6 py-3 text-white hover:bg-primary-700 dark:bg-primary-400 dark:text-gray-900 dark:hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-gray-900"
+              aria-label="View all projects"
+            >
+              View All Projects
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
         </section>
 
         {/* My Books Section */}

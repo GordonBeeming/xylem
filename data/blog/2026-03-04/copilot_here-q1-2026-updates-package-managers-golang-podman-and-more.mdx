@@ -1,14 +1,14 @@
 ---
 title: 'copilot_here: Q1 2026 Updates - Package Managers, Golang, Podman & More'
 date: 2026-03-04
-tags: ['copilot_here', 'DevOps', 'Podman', 'Golang', 'NuGet', 'Homebrew', 'WinGet']
+tags: ['copilot_here', 'DevOps', 'Podman', 'Golang', 'dotnet-tool', 'Homebrew', 'WinGet']
 draft: false
-summary: 'Q1 2026 brings copilot_here to your favorite package managers (NuGet, Homebrew, WinGet), adds Golang support, enables Podman and OrbStack as container runtimes, and introduces model configuration.'
+summary: 'Q1 2026 brings copilot_here to your favorite package managers (Homebrew, WinGet, .NET tool), adds Golang support, enables Podman and OrbStack as container runtimes, and introduces model configuration.'
 ---
 
 I'd like to start off by saying thanks to [@tudorsmt](https://github.com/tudorsmt), [@epetutsc](https://github.com/epetutsc), [@Tasteful](https://github.com/Tasteful), and [@christiansparre](https://github.com/christiansparre) for logging issues and feature requests that helped shape this quarter's improvements.
 
-The first quarter of 2026 has been packed with new capabilities for [copilot_here](https://copilot_here.gordonbeeming.com). The headline feature is that you can now install via your favorite package manager — NuGet, Homebrew, or WinGet — instead of running install scripts. We've also added a Golang image variant, support for Podman and OrbStack as container runtimes, and a model configuration system that lets you set your preferred AI model per-project or globally.
+The first quarter of 2026 has been packed with new capabilities for [copilot_here](https://copilot_here.gordonbeeming.com). The headline feature is that you can now install via your favorite package manager — Homebrew, WinGet, or as a .NET global tool — instead of running install scripts. We've also added a Golang image variant, support for Podman and OrbStack as container runtimes, and a model configuration system that lets you set your preferred AI model per-project or globally.
 
 If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
 
@@ -29,7 +29,7 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 
 The biggest user-facing change this quarter is that `copilot_here` is now available through the package managers you already use. No more piping scripts from the internet — just install it the way you install everything else.
 
-**NuGet (.NET Global Tool):**
+**.NET Global Tool:**
 ```bash
 dotnet tool install -g copilot_here
 ```

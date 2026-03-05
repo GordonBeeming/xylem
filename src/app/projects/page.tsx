@@ -1,5 +1,6 @@
 import Link from '@/components/Link'
 import Image from '@/components/Image'
+import GitHubStars from '@/components/GitHubStars'
 import projectsData from '@/data/projectsData'
 import { genPageMetadata } from 'src/app/seo'
 
@@ -39,12 +40,7 @@ export default function Page() {
                         className="mt-1 inline-block hover:opacity-80 transition-opacity"
                         aria-label={`Star ${project.title} on GitHub`}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={`https://img.shields.io/github/stars/${project.githubStars}?style=social`}
-                          alt="GitHub Stars"
-                          className="h-5"
-                        />
+                        <GitHubStars repo={project.githubStars} />
                       </Link>
                     )}
                   </div>

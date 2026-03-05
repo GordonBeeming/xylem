@@ -10,6 +10,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import Image from '@/components/Image'
 import Avatar from '@/components/Avatar'
 import BookModal from '@/components/BookModal'
+import GitHubStars from '@/components/GitHubStars'
 
 const MAX_DISPLAY = 10
 
@@ -173,12 +174,7 @@ export default function Home({ posts }) {
                               className="mt-1 inline-block hover:opacity-80 transition-opacity"
                               aria-label={`Star ${project.title} on GitHub`}
                             >
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={`https://img.shields.io/github/stars/${project.githubStars}?style=social`}
-                                alt="GitHub Stars"
-                                className="h-5"
-                              />
+                              <GitHubStars repo={project.githubStars} />
                             </Link>
                           )}
                         </div>

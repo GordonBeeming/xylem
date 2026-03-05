@@ -170,7 +170,7 @@ export default function Home({ posts }) {
                           </h3>
                           {project.githubStars && (
                             <Link
-                              href={`https://github.com/${project.githubStars}/stargazers`}
+                              href={`https://github.com/${project.githubStars}`}
                               className="mt-1 inline-block hover:opacity-80 transition-opacity"
                               aria-label={`Star ${project.title} on GitHub`}
                             >

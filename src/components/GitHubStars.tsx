@@ -24,7 +24,7 @@ export default function GitHubStars({ repo }: { repo: string }) {
 
     fetch(`https://api.github.com/repos/${repo}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: { stargazers_count?: number }) => {
         if (typeof data.stargazers_count === 'number') {
           setStars(data.stargazers_count)
           localStorage.setItem(cacheKey, JSON.stringify({ count: data.stargazers_count, ts: Date.now() }))

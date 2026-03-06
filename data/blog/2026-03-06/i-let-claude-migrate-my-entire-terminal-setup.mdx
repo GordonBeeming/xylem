@@ -81,22 +81,24 @@ The things I didn't know I was missing:
 
 The single most important quality I need in a terminal is text-editor-like input. Being able to move around the command line the same way I move around text in a code editor — arrow keys, Option+Arrow to jump words, Cmd+Arrow for line start/end, Option+Backspace to delete a word — is a deal breaker for me. It's the reason I was primarily using Warp. If a terminal doesn't support that fully, I can't use it as my daily driver.
 
-And Warp was awesome for that — genuinely great terminal. But over time, every other update seemed to enable some new AI feature I had to go find and switch off. The UI kept getting busier, more panels, more suggestions, more things competing for attention. It stopped feeling like a terminal and started feeling like a platform. I just wanted a fast, clean shell.
+And Warp was awesome for that — genuinely the best terminal I've used for text editing in the input. But over time, every other update seemed to enable some new AI feature I had to go find and switch off. The UI kept getting busier, more panels, more suggestions, more things competing for attention. It stopped feeling like a terminal and started feeling like a platform. I just wanted a fast, clean shell.
 
-Ghostty delivers all of that out of the box because it uses standard macOS keybindings natively. No custom key mapping, no workarounds — it just works the way every other text input on macOS works. That alone was enough to sell me.
+The other long-standing sore point with Warp was the lack of Secure Keyboard Entry. This is a macOS feature that prevents other applications from intercepting your keystrokes — pretty important when you're typing passwords or tokens in a terminal. Terminal.app, iTerm2, and Ghostty all support it. Warp has had an [open issue for it since April 2023](https://github.com/warpdotdev/Warp/issues/2891) with 40+ upvotes and no resolution. It's likely a hard problem to solve given Warp's custom input model — probably the same reason it can offer such great text editing. But it meant I was always slightly uneasy using Warp for sensitive work. Ghostty has Secure Keyboard Entry built in, right there in the app menu.
 
-Two things that weren't built in were Shift+Arrow text selection and Shift+Enter for multi-line input — both things I used heavily in Warp. A quick Zinit plugin ([zsh-shift-select](https://github.com/jirutka/zsh-shift-select)) and a small keybinding in `.zshrc` rounded that out:
+Ghostty handles most of the text input well out of the box because it uses standard macOS keybindings natively — arrow keys, Option+Arrow for word jumping, Cmd+Arrow for line start/end all just work. To be fair, it's not quite at Warp's level for text manipulation. Things like Shift+Arrow text selection, Shift+Enter for multi-line input, and typing to replace a selection aren't built in. But with some ZLE keybindings in `.zshrc`, you can get most of the way there:
 
 ```zsh
-zinit light jirutka/zsh-shift-select
-
 # Shift+Enter to insert a newline (like Warp)
 shift-enter-newline() { LBUFFER+=$'\n'; }
 zle -N shift-enter-newline
 bindkey '^[[27;2;13~' shift-enter-newline
+
+# Shift+Arrow selection, plain arrow deselect,
+# typing replaces selection — all done via ZLE widgets
+# (full config in my dotfiles repo)
 ```
 
-On top of that, it's GPU-accelerated, the config is a simple key-value file (mine is 8 lines), and it supports split panes with `Cmd+D` / `Cmd+Shift+D`. All the functionality I needed, none of the weight.
+On top of that, it's GPU-accelerated, the config is a simple key-value file, and it supports split panes with `Cmd+D` / `Cmd+Shift+D`. Not quite as polished as Warp's input, but fast, clean, secure, and extensible.
 
 ## The AI Part
 

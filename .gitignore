@@ -72,3 +72,4 @@ next-env.d.ts
 
 user-group.md
 context.md
+.playwright-mcp/

@@ -10,8 +10,7 @@ export interface PostMeta {
   lastmod?: string;
   draft?: boolean;
   summary?: string;
-  images?: string[];
-  authors?: string[];
+  canonicalUrl?: string;
   slug: string;
   readingTime: { text: string; minutes: number };
 }
@@ -66,8 +65,7 @@ function parsePostFile(filePath: string): PostMeta | null {
         : undefined,
       draft: data.draft === true,
       summary: data.summary ?? undefined,
-      images: Array.isArray(data.images) ? data.images : undefined,
-      authors: Array.isArray(data.authors) ? data.authors : undefined,
+      canonicalUrl: typeof data.canonicalUrl === "string" ? data.canonicalUrl : undefined,
       slug,
       readingTime: { text: rt.text, minutes: Math.ceil(rt.minutes) },
     };
@@ -156,8 +154,7 @@ function readPostFile(
         : undefined,
       draft: data.draft === true,
       summary: data.summary ?? undefined,
-      images: Array.isArray(data.images) ? data.images : undefined,
-      authors: Array.isArray(data.authors) ? data.authors : undefined,
+      canonicalUrl: typeof data.canonicalUrl === "string" ? data.canonicalUrl : undefined,
       slug,
       readingTime: { text: rt.text, minutes: Math.ceil(rt.minutes) },
     };

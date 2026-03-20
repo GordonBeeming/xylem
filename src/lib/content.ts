@@ -48,6 +48,21 @@ export function getTagCounts(posts: { tags?: string[] | null }[]): Record<string
   return counts;
 }
 
+export function getTagDisplayNames(posts: { tags?: string[] | null }[]): Record<string, string> {
+  const names: Record<string, string> = {};
+  for (const post of posts) {
+    if (post.tags) {
+      for (const tag of post.tags) {
+        const s = slug(tag).replace(/--+/g, '-');
+        if (!names[s]) {
+          names[s] = tag;
+        }
+      }
+    }
+  }
+  return names;
+}
+
 export function getYearCounts(posts: { date: string }[]): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const post of posts) {

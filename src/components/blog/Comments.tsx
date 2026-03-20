@@ -37,15 +37,15 @@ export function Comments() {
           );
           script.setAttribute(
             "data-repo-id",
-            process.env.NEXT_PUBLIC_GISCUS_REPO_ID ?? ""
+            process.env.NEXT_PUBLIC_GISCUS_REPO_ID ?? "R_kgDOO0_MBQ"
           );
           script.setAttribute(
             "data-category",
-            process.env.NEXT_PUBLIC_GISCUS_CATEGORY ?? "Blog Comments"
+            process.env.NEXT_PUBLIC_GISCUS_CATEGORY ?? "Posts"
           );
           script.setAttribute(
             "data-category-id",
-            process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID ?? ""
+            process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID ?? "DIC_kwDOO0_MBc4Cq9Ps"
           );
           script.setAttribute("data-mapping", "pathname");
           script.setAttribute("data-strict", "0");

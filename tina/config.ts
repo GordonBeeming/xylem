@@ -19,10 +19,6 @@ const schema = defineSchema({
         { type: "datetime", name: "lastmod", label: "Last Modified" },
         { type: "boolean", name: "draft", label: "Draft" },
         { type: "string", name: "summary", label: "Summary", ui: { component: "textarea" } },
-        { type: "image", name: "images", label: "Images", list: true },
-        { type: "string", name: "authors", label: "Authors", list: true },
-        { type: "string", name: "layout", label: "Layout" },
-        { type: "string", name: "bibliography", label: "Bibliography" },
         { type: "string", name: "canonicalUrl", label: "Canonical URL" },
         {
           type: "rich-text",

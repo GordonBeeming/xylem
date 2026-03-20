@@ -170,7 +170,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       modifiedTime: meta.lastmod ?? meta.date,
       authors: ["Gordon Beeming"],
       tags: meta.tags,
-      images: meta.images ?? [],
+      images: [
+        {
+          url: `https://gordonbeeming.com/og/${meta.slug}.png`,
+          width: 1200,
+          height: 630,
+          alt: meta.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -179,7 +186,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       creator: "@GordonBeeming",
     },
     alternates: {
-      canonical: url,
+      canonical: meta.canonicalUrl || url,
     },
   };
 }

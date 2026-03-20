@@ -1,0 +1,285 @@
+---
+title: 'Taming the AI: My Paranoid Guide to Running Copilot CLI in a Secure Docker Sandbox'
+date: 2025-10-03
+tags: ['copilot_here', 'Docker', 'GitHub', 'Copilot', 'Security', 'DevOps']
+draft: false
+summary: 'I love the new GitHub Copilot CLI, but as someone who is a little paranoid about security, I needed a way to use it with more confidence. Here''s how I built a secure, isolated Docker environment for it.'
+---
+
+
+
+I love the new GitHub Copilot CLI. It feels like magic. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me... uneasy. 😅
+
+The real power of the Copilot CLI comes from its ability to execute commands, but that requires a level of trust. I wanted the power of Copilot without giving it the keys to my entire kingdom. The goal was to use powerful features like `--allow-all-tools` with more confidence.
+
+What if I could build a secure cage for it? A place where it can be helpful, but where its ability to cause chaos is strictly limited. So, I decided to put it in Docker.
+
+## The "Why": My Wishlist for a Perfect Copilot Environment
+
+Before diving in, I had a clear set of goals for what the ideal setup would look like:
+
+* ✅ **Secure Isolation:** The tool should only see the files in my current project directory. Nothing else.
+* ✅ **Auto-Authentication:** It must seamlessly use my existing `gh` login without any extra steps.
+* ✅ **Portability & Cleanliness:** No global Node.js or `npm` packages on my host machine.
+* ✅ **Cognitive Ease:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
+
+## The Breakthrough: Why the Cage Makes the Tiger Safer
+
+After a bit of trial and error (and a lot of debugging!), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which dramatically reduces the "blast radius" of any potential mistakes.
+
+You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" And you'd be absolutely right. It would.
+
+The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your **current project directory**. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
+
+It's also important to note that this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. This means if you have a secure local network, Copilot inherits that, but it can also access local resources, which is something to be aware of.
+
+This isolation is what provides the **cognitive ease**. The container provides a strong safety net, which makes me optimistically more comfortable using a powerful but risky feature like `--allow-all-tools`. The risk isn't eliminated, but it's lowered to a level I'm comfortable with. For me, that trade-off is a worthy option.
+
+<Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="The final, working setup! It took a while to get here, but it was worth it." />
+
+## The Final Setup: The Code
+
+The complete solution is hosted on GitHub at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). The setup consists of two files: a `Dockerfile` to build the environment and an `entrypoint.sh` script to handle user permissions.
+
+Here's the `Dockerfile`:
+```dockerfile title="Dockerfile"
+# Use a slim Node.js base image, which gives us `npm`.
+FROM node:20-slim
+
+# Set non-interactive frontend to avoid prompts during package installation.
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install git, curl, gpg, and gosu for the entrypoint script.
+RUN apt-get update && apt-get install -y \
+  curl \
+  gpg \
+  git \
+  gosu \
+  && rm -rf /var/lib/apt/lists/*
+
+# ARG for the Copilot CLI version - passed from build process
+# This ensures cache invalidation when a new version is available
+ARG COPILOT_VERSION=latest
+
+# Install the standalone GitHub Copilot CLI via npm.
+RUN npm install -g @github/copilot@${COPILOT_VERSION}
+
+# Set the working directory for the container.
+WORKDIR /work
+
+# Copy the entrypoint script into the container and make it executable.
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Label for image cleanup
+LABEL project="copilot_here"
+
+# The entrypoint script will handle user creation and command execution.
+ENTRYPOINT [ "entrypoint.sh" ]
+
+# The default command to run if none is provided.
+CMD [ "copilot", "--banner" ]
+```
+
+And the `entrypoint.sh` script:
+
+```bash title="entrypoint.sh"
+#!/bin/bash
+set -e
+
+# Get the user and group IDs from environment variables, default to 1000 if not set.
+USER_ID=${PUID:-1000}
+GROUP_ID=${PGID:-1000}
+
+# Create a group and user with the specified IDs.
+groupadd --gid $GROUP_ID appuser_group >/dev/null 2>&1 || true
+useradd --uid $USER_ID --gid $GROUP_ID --shell /bin/bash --create-home appuser >/dev/null 2>&1 || true
+
+# Verify the user was created successfully
+if ! id appuser >/dev/null 2>&1; then
+    echo "Warning: Failed to create appuser, running as root" >&2
+    mkdir -p /home/appuser/.copilot
+    exec "$@"
+fi
+
+# Set up the .copilot directory and ensure ownership of the entire home dir.
+mkdir -p /home/appuser/.copilot
+chown -R $USER_ID:$GROUP_ID /home/appuser
+
+# Switch to the new user and execute the command passed to the script.
+exec gosu appuser "$@"
+```
+
+## Understanding the Modes and Features
+
+The setup provides flexible options to match different workflows and security preferences.
+
+### Execution Modes
+
+**Safe Mode (`copilot_here`)** - Always asks for confirmation before executing commands. Recommended for general development work where you want control over what gets executed.
+
+**YOLO Mode (`copilot_yolo`)** - Automatically approves all tool usage without confirmation. Convenient for trusted workflows but use with caution as it can execute commands without prompting.
+
+### Image Variants
+
+All functions support switching between Docker image variants using flags:
+- **No flag** - Base image (Node.js, Git, basic tools)
+- **`--dotnet`** (`-d`) - .NET image (includes .NET 8, 9 & 10 SDKs)
+- **`--dotnet8`** (`-d8`) - .NET 8 image (includes .NET 8 SDK)
+- **`--dotnet9`** (`-d9`) - .NET 9 image (includes .NET 9 SDK)
+- **`--dotnet10`** (`-d10`) - .NET 10 image (includes .NET 10 SDK)
+- **`--playwright`** (`-pw`) - Playwright image (includes browser automation)
+- **`--dotnet-playwright`** (`-dp`) - .NET + Playwright image (includes browser automation)
+- **`--rust`** (`-rs`) - Rust image (includes Rust toolchain)
+- **`--dotnet-rust`** (`-dr`) - .NET + Rust image
+
+### Additional Options
+
+- **`-h` or `--help`** - Show usage help and examples (Bash/Zsh) or `-h` / `-Help` (PowerShell)
+- **`--no-cleanup`** - Skip cleanup of unused Docker images (Bash/Zsh) or `-NoCleanup` (PowerShell)
+- **`--no-pull`** - Skip pulling the latest image (Bash/Zsh) or `-NoPull` (PowerShell)
+
+Both modes include security checks for proper GitHub token scopes and warn about overly privileged tokens. The functions also automatically clean up unused Docker images tagged with the project label, keeping your system tidy.
+
+## Setup Instructions
+
+Getting started is now easier than ever with automatic installation options for both platforms.
+
+### Quick Install (Recommended)
+
+**For Linux/macOS (Bash/Zsh):**
+
+```bash title="Terminal"
+curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
+```
+
+**For Windows (PowerShell):**
+
+```powershell title="PowerShell"
+iex ([System.Text.Encoding]::UTF8.GetString((iwr -UseBasicParsing 'https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.ps1').Content))
+```
+
+This will download the script and configure your PowerShell profile automatically.
+
+### Keeping Up-to-Date
+
+The scripts include automatic update functionality:
+
+```bash title="Terminal"
+# Linux/macOS or Windows PowerShell
+copilot_here --update
+```
+
+This will:
+- Download and install the latest version of the CLI binary
+- Show you the version change
+- Automatically reload the updated functions
+
+### Manual Installation
+
+For manual installation or to see all available options and features, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo includes:
+- Detailed documentation on all command-line flags
+- Information about image variants (base, .NET, .NET + Playwright, Rust, and more)
+- Advanced configuration options including Airlock network isolation
+- Manual installation code blocks if you prefer to copy/paste directly
+
+## Usage
+
+Once set up, using it is simple on any platform.
+
+### Get Help
+
+```bash title="Terminal"
+# Linux/macOS
+copilot_here --help
+copilot_yolo --help
+
+# Windows
+copilot_here -Help
+copilot_yolo -Help
+```
+
+### Interactive Mode
+
+Start a full chat session with the welcome banner:
+
+```bash title="Terminal"
+# Base image (default)
+copilot_here
+
+# With .NET image
+copilot_here -d
+
+# With .NET + Playwright image
+copilot_here -dp
+```
+
+### Non-Interactive Mode
+
+Pass a prompt directly to get a quick response.
+
+**Safe Mode** (asks for confirmation before executing):
+
+```bash title="Terminal"
+# Base image
+copilot_here "suggest a git command to view the last 5 commits"
+
+# .NET image
+copilot_here -d "build and test this .NET project"
+
+# .NET + Playwright image
+copilot_here -dp "run playwright tests for this app"
+
+# Fast mode (skip cleanup and pull)
+copilot_here --no-cleanup --no-pull "quick question"
+```
+
+**YOLO Mode** (auto-approves execution):
+
+```bash title="Terminal"
+# Base image
+copilot_yolo "write a function that reverses a string"
+
+# .NET image
+copilot_yolo -d "create a new ASP.NET Core API project"
+
+# .NET + Playwright image
+copilot_yolo -dp "write playwright tests for the login page"
+
+# Fast mode (skip cleanup)
+copilot_yolo --no-cleanup "generate README"
+```
+
+## Beyond the Basics: Specialized Docker Image Variants
+
+As the project evolved, I realized that different development scenarios call for different tools. That's why I created specialized image variants that build on the secure foundation of the base image while adding language-specific capabilities.
+
+### Available Image Variants
+
+**Base Image (`latest`)**: The standard Copilot CLI environment with Node.js 20, Git, and essential tools. Perfect for general-purpose development and scripting.
+
+**.NET Image (`dotnet`)**: Extends the base image with .NET 8.0 and 9.0 SDKs, along with ASP.NET Core runtimes and ICU libraries for internationalization support. Ideal for .NET development without the overhead of browser testing tools.
+
+**.NET + Playwright Image (`dotnet-playwright`)**: The full-featured variant that includes everything from the .NET image plus Playwright 1.56.0 and Chromium browser with all dependencies. This is perfect for end-to-end testing and browser automation scenarios. Note that this image is approximately 500-600MB larger due to the Chromium binaries.
+
+The beauty of the refactored setup is that you can switch between variants using simple flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
+
+### Automatic Cleanup
+
+One of the newer features is automatic image cleanup. The functions now automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) while keeping only the one you're currently using. This helps keep your Docker storage clean without manual intervention.
+
+If you want to skip the cleanup for faster execution, use the `--no-cleanup` flag (or `-NoCleanup` on PowerShell). Similarly, you can skip pulling the latest image with `--no-pull` (or `-NoPull`) if you want even faster startup times.
+
+## Conclusion: Security and Convenience Can Coexist
+
+For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
+
+This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. It doesn't mean my caution disappears entirely, I'll still keep a close eye on the configurations of the specific projects I run this in, but it provides a valuable safety net. In my own daily workflow, I have both versions installed: the default `copilot_here` for safe, everyday use, and `copilot_yolo` for when I'm working in a trusted project and value speed above all.
+
+The specialized image variants add another layer of flexibility, allowing me to choose the right tool for the job. When I'm working on a .NET project, I can use the `dotnet` variant with a simple `-d` flag. When I need to run browser tests, the `dotnet-playwright` variant is just a `-dp` away.
+
+The refactored setup with helper functions, automatic cleanup, and built-in help text makes the whole experience more polished and user-friendly. You can easily see what options are available with `--help`, and the system keeps itself tidy by cleaning up old images automatically.
+
+Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
+
+You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!

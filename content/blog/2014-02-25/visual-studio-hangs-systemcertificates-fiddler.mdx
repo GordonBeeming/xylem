@@ -1,0 +1,37 @@
+﻿---
+title: 'Visual Studio Hangs + SystemCertificates + Fiddler'
+date: 2014-02-25
+tags: ['Visual Studio', 'Fiddler', 'System Certificates']
+draft: false
+summary: 'For the last while I have been experiencing weird hangs with Visual Studio 2013. To try identify what was causing the hangs or at least where about the problem was I ran ProcMon.exe on devenv.exe and the point where Visual Studio hung I was getting the below output recursively'
+---
+
+
+For the last while I have been experiencing weird hangs with [Visual Studio](http://www.visualstudio.com/) 2013. To try identify what was causing the hangs or at least where about the problem was I ran [ProcMon.exe](http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx) on devenv.exe and the point where Visual Studio hung I was getting the below output recursively 
+ 
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
+ 
+This was kind of weird because I'd never seen this before, I logged a [Microsoft connect](https://connect.microsoft.com/) case through Visual Studio's Report a Bug Feature after installing the [Microsoft Visual Studio 2013 Feedback Tool](http://visualstudiogallery.msdn.microsoft.com/563d1003-f0ed-498f-8ef9-f8ee1aac39fe) which allows a more detailed collection of data for your bug.
+ 
+<Figure key="/images/1767e00c5367439cb6a97704946a5cf4.png" src="/images/1767e00c5367439cb6a97704946a5cf4.png" alt="Visual Studio Feedback Tool window" width="0" height="0" caption="Visual Studio Feedback Tool" />
+ 
+After creating this bug I attached a ETL trace using [PerfView](http://www.microsoft.com/en-us/download/details.aspx?id=28567), if you don't know how to use PerfView you can follow the tutorials on [Channel 9](http://channel9.msdn.com/) ([PerfView Tutorial](http://channel9.msdn.com/Series/PerfView-Tutorial)).
+ 
+The ETL Trace showed a large amount of time spent on the Certificates which matched what I found with ProcMon.exe
+ 
+<Figure key="/images/c200f41380044e699e806bdbb8c08b46.png" src="/images/c200f41380044e699e806bdbb8c08b46.png" alt="PerfView trace showing time spent on certificates" width="0" height="0" caption="PerfView Trace - Certificate Time" />
+ 
+At this point it was pointed out that I should look at how many certs were in my SystemCertificates (C:\Users\&lt;username&gt;\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates), I found that I had 2405 certs which was a lot more than usual
+ 
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
+ 
+At this point we still didn't know what was causing so many certs to be generated. I decided to delete all the certs and see what happens. After a reboot everything was working 100% again 🙂
+ 
+Later I was playing with Fiddler and saw a weird error talking about certificates, I went to the certs folder and saw that there was more there. I deleted them again, went to a https site and saw certs been generated 🙂, the reason for so many certs is because I had Decrypt HTTPS traffic option checked
+ 
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
+ 
+Changed this to not have it checked (because I didn't need it) and now I have a low amount of certs in my System Certificates folder again 🙂.
+ 
+Hope this helps someone else with this random issue 😁
+

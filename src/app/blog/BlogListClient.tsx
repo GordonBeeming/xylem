@@ -20,6 +20,7 @@ interface PostData {
 interface BlogListClientProps {
   allPosts: PostData[];
   tagCounts: Record<string, number>;
+  tagDisplayNames: Record<string, string>;
   yearCounts: Record<string, number>;
 }
 
@@ -29,7 +30,7 @@ function slugifyTag(tag: string): string {
   return slug(tag).replace(/--+/g, "-");
 }
 
-function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps) {
+function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: BlogListClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -209,7 +210,7 @@ function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps)
             }`}
             aria-pressed={selectedTag.toLowerCase() === tag.toLowerCase()}
           >
-            {tag} ({tagCounts[tag]})
+            {(tagDisplayNames[tag] ?? tag).replace(/-/g, " ")} ({tagCounts[tag]})
           </button>
         ))}
         {Object.keys(tagCounts).length > 20 && (
@@ -247,7 +248,7 @@ function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps)
           {filteredPosts.length === 0
             ? "No posts found"
             : `Showing ${startIndex + 1}–${Math.min(startIndex + POSTS_PER_PAGE, filteredPosts.length)} of ${filteredPosts.length} post${filteredPosts.length !== 1 ? "s" : ""}`}
-          {selectedTag && ` tagged "${selectedTag}"`}
+          {selectedTag && ` tagged "${tagDisplayNames[selectedTag] ?? selectedTag}"`}
           {selectedYear && ` from ${selectedYear}`}
           {searchQuery && ` matching "${searchQuery}"`}
         </p>

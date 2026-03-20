@@ -1,5 +1,5 @@
 import { getPublishedPosts } from "@/lib/tina-helpers";
-import { getTagCounts, getYearCounts } from "@/lib/content";
+import { getTagCounts, getTagDisplayNames, getYearCounts } from "@/lib/content";
 import BlogListClient from "./BlogListClient";
 import type { Metadata } from "next";
 
@@ -22,7 +22,8 @@ export default function BlogPage() {
   }));
 
   const tagCounts = getTagCounts(published);
+  const tagDisplayNames = getTagDisplayNames(published);
   const yearCounts = getYearCounts(published);
 
-  return <BlogListClient allPosts={postsData} tagCounts={tagCounts} yearCounts={yearCounts} />;
+  return <BlogListClient allPosts={postsData} tagCounts={tagCounts} tagDisplayNames={tagDisplayNames} yearCounts={yearCounts} />;
 }

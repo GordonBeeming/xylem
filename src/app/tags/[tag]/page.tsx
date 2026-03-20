@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPublishedPosts } from "@/lib/tina-helpers";
-import { getTagCounts } from "@/lib/content";
+import { getTagCounts, getTagDisplayNames } from "@/lib/content";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { slug } from "github-slugger";
 import type { Metadata } from "next";
@@ -18,9 +18,12 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { tag } = await props.params;
   const decodedTag = decodeURIComponent(tag);
+  const published = getPublishedPosts();
+  const displayNames = getTagDisplayNames(published);
+  const displayName = displayNames[decodedTag] ?? decodedTag;
   return {
-    title: `Posts tagged: ${decodedTag}`,
-    description: `Browse all blog posts tagged with "${decodedTag}" by Gordon Beeming.`,
+    title: `Posts tagged: ${displayName}`,
+    description: `Browse all blog posts tagged with "${displayName}" by Gordon Beeming.`,
   };
 }
 
@@ -29,6 +32,8 @@ export default async function TagFilteredPage(props: PageProps) {
   const decodedTag = decodeURIComponent(tag);
 
   const published = getPublishedPosts();
+  const displayNames = getTagDisplayNames(published);
+  const displayName = displayNames[decodedTag] ?? decodedTag;
   const filtered = published.filter((post) =>
     post.tags.some((t) => slug(t).replace(/--+/g, "-") === decodedTag)
   );
@@ -41,7 +46,7 @@ export default async function TagFilteredPage(props: PageProps) {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
-          Posts tagged: {decodeURIComponent(tag)}
+          Posts tagged: {displayName}
         </h1>
         <p className="text-lg text-[var(--color-text-secondary)]">
           {filtered.length} post{filtered.length !== 1 ? "s" : ""}

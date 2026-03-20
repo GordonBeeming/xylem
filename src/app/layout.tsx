@@ -37,6 +37,19 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/static/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/static/favicons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [
+      { url: "/static/favicons/apple-icon-180x180.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/static/favicons/site.webmanifest",
   robots: {
     index: true,
     follow: true,

@@ -6,6 +6,7 @@ import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { TagPill } from "@/components/ui/TagPill";
 import { YearPill } from "@/components/ui/YearPill";
 import Link from "next/link";
+import { slug } from "github-slugger";
 
 interface PostData {
   title: string;
@@ -23,6 +24,10 @@ interface BlogListClientProps {
 }
 
 const POSTS_PER_PAGE = 10;
+
+function slugifyTag(tag: string): string {
+  return slug(tag).replace(/--+/g, "-");
+}
 
 function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps) {
   const searchParams = useSearchParams();
@@ -92,7 +97,7 @@ function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps)
 
   // Filter posts
   const filteredPosts = allPosts.filter((post) => {
-    if (selectedTag && !post.tags.some((t) => t.toLowerCase() === selectedTag.toLowerCase())) {
+    if (selectedTag && !post.tags.some((t) => slugifyTag(t) === selectedTag.toLowerCase())) {
       return false;
     }
     if (selectedYear && !post.date.startsWith(selectedYear)) {
@@ -102,7 +107,7 @@ function BlogListInner({ allPosts, tagCounts, yearCounts }: BlogListClientProps)
       const q = searchQuery.toLowerCase();
       const matchesTitle = post.title.toLowerCase().includes(q);
       const matchesSummary = post.summary?.toLowerCase().includes(q);
-      const matchesTags = post.tags.some((t) => t.toLowerCase().includes(q));
+      const matchesTags = post.tags.some((t) => t.toLowerCase().includes(q) || slugifyTag(t).includes(q));
       if (!matchesTitle && !matchesSummary && !matchesTags) {
         return false;
       }

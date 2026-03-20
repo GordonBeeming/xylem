@@ -33,7 +33,7 @@ export function Comments() {
           script.src = "https://giscus.app/client.js";
           script.setAttribute(
             "data-repo",
-            process.env.NEXT_PUBLIC_GISCUS_REPO ?? "gordonbeeming/xylem-x"
+            process.env.NEXT_PUBLIC_GISCUS_REPO ?? "gordonbeeming/xylem"
           );
           script.setAttribute(
             "data-repo-id",

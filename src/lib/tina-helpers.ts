@@ -101,12 +101,7 @@ export function getAllPosts(): PostMeta[] {
 }
 
 export function getPublishedPosts(): PostMeta[] {
-  const now = new Date();
-  return getAllPosts().filter((post) => {
-    if (post.draft) return false;
-    if (new Date(post.date) > now) return false;
-    return true;
-  });
+  return getAllPosts().filter((post) => !post.draft);
 }
 
 export function getPost(

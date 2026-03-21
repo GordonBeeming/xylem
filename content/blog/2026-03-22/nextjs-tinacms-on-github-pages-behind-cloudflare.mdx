@@ -6,7 +6,7 @@ draft: false
 summary: 'The gotchas I hit deploying a Next.js static export site with TinaCMS to GitHub Pages, proxied through a Cloudflare Worker — and how I fixed them.'
 ---
 
-I recently moved this blog to a setup where Next.js builds a static export, TinaCMS provides a Git-backed CMS admin panel, GitHub Pages hosts the files for free, and a Cloudflare Worker sits in front handling the custom domain, security headers, and CSP.
+I recently moved this blog to a setup where Next.js builds a static export (hosted on GitHub Pages), TinaCMS provides a Git-backed CMS admin panel, and a Cloudflare Worker sits in front handling the custom domain, security headers, and CSP.
 
 It works great now, but getting here involved a few gotchas that weren't immediately obvious. This post documents the architecture and the fixes so you don't have to figure them out the hard way 🙃
 

@@ -29,9 +29,6 @@ function parsePost(filePath) {
   if (!data.title || !data.date) return null;
   if (data.draft === true) return null;
 
-  const date = data.date instanceof Date ? data.date : new Date(data.date);
-  if (date > new Date()) return null;
-
   const slug = path.relative(BLOG_DIR, filePath).replace(/\.mdx?$/, '');
   const rt = readingTime(content);
   return {

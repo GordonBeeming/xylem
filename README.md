@@ -39,7 +39,6 @@ This starts the TinaCMS local GraphQL server alongside Next.js. Content edits in
 | `pnpm dev:tina` | Start with TinaCMS admin enabled |
 | `pnpm build` | Production build |
 | `pnpm build:tina` | Production build with TinaCMS (requires cloud credentials) |
-| `pnpm start` | Start production server |
 | `pnpm lint` | Run ESLint |
 | `pnpm analyze` | Analyze bundle size |
 
@@ -72,9 +71,7 @@ xylem-x/
 ├── tina/
 │   └── config.ts       # TinaCMS schema (5 collections)
 ├── scripts/            # Build scripts (image copy, etc.)
-├── config/
-│   └── redirects.mjs   # URL redirects (146 rules)
-└── Dockerfile          # Multi-stage Docker build
+└── config/
 ```
 
 ## Content
@@ -143,15 +140,6 @@ When editors save changes via the TinaCMS admin, Tina Cloud commits to your Git 
 
 Use `pnpm build` (skips `tinacms build`). Content is edited directly in Git. The `/admin` route won't work in production, but the site renders perfectly from the MDX/JSON files.
 
-### Docker
-
-```bash
-docker build -t xylem-x .
-docker run -p 3000:3000 xylem-x
-```
-
-The Dockerfile runs the full build pipeline (image copy + Next.js build) and produces a standalone Node.js server.
-
 ## Tech Stack
 
 - **Framework**: [Next.js](https://nextjs.org) (App Router)
@@ -161,4 +149,4 @@ The Dockerfile runs the full build pipeline (image copy + Next.js build) and pro
 - **Analytics**: Google Analytics 4 + Web Vitals
 - **Comments**: [Giscus](https://giscus.app) (GitHub Discussions)
 - **Fonts**: Inter + JetBrains Mono via `next/font`
-- **Deployment**: Docker (standalone output)
+- **Deployment**: GitHub Pages (static export)

@@ -42,7 +42,6 @@ jobs:
 
       - name: Build
         env:
-          GITHUB_PAGES: "true"
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

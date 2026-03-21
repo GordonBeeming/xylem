@@ -4,6 +4,10 @@
 
 This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeeming.com. It's a Next.js App Router site with TinaCMS for content management, Tailwind CSS v4 for styling, and MDX for blog content.
 
+## Related Repos
+
+- **Cloudflare Worker**: `../cloudflare-xylem-worker` — handles URL redirects, security headers, CSP, and proxying to GitHub Pages
+
 ## Quick Reference
 
 - **Package manager**: pnpm
@@ -43,7 +47,6 @@ This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeem
 | `src/components/prose/CodeBlock.tsx` | Code block with title bar, language pill, copy button, shiki highlighting |
 | `src/css/tailwind.css` | Design tokens, dark mode overrides, animations, prose styles |
 | `tina/config.ts` | TinaCMS schema definition |
-| `config/redirects.mjs` | 146 URL redirect rules |
 | `src/lib/rehype-code-meta.ts` | Rehype plugins for preserving code fence meta through shiki |
 
 ### URL Structure
@@ -55,7 +58,7 @@ This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeem
 ## Development Notes
 
 ### Adding a Blog Post
-Create `content/blog/YYYY-MM-DD/slug.mdx` with frontmatter (title, date, tags, summary). Images go in `content/blog/YYYY-MM-DD/images/` — they are copied to `public/images/` automatically when running `pnpm dev`, `pnpm build`, or Docker build.
+Create `content/blog/YYYY-MM-DD/slug.mdx` with frontmatter (title, date, tags, summary). Images go in `content/blog/YYYY-MM-DD/images/` — they are copied to `public/images/` automatically when running `pnpm dev` or `pnpm build`.
 
 ### Code Block Titles
 Use the meta string on code fences: ` ```language title="descriptive title" `. The title shows in a grey header bar above the code.
@@ -75,7 +78,7 @@ Project cards fetch live star counts from GitHub API at build time via `src/lib/
 ## Don't Forget
 - Image copy runs automatically with `pnpm dev`/`pnpm build` — no manual step needed
 - Tags in URLs are always lowercase/slugified — never use raw tag text in hrefs
-- The `config/redirects.mjs` file has 146 redirect rules — preserve all of them
+- URL redirect rules are handled by the Cloudflare Worker in `../cloudflare-xylem-worker`
 - Code blocks should always have a `title="..."` meta string for the header bar
 
 @AGENTS.md

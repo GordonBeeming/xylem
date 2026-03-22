@@ -74,13 +74,9 @@ The image lineup is now: Base, .NET (8/9/10), Playwright, Rust, and Golang, plus
 
 ## 3. Container Runtime Freedom
 
-Up until now, `copilot_here` required Docker. That's no longer the case.
+`copilot_here` used to require Docker. Not anymore.
 
-We now support **Podman** and **OrbStack** as container runtimes, with automatic detection:
-
-- **Podman**: Full support including rootless containers. Auto-detects Podman Compose support.
-- **OrbStack**: Automatically detected when your Docker context is set to OrbStack.
-- **Auto-detection**: Tries Docker first, then falls back to Podman.
+Podman and OrbStack are now supported as container runtimes. Detection is automatic: Docker is tried first, then Podman. OrbStack is picked up when your Docker context is set to use it. Podman works rootless and auto-detects Podman Compose if it's available.
 
 You can also explicitly configure your preferred runtime:
 

@@ -59,11 +59,11 @@ set_ghostty_title
 
 Here's what it does:
 
-1. **`chpwd` hook** — zsh fires this every time you `cd` to a different directory, so the title updates automatically
-2. **Walk up the tree** — starting from `$PWD`, it checks each parent directory for a `.git` folder
-3. **Repo name** — when it finds `.git`, it uses that directory's basename as the title (e.g., `/Users/gordonbeeming/Developer/github/gordonbeeming/xylem` becomes "xylem")
-4. **Fallback** — if it hits `/` without finding `.git`, it shows the last three path segments instead of the full path
-5. **Startup** — runs once when the shell starts so the first tab gets named immediately, not just after your first `cd`
+- **`chpwd` hook**: zsh fires this every time you `cd` to a different directory, so the title updates as you move around
+- **Walk up the tree**: starting from `$PWD`, it checks each parent directory for a `.git` folder
+- **Repo name**: when it finds `.git`, it uses that directory's basename as the title (so `/Users/gordonbeeming/Developer/github/gordonbeeming/xylem` becomes "xylem")
+- **Fallback**: if it hits `/` without finding `.git`, it shows the last three path segments instead of the full path
+- **Startup**: runs once when the shell starts so the first tab gets named immediately, not just after your first `cd`
 
 The `echo -ne "\e]0;...\a"` part is an [OSC 0 escape sequence](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands) — it tells the terminal to set the window/tab title. Most terminals support this.
 

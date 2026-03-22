@@ -177,7 +177,7 @@ Airlock uses JSON configuration files:
 }
 ```
 
-The default rules include the essential GitHub and Copilot API endpoints. Setting `inherit_default_rules: true` means your config will automatically get updates when new endpoints are required.
+The default rules cover the GitHub and Copilot API endpoints you need. Setting `inherit_default_rules: true` means your config picks up updates automatically when new endpoints are required.
 
 ### Management Commands
 
@@ -204,7 +204,7 @@ When `enable_logging` is true (or automatically in monitor mode), all requests a
 {"action":"BLOCK","host":"evil.com","path":"/exfil","method":"POST","mode":"enforce","reason":"Host Not Allowed"}
 ```
 
-This is invaluable for auditing what the AI is actually doing on the network.
+Useful if you want to audit what the AI is actually doing on the network.
 
 ### Security Model
 

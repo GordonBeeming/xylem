@@ -106,6 +106,6 @@ Two quick ways to check.
 
 ## Conclusion
 
-By managing HSTS at the Cloudflare level, you centralize your security policies, keep infrastructure concerns out of your application code, and make your projects cleaner and easier to maintain. It's a simple change that provides a powerful security boost for your users.
+Putting HSTS at the Cloudflare level keeps your security policies out of application code, where they don't belong, and in the one place where they can actually be enforced consistently across all your apps.
 
-Taking the extra step to get on the HSTS preload list closes the final gap, ensuring that every connection to your site is secure from the very first visit. Go get it done\! 🚀
+Getting on the preload list is an extra step, but it's worth it. It means every connection to your site is protected from the very first request, not just after the browser has visited once and cached the header.

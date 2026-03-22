@@ -71,7 +71,7 @@ The fix is to be selective about what you lock:
 
 ### Step 1: Install NextDNS as System
 
-First, I installed the NextDNS profile, but I did it via terminal to force it to the **System** level (so a Standard user can't touch it).
+Install the NextDNS profile via terminal to force it to the **System** level. A Standard user can't modify or remove a system-level profile.
 
 ```bash title="Terminal"
 sudo profiles -I -F /path/to/nextdns.mobileconfig

@@ -69,32 +69,32 @@ The problem comes down to **deterministic** vs **probabilistic** tools.
   * **LLMs are probabilistic.** Copilot makes educated guesses based on patterns. For creative work, that's great. For a refactor where every reference needs to be exactly right, those guesses pile up into a mess.
 
 
-## The Better Way: The Hybrid Approach
+## The approach that actually works
 
-Once I realized my mistake in strategy, the correct path became clear. It wasn't about abandoning the AI, but about partnering with it correctly.
+The fix wasn't to stop using AI. It was to use each tool for what it's actually good at.
 
-### Phase 1: The Surgeon (The IDE)
+### Phase 1: Let the IDE do the structural work
 
-First, I used my IDE for what it does best: handling complex, structural changes. It's important to note that `Post` wasn't just a single class. In my domain model, it was an **Aggregate Root**, with related entities like `Comment` and `TagLink` living under its domain folder and namespace. This meant renaming wasn't about one file, but about updating a whole slice of the domain, including folder structures and namespaces.
+First, I used the IDE's built-in refactoring. Worth knowing: `Post` wasn't just a single class in my project. It was an **Aggregate Root**, with `Comment` and `TagLink` living under the same domain folder and namespace. So this wasn't a one-file rename -- it touched folder structures and namespaces throughout that slice of the domain.
 
-This is where the IDE's refactoring tools are indispensable.
+The IDE handles this without breaking a sweat.
 
-1.  I reverted all the messy changes.
-2.  I located my `Post.cs` aggregate root class in the Solution Explorer and used the built-in `Rename` feature (often just a press of `F2` or `Ctrl+R, Ctrl+R`). The IDE flawlessly handled the renaming of the class, its related files, all dependent code, and even the namespaces.
-3.  With the code compiling, the next step was the database. I simply ran the standard command: `dotnet ef migrations add RenamePostToArticle`. This generated a clean, *new* migration file to apply the changes, ensuring the database history remained intact and deployable.
+1.  I reverted all of Copilot's changes.
+2.  I opened `Post.cs` in Solution Explorer and used the built-in rename (`F2` or `Ctrl+R, Ctrl+R`). It updated the class, related files, all dependent code, and the namespaces.
+3.  With everything compiling, I ran the migration: `dotnet ef migrations add RenamePostToArticle`. Clean new migration file, database history intact.
 
-This whole deterministic process took only a few minutes.
+That whole process took a few minutes.
 
-### Phase 2: The Partner (Copilot)
+### Phase 2: Then bring Copilot in
 
-*Now*, with the structural and database work correctly done and the application compiling, it was time to bring Copilot back in for the tasks it excels at. Instead of the dangerous "refactor everything" command, I gave it broader but safer tasks focused on prose and documentation:
+With the code correct and compiling, *now* I brought Copilot back -- but with a tighter scope. Instead of "refactor everything," I gave it specific jobs focused on prose:
 
 > Based on the recent refactoring from `Post` to `Article`, please review the project's documentation. This should include all markdown files, like the main `README.md` and any guides in the `/docs` folder, to ensure the terminology is updated.
 
-This prompt gives Copilot a well-defined scope (documentation) while still trusting it to find and update all the relevant files. After it handled that, I followed up with:
+Once that was done, I followed up with:
 
 > That's great, now can you help with the code comments? Please scan the C# files for any remaining XML documentation or inline comments that still refer to the old 'Post' concept and update them.
 
-This is the winning formula: let the IDE handle the deterministic, structural code changes, and then use the AI to handle the probabilistic, context-aware tasks like updating documentation, comments, and other prose.
+IDE for structural changes, Copilot for documentation, comments, and prose. That's the split that actually works.
 
-My failed refactor wasn't Copilot's fault; it was mine. I learned that AI is an incredibly powerful partner, but it's not an autopilot. Know your tools, play to their strengths, and you'll save yourself a world of pain. 🚀
+The failed refactor was on me, not Copilot. I used the wrong tool for the job and paid for it. Know what each tool is good at, and you'll save yourself a few hours of unnecessary pain.

@@ -159,35 +159,26 @@ curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-l
 iex ([System.Text.Encoding]::UTF8.GetString((iwr -UseBasicParsing 'https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.ps1').Content))
 ```
 
-This will download the script and configure your PowerShell profile automatically.
+This downloads the script and configures your PowerShell profile.
 
-### Keeping Up-to-Date
+### Keeping up-to-date
 
-The scripts include automatic update functionality:
+To update to the latest version:
 
 ```bash title="Terminal"
 # Linux/macOS or Windows PowerShell
 copilot_here --update
 ```
 
-This will:
-- Download and install the latest version of the CLI binary
-- Show you the version change
-- Automatically reload the updated functions
+This downloads the latest CLI binary, shows you what version changed, and reloads the updated functions in your current shell.
 
-### Manual Installation
+### Manual installation
 
-For manual installation or to see all available options and features, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo includes:
-- Detailed documentation on all command-line flags
-- Information about image variants (base, .NET, .NET + Playwright, Rust, and more)
-- Advanced configuration options including Airlock network isolation
-- Manual installation code blocks if you prefer to copy/paste directly
+For manual installation or a full list of options, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo has docs on all flags, the image variants, Airlock network isolation config, and copy-paste install blocks if you prefer that approach.
 
 ## Usage
 
-Once set up, using it is simple on any platform.
-
-### Get Help
+### Get help
 
 ```bash title="Terminal"
 # Linux/macOS

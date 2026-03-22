@@ -162,9 +162,9 @@ The tradeoffs here are worth naming honestly:
 
 The Result pattern is a solid goal, but introducing it into a codebase that already relies on exceptions for **flow control** is genuinely hard. A partial "hybrid" implementation can introduce its own subtle bugs.
 
-## A Word of Caution on Hybrid Systems
+## A word of caution on hybrid systems
 
-In a system built on exceptions, developers are conditioned to believe that "no exception means success." When they call a method that returns a Result object, their existing muscle memory might cause them to forget to check its status. The code continues to execute after the failure, assuming everything is fine, which can lead to corrupt state or unexpected behavior down the line.
+In a codebase built on exceptions, developers are conditioned to treat "no exception" as success. When they call a method that returns a Result, muscle memory kicks in and they forget to check its status. Code keeps running after a failure, assuming everything is fine.
 
 ```csharp title="Unchecked Result danger"
 // A developer, used to exceptions, might write this:

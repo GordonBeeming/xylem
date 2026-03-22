@@ -44,13 +44,11 @@ The fact that GPT-5.2 held its ground even when I explicitly said *"I know what 
 
 ## Why "stubbornness" matters
 
-This highlights the core trade-off in AI safety: **Compliance vs. Security**.
+This is the core trade-off in AI safety: compliance vs. security.
 
-We talk a lot about "Red Teaming" AI models, trying to trick them into doing things they shouldn't (generating malware, revealing system prompts, bypassing safety filters).
+Red teaming AI models is all about finding ways to trick them into doing things they shouldn't - generating malware, revealing system prompts, bypassing safety filters. The usual approach is framing the request as "debugging" or "authorized testing."
 
-If a model is compliant to a fault, it's easy to social engineer. You just have to frame the request as "debugging" or "authorized testing."
-
-But if a model has a hard line on certain patterns, like "never write plaintext secrets to a file", that makes it significantly harder to red team. It suggests a level of alignment that goes deeper than just "don't say bad words." It's enforcing **Operational Security (OpSec)** best practices by default.
+A model that folds under social pressure is easy to work around. But a model with a hard line on certain patterns - like "never write plaintext secrets to a file" - is genuinely harder to manipulate. That's not just "don't say bad words" alignment. That's operational security baked in by default.
 
 ## Conclusion
 

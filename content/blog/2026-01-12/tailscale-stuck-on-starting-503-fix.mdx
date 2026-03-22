@@ -50,7 +50,7 @@ Get-Process tailscaled -ErrorAction SilentlyContinue | Stop-Process -Force
 
 ### 2. Clear the Local State
 
-This is the "Magic Fix." Sometimes the local state files get corrupted (often after a Windows Update or a logic hiccup in the Wintun driver). Renaming the folder forces Tailscale to recreate everything from scratch.
+This is the one that usually does it. Local state files can get corrupted after a Windows Update or a hiccup in the Wintun driver. Renaming the folder forces Tailscale to start fresh.
 
 ```powershell title="PowerShell (Admin)"
 cd C:\ProgramData
@@ -61,7 +61,7 @@ Rename-Item -Path "Tailscale" -NewName "Tailscale.bak"
 
 ### 3. The Resurrection
 
-Now, start the service again and force a re-authentication.
+Start the service again and force a re-authentication.
 
 ```powershell title="PowerShell (Admin)"
 Start-Service Tailscale

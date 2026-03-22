@@ -68,24 +68,24 @@ public class PersonRepository
 }
 ```
 
-This is great\! Task 1 of my PBI is done.
+Task 1 of my PBI done.
 
-Now, imagine I *keep going*. In the same chat, I add unit tests for the repository. Then I add a validation class for the `Person` model. Then I refactor the `SavePeople` method to be async. Then I add logging...
+Now imagine I *keep going*. Same chat. I add unit tests for the repository, then a validation class for the `Person` model, then I refactor `SavePeople` to be async, then I add logging...
 
-This is where the trap is set. I've now stacked *dozens* of small, related-but-separate tasks on top of each other. I've left the chat open all morning. The context is now *massive*. It's loaded with my model, my repo, my unit tests, my async logic, a validation class, and logging configuration.
+That's the trap. I've stacked up *dozens* of small tasks in one session. The context is now carrying my model, my repo, unit tests, async logic, a validation class, and logging config. All of it.
 
-Now I'm ready to start the *next* PBI task: building the API.
+Then I'm ready for the *next* PBI task: building the API.
 
-I'm still in the **same terminal window** and I type:
+Still in the **same terminal window**, I type:
 
 ```text title="Copilot prompt (stale context)"
 (copilot) Now, create a simple ASP.NET Core Minimal API endpoint
    that uses this repository to get all people and add a new person.
 ```
 
-This *feels* like the right next step. But the AI is now 'thinking' about *everything* we've done. It's trying to process this new task through the lens of file I/O, unit test frameworks, my logging setup, and the `FluentValidation` library I added 20 prompts ago.
+Seems like the natural next step. But the AI is now wading through everything we did before. It's trying to answer through the lens of file I/O, test frameworks, my logging setup, and the `FluentValidation` library I mentioned 20 prompts back.
 
-The result I get back might be... weird.
+The output comes back weird.
 
 ```csharp title="Confused output (context bloat)"
 // This is the "confused" output

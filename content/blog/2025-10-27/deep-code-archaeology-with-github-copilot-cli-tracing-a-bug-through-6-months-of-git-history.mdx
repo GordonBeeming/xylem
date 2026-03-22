@@ -271,9 +271,9 @@ October 27, 2025
  Archival attempted, issue discovered
 ```
 
-## The Blast Radius
+## The blast radius
 
-Copilot didn't stop at finding the bug. It generated SQL queries to assess the damage:
+Copilot didn't stop at finding the bug. It also generated SQL queries to assess the damage:
 
 ```sql title="Find affected templates"
 -- Find affected templates
@@ -291,11 +291,7 @@ WHERE t.CleanupFlagsJson IS NULL
 ORDER BY t.CreatedOn;
 ```
 
-**Results:**
-- 47 templates affected (not all templates from that period, just those that hit the edge case)
-- All created between May 15 and September 2
-- All currently active (not archived)
-- Archival blocked for all 47
+47 templates affected - not all templates from that period, just those that hit the edge case. All created between May 15 and September 2, all still active, all blocked from archival.
 
 Copilot also checked related operations:
 

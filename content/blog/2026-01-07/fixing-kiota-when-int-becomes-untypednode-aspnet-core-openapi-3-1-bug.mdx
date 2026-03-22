@@ -56,13 +56,13 @@ public sealed class IntegerSchemaTransformer : IOpenApiDocumentTransformer
 
 It *sort of* worked, but it was fragile. I was patching the symptom rather than the cause, and the transformer kept growing as I found more edge cases (nested objects, arrays, and so on). Custom schema manipulation code is not something you want to maintain long-term.
 
-## Attempt 2: The Real Fix (JsonNumberHandling)
+## Attempt 2: the real fix (JsonNumberHandling)
 
-I dug deeper and found [this GitHub issue](https://github.com/microsoft/kiota/issues/6541) which pointed to the root cause. The "union type" schema wasn't a bug in the generator per se—it was accurately reflecting the default behavior of `System.Text.Json`.
+After more digging I found [this GitHub issue](https://github.com/microsoft/kiota/issues/6541) that pointed to the actual cause. The "union type" schema wasn't a bug in the generator, it was accurately reflecting the default behavior of `System.Text.Json`.
 
-The fix is surprisingly simple: tell System.Text.Json to be **Strict** about number handling.
+The fix is one line: tell `System.Text.Json` to use strict number handling.
 
-In your `Program.cs` or `AppServices.cs` (wherever you configure your services), add this configuration:
+In your `Program.cs` or `AppServices.cs` (wherever you configure your services), add this:
 
 ```csharp title="Program.cs"
 builder.Services.ConfigureHttpJsonOptions(options =>
@@ -73,7 +73,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 ```
 
-This forces the OpenAPI generator to emit a clean integer schema:
+With that in place, the OpenAPI generator produces a clean integer schema:
 
 ```json title="OpenAPI schema (after fix)"
 "totalItems": {

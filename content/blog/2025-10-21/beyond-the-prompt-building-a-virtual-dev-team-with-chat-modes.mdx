@@ -143,14 +143,12 @@ This one is a read-only Scrum Master. Its job is to scan the backlog and surface
 > **AGENT:**
 > Scanning for semantic duplicates related to 'login'... Found 2 potential pairs for you to review: [List of duplicate issues].
 
-## How to Build Them
+## How to build them
 
-This is the best part: it's just markdown!
+It's just markdown. As the [official documentation](https://code.visualstudio.com/docs/copilot/customization/custom-chat-modes) explains, you create a file (e.g., `task-planner.chatmode.md`) in your project's `.github/chatmodes` directory. The file has two parts:
 
-As the [official documentation](https://code.visualstudio.com/docs/copilot/customization/custom-chat-modes) explains, you just create a file (e.g., `task-planner.chatmode.md`) in your project's `.github/chatmodes` directory. The file has two parts:
-
-**1. The Frontmatter (The 'Brain'):** This YAML block at the top defines the tools and model.
-**2. The System Prompt (The 'Personality'):** This is just the markdown content *after* the `---` frontmatter.
+1. A YAML frontmatter block that defines the tools and model.
+2. Markdown content after the `---` delimiter, which is the system prompt.
 
 ## Get Started: Steal These Templates!
 

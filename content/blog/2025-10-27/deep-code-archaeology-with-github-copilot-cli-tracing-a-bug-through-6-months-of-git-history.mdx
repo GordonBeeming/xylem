@@ -426,26 +426,14 @@ git log --since="2025-05-01" -- CleanupWorkflowRegistry.cs &
 find . -name "*.cs" | xargs grep -l "CleanupFlagsJson" &
 ```
 
-### 2. Pattern Recognition Across Git History
-It connected:
-- Error message → Code location
-- Code location → Git commits over time
-- Commit history → Related refactors
-- Refactors → The September change that split old/new behavior
+### Pattern recognition across git history
+It connected the error message to a code location, traced that location through commits, found the related refactors, and landed on the September change that split old and new behavior.
 
-### 3. Context Retention
-Once it found the September refactor, it automatically:
-- Compared before/after states
-- Checked for data migrations
-- Identified the vulnerable time window
-- Generated validation queries
+### Context retention
+Once it found the September refactor, it went further automatically: comparing before/after states, checking for data migrations, identifying the vulnerable time window, and generating validation queries.
 
-### 4. Auto-Documentation
-The entire investigation was documented in a structured markdown file, including:
-- Timeline diagrams
-- Code snippets
-- SQL queries
-- Remediation options
+### Auto-documentation
+The whole investigation ended up in a structured markdown file with timeline diagrams, code snippets, SQL queries, and remediation options. That becomes a permanent artifact you can share with the team.
 
 ## What This Means for Complex Investigations
 

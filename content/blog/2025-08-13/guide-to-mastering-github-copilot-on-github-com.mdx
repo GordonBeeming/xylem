@@ -69,13 +69,13 @@ Copilot handles this kind of work well. It's good at wide-reaching but repetitiv
 While Copilot is threading that `readonly` flag through the codebase, you can be in your IDE working on actual hard problems. Even if Copilot gets the UI 80% right, you've still come out ahead. Pull down the branch, spend five minutes fixing up a couple of things, and merge. That's a good trade.
 
 
-## Mastering the Feedback Loop
+## Giving feedback that actually works
 
-Once Copilot submits a PR, how you provide feedback is critical. The most common mistake is to "drip-feed" your comments.
+Once Copilot submits a PR, how you give feedback makes a real difference. The most common mistake is drip-feeding comments one at a time.
 
-The way this works is that as soon as you mention `@github-copilot` in a comment, it starts working on that single piece of feedback. Once it's done, it will then see your other comments and pick them up as a *second, separate job*. This is not only inefficient, but it also means the first change was made without the context of your later feedback, often leading to rework.
+Here's why that's a problem: as soon as you mention `@github-copilot` in a comment, it starts working on that single piece of feedback. Once it's done, it picks up your next comment as a separate job. That first change was made without the context of everything else you wanted, so now you're fixing the fix. It adds up.
 
-Instead, **batch your feedback**. It's far more effective to take an extra minute to gather all your thoughts into a single, numbered comment like this:
+Batch your feedback instead. Take an extra minute to gather all your thoughts into one numbered comment:
 
 <Figure 
     key="/images/good-feedback-example.png" 
@@ -84,7 +84,7 @@ Instead, **batch your feedback**. It's far more effective to take an extra minut
     width="0" height="0" 
     caption="✅ A single, clear comment with numbered points gives Copilot a complete to-do list." />
 
-To make your feedback even more powerful, remember that a picture is worth a thousand words. You can add screenshots to your comments—and Copilot can see them! Marking up a screenshot with boxes or arrows to pinpoint a specific UI element or issue is an incredibly effective way to provide unambiguous feedback.
+You can also add screenshots to your comments, and Copilot can see them. Drawing a red box around the specific element you're talking about is often faster and clearer than trying to describe it in words.
 
 <Figure 
     key="/images/marked-up-screenshot-feedback.png" 

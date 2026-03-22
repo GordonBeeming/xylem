@@ -6,11 +6,11 @@ draft: false
 summary: 'You open your laptop, ready to code, but Tailscale is stuck in a "Starting..." loop. You try the CLI and get a 503 Service Unavailable. Here is how to nuke the zombie process and get back to work.'
 ---
 
-We've all been there. You've got your coffee, your MacBook Pro M4 is docked, and you're ready to hit some internal Azure resources. Then you see it... that greyed-out Tailscale icon just spinning its wheels. 🔄
+You've got your coffee, your MacBook Pro M4 is docked, and you're ready to hit some internal Azure resources. Then you see it - that greyed-out Tailscale icon just spinning its wheels.
 
-You try to log in again. Nothing. You try to restart the app. Still "Starting...". 
+You try to log in again. Nothing. You try to restart the app. Still "Starting...".
 
-If you're a dev, your next move is usually the terminal, where you're greeted with this lovely message:
+If you're a dev, your next move is the terminal, where you get this:
 
 ```powershell title="PowerShell"
 PS C:\Users\VmAdmin> tailscale login
@@ -18,7 +18,7 @@ PS C:\Users\VmAdmin> tailscale login
 
 ```
 
-How old were you when you realized "Starting..." actually means "I've lost the ability to speak to my own background service"? 😅
+Turns out "Starting..." is Tailscale's way of saying it can't talk to its own background service.
 
 ## The Problem
 

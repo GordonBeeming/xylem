@@ -31,29 +31,24 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 
 ## 1. Native ARM64 Support: Apple Silicon
 
-This is the big one. Until now, Mac users on Apple Silicon were running the AMD64 image via Rosetta emulation. It worked, but it wasn't optimal.
+This is the one I've been wanting to ship for a while. Until now, Mac users on Apple Silicon were running the AMD64 image via Rosetta emulation. It worked, but it wasn't great.
 
 As of version `2025-11-19`, we now publish multi-arch images for both `linux/amd64` and `linux/arm64`.
 
-### What this means for you:
-- **Performance**: Native execution means faster startup and response times.
-- **Efficiency**: Lower memory and CPU usage on Mac and ARM devices.
-- **Compatibility**: You can now run `copilot_here` on other ARM Linux devices!
-
-Docker will automatically pull the correct image for your architecture. No configuration needed.
+You get faster startup and response times, lower memory and CPU usage on Mac, and the ability to run `copilot_here` on other ARM Linux devices. Docker pulls the correct image for your architecture automatically - no config needed.
 
 ---
 
 ## 2. .NET 10 SDK
 
 ### .NET 10
-For the .NET developers wanting the latest features, we now have specific image variants for each .NET version:
+For .NET developers wanting the latest features, there are now specific image variants for each version:
 
 - `dotnet-8`: Previous LTS
 - `dotnet-9`: Standard Term Support
 - `dotnet-10`: Latest LTS
 
-The main `dotnet` tag includes all three SDKs, but if you want a lighter image or specific version, you can now choose exactly what you need.
+The main `dotnet` tag still includes all three SDKs, but if you want a lighter image or need to pin a specific version, you can now do that.
 
 ```bash title="Terminal"
 # Use the .NET 10 specific image

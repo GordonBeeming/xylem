@@ -133,13 +133,13 @@ All functions support switching between Docker image variants using flags:
 - **`--rust`** (`-rs`) - Rust image (includes Rust toolchain)
 - **`--dotnet-rust`** (`-dr`) - .NET + Rust image
 
-### Additional Options
+### Additional options
 
 - **`-h` or `--help`** - Show usage help and examples (Bash/Zsh) or `-h` / `-Help` (PowerShell)
 - **`--no-cleanup`** - Skip cleanup of unused Docker images (Bash/Zsh) or `-NoCleanup` (PowerShell)
 - **`--no-pull`** - Skip pulling the latest image (Bash/Zsh) or `-NoPull` (PowerShell)
 
-Both modes include security checks for proper GitHub token scopes and warn about overly privileged tokens. The functions also automatically clean up unused Docker images tagged with the project label, keeping your system tidy.
+Both modes check your GitHub token scopes and warn if the token has more permissions than needed. They also clean up unused Docker images tagged with the project label automatically.
 
 ## Setup Instructions
 

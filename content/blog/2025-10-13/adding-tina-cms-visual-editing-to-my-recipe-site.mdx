@@ -74,7 +74,7 @@ But then I tried using my checkboxes (I have interactive checkboxes for recipe s
 
 ## When custom components meet TinaMarkdown
 
-Here's the thing nobody tells you: `TinaMarkdown` and `ReactMarkdown` are completely different beasts (especially for a none UI guy like me 😅). They both render markdown, but they have their own systems for handling custom components.
+`TinaMarkdown` and `ReactMarkdown` are completely different beasts (especially for a non-UI guy like me 😅). They both render markdown, but they have their own systems for handling custom components.
 
 I had custom components set up for `ReactMarkdown`:
 
@@ -185,11 +185,11 @@ Now each checkbox gets a unique, stable key like `durban-beef-curry-item-0`, `du
 
 ## Bonus: making state reactive with context
 
-There was one more gotcha. Even with unique keys, the checkboxes weren't visually updating when clicked. The state was changing (confirmed with more `console.log` adventures), but the UI wasn't re-rendering.
+One more gotcha. Even with unique keys, the checkboxes weren't visually updating when clicked. The state was changing (confirmed with more `console.log` adventures), but the UI wasn't re-rendering.
 
-The issue? TinaMarkdown aggressively memoizes its content for performance. When I passed checkbox state as props, TinaMarkdown wasn't re-rendering to propagate those changes.
+TinaMarkdown aggressively memoizes its content for performance. When I passed checkbox state as props, TinaMarkdown wasn't re-rendering to propagate those changes.
 
-The solution? React Context. Instead of passing state down as props, provide it through context so each checkbox can subscribe to changes:
+React Context fixed it. Instead of passing state down as props, I provided it through context so each checkbox could subscribe to changes directly:
 
 ```typescript title="Checkbox context solution"
 // Create context for checkbox state

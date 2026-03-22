@@ -36,13 +36,11 @@ I've been down that road, and it backfires.
 
 That instruction file is loaded every single time you ask a question. It quickly becomes a 500-line monster. When you want to ask a simple question about a regex, the AI is wading through hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas. It pollutes the prompt and makes responses worse for everyday tasks.
 
-## The Solution: Your Virtual Team
+## The solution: a virtual team
 
-Custom Chat Modes solve this. Instead of one giant instruction file, you create a *set* of specialists.
+Custom Chat Modes fix this. Instead of one giant instruction file, you create a set of specialists.
 
-Each file defines that agent's **persona**, its **rules**, and, most importantly, the **tools** it's allowed to use. The context is only loaded when you *explicitly choose* that specialist.
-
-When you want to chat, you just pick the right "person" for the job from the chat UI.
+Each file defines that agent's persona, its rules, and the tools it's allowed to use. The context is only loaded when you explicitly choose that specialist. When you want to chat, you pick the right person for the job from the chat UI.
 
 <Figure key="/images/chat-mode-picker.png" src="/images/chat-mode-picker.png" alt="A screenshot of the VS Code chat dropdown menu, showing custom chat modes like 'Backlog Refinement', 'Create PBIs', 'Tests', and 'Task Planner'." width="400" height="0" caption="Choosing the right specialist from the chat mode dropdown." />
 

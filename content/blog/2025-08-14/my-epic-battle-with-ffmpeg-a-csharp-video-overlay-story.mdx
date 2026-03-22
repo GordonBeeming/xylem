@@ -22,16 +22,16 @@ In theory, it's a tidy solution. In practice, on a Mac with FFmpeg v7+, it fell 
 
 The command looked syntactically correct, but FFmpeg was **silently misinterpreting** it. The results were baffling: the final video would get created, but the overlays were just gone, as if those filter graph instructions had been quietly ignored. After going through every variation I could think of, it was clear this "all-in-one" approach wasn't going to work for this specific case. Time to drop it and try something less clever.
 
-## The Breakthrough: Back to Basics
+## The breakthrough: back to basics
 
-After exhausting every possible permutation of the "all-in-one" command, the solution was to retreat and simplify. The complex filter graph was the problem. The fix was to abandon it.
+After exhausting every permutation of the all-in-one command, the answer was to step back and simplify. The complex filter graph was the problem, so the fix was to stop using it.
 
-The new strategy was far more robust because each step is a simple, verifiable command that FFmpeg can't misinterpret:
-1.  **Create three separate, temporary video files.** One for the intro segment, one for the middle, and one for the end.
-2.  **Use a bulletproof intermediate format.** The key discovery was that creating these temporary files as `.mp4` was still too fragile for concatenation. The industry-standard solution is to use the **MPEG Transport Stream (`.ts`)** format, which is specifically designed to be joined together flawlessly.
-3.  **Stitch them together.** Once the three `.ts` files exist, a final, simple command can join them.
+The new approach works because each step is a small, verifiable command that FFmpeg can handle without ambiguity:
+1.  **Create three separate temporary video files.** One for the intro segment, one for the middle, one for the end.
+2.  **Use the right intermediate format.** The key discovery here was that `.mp4` was too fragile for reliable concatenation. The solution is to use the **MPEG Transport Stream (`.ts`)** format, which is designed specifically to be joined together cleanly.
+3.  **Stitch them together.** Once the three `.ts` files are ready, a final simple command joins them.
 
-This approach is less "elegant" as it requires writing temporary files to disk, but it has one major advantage: **it actually works.**
+It's not as tidy since it writes temporary files to disk, but it has one thing going for it: **it actually works.**
 
 ## The Final Working Code
 

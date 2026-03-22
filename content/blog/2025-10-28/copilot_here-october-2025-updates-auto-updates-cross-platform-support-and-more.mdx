@@ -91,7 +91,7 @@ It updates the file and reloads the function in your current session, so you don
 
 ## 3. Quick Install Method
 
-I had this elaborate setup where users needed to copy shell function code from the README and paste it into their config files. It worked, but it was clunky. Then I realized: why not just let them download and source a script file?
+The old setup required users to copy shell function code from the README and paste it into their config files. It worked, but it was awkward. Why not just let them download and source a script file?
 
 ### Before (Manual Mode):
 ```bash title="Terminal"
@@ -107,7 +107,7 @@ I had this elaborate setup where users needed to copy shell function code from t
 curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
 ```
 
-One command. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update`.
+One command. And because the script lives in its own file now, updating is just `copilot_here --update`.
 
 I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
 
@@ -119,9 +119,7 @@ fi
 
 ## 4. Argument Pass-Through: Unlocking Native Copilot Features
 
-Initially, I had built-in support for specific flags like `--help` and `--no-cleanup`. But what about all the other arguments that GitHub Copilot CLI supports?
-
-I was basically re-implementing argument parsing for no reason. So I added automatic pass-through:
+I had built-in support for specific flags like `--help` and `--no-cleanup`, but that meant I was re-implementing argument parsing for flags the underlying CLI already handled. So I added automatic pass-through instead:
 
 ```bash title="Argument pass-through logic"
 # Built-in wrapper args

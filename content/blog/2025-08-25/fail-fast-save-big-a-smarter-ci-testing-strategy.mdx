@@ -105,7 +105,7 @@ We also restructured our Dockerfiles to make better use of Docker's build cache.
 
 The rule is simple: put the things that change least often first. This one change dropped our cached image build time from **9 minutes 33 seconds** down to **7 minutes 8 seconds**.
 
-**Before:** We copied all our code *before* restoring dependencies, meaning any code change would invalidate the cache and trigger a slow `dotnet restore`.
+**Before:** We copied all our code before restoring dependencies, so any code change invalidated the cache and triggered a slow `dotnet restore`.
 
 ```dockerfile title="Dockerfile (before)"
 # Old Dockerfile (inefficient)
@@ -116,7 +116,7 @@ RUN dotnet restore "MyProject/MyProject.csproj" # Runs on every code change
 # ...
 ```
 
-**After:** We now copy only the `.csproj` files, restore the dependencies to create a stable cache layer, and *then* copy the rest of the source code.
+**After:** We copy only the `.csproj` files first, restore dependencies to create a stable cache layer, then copy the rest of the source code.
 
 ```dockerfile title="Dockerfile (after)"
 # New Dockerfile (efficient)

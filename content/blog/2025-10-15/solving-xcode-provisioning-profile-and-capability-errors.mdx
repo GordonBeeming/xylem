@@ -58,14 +58,14 @@ I tried the usual suggestions first:
 * Deleting cached profiles from `~/Library/MobileDevice/Provisioning Profiles/` - but this folder didn't even exist on my machine since no profile had ever been successfully created.
 * Manually creating a new provisioning profile on the developer portal, downloading it, and assigning it in Xcode. Still broken.
 
-## The Solution That Worked: Clearing Derived Data
+## What actually worked: clearing Derived Data
 
-The issue was a corrupted Xcode cache that prevented it from recognizing the new, valid profiles. The solution was to delete the project's **Derived Data**.
+Xcode's cache was corrupted and wouldn't pick up the new valid profiles. The fix was deleting the project's Derived Data.
 
-✅ **The Fix:**
-1.  **Close Xcode completely.**
+**Steps:**
+1.  Close Xcode completely.
 2.  Go to `Xcode` -> `Settings...` -> `Locations`.
-3.  Click the small grey arrow next to the **Derived Data** path to open the folder in Finder.
+3.  Click the small grey arrow next to the Derived Data path to open the folder in Finder.
 
 <Figure
   key="/images/derived-data-location.png"
@@ -74,7 +74,7 @@ The issue was a corrupted Xcode cache that prevented it from recognizing the new
   caption="Finding the Derived Data path in Xcode's settings."
 />
 
-4.  In the Finder window that opens, **delete the entire `DerivedData` folder**, or just the specific subfolder for your project.
-5.  Re-open Xcode. It will re-index your project, and the signing errors should be resolved.
+4.  Delete the entire `DerivedData` folder, or just the subfolder for your project.
+5.  Re-open Xcode. It'll re-index your project and the signing errors should be gone.
 
-Clearing Derived Data is a powerful solution for many unexplainable Xcode issues and, in this case, was the key to fixing the code signing problem.
+Clearing Derived Data is one of those fixes that sounds too simple, but it works for a surprising range of weird Xcode behaviour. Worth trying before you go too deep down the rabbit hole.

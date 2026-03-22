@@ -14,7 +14,7 @@ I'll be honest, **I fought him on it at first.** I was emotionally attached to t
 
 But as we talked it through, I started to come around. The simpler design wasn't just 'good enough'; it had real advantages of its own. And as I kept pulling on that thread, I stumbled onto something I hadn't expected: a well-structured domain model makes a surprisingly good guardrail for AI tools like GitHub Copilot.
 
-## The Goal: A Well-Defined Domain
+## The goal: a well-defined domain
 
 First, why bother with all this complexity? In Domain-Driven Design (DDD), the goal of encapsulation is to protect your **business rules**, or "invariants." Your domain model is the heart of your application, and it needs to protect itself from being put into an invalid state.
 
@@ -55,7 +55,7 @@ item.Quantity = 5;
 
 Our goal is to make these invalid states unrepresentable by forcing all interactions to go through controlled methods on the Aggregate Root.
 
-## Approach \#1: The Fortress (and the Aggregate Root)
+## Approach #1: the fortress (and the Aggregate Root)
 
 My initial approach was to build a fortress, and I built it around a core concept from Domain-Driven Design (DDD): the **Aggregate Root**.
 
@@ -144,7 +144,7 @@ public sealed class Order
 ❌ Creates a rigid coupling between the entities within the file.\
 ❌ Can make the domain harder to evolve.
 
-## Approach \#2: The Pragmatic Trust Boundary
+## Approach #2: the pragmatic trust boundary
 
 After my chat with Daniel, the pragmatic approach became much clearer. The goal is to isolate your domain model into its own, separate C\# project (e.g., `MySolution.Domain.dll`). This creates a strong physical boundary. When you're building applications with frameworks like Minimal APIs, your "app code" often lives in the main web project. Placing your domain in a separate assembly means it can't accidentally get coupled with your web or infrastructure concerns.
 

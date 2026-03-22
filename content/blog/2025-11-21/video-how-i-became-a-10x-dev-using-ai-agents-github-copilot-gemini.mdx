@@ -22,14 +22,17 @@ Gemini's context window is huge, and I use that deliberately. Instead of craftin
 
 One side effect: the "documentation tax" mostly disappears. ADRs and specs come out of your brainstorming sessions almost automatically when you're already having that conversation with an AI.
 
-## The Tooling Ecosystem
+## The tooling ecosystem
 
-Don't use one tool for everything. I break down my workflow based on the risk and creativity required:
+I don't use one tool for everything — each one has a job, and mixing them up is where things go wrong.
 
-* **IDE (Visual Studio / VS Code):** Use for **Deterministic** tasks. Renaming, refactoring, and moving files should be done here because it's guaranteed to be correct.
-* **Gemini:** Use for **Creative** tasks and **Planning**. Best for generating new services from scratch or high-level architecture discussions.
-* **GitHub Spark:** Use for **Prototyping**. Great for spinning up React apps (like my wife's portfolio) to get a visual base quickly.
-* **Tina CMS:** Use for **Content**. Decouples content management from the code so you can use a visual editor while keeping data in Git.
+The IDE (Visual Studio / VS Code) is for deterministic tasks: renaming, refactoring, moving files. These need to be guaranteed correct, so I keep AI agents away from them.
+
+Gemini handles creative work and planning. If I'm generating a new service from scratch or working through architecture decisions, that's where I start.
+
+GitHub Spark is for prototyping. I used it to spin up a React app for my wife's portfolio — the goal there is just getting a visual base quickly, not production code.
+
+Tina CMS handles content. It decouples content management from the codebase so I can use a visual editor while keeping everything in Git.
 
 ## The "Fix": Securing the Copilot CLI
 

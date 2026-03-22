@@ -6,11 +6,11 @@ draft: false
 summary: 'If your Kiota client is generating UntypedNode properties instead of int, you might be hitting an ASP.NET Core OpenAPI bug. Here is the one-line fix.'
 ---
 
-I recently ran into a frustrating issue where my generated Kiota client suddenly stopped using `int` for integer properties and started using `UntypedNode` instead.
+I ran into a confusing issue recently where my generated Kiota client stopped using `int` for integer properties and started using `UntypedNode` instead.
 
-This happened after upgrading my project from .NET 9 to .NET 10 and regenerating the client. The build was fine, but the generated code was full of `UntypedNode` where I expected `int` or `int?`.
+It happened after upgrading from .NET 9 to .NET 10 and regenerating the client. The build was fine, but the generated code was full of `UntypedNode` where I expected `int` or `int?`.
 
-Here's the error/warning I was seeing during generation:
+Here's the warning I was seeing during generation:
 
 ```text title="Kiota warning output"
 warn: Kiota.Builder.KiotaBuilder[0]
@@ -18,13 +18,13 @@ OpenAPI warning: #/components/schemas/OrderSummary/properties/totalItems -
 The format int32 is not supported by Kiota for the type Integer, String and the string type will be used.
 ```
 
-## The Root Cause
+## The root cause
 
-The issue stems from how ASP.NET Core (specifically System.Text.Json) handles number serialization by default. It's "lenient", meaning it will accept both:
-- `42` (actual number)
-- `"42"` (string representation)
+ASP.NET Core's `System.Text.Json` is lenient about number handling by default. It accepts both:
+- `42` (an actual number)
+- `"42"` (the same value as a string)
 
-Because of this, the ASP.NET Core OpenAPI generator produces a schema that looks like this:
+Because of that, the ASP.NET Core OpenAPI generator produces a schema that looks like this:
 
 ```json title="OpenAPI schema (before fix)"
 "totalItems": {

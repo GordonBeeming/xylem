@@ -55,20 +55,18 @@ public class ArticleService
 }
 ```
 
-Each time I tried to ask Copilot to fix its previous mistake, it felt like I was digging a deeper hole. What should have been a 20-minute task was now a multi-hour-long session of me debugging the AI's output. The dream of saving time had become a productivity nightmare.
+Every time I asked it to fix the last thing it broke, it broke something else. What should have been 20 minutes turned into hours of me chasing down the AI's mistakes. Not exactly the productivity win I had in mind.
 
 
-## The "Aha\!" Moment
+## Why it went wrong
 
-After fighting with the code for way too long, I finally took a step back and asked myself: *why* did this fail so badly?
+After banging my head against it for too long, I stopped and actually thought about *why* this failed.
 
-The answer is the difference between a **deterministic** tool and a **probabilistic** one.
+The problem comes down to **deterministic** vs **probabilistic** tools.
 
-  * An **IDE's refactoring tools** are **deterministic**. When you tell Visual Studio to rename a class, it analyzes the entire solution's structure and precisely updates every single correct reference. It's a surgical operation.
+  * **IDE refactoring tools are deterministic.** When you tell Visual Studio to rename a class, it parses the solution, finds every reference, and updates them all. No guessing.
 
-  * An **LLM like Copilot** is **probabilistic**. It makes incredibly educated guesses based on the patterns it has learned. For creative tasks, this is a superpower. For a large-scale, precision-critical refactor, these "guesses" can introduce chaos.
-
-I had used a creative poet for a spell-checker's job. I needed a surgeon, but I'd hired a painter.
+  * **LLMs are probabilistic.** Copilot makes educated guesses based on patterns. For creative work, that's great. For a refactor where every reference needs to be exactly right, those guesses pile up into a mess.
 
 
 ## The Better Way: The Hybrid Approach

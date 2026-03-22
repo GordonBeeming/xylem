@@ -60,9 +60,9 @@ Here's the loop I follow (and what I had Copilot CLI do for me).
 
 ### Step 0: Tell the AI what "done" means
 
-You want the AI to behave like a senior engineer doing an upgrade: incremental, conservative, build-first.
+You want the AI acting like a careful engineer, not an eager one. Incremental, conservative, build-first.
 
-Paste a prompt like this into Copilot CLI (this was tested with the GPT-5.2 model, but the structure matters more than the model):
+Paste a prompt like this into Copilot CLI (I tested this with the GPT-5.2 model, but the structure matters more than the model):
 
 ```text title="Copilot CLI prompt"
 I need help upgrading an Angular app from v13 to v21.
@@ -76,11 +76,11 @@ Rules:
 Start by checking the current Angular version and identifying the Angular workspace.
 ```
 
-A good agent will do exactly what you'd do:
+A good agent does exactly what you'd do:
 
 - identify the workspace (`angular.json`)
 - confirm versions
-- plan the major-by-major upgrade path
+- plan the upgrade path version by version
 
 ### Step 1: Upgrade one major version
 

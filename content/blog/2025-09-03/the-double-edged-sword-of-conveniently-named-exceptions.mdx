@@ -90,25 +90,25 @@ public void SetUsername(string newUsername)
 
 This misuse is less common, which is exactly what makes it so disorienting. Developers trust that `ArgumentNullException` means `null`. When it doesn't, they go hunting for a null that isn't there. Use `ArgumentException` instead.
 
-## A Better Way: The Result Pattern
+## A better way: the Result pattern
 
-The root of the problem is using exceptions, a mechanism for handling *exceptional, unexpected* events, for predictable outcomes like validation failures. When you use exceptions for regular control flow, you're not just creating confusing code; you might also be running up your cloud bill.
+The root of the problem is using exceptions - a mechanism for *unexpected* events - for predictable outcomes like validation failures. Beyond confusing code, there's a practical cost.
 
-Cloud logging and monitoring services, like Azure Application Insights or AWS CloudWatch, often bill based on the volume of data ingested. Exceptions, with their verbose stack traces, generate a lot of data. At scale, logging thousands of "failures" that are actually just predictable business outcomes can lead to significant and unnecessary costs.
+Cloud logging and monitoring services like Azure Application Insights or AWS CloudWatch bill based on data ingested. Exceptions with their verbose stack traces generate a lot of it. At scale, logging thousands of predictable business outcomes as exceptions adds up to a real line item on your bill.
 
-A much cleaner and more cost-effective approach is the **Result pattern**. Thankfully, you don't have to build it from scratch. There are several excellent, production-ready libraries available that provide a robust and feature-rich implementation.
+The **Result pattern** sidesteps this entirely. You don't have to build it from scratch - there are production-ready libraries available.
 
-A few popular options include:
+A few popular options:
 
   * **`FluentResults`** by [Michael Altmann](https://github.com/altmann/FluentResults)
   * **`ErrorOr`** by [Amichai Mantinband](https://github.com/amantinband/error-or)
   * **`LanguageExt`** by [Paul Louth](https://github.com/louthy/language-ext)
 
-For our example, we'll use `FluentResults`. While you *can* simply fail with a string like `Result.Fail("An error occurred")`, this is not ideal. It forces the calling code to rely on string-matching to figure out what went wrong, which is brittle and error-prone.
+For our example, we'll use `FluentResults`. You *can* just fail with a string like `Result.Fail("An error occurred")`, but that's not great - it forces callers to do string-matching to figure out what went wrong, which is fragile.
 
-A much better approach is to use **strongly-typed errors**. This allows the caller to check for specific failure types and handle them accordingly.
+**Strongly-typed errors** are the better move. The caller can check for specific failure types and handle them properly.
 
-Let's refactor our `GrantAdminAccess` method to use a custom, typed error:
+Here's the `GrantAdminAccess` method refactored with a typed error:
 
 ```csharp title="Result pattern with typed errors"
 // ✅ Good Practice using FluentResults with Typed Errors

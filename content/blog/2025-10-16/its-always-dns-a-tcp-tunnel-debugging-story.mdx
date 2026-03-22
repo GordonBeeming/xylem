@@ -8,32 +8,32 @@ summary: "Exposing a development tool from Azure Container Apps via a Cloudflare
 
 
 
-We've all been there. You have a simple goal that should take 15 minutes, but hours later, you're deep in the weeds of network troubleshooting. My goal was simple: securely expose a development mail-catcher tool, `smtp4dev`, running in an Azure Container App Environment to the internet using a Cloudflare Tunnel.
+We've all been there. You have a simple goal that should take 15 minutes, but hours later you're deep in network troubleshooting with no end in sight. My goal was straightforward: securely expose a development mail-catcher tool, `smtp4dev`, running in an Azure Container App Environment to the internet using a Cloudflare Tunnel.
 
-This is a fantastic pattern for giving distributed teams access to internal tools without the hassle of VPNs or public IP addresses. But this time, it just... wouldn't... work. 😩
+It's a good pattern for giving distributed teams access to internal tools without dealing with VPNs or public IP addresses. But this time, it just wouldn't work.
 
 ## The Setup
 
-The architecture is straightforward:
-1.  **A "Mail Catcher" Container App (`mail-catcher-app`):** Running the `smtp4dev` image, this app needs to accept SMTP traffic on a TCP port and expose a web UI.
+The architecture has three parts:
+1.  **A "Mail Catcher" Container App (`mail-catcher-app`):** Running the `smtp4dev` image, this app accepts SMTP traffic on a TCP port and exposes a web UI.
 2.  **A "Tunnel Agent" Container App (`tunnel-agent-app`):** Running the `cloudflared` agent in a separate container within the same environment.
-3.  **A Cloudflare Tunnel:** Configured with two public hostnames: one for the HTTP web UI and one for the TCP SMTP traffic.
+3.  **A Cloudflare Tunnel:** Configured with two public hostnames, one for the HTTP web UI and one for the TCP SMTP traffic.
 
-The HTTP part worked immediately. The TCP part? Not a chance. This began the classic process of elimination.
+HTTP worked straight away. TCP? Nothing. Time to start eliminating variables.
 
-## Step 1: Check the Obvious - Ports and Ingress
+## Step 1: Check the obvious - ports and ingress
 
-My first suspect was a port mismatch. In Azure Container Apps, to expose both HTTP and TCP traffic, you configure the main ingress for HTTP and then add an "Additional TCP port". I configured the main ingress for HTTP on port 80 and added an additional TCP port for `2525`.
+My first suspect was a port mismatch. In Azure Container Apps, to expose both HTTP and TCP traffic, you configure the main ingress for HTTP and then add an "Additional TCP port". I set the main ingress for HTTP on port 80 and added TCP port `2525`.
 
-I made sure my Cloudflare Tunnel configuration matched, pointing the TCP service to port `2525`.
+I double-checked the Cloudflare Tunnel config was pointing the TCP service at port `2525`.
 
-Still nothing. The connection timed out every time. 🤔
+Still nothing. Connection timed out every time.
 
-## Step 2: Can the Containers Even Talk to Each Other?
+## Step 2: Can the containers even talk to each other?
 
-The next logical question: is the problem with Cloudflare or with the internal Azure network? The best way to find out is to test the connection from inside the environment. I got a shell into my `tunnel-agent-app` to see if it could reach the `mail-catcher-app`.
+Is this a Cloudflare problem or an internal Azure network problem? The only way to know is to test from inside the environment. I dropped a shell into `tunnel-agent-app` to check if it could reach `mail-catcher-app` directly.
 
-My containers are locked down and don't have tools like `telnet` or `nc`. Luckily, a powerful `bash` shell has a built-in trick for testing TCP connections:
+My containers are locked down with no `telnet` or `nc`. `bash` has a built-in TCP test that works fine as a substitute:
 
 ```bash title="Terminal"
 # This command attempts to open a TCP connection to the specified host and port.

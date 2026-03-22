@@ -65,14 +65,14 @@ The Cloudflare side of this is straightforward - no code changes needed.
 
 <Figure key="/images/hsts-cloudflare-config.png" src="/images/hsts-cloudflare-config.png" alt="Cloudflare's HSTS configuration settings pane showing Max-Age, Include Subdomains, Preload, and No-Sniff options." width="0" height="0" caption="Configuring the HSTS policy in the Cloudflare dashboard" />
 
-Here's what each setting means:
+Here's what each setting does:
 
-* **Max-Age:** This is the duration, in seconds, that the browser should cache the HSTS policy. While Cloudflare may indicate `6 months` as "(Recommended)", to be eligible for preloading, this **must be set to at least 1 year** (`31536000` seconds) is the recommended value for long-term security.
-* **Include subdomains:** This applies the HSTS policy to all subdomains of your site. This is a **mandatory requirement** for preloading. Only enable this if you are certain all your subdomains have HTTPS working correctly.
-* **Preload:** This adds the `preload` directive to the header. This is your signal to browsers that you consent to have your domain included in their hardcoded preload lists. This is also **mandatory** for preloading.
-* **No-Sniff:** This is a **bonus!** Cloudflare also adds the `X-Content-Type-Options: nosniff` header, which helps prevent browsers from MIME-sniffing a response away from the declared content-type.
+* **Max-Age:** How long, in seconds, the browser caches the HSTS policy. Cloudflare shows 6 months as "Recommended", but you need at least 1 year (`31536000` seconds) to qualify for preloading.
+* **Include subdomains:** Extends the policy to all subdomains. Required for preloading, but only enable this if all your subdomains actually work over HTTPS.
+* **Preload:** Adds the `preload` directive to the header, which signals your consent to be included in browser preload lists. Also required for preloading.
+* **No-Sniff:** A bonus setting - Cloudflare adds `X-Content-Type-Options: nosniff`, which stops browsers from guessing content types and ignoring your declared one.
 
-Once you have set the `Max-Age` to at least 1 year, and enabled both `Include subdomains` and `Preload`, save your configuration.
+Set `Max-Age` to at least 1 year, turn on `Include subdomains` and `Preload`, then save.
 
 ## Part 2: Joining the HSTS Preload List
 

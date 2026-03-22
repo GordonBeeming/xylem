@@ -84,8 +84,8 @@ With that in place, the OpenAPI generator produces a clean integer schema:
 
 Once you've made that change, restart your API and regenerate your Kiota client. Your `int` properties will be back.
 
-## Why this matters
+## Worth noting
 
-While lenient parsing can be convenient, being strict about types is generally better for API contracts. This change aligns your API with standard JSON behavior and makes your client SDKs significantly cleaner.
+Lenient number parsing is a convenience, but it tends to leak into your API contract in ways you don't expect (as this whole mess shows). Strict mode is more predictable and keeps your generated clients clean.
 
-If you have clients that are currently sending numbers as strings (e.g. `"id": "123"`), they will need to be updated to send actual numbers (`"id": 123`).
+One thing to be aware of: if any existing clients send numbers as strings (e.g. `"id": "123"`), they'll start getting errors after this change. They'll need to send actual numbers (`"id": 123`).

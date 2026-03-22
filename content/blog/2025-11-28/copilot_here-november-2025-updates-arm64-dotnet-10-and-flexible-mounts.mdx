@@ -214,18 +214,15 @@ The proxy is written in Rust for memory safety and performance. The app containe
 
 ## 5. Actual Path Mapping: Know Where You Are
 
-### The Multi-Instance Confusion Problem
+### The multi-instance confusion problem
 
-Picture this: You're investigating a bug with three terminal windows open:
-- One in `/Users/me/projects/api`
-- One in `/Users/me/projects/frontend`
-- One in `/Users/me/investigations/bug-123`
+Picture this: you're investigating a bug with three terminal windows open - one in `/Users/me/projects/api`, one in `/Users/me/projects/frontend`, one in `/Users/me/investigations/bug-123`.
 
-Previously, `copilot_here` mapped all of these to `/work`. Inside the container, they all looked identical. Which project were you in? 🤔
+Previously, `copilot_here` mapped all of them to `/work`. Inside the container, they were indistinguishable. Which project were you in?
 
-### The Fix
+### The fix
 
-The container now uses your **actual host path**.
+The container now uses your actual host path.
 
 **Before:**
 ```bash title="Terminal"

@@ -71,7 +71,7 @@ The `echo -ne "\e]0;...\a"` part is an [OSC 0 escape sequence](https://invisible
 
 This is the part that tripped me up. I added the zsh hook, reloaded my shell, and... nothing changed. The tab still showed the directory path.
 
-The problem is that Ghostty's built-in shell integration automatically sets the tab title to the working directory. It was overriding my custom title every time. The fix is one line in your Ghostty config (`~/.config/ghostty/config`):
+Ghostty's built-in shell integration sets the tab title to the working directory, and it was overwriting my custom title on every prompt. The fix is one line in your Ghostty config (`~/.config/ghostty/config`):
 
 ```text title="~/.config/ghostty/config"
 shell-integration-features = no-title

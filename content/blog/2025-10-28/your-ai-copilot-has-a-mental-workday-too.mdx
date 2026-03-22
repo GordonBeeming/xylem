@@ -109,17 +109,17 @@ app.MapGet("/people", (PersonRepository repo) => {
 // ...and so on...
 ```
 
-The AI is "confused" by the sheer weight of the context baggage. It's trying to be helpful by remembering everything, but it ends up mixing concerns and grabbing irrelevant details from 30 prompts ago.
+It's not broken. It's just dragging too much baggage. It tries to be thorough by remembering everything, and ends up pulling in stuff from 30 prompts ago that has nothing to do with what I asked.
 
-## The Solution: Let Your AI Call It a Day
+## The solution: let your AI start over
 
-This brings me to my analogy: **An AI chat context is like a mental workday.**
+Here's how I think about it: **an AI chat context is like a workday.**
 
-Think about your own brain. You start the day fresh. You work on 'Task A' (the repository). You load that context. Then 'Task B' (the tests). Then 'Task C' (validation). By the time you're on 'Task M' (the API), your "mental RAM" is full. You're carrying the baggage of an entire morning's work.
+You start fresh in the morning. You work through 'Task A' (the repository), load all that context, then move to 'Task B' (tests), then 'Task C' (validation). By the time you hit 'Task M' (the API), your brain is full. You're still carrying everything from the morning.
 
-But with the AI, I was asking it to start 'Task M' while still holding all the mental baggage from 'Task A' through 'Task L'. It's like trying to start a new, complex project at 4:55 PM on a Friday. You're just not going to get good results. 😫
+I was doing the same thing to the AI. Asking it to start 'Task M' while it was still holding 'Task A' through 'Task L'. That's like handing someone a brand new brief at 4:55 PM on a Friday. It's not going to go well.
 
-The fix is ridiculously simple. Right there **inside your running Copilot session**:
+The fix is one command. Run it **inside your Copilot session**:
 
 ```text title="Clear context"
 (copilot) /clear

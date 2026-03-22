@@ -125,7 +125,7 @@ There's also a special `default` value you can set at the local level to explici
 
 ## 5. Custom Mount Paths
 
-Previously, when you mounted a directory, the container path was always auto-computed to match the host path. Now you can specify both sides using the `host:container` format:
+Before this change, the container path was always auto-computed from the host path. Now you can specify both sides using `host:container` format:
 
 ```bash title="Terminal"
 # Mount with a custom container path

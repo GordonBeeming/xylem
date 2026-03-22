@@ -62,18 +62,18 @@ Filesystem                            Size  Used Avail Use% Mounted on
 
 ```
 
-## The Fix: Clearing the Shadows
+## The fix: clearing the shadows
 
-To get your real data back, you have to clear the local "landing zone" so the NAS has a clean place to land.
+To get your real data back, clear out those local empty directories so the NAS mount has nothing to hide behind.
 
-1. **Stop the containers:** Run `docker compose down`.
-2. **Unmount the NAS:** Run `sudo umount -l /mnt`.
-3. **Delete the local 'ghosts':** Now that the NAS is unmounted, look at the `/mnt` folder again. If there are files there, delete them.
-4. **Remount:** Run `sudo mount -a`.
+1. Stop the containers: `docker compose down`
+2. Unmount the NAS: `sudo umount -l /mnt`
+3. Now that the NAS is unmounted, check `/mnt` directly. If there are files there, delete them.
+4. Remount: `sudo mount -a`
 
-## The Permanent Safety Switch
+## The permanent safety net
 
-To prevent this from happening after the next reboot, change your `docker-compose.yml` to use a **Bind Mount** with a safety check. This tells Docker: "If the source doesn't exist, do NOT start."
+To stop this happening after the next reboot, update your `docker-compose.yml` to use a bind mount with `create_host_path: false`. This tells Docker not to start if the source path doesn't exist.
 
 ```yaml title="docker-compose.yml"
 services:

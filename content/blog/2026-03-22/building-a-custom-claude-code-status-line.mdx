@@ -1,0 +1,142 @@
+---
+title: 'Building a custom Claude Code status line'
+date: 2026-03-22
+tags: ['Claude Code', 'AI', 'Terminal', 'Productivity', 'GitButler', 'Shell']
+draft: false
+summary: 'Claude Code gives you a JSON blob and a shell script hook. I used it to build a multi-line status line with repo info, GitButler branches, cost tracking, and rate limits in one session.'
+---
+
+I run Claude Code across multiple projects, often with several Ghostty tabs open at once. Every session looks the same from the bottom of the terminal: a model name, a context percentage, and a cost. When you're juggling three repos, that's not enough.
+
+Which repo am I in? What GitButler branch is active? Am I close to my 5-hour rate limit? How much have I spent today across all sessions (not that it matters on a Max plan, but it gives you a feel for what this type of workload would cost as an API deployment)? The default status line doesn't tell me.
+
+## The fork-or-build moment
+
+Funny timing, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) published a [blog post about building a custom Claude Code status line](https://www.dandoescode.com/blog/claude-code-custom-statusline) at the same time I was busy writing mine. His [LinkedIn post](https://www.linkedin.com/posts/danieljamesmackay_claudecode-ai-devex-share-7441387824324444160-YkXP) nailed it:
+
+> The cost of building has dropped below the cost of compromising.
+
+My first thought was to fork Dan's repo and submit a PR. But then I stopped. Does he want the same things I do? I wanted [GitButler](https://gitbutler.com/) virtual branch detection, multi-line layout with grouped sections, [goccc](https://github.com/backstabslash/goccc) integration for cost tracking in AUD, rate limit progress bars, and terminal tab title renaming. Those are my opinions about what a status line should show, and they're probably not the same as his.
+
+It's cheap enough now to just have your own version. 15 to 30 minutes with Claude Code and I had exactly what I wanted, packaged as a repo with auto-updates.
+
+## How the statusLine hook works
+
+Claude Code has a built-in mechanism: add a `statusLine` config to your `settings.json`, point it at a shell script, and Claude pipes a JSON blob to stdin on every tick. Whatever your script prints to stdout becomes the status line.
+
+```json title="~/.claude/settings.json"
+{
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/scripts/statusline.sh"
+  }
+}
+```
+
+The JSON blob includes everything you need:
+
+```json title="stdin JSON (abbreviated)"
+{
+  "model": { "id": "claude-opus-4-6", "display_name": "Opus 4.6" },
+  "cost": { "total_cost_usd": 0.85, "total_duration_ms": 3600000 },
+  "context_window": {
+    "used_percentage": 11,
+    "context_window_size": 200000,
+    "total_input_tokens": 45000,
+    "total_output_tokens": 12000
+  },
+  "workspace": { "current_dir": "/path/to/repo" },
+  "rate_limits": {
+    "five_hour": { "used_percentage": 23.5, "resets_at": 1774200000 }
+  }
+}
+```
+
+That's it. Stdin, stdout, and a shell script.
+
+## Building it
+
+I went through four iterations in a single Claude Code session.
+
+### v1: repo and branch info
+
+The first version wrapped [goccc](https://github.com/backstabslash/goccc) (a CLI cost calculator that handles session costs, daily totals, and currency conversion) and prepended the repo name and branch. One line, straightforward.
+
+The tricky part was GitButler detection. I use [GitButler](https://gitbutler.com/) for branch management, which keeps you on a `gitbutler/workspace` branch while your actual virtual branches live inside GitButler's system. A normal `git branch --show-current` would just say "gitbutler/workspace", which isn't helpful.
+
+So I check if we're on `gitbutler/workspace`, and if so, query GitButler's CLI for the actual active branches:
+
+```bash title="statusline.sh"
+current_branch=$(git branch --show-current 2>/dev/null || echo "")
+
+if [[ "$current_branch" == "gitbutler/workspace" ]]; then
+  branches=$(but branch list --no-check --no-ahead --json 2>/dev/null \
+    | jq -r '.appliedStacks[].heads[].name' 2>/dev/null \
+    | paste -sd ',' - 2>/dev/null \
+    | sed 's/,/, /g' || true)
+  branch_info="🌿 ${branches}"
+elif [[ -n "$current_branch" ]]; then
+  branch_info="🔀 ${current_branch}"
+fi
+```
+
+The `--no-check --no-ahead` flags keep it fast (~30ms). The `🌿` icon means GitButler, `🔀` means regular git. You can tell at a glance which mode you're in.
+
+### v2: rate limits and tokens
+
+Turns out Claude Code exposes rate limit data in the JSON: `rate_limits.five_hour.used_percentage` and `resets_at`. Much better than trying to calculate from duration. I added a color-coded progress bar (green → yellow → red) with time remaining until reset.
+
+I also added token counts, input and output totals, since the context percentage alone doesn't tell you how chatty the session has been.
+
+### v3: multi-line grouped layout
+
+Everything on one line was getting cramped. I split it into three lines, each grouped by type of information:
+
+```text
+📂 xylem · 🌿 gb-branch-5 · 🤖 Opus 4.6
+💸 A$1.21 session · 💰 A$48.00 today · ⏱️ ██░░░░░░░░ 23% 4h0m left
+💭 █░░░░░░░░░ 11% ctx · 🧠 45k in / 12k out
+```
+
+**Line 1 (Identity)**: where am I? Repo name, active branch, model.
+**Line 2 (Spend & limits)**: session cost, daily cost, rate limit bar with countdown.
+**Line 3 (Technical)**: context window usage, token counts.
+
+Each line answers a different question. Line 1: where am I? Line 2: should I be worried about costs or rate limits? Line 3: why does the model feel slow right now?
+
+### v4: hiding empty state
+
+A new session starts with everything zeroed out. Showing `⏱️ 0h0m` and `💭 0% ctx` before you've even sent a message just adds noise. So the script hides those sections until there's actual data. A fresh session shows just two lines:
+
+```text
+📂 claude-statusline · 🌿 gb/update-readme · 🤖 Opus 4.6 (1M context)
+💰 A$41.06 today
+```
+
+Once the session is active, the full three-line display appears.
+
+## Packaging it
+
+I wanted this installable on any machine, so I created a [repo](https://github.com/GordonBeeming/claude-statusline) with:
+
+- `statusline.sh`, the script itself
+- `install.sh`, which installs [goccc](https://github.com/backstabslash/goccc) via Homebrew, copies the script to `~/.claude/scripts/`, and prints the settings.json config
+- Built-in daily auto-update: the script checks once per day if there's a newer version on `main` and pulls it in the background
+
+One-liner install:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/gordonbeeming/claude-statusline/main/install.sh | bash
+```
+
+## The bigger picture
+
+This status line took one Claude Code session, maybe two hours of back-and-forth including the iterations, GitButler integration research, and packaging. About 250 lines of bash.
+
+I keep finding myself in this same situation lately. I'm building [SSMSX](https://github.com/GordonBeeming/ssmsx), a cross-platform SQL Server Management Studio replacement, because SSMS is Windows-only, Azure Data Studio is nearing end-of-life, and neither feels fast. It's Tauri v2 (Rust) + React + a C# Native AOT sidecar for SQL Server connectivity. A year ago, building your own SSMS would have been absurd. Now it's a project I'm making real progress on in evenings and weekends.
+
+Dan put it well: the old debate was buy vs build. Build meant weeks of work, so you bought something close enough. That's changed. When you can describe what you want and iterate to a working tool in an afternoon, "close enough" stops being the obvious choice.
+
+## Try it
+
+The repo is at [github.com/GordonBeeming/claude-statusline](https://github.com/GordonBeeming/claude-statusline). You can install it, or read the [Claude Code statusline docs](https://code.claude.com/docs/en/statusline) and build your own. The JSON schema has more fields than I'm using, so there's plenty to work with.

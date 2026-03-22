@@ -98,7 +98,7 @@ Thanks to [@tudorsmt](https://github.com/tudorsmt) for the original request in [
 
 ## 4. Model Configuration
 
-You can now configure which AI model `copilot_here` uses, without passing `--model` every time.
+You can now save a model preference so you don't have to pass `--model` every time.
 
 ```bash title="Terminal"
 # Set model for the current project
@@ -117,9 +117,9 @@ copilot_here --show-model
 copilot_here --list-models
 ```
 
-**Configuration priority:** CLI argument > local config > global config > default.
+Priority order: CLI argument beats local config, which beats global config, which beats the built-in default.
 
-A special `default` value lets you override a global setting at the local level to explicitly use Copilot CLI's default model.
+There's also a special `default` value you can set at the local level to explicitly opt back into Copilot CLI's default model, even if you've set something globally.
 
 ---
 

@@ -74,11 +74,11 @@ using (var client = new SmtpClient("smtp.gordonbeeming.com"))
 
 ```
 
-Once this mindset took hold, **Open Source** really stepped in to carry the load. 🌐 Because the code for these packages was "out there" and transparent, we felt we could finally trust the abstraction. We stopped looking at the raw SMTP logs (and yes I did my fair share of that 😪) because we had more important business problems to solve. Sure, maybe we trusted it a bit too blindly at times 😬 🤓, but the productivity gains were undeniable. 🤝
+Once this mindset took hold, open source really stepped in to carry the load. Because the code for these packages was "out there" and transparent, we felt we could finally trust the abstraction. We stopped looking at the raw SMTP logs (and yes I did my fair share of that) because we had more important business problems to solve. Sure, maybe we trusted it a bit too blindly at times, but the productivity gains were real.
 
-### 3. The API & SaaS Era (Total Decoupling)
+### 3. The API and SaaS era (total decoupling)
 
-Today, we've moved even further. We use services like SendGrid. We don't even care about transient errors, managing mail servers, or deliverability anymore. We send a JSON object over a simple HTTP request, and the SaaS provider handles the heavy lifting, tracking bounces, managing IP reputations, and giving us fancy graphs of our success rates. 📈
+Today, we've moved even further. We use services like SendGrid. We don't even care about transient errors, managing mail servers, or deliverability anymore. We send a JSON object over a simple HTTP request, and the SaaS provider handles the heavy lifting: tracking bounces, managing IP reputations, and giving us fancy graphs of our success rates.
 
 The "how" is gone. Only the outcome remains.
 

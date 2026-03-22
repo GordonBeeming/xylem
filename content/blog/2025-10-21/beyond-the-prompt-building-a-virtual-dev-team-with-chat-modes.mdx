@@ -89,10 +89,10 @@ This one acts as a senior developer. It takes a PBI and a developer's high-level
 > - Update homepage query
 >
 > **AGENT:**
-> Okay, I've fetched PBI #123 and searched the codebase. Your plan is solid. I have a few architectural questions before I can generate the full task list:
-> 1.  **Domain:** I see `Product` is in the `Catalog` module. When you add `IsFeatured` to `Product.cs`, should this also be added to the `ProductDto` in `Catalog.Contracts`?
-> 2.  **Data:** The homepage query uses a materialized view. What should the default `IsFeatured` value be for existing products?
-> 3.  **Admin UI:** For the `ProductEditor.razor`, does this new flag need to be logged in our `AuditTrailService`?
+> I've fetched PBI #123 and searched the codebase. Before I generate the full task list, I have a few architectural questions:
+> 1. I see `Product` is in the `Catalog` module. When you add `IsFeatured` to `Product.cs`, should this also be added to the `ProductDto` in `Catalog.Contracts`?
+> 2. The homepage query uses a materialized view. What should the default `IsFeatured` value be for existing products?
+> 3. For the `ProductEditor.razor`, does this new flag need to be logged in our `AuditTrailService`?
 >
 > **USER:**
 > 1. Yes, please add it to the ProductDto.
@@ -100,7 +100,7 @@ This one acts as a senior developer. It takes a PBI and a developer's high-level
 > 3. Good catch, yes, please add a step to log this to the AuditTrailService.
 >
 > **AGENT:**
-> Excellent, that's everything I need. Here is the complete, step-by-step execution plan for PBI #123...
+> Here is the complete, step-by-step execution plan for PBI #123...
 > (Generates the full, detailed markdown plan)
 
 ### 3. The "Test Writer"

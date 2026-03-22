@@ -176,9 +176,9 @@ var result = _userService.UpdatePreferences(preferences);
 _auditingService.LogPreferenceChange(preferences);
 ```
 
-For developers familiar with SQL Server, this is very similar to the risk of running batches with **`SET XACT_ABORT OFF`** (the default setting). With it off, many statements can fail without halting the entire batch. Unless you explicitly check for errors (e.g., `IF @@ERROR <> 0`), subsequent statements may execute against an inconsistent state. Forgetting to check a `Result` object in C# creates the same kind of danger, errors slip by silently, and your program continues as if everything succeeded.
+If you've worked with SQL Server, this will feel familiar. Running batches with **`SET XACT_ABORT OFF`** (the default) means statements can fail without stopping the batch. Unless you explicitly check `IF @@ERROR <> 0`, subsequent statements run against inconsistent state. Forgetting to check a `Result` object in C# is the same trap - errors slip by silently while the program carries on as if nothing happened.
 
-Because of this risk in a hybrid system, sometimes the most pragmatic and safest approach is to improve your existing exception handling rather than introducing a new pattern. If that's your situation, here's a practical guide.
+Because of that risk, sometimes the most pragmatic path is to improve your existing exception handling rather than introduce a new pattern. Here's how to do that.
 
 ## A Practical Guide for Existing Code
 

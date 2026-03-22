@@ -69,16 +69,10 @@ tailscale up --force-reauth
 
 ```
 
-Your browser should pop up, asking you to log in. Once you do, you're back in business! 🚀
+Your browser will open asking you to log in. Once you do, you're back up.
 
-## Pros & Cons of this Fix
+## Things to know
 
-✅ **Success Rate:** This fixes the "503 No Backend" error 99% of the time.
+This fixes the "503 No Backend" error pretty much every time, and it also cleans up any corrupted Wintun driver state as a bonus.
 
-✅ **Clean Slate:** It cleans up any corrupted Wintun driver states.
-
-❌ **Duplicate Devices:** Tailscale will treat this as a "new" machine.
-
-⚠️ **Note:** You'll likely need to go into your Tailscale Admin Console and remove the old "dead" machine entry to keep things tidy.
-
-Now, back to actually building things! 💻
+The downside: Tailscale treats this as a new machine registration. You'll want to pop into your Tailscale Admin Console and remove the old dead entry to keep your device list clean.

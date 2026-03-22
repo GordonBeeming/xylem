@@ -65,7 +65,7 @@ Here's what it does:
 - **Fallback**: if it hits `/` without finding `.git`, it shows the last three path segments instead of the full path
 - **Startup**: runs once when the shell starts so the first tab gets named immediately, not just after your first `cd`
 
-The `echo -ne "\e]0;...\a"` part is an [OSC 0 escape sequence](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands) — it tells the terminal to set the window/tab title. Most terminals support this.
+The `echo -ne "\e]0;...\a"` part is an [OSC 0 escape sequence](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands) that tells the terminal to set the window/tab title. Most terminals support this.
 
 ### The Ghostty config
 

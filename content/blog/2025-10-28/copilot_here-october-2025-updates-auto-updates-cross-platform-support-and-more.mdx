@@ -171,18 +171,18 @@ This already came up while testing changes. Instead of the vague "are you on the
 
 ## 6. YOLO Mode Enhancements
 
-One of the more fun additions was `copilot_yolo` mode. While `copilot_here` asks for confirmation before executing commands (safe, sensible), sometimes you just want to let Copilot do its thing without interruption:
+`copilot_yolo` mode lets you skip confirmation prompts entirely. Where `copilot_here` asks before executing commands, YOLO mode just runs:
 
 ```bash title="Terminal"
 copilot_yolo "fix all the linting errors in this project"
 # Auto-approves all tool usage, including file modifications
 ```
 
-I added a `--allow-all-paths` flag specifically for YOLO mode, which combines with auto-approval to create a fully automated experience. It's genuinely useful for trusted workflows, though I wouldn't recommend it for production systems 😅
+I added a `--allow-all-paths` flag specifically for this, which pairs with auto-approval for a fully hands-off run. Useful for workflows you trust. I'd leave it off for anything touching production.
 
 ## 7. Smart Image Cleanup
 
-One annoying thing that was happening: every time you ran `copilot_here`, it would clean up ALL unused images and then immediately pull the latest one again. Even if the latest one was literally the image you just removed. Talk about a waste of bandwidth and time.
+Every run was cleaning up all unused images and then immediately pulling the latest one back down. Even if the image it just removed was the current latest. A full download, every single run.
 
 ### The Problem
 

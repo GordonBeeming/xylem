@@ -308,13 +308,13 @@ WHERE t.CleanupFlagsJson IS NULL
 ORDER BY te.EditedOn DESC;
 ```
 
-Good news: Editing and duplication still worked. Only archival was blocked.
+Editing and duplication still worked. Only archival was blocked.
 
-## The Solution
+## The solution
 
-Copilot provided three options:
+Copilot gave three options:
 
-### Option 1: Data Migration (Recommended)
+### Option 1: Data migration (recommended)
 
 Backfill the missing cleanup flags by reconstructing them from the `TemplateFeatures` table:
 

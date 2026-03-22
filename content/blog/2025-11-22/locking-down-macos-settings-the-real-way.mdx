@@ -79,7 +79,7 @@ sudo profiles -I -F /path/to/nextdns.mobileconfig
 
 ### Step 2: Lock the Settings
 
-Now, run this command to lock the specific panes. Notice I intentionally left out `com.apple.Network-Settings.extension`.
+Run this command to lock the specific panes. Note that `com.apple.Network-Settings.extension` is intentionally absent from the list.
 
 ```bash title="Terminal"
 sudo defaults write /Library/Preferences/com.apple.systempreferences DisabledSystemSettings -array "com.apple.Touch-ID-Settings.extension" "com.apple.Date-Time-Settings.extension" "com.apple.Users-Groups-Settings.extension" "com.apple.Profiles-Settings.extension"
@@ -87,7 +87,7 @@ sudo defaults write /Library/Preferences/com.apple.systempreferences DisabledSys
 
 ### Step 3: Apply
 
-For this to take effect immediately without a reboot, kill the settings app:
+To pick up the changes without rebooting, kill the settings app:
 
 ```bash title="Terminal"
 sudo killall "System Settings"

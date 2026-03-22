@@ -109,7 +109,7 @@ Chosen option: **"Distributed Cache (`IDistributedCache` with Redis)"**, because
 
 To implement this, we registered the Redis cache service in `Program.cs` and modified the `WeatherService` to implement the **Cache-Aside Pattern**.
 
-**Pattern 1: DI Service Registration (`Program.cs`)**
+**Pattern 1: DI service registration (`Program.cs`)**
 This snippet shows how we registered the `IDistributedCache` implementation with .NET's dependency injection container.
 
 ```csharp title="Program.cs"
@@ -130,7 +130,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // ...
 ````
 
-**Pattern 2: The Cache-Aside Pattern (`WeatherService.cs`)**
+**Pattern 2: The Cache-Aside pattern (`WeatherService.cs`)**
 This shows the core logic. We modified the existing service to check the cache *before* doing the expensive database call.
 
 ```csharp title="WeatherService.cs"

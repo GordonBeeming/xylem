@@ -155,15 +155,9 @@ These mean I don't need to install `testssl.sh` or other infrequently-used tools
 
 ## AI Agent Configurations
 
-I've got 18 pre-configured specialist agents for [OpenCode](https://github.com/opencode-ai/opencode) in my dotfiles. Each agent is a YAML file with a specific role, model, temperature, and tool permissions:
+I've got 18 pre-configured specialist agents for [OpenCode](https://github.com/opencode-ai/opencode) in my dotfiles. Each agent is a YAML file with a specific role, model, temperature, and tool permissions: coders for dotnet, react, and bicep; reviewers for dotnet, react, and Vertical Slice Architecture; Blazor, DDD, EF Core, and .NET Aspire specialists; unit and integration test agents; and a couple of architect agents for VSA patterns.
 
-- **Coders**: dotnet, react, bicep, general
-- **Reviewers**: dotnet, react, Vertical Slice Architecture, discovery, general
-- **Specialists**: Blazor, DDD, EF Core, .NET Aspire, performance
-- **Testers**: unit testing, integration testing for .NET
-- **Architects**: VSA patterns, Momo-VSA patterns
-
-Each one is tuned for its domain — the dotnet coder knows about C# conventions, the Blazor specialist knows about component patterns, the VSA reviewer checks for architectural violations. Having these in my dotfiles means they're consistent across all my machines.
+Each one is tuned for its domain. The dotnet coder knows about C# conventions, the Blazor specialist knows about component patterns, the VSA reviewer checks for architectural violations. Having these in my dotfiles means the configs are consistent across machines.
 
 ## Homebrew Package Tracking
 

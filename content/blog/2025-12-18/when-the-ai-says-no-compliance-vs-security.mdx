@@ -6,13 +6,13 @@ draft: false
 summary: 'A tale of two models: How GPT-5.2 refused to write secrets to disk (even when I insisted), why Claude complied, and why the refusal is actually a win for AI safety and enterprise security.'
 ---
 
-The last couple of messages in my terminal have been interesting.
+The last couple of messages in my terminal gave me pause.
 
 I was using the **airlock mode** of [`copilot_here`](https://copilot_here.gordonbeeming.com), which gave me the confidence to handle deployment credentials directly in the session. I was in the middle of a standard DevOps task: porting a deployment pipeline for a web application. I needed to inject a bunch of connection strings and API keys into the GitHub Environment secrets.
 
 I had the values. I just needed a script to automate the `gh secret set` calls so I didn't have to copy-paste twenty times.
 
-## The Request
+## The request
 
 I asked **GPT-5.2** to write a shell script that would take my secrets and write them to a file in `/tmp/` (so I could source them or read them), or just embed them in the script itself for a one-time run.
 

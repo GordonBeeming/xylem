@@ -6,7 +6,7 @@ draft: false
 summary: 'The October 2025 updates to copilot_here bring auto-updating scripts, full Windows support, argument pass-through for native Copilot features like --resume, smart image cleanup, and a bunch of quality-of-life improvements that make the Docker-based Copilot CLI experience even better.'
 ---
 
-I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that transformed it from "works on my machine" to "works everywhere, smoothly."
+I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that took it from "works on my machine" to "works everywhere, without drama."
 
 ## What's New in October 2025
 
@@ -48,13 +48,13 @@ if ! id appuser >/dev/null 2>&1; then
 fi
 ```
 
-Is running as root in a local development container ideal? No. But it's a reasonable fallback for Windows users, and the warning message lets them know what's happening. Sometimes "works everywhere" beats "theoretically more secure but broken."
+Running as root in a local dev container isn't ideal. But it beats silently failing, and the warning at least tells users what happened. For a local sandbox tool, I'll take "works on Windows with a caveat" over "crashes on Windows with a cryptic error."
 
-This also meant Windows needed to be a first-class citizen in the documentation, not an afterthought. So I restructured the entire README to show PowerShell instructions alongside bash/zsh, with equal prominence.
+I also restructured the README to show PowerShell instructions alongside bash/zsh rather than buried in a footnote.
 
 ## 2. Auto-Updating Scripts
 
-Here's a fun problem: the Docker image itself can auto-update via `docker pull`, but what about the shell functions users add to their `.bashrc` or `.zshrc`? Those live on the host machine.
+The Docker image can auto-update via `docker pull`, but what about the shell functions users add to their `.bashrc` or `.zshrc`? Those live on the host machine and don't update themselves.
 
 ### The Challenge
 
@@ -85,9 +85,9 @@ Reloading shell function...
  Scripts updated successfully!
 ```
 
-The beauty is that it updates the file *and* reloads the function in your current session, so you don't even need to restart your terminal.
+It updates the file and reloads the function in your current session, so you don't need to restart your terminal.
 
-**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file. This way your dotfiles stay in sync automatically.
+**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file, so your dotfiles stay in sync.
 
 ## 3. Quick Install Method
 

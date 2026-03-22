@@ -8,7 +8,7 @@ summary: 'A practical, repeatable playbook for upgrading Angular major-by-major 
 
 Upgrading Angular across **many major versions** used to be one of those tasks that quietly ruined a week.
 
-Not because any single change is hard, but because the upgrade is death-by-a-thousand-cuts:
+Not because any single change is hard, but because it's death-by-a-thousand-cuts:
 
 - installs break (peer deps, deprecated packages)
 - build flag changes (`--prod` → configurations)
@@ -16,21 +16,19 @@ Not because any single change is hard, but because the upgrade is death-by-a-tho
 - build pipeline migrations (webpack → esbuild → application builder)
 - deprecations finally becoming removals
 
-This post is a practical playbook for doing it the *boring* way (in a good way): **major-by-major, build verified each step**—but with a twist: use **GitHub Copilot CLI** to do the work you'd normally do yourself.
+This post is a practical playbook for doing it the *boring* way (in a good way): **major-by-major, build verified each step**. The twist is using **GitHub Copilot CLI** to do the work you'd normally grind through yourself.
 
-Instead, I'll show a workflow you can apply to your own codebase, plus the kinds of fixes you'll hit along the way.
+I'll show a workflow you can apply to your own codebase, plus the kinds of fixes you'll hit along the way.
 
 ## The non-painful approach
 
-The goal isn't "upgrade Angular". The goal is:
+One rule:
 
 > **Make a change → get back to green → repeat.**
 
-That's it.
-
 When you upgrade from 13 → 21, you're not doing *one* upgrade. You're doing **eight** upgrades.
 
-So treat it like a loop.
+Treat it like a loop.
 
 ## What you need before you start
 
@@ -56,7 +54,7 @@ npm test
 
 Use `nvm` and pick a Node version that Angular supports.
 
-## The workflow (human loop + AI accelerator)
+## The workflow
 
 Here's the loop I follow (and what I had Copilot CLI do for me).
 

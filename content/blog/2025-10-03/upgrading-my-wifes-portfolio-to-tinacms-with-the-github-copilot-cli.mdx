@@ -10,21 +10,21 @@ summary: "A task estimated to take 5 hours was to convert my wife's portfolio to
 
 Not long ago, I wrote about how I finally built my wife, [Tiani Beeming](https://tianibeeming.com)'s, portfolio website in about five hours after a 10-year delay, all thanks to an AI-driven workflow. The site looked great, and it was a huge win.
 
-But... there's always a "but", isn't there? 😅
+But there's always a "but", isn't there?
 
-While the site was live, updating the content, like adding new portfolio pieces or tweaking text, was still a manual process for me. It required pulling down the code, making changes, and redeploying. The goal was always to empower Tiani to manage her own content easily. That's where [TinaCMS](https://tina.io/) comes in, a Git-based headless CMS that seemed perfect for the job.
+While the site was live, updating the content — adding new portfolio pieces, tweaking text — was still a manual process for me. Pull down the code, make the change, redeploy. The goal was always to let Tiani manage her own content without needing me as the middleman. That's where [TinaCMS](https://tina.io/) comes in, a Git-based headless CMS that seemed like a good fit.
 
-## The Plan: A Few Hours of Manual Work
+## The plan: a few hours of manual work
 
-As I've mentioned before, I'm a backend dev, not a UI guy. So my first step was to scope out what it would take to integrate TinaCMS manually. I had a quick chat with [Jack Pettit](https://au.linkedin.com/in/jackdevau) from the TinaCMS team to get a realistic estimate.
+As I've mentioned before, I'm a backend dev, not a UI guy. So my first step was to figure out what it would actually take to integrate TinaCMS manually. I had a quick chat with [Jack Pettit](https://au.linkedin.com/in/jackdevau) from the TinaCMS team to get a realistic estimate.
 
-He figured it would be a couple of hours, maybe 5 or so, to get everything installed, configured, and hooked up to the components. A solid, achievable task, but still a decent chunk of an evening or a weekend afternoon.
+He figured a couple of hours, maybe 5 or so, to get everything installed, configured, and hooked up to the components. Totally doable, but still a decent chunk of an evening.
 
-## The Experiment: "Hey Copilot, Can You Do This?"
+## The experiment: "Hey Copilot, can you do this?"
 
-Then, while playing with the new **GitHub Copilot CLI**, a thought popped into my head. Instead of me following the docs, what if I just... asked Copilot to do it for me?
+While playing with the new **GitHub Copilot CLI**, a thought occurred to me. Instead of following the docs myself, what if I just asked Copilot to do it for me?
 
-I opened my terminal and typed in a single, simple prompt. I didn't give it a step-by-step plan; I just told it the end goal.
+I opened my terminal and typed a single prompt. No step-by-step plan, just the end goal.
 
 ```text title="Copilot CLI prompt"
 I'd like to completely convert this project to use tina.io cms...
@@ -41,11 +41,11 @@ width="0" height="0"
 caption="Just a single, high-level prompt to kick things off. Let's see what happens..."
 />
 
-## The AI Takes the Wheel 🧑‍✈️
+## The AI takes the wheel
 
-What happened next was pretty wild. The Copilot CLI didn't come back with a list of instructions for me to follow. It just started *working*.
+The Copilot CLI didn't come back with a list of instructions for me to follow. It just started *working*.
 
-It began suggesting shell commands to run, one by one. My role immediately shifted from "developer" to "supervisor." It would propose a command, and I would review and approve it.
+It suggested shell commands one by one. My role shifted from "developer" to "supervisor" — it would propose a command, I'd review it and approve or skip.
 
 <Figure
 key="/images/copilot-cli-approving-command.png"
@@ -55,7 +55,7 @@ width="0" height="0"
 caption="My main job was to review and approve the commands Copilot wanted to run."
 />
 
-The best part was the built-in safety net. For a safe, read-only command like `grep`, Copilot gives you the option to approve the command just once, or trust it for the entire session. However, for anything more destructive, like deleting files or removing the entire `node_modules` directory, that "approve for session" option isn't available. It would force me to give a specific `yes/no` confirmation each and every time it wanted to perform a risky action. This meant I was always in control, just without having to do any of the thinking or typing.
+What I didn't expect was how well the safety model worked. For a read-only command like `grep`, Copilot gives you the option to approve just once or trust it for the entire session. But for anything destructive — deleting files, wiping `node_modules` — that "approve for session" option disappears. It forces a specific yes/no every single time. I was always in control, I just wasn't doing any of the typing.
 
 ## The Result: A Flawless Five-Hour Job Done in Minutes
 

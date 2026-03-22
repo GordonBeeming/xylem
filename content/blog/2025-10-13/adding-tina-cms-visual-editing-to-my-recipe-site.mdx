@@ -10,7 +10,7 @@ summary: 'I had TinaCMS working for content management, but wanted that slick vi
 
 You know that feeling when you add one seemingly simple feature and suddenly your working app breaks in mysterious ways? Yeah, that was me adding TinaCMS visual editing to my recipe site ([recipes.gordonbeeming.com](https://recipes.gordonbeeming.com)).
 
-## The Starting Point
+## The starting point
 
 I already had TinaCMS integrated into my recipe site. I could edit recipes in the `/admin` panel, save changes, and they'd show up on the site. But there was no visual preview, I had to switch between the editor and the live site to see how changes looked. Not ideal.
 
@@ -19,7 +19,7 @@ I wanted that modern CMS experience where you can see your changes live as you t
 1. The `useTina()` hook
 2. Adding a `router()` function to my Tina config
 
-## The "Easy" Implementation
+## The "easy" implementation
 
 The router config was straightforward, add this to your collection in `tina/config.ts`:
 
@@ -72,7 +72,7 @@ I fired it up, opened `/admin`, clicked on a recipe, and... 🎉 visual editing 
 
 But then I tried using my checkboxes (I have interactive checkboxes for recipe steps that persist your progress)... and they were gone.
 
-## When Custom Components Meet TinaMarkdown
+## When custom components meet TinaMarkdown
 
 Here's the thing nobody tells you: `TinaMarkdown` and `ReactMarkdown` are completely different beasts (especially for a none UI guy like me 😅). They both render markdown, but they have their own systems for handling custom components.
 
@@ -109,7 +109,7 @@ const tinaComponents = {
 
 Okay, checkboxes are back! I clicked one and... nothing happened. Clicked another... still nothing. Tried again... nope.
 
-## The Real Problem: React Element Structure vs Text Content
+## The real problem: React element structure vs text content
 
 After way too much debugging (shoutout to `console.log`, the real MVP... and I thought those days of Windows Forms dev had stopped being valuable 😉), I discovered the core issue.
 
@@ -149,7 +149,7 @@ Why? Because `props.children` from TinaMarkdown isn't a string, it's a complex R
 
 When you call `String()` on that, you get... nothing useful. So all my checkboxes shared the same empty key, which meant React treated them as the same component. Click one, they all respond.
 
-## The Solution: Index-Based Keys
+## The solution: index-based keys
 
 The fix? Stop trying to extract text from complex React elements. Use a stable index instead:
 
@@ -183,7 +183,7 @@ const tinaComponents = useMemo(() => {
 
 Now each checkbox gets a unique, stable key like `durban-beef-curry-item-0`, `durban-beef-curry-item-1`, etc.
 
-## Bonus: Making State Reactive with Context
+## Bonus: making state reactive with context
 
 There was one more gotcha. Even with unique keys, the checkboxes weren't visually updating when clicked. The state was changing (confirmed with more `console.log` adventures), but the UI wasn't re-rendering.
 
@@ -225,31 +225,19 @@ const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
 
 Now when state changes, the context updates, and all subscribed checkboxes re-render immediately.
 
-## The Takeaway
+## What I'd tell past me
 
-If you're adding TinaCMS (or any CMS) visual editing to a React app with custom interactive components, here's what to remember:
+If you're adding TinaCMS (or any CMS) visual editing to a React app with custom interactive components, a few things bit me that I wish I'd known upfront.
 
-**1. Don't assume `props.children` structure**
-- Rich-text renderers pass complex React elements, not plain strings
-- Always `console.log(props.children)` to see what you're actually working with
+First, don't assume `props.children` is a string. Rich-text renderers pass complex React elements, and `console.log(props.children)` before writing any key logic will save you a lot of head-scratching.
 
-**2. Use index-based keys for CMS-rendered lists**
-- Text extraction from React elements is fragile and unreliable  
-- Stable indices work as long as content order doesn't change dramatically
-- Format: `${documentId}-item-${index}` keeps keys unique per document
+Second, use index-based keys for CMS-rendered lists. Trying to extract text from React elements is fragile. A format like `${documentId}-item-${index}` is stable enough as long as content order doesn't change dramatically.
 
-**3. Use Context for state with memoized renderers**
-- If your CMS renderer aggressively memoizes (and many do for performance)
-- Props might not flow through re-renders
-- Context lets components subscribe directly to state changes
+Third, if your CMS renderer memoizes aggressively (TinaMarkdown does), props won't always flow through re-renders. React Context sidesteps that entirely - each component subscribes to state changes directly rather than waiting for props to trickle down.
 
-**4. Test with the actual CMS, not just static content**
-- Things that work with static data might break with live editing
-- The rendering pipeline is completely different
+And finally: test with the actual CMS running, not just static content. The rendering pipeline is genuinely different, and things that work perfectly with static data can fall apart under live editing.
 
-This pattern isn't specific to checkboxes or even Tina, it applies to any custom interactive component you want to work with a CMS's visual editor. Whether it's accordions, tabs, interactive code blocks, or anything else that manages its own state, you'll run into similar challenges.
-
-The key is understanding that CMS renderers have their own rules, and your components need to play by them. Once you know that, the solutions follow naturally.
+This isn't really a TinaCMS-specific thing. Any custom interactive component - accordions, tabs, stateful code blocks - will hit similar friction when dropped into a CMS renderer. The renderers have their own rules, and once you know what those rules are, the fixes aren't complicated.
 
 Now if you'll excuse me, I have some recipes to edit... *visually*. 😎
 

@@ -8,39 +8,33 @@ summary: 'Stop writing huge system prompts every time you need AI help. Start bu
 
 
 
-I'm often in this situation: I need my AI assistant to help with a task, but first, I have to write a 10-paragraph system prompt explaining my *entire* project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
+I'm often in this situation: I need my AI assistant to help with a task, but first I have to write a 10-paragraph system prompt explaining my entire project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
 
-By the time I'm done writing the prompt, I could have written the code myself. 😅
+By the time I'm done writing the prompt, I could have written the code myself.
 
 What if you didn't have to? What if you could just *select your specialist* from a dropdown:
--   **"Issue Scribe"** (for creating PBIs)
--   **"Task Planner"** (for planning tasks)
--   **"Test Writer"** (for writing integration tests)
--   **"Backlog Analyst"** (for refining the backlog)
+-   "Issue Scribe" (for creating PBIs)
+-   "Task Planner" (for planning tasks)
+-   "Test Writer" (for writing integration tests)
+-   "Backlog Analyst" (for refining the backlog)
 
-...and *then* ask your question?
+...and then ask your question?
 
-This isn't a fantasy. You can build this "virtual team" of specialists right inside your IDE using VS Code's **Custom Chat Modes**.
+You can build this "virtual team" of specialists right inside your IDE using VS Code's Custom Chat Modes.
 
-Keep reading. 👇
+## The generalist AI problem
 
-## The Generalist AI Problem
+Your default AI chat doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your tech stack (e.g., "we always use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
 
-Your default AI chat is a jack-of-all-trades and a master of *none*.
+This leads to "prompt fatigue" and a lot of wasted time correcting generic, often wrong suggestions.
 
-It doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your specific tech stack (e.g., "we *always* use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
+### But what about `copilot-instructions.md`?
 
-This leads to "prompt fatigue" and a lot of wasted time correcting the AI's generic, and often wrong, suggestions.
-
-### But What About `copilot-instructions.md`?
-
-You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` (or equivalent) file!"
+You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` file!"
 
 I've been down that road, and it backfires.
 
-That instruction file is loaded *every single time* you ask a question. Soon, it becomes a massive, 500-line monster. When you want to ask a simple, one-off question about a regex, the AI is being burdened with hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas.
-
-It pollutes the prompt, slows down the AI, and makes it *less* effective for simple tasks.
+That instruction file is loaded every single time you ask a question. It quickly becomes a 500-line monster. When you want to ask a simple question about a regex, the AI is wading through hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas. It pollutes the prompt and makes responses worse for everyday tasks.
 
 ## The Solution: Your Virtual Team
 

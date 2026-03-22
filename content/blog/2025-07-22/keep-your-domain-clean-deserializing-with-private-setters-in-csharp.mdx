@@ -6,11 +6,11 @@ draft: false
 summary: 'Ever created a perfectly encapsulated C# domain object with private setters, only to find System.Text.Json can''t deserialize data back into it? You don''t have to expose your setters! Let''s explore a clean solution.'
 ---
 
-As developers, we strive to build robust and well-designed domain models. A key part of that is **encapsulation**—protecting the internal state of our objects and controlling how they are modified. A common way to achieve this is by using private setters on properties.
+Building a solid domain model usually means thinking hard about **encapsulation** — protecting the internal state of your objects and controlling how they change. Private setters are a straightforward way to do that.
 
-This works great until you need to serialize these objects to JSON and, more importantly, deserialize them back. You run your code and... `null`. The property with the private setter wasn't populated. 🤔
+The problem shows up when you need to serialize these objects to JSON and then deserialize them back. You run the code and... `null`. The property with the private setter wasn't populated. 🤔
 
-Do you have to make the setter `public` just to satisfy the serializer? Thankfully, no. Let's look at how to handle this gracefully with `System.Text.Json`.
+Do you have to make the setter `public` just to satisfy the serializer? No. Here's how to handle it with `System.Text.Json`.
 
 ## The Problem: A Phonebook Example
 
@@ -37,7 +37,7 @@ public class PhonebookEntry
 }
 ````
 
-Now, let's try to serialize an instance of this class and then deserialize it back. This mimics a common scenario like saving state, sending it over an API, and then rehydrating the object.
+Now let's serialize an instance and then deserialize it back — a typical scenario like saving state, sending it over an API, and rehydrating the object.
 
 ```csharp title="Program.cs"
 // Program.cs
@@ -76,15 +76,15 @@ public class Program
 }
 ```
 
-When we run this code, we'll see that the `Status` property fails to deserialize. It will retain the default value from the constructor because the serializer can't access the private setter.
+When we run this, the `Status` property fails to deserialize. It keeps the default value from the constructor because the serializer can't reach the private setter.
 
 <Figure key="/images/2025-07-22_13.25.14.png" src="/images/2025-07-22_13.25.14.png" alt="Console output showing the deserialized status as 'Active' instead of 'Inactive'" width="800" height="0" caption="The deserialized Status is incorrect, falling back to the constructor's default value." />
 
-This is a problem. We need our incoming data to be respected without breaking our object's encapsulation.
+We need incoming data to be respected without blowing up our encapsulation.
 
 ## The Simple Fix: Using `[JsonInclude]`
 
-The fix is surprisingly simple and clean. `System.Text.Json` provides the **`[JsonInclude]`** attribute. By placing this attribute on a property, you're explicitly telling the serializer to include it during both serialization and deserialization, regardless of its accessibility.
+One attribute fixes it. `System.Text.Json` has **`[JsonInclude]`**, which tells the serializer to include a property during both serialization and deserialization regardless of its accessibility.
 
 Let's update our `PhonebookEntry` class:
 
@@ -115,17 +115,17 @@ public class PhonebookEntry
 }
 ```
 
-**Note:** For `[JsonInclude]` to work on properties, the serializer needs a way to create an initial instance of the object. The easiest way is to provide a parameterless constructor.
+**Note:** For `[JsonInclude]` to work on properties, the serializer needs to create an initial instance of the object first. A parameterless constructor is the easiest way to provide that.
 
-Now, if we run the *exact same* `Program.cs` code as before, `System.Text.Json` will see the `[JsonInclude]` attribute and correctly populate the `Status` property using its private setter.
+Running the same `Program.cs` code now, `System.Text.Json` picks up the `[JsonInclude]` attribute and correctly populates `Status` through its private setter.
 
 <Figure key="/images/2025-07-22_13.30.20.png" src="/images/2025-07-22_13.30.20.png" alt="Console output showing the deserialized status is now correctly 'Inactive'" width="800" height="0" caption="Success! The Status property is now correctly deserialized. ✅" />
 
 ## Advanced: Centralizing Logic with `[JsonConstructor]`
 
-The constructor-based approach isn't limited to immutable objects. Its real power lies in **centralizing validation logic** to ensure an object is created in a valid state, even if it's mutable. This guarantees that no matter how an object is instantiated (by your code or by the serializer), it respects your core business rules from the very beginning.
+The constructor approach isn't just for immutable objects. The bigger win is **centralizing validation logic** so the object is always created in a valid state, whether your code creates it or the deserializer does. No matter the path, the same rules apply.
 
-To do this, you can use a **private constructor** for the creation and validation logic, and a **public static factory method** as the entry point for your application code.
+The pattern: a **private constructor** holds all the validation, and a **public static factory method** is what your application code actually calls.
 
 ```csharp title="PhonebookEntry.cs (JsonConstructor)"
 public class PhonebookEntry
@@ -168,26 +168,26 @@ public class PhonebookEntry
 ```
 
 
-## Which Approach Should You Use?
+## Which approach should you use?
 
-Choosing the right approach comes down to the complexity and rules of your object.
+It depends on how complex your object's rules are.
 
-### Approach 1: `[JsonInclude]` with Private Setters
+### `[JsonInclude]` with private setters
 
-This approach is best for simpler objects or when validation is self-contained to a single property.
+Good fit for simpler objects where validation is self-contained to individual properties.
 
-✅ **Simple:** It's very easy to implement by adding an attribute.\
-✅ **Good for DTOs:** Works well for Data Transfer Objects (DTOs) where complex business rules are not a concern.\
-❌ **Decentralized Logic:** Validation logic can be spread across multiple setters, making it harder to ensure the object as a whole is valid.
+✅ Dead simple to add — one attribute\
+✅ Works well for DTOs where business rules aren't the concern\
+❌ Validation can end up scattered across multiple setters, making it hard to reason about the object's overall validity
 
-### Approach 2: `[JsonConstructor]`
+### `[JsonConstructor]`
 
-This is the superior approach for rich domain models where you need to enforce business rules that involve multiple properties.
+Better fit for domain models where business rules span multiple properties.
 
-✅ **Guarantees Initial Validity:** The object is created in a transaction-like manner. It either succeeds with a valid state or fails. It can never exist in an invalid initial state.\
-✅ **Centralized Validation:** All rules for what makes an object valid are in one place, making the code easier to understand and maintain.\
-✅ **Clear Intent:** It clearly communicates the requirements for creating a valid object.\
-✅ **Enables Optional Immutability:** While it doesn't force immutability, it's the foundation for it. You can choose to make properties `get`-only if desired.\
-❌ **More Boilerplate:** Requires a bit more initial setup (e.g., the static factory method).
+✅ The object is either created in a valid state or it throws — it can never silently exist in a bad state\
+✅ All validation is in one place\
+✅ Makes the requirements for a valid object obvious to anyone reading the code\
+✅ Gives you a natural foundation for immutability if you want it (`get`-only properties)\
+❌ A bit more setup upfront (the static factory method)
 
-For most scenarios involving rich domain models, the **constructor-based approach is the way to go**. It provides the strongest guarantees for creating valid objects and leads to more reliable, maintainable, and expressive code.
+For most domain models, the constructor approach is worth it. Scattered validation in setters is one of those things that seems fine until it isn't.

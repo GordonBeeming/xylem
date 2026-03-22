@@ -8,27 +8,27 @@ summary: 'Choosing a C# exception because its name sounds right is a common anti
 
 
 
-Earlier today, I was on a call with my colleague, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), reviewing a section of our codebase. For a few reasons, this particular area needed to stick with exceptions for handling flow control rather than using a more modern Result-based pattern.
+Earlier today, I was on a call with my colleague, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), reviewing a section of our codebase. For a few reasons, this particular area needed to stick with exceptions for flow control rather than using a Result-based pattern.
 
-We came across a piece of code throwing a built-in exception, and it sparked a great discussion about whether the exception's semantic meaning was truly a good fit for the situation 😅. It prompted me to ask him for his thoughts on what I call **"conveniently named exceptions"**, the anti-pattern of choosing an exception because its name sounds right, not because its purpose is right.
+We came across a piece of code throwing a built-in exception, and we ended up in a good back-and-forth about whether the exception's semantic meaning was actually a good fit for the situation. That led me to ask him about what I call **"conveniently named exceptions"** - the anti-pattern of choosing an exception because its name sounds right, not because its purpose is right.
 
-The conversation inspired me to write this post, because this isn't just a theoretical debate. This pattern leads to very real, time-wasting consequences. Let me paint a picture of two common scenarios.
+This isn't a theoretical debate. It leads to real, time-wasting consequences. Two scenarios come up again and again.
 
-First, picture this: a developer on your team sighs, a little louder than usual, "I keep getting a `NotSupportedException` and I have no idea why!" A well-meaning teammate overhears and jumps in to help, immediately suggesting you check framework versions or stream permissions. An hour-long rabbit hole later, you both discover the exception was actually thrown because a user on the 'Free' tier tried to access a 'Premium' feature.
+First: a developer on your team sighs, a little louder than usual, "I keep getting a `NotSupportedException` and I have no idea why!" A teammate overhears and jumps in, immediately suggesting you check framework versions or stream permissions. An hour later, you both discover the exception was thrown because a user on the Free tier tried to access a Premium feature.
 
-At scale, the problem gets much worse. Your error dashboard shows 400 `NotSupportedException` instances this week. The team dismisses it as "just that business rule noise." But hidden in that noise are 50 legitimate exceptions from a real bug that's silently breaking a critical feature. The real signal is completely lost in the noise.
+Second: your error dashboard shows 400 `NotSupportedException` instances this week. The team dismisses it as "just that business rule noise." Hidden in that noise are 50 legitimate exceptions from a real bug silently breaking a critical feature. The signal is gone.
 
-Both of these frustrating situations stem from the same root cause. Let's dig into the specific exceptions that are often misused and explore better ways to handle our code.
+Same root cause, both times. Here are the specific exceptions that get misused most often, and what to do instead.
 
-## Common Examples of Misused Exceptions
+## Common examples of misused exceptions
 
-Choosing an exception class just because the name *sounds* right ignores its semantic meaning, its documented purpose. This creates a disconnect between what the exception *is* and what a developer *thinks* it is.
+Choosing an exception class because the name *sounds* right ignores its documented purpose. That gap between what an exception *is* and what a developer *thinks* it is - that's where the confusion comes from.
 
 ### 1. `NotSupportedException`
-This is a prime example of the problem.
+This is the one I see most often misused.
 
-* **Intended Use:** A method or capability isn't implemented. Think `stream.Write()` on a read-only stream.
-* **Common Misuse:** Signaling that a business rule prevents an action.
+* **Intended use:** A method or capability isn't implemented. Think `stream.Write()` on a read-only stream.
+* **Common misuse:** Signaling that a business rule prevents an action.
 
 ```csharp title="NotSupportedException misuse"
 // ❌ Bad Practice
@@ -43,14 +43,14 @@ public void GrantAdminAccess(User user)
 }
 ````
 
-A future developer will look for a framework problem, not a business rule violation.
+The next developer who hits this will go straight to checking framework versions. They won't look at a business rule for a long time.
 
-### 2\. `InvalidOperationException`
+### 2. `InvalidOperationException`
 
-This one is often used as a generic "something went wrong" bucket.
+This one gets used as a generic "something went wrong" bucket.
 
-  * **Intended Use:** An object is in an inappropriate state for a method call. Think reading from a file stream after it has been closed.
-  * **Common Misuse:** A catch-all for any business logic failure.
+  * **Intended use:** An object is in an inappropriate state for a method call. Think reading from a file stream after it has been closed.
+  * **Common misuse:** A catch-all for any business logic failure.
 
 
 ```csharp title="InvalidOperationException misuse"
@@ -67,12 +67,12 @@ public void ProcessOrder(Order order, Product product)
 }
 ```
 
-### 3\. `ArgumentNullException`
+### 3. `ArgumentNullException`
 
-This incorrect usage is more subtle but just as confusing.
+This one is subtler.
 
-  * **Intended Use:** An argument passed to a method is `null`. That's it.
-  * **Common Misuse:** Throwing it when an argument is an empty string (`""`) or whitespace.
+  * **Intended use:** An argument passed to a method is `null`. That's it.
+  * **Common misuse:** Throwing it when an argument is an empty string (`""`) or whitespace.
 
 
 ```csharp title="ArgumentNullException misuse"
@@ -88,7 +88,7 @@ public void SetUsername(string newUsername)
 }
 ```
 
-Admittedly, this misuse is rarer. However, that's what makes it so confusing. A developer is conditioned to trust that `ArgumentNullException` means `null`, so this sends them on a frustrating chase for a `null` that doesn't exist. The correct exception here would be `ArgumentException`.
+This misuse is less common, which is exactly what makes it so disorienting. Developers trust that `ArgumentNullException` means `null`. When it doesn't, they go hunting for a null that isn't there. Use `ArgumentException` instead.
 
 ## A Better Way: The Result Pattern
 

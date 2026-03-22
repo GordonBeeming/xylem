@@ -8,36 +8,36 @@ summary: 'I love the new GitHub Copilot CLI, but as someone who is a little para
 
 
 
-I love the new GitHub Copilot CLI. It feels like magic. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me... uneasy. 😅
+I love the new GitHub Copilot CLI. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me uneasy.
 
-The real power of the Copilot CLI comes from its ability to execute commands, but that requires a level of trust. I wanted the power of Copilot without giving it the keys to my entire kingdom. The goal was to use powerful features like `--allow-all-tools` with more confidence.
+The Copilot CLI gets its usefulness from executing commands, but that requires a level of trust I wasn't fully comfortable handing over. I wanted to use features like `--allow-all-tools` without feeling like I was handing over the keys to my entire machine.
 
-What if I could build a secure cage for it? A place where it can be helpful, but where its ability to cause chaos is strictly limited. So, I decided to put it in Docker.
+So I decided to put it in Docker.
 
-## The "Why": My Wishlist for a Perfect Copilot Environment
+## The "Why": My wishlist for a perfect Copilot environment
 
-Before diving in, I had a clear set of goals for what the ideal setup would look like:
+I had four goals for what this setup needed to do:
 
-* ✅ **Secure Isolation:** The tool should only see the files in my current project directory. Nothing else.
-* ✅ **Auto-Authentication:** It must seamlessly use my existing `gh` login without any extra steps.
-* ✅ **Portability & Cleanliness:** No global Node.js or `npm` packages on my host machine.
-* ✅ **Cognitive Ease:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
+* **Secure isolation:** The tool should only see the files in my current project directory. Nothing else.
+* **Auto-authentication:** It should use my existing `gh` login without any extra steps.
+* **Portability:** No global Node.js or `npm` packages on my host machine.
+* **Peace of mind:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
 
-## The Breakthrough: Why the Cage Makes the Tiger Safer
+## The breakthrough: why the cage makes the tiger safer
 
-After a bit of trial and error (and a lot of debugging!), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which dramatically reduces the "blast radius" of any potential mistakes.
+After a bit of trial and error (and a lot of debugging), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which shrinks the "blast radius" of any potential mistakes.
 
-You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" And you'd be absolutely right. It would.
+You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" You'd be right. It would.
 
-The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your **current project directory**. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
+The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your current project directory. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
 
-It's also important to note that this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. This means if you have a secure local network, Copilot inherits that, but it can also access local resources, which is something to be aware of.
+One thing worth knowing: this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. Copilot can reach local resources, which is something to keep in mind.
 
-This isolation is what provides the **cognitive ease**. The container provides a strong safety net, which makes me optimistically more comfortable using a powerful but risky feature like `--allow-all-tools`. The risk isn't eliminated, but it's lowered to a level I'm comfortable with. For me, that trade-off is a worthy option.
+That isolation is what gives me enough comfort to actually use `--allow-all-tools`. The risk isn't gone, but it's contained to a level I can live with.
 
 <Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="The final, working setup! It took a while to get here, but it was worth it." />
 
-## The Final Setup: The Code
+## The final setup: the code
 
 The complete solution is hosted on GitHub at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). The setup consists of two files: a `Dockerfile` to build the environment and an `entrypoint.sh` script to handle user permissions.
 
@@ -110,15 +110,15 @@ chown -R $USER_ID:$GROUP_ID /home/appuser
 exec gosu appuser "$@"
 ```
 
-## Understanding the Modes and Features
+## Understanding the modes and features
 
-The setup provides flexible options to match different workflows and security preferences.
+The setup has two execution modes and a bunch of image variants.
 
-### Execution Modes
+### Execution modes
 
-**Safe Mode (`copilot_here`)** - Always asks for confirmation before executing commands. Recommended for general development work where you want control over what gets executed.
+**Safe mode (`copilot_here`)** - Always asks for confirmation before executing commands. Good for everyday work where you want to stay in control.
 
-**YOLO Mode (`copilot_yolo`)** - Automatically approves all tool usage without confirmation. Convenient for trusted workflows but use with caution as it can execute commands without prompting.
+**YOLO mode (`copilot_yolo`)** - Auto-approves all tool usage without prompting. Useful for trusted workflows, but be aware it will run commands without asking.
 
 ### Image Variants
 

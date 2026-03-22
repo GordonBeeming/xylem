@@ -6,7 +6,7 @@ draft: false
 summary: 'You''re already writing Architecture Decision Records (ADRs). That''s great. But are they *useful*? If your ADRs only capture the "why" but not the "how," they''re only doing half the job. Let''s explore how to add concrete implementation details, whether you write your ADRs before or after you code.'
 ---
 
-Most teams who adopt Architecture Decision Records (ADRs) get the first part right: they document the context, the options, and the chosen path. You get an ADR that says, "We will implement a distributed cache for the web app."
+Most teams who adopt Architecture Decision Records (ADRs) get the first part right: they document the context, the options, and the chosen path. You end up with an ADR that says, "We will implement a distributed cache for the web app."
 
 And then... nothing.
 
@@ -15,13 +15,13 @@ A new developer reads this and has more questions than answers:
 * *What* pattern did we use? Cache-Aside?
 * *Where* is it registered? *How* is it abstracted?
 
-Your ADR captured the "why," but it's missing the "how." It's an "ivory tower" document, disconnected from the codebase it's supposed to describe.
+The ADR captured the "why," but it's missing the "how." It's an ivory tower document, disconnected from the codebase it's supposed to describe.
 
-The solution is to include the "how," but the *way* you do this depends entirely on *when* you write your ADR.
+The fix is to include the "how" — but the *way* you do this depends entirely on *when* you write your ADR.
 
-## When Do You Write the "How"? Proactive vs. Reactive
+## When do you write the "how"? Proactive vs. reactive
 
-This is the key distinction. Are you writing the ADR *before* implementation (proactive) or *after* (reactive)? Both are valid, but the "how" section serves a different purpose.
+Are you writing the ADR *before* implementation (proactive) or *after* (reactive)? Both are valid, but the "how" section serves a different purpose in each case.
 
 ### Scenario 1: ADR Up-Front (The "Expected Touchpoints")
 

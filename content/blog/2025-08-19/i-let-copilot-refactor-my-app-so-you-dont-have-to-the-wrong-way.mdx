@@ -8,27 +8,27 @@ summary: 'I had a seemingly simple refactoring task on a sample project and I th
 
 
 
-We've all been there. You're working on a project and decide it's time for a little cleanup. A simple change, a quick refactor, in and out in 20 minutes. What could possibly go wrong?
+We've all been there. Working on a project, you spot something that needs cleaning up and think "20 minutes, easy." What could possibly go wrong?
 
-Well, I was recently working on a sample blog engine, a little side project I use to test out new features and ideas, and decided to give it a more professional feel. The task was to rename the core concept from `Post` to `Article`. It seemed like a perfect task for an AI assistant. I thought, "I'll just tell GitHub Copilot what to do, and it'll handle everything!"
+I was recently working on a sample blog engine -- a side project I use to test out new ideas -- and decided it was time to give it a more professional feel. The task was simple: rename the core concept from `Post` to `Article`. Seemed like a perfect job for an AI assistant. I figured I'd just tell GitHub Copilot what I wanted and let it run.
 
-Spoiler alert: It did not go well. 😅
+Yeah, that didn't go well.
 
 
-## The Seductive Promise
+## The plan
 
-The plan was simple. I'd ask Copilot to perform the refactor across the entire solution. I imagined it would be far more intelligent than a manual find-and-replace. It would understand the context, update my C# classes, rename files, fix EF Core migrations, and even update all my documentation (e.g., my `README.md` and everything in the `docs` folder). It was going to be magic.
+I'd ask Copilot to do the refactor across the entire solution. I figured it would be smarter than a manual find-and-replace -- it would understand the context, update my C# classes, rename files, handle EF Core migrations, and update the docs too (the `README.md`, everything in `docs/`, all of it). Magic.
 
-I gave it a broad, optimistic prompt something like this:
+I gave it a broad prompt along these lines:
 
 > Please refactor the entire solution. The core domain entity 'Post' needs to be renamed to 'Article'. This should include all class names, variable names, file names, database migrations, and documentation.
 
-With my instructions sent, I sat back and prepared to be amazed.
+Then I sat back.
 
 
-## The Downward Spiral
+## Where it fell apart
 
-The first signs of trouble appeared quickly. Copilot started making changes, but they were... inconsistent. It might rename the `Post.cs` file to `Article.cs`, but then forget to update the class name inside the file.
+Trouble showed up fast. Copilot started making changes, but they were all over the place. It would rename the `Post.cs` file to `Article.cs` but leave the class name inside unchanged.
 
 ```csharp title="Article.cs"
 // In a file named Article.cs
@@ -40,7 +40,7 @@ public class Post // <- Oops!
 }
 ````
 
-It got worse. It would rename `PostService` but leave method parameters with the old type, leaving a trail of compilation errors. Imagine finding code like this littered across your project:
+Then it got worse. It would rename `PostService` but leave method parameters typed as `Post`, scattering compilation errors through the codebase. Picture finding code like this across a dozen files:
 
 ```csharp title="ArticleService.cs"
 // ArticleService.cs

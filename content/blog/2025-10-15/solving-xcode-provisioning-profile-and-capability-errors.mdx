@@ -10,41 +10,39 @@ summary: "A step-by-step guide to fixing common and stubborn Xcode code signing 
 
 Full disclosure: I'm still finding my way around the Apple development ecosystem, so consider this a field report from a fellow learner, not an expert's guide.
 
-When developing for Apple platforms, code signing errors can be a major roadblock. I recently encountered a series of provisioning profile and capability errors. This is the step-by-step process I followed to identify the cause and, ultimately, find the solution.
+Code signing errors are one of those things that can derail a whole afternoon. I hit a run of provisioning profile and capability errors recently, and it took a few rounds of troubleshooting to get through them. Here's what I found.
 
-## Problem 1: "Personal Team" Capability Limits
+## Problem 1: "Personal Team" capability limits
 
 When I first added the iCloud and Push Notification capabilities to a new project, I immediately hit an error.
 
-**The Error:**
+**The error:**
 `Personal development teams ... do not support the Push Notifications and iCloud capabilities.`
 
-**The Cause:**
-A free Apple Developer account (a "Personal Team") cannot be used for projects that require advanced capabilities like iCloud or Push Notifications.
+**The cause:**
+A free Apple Developer account (a "Personal Team") can't be used for projects that need advanced capabilities like iCloud or Push Notifications.
 
-**The Solution:**
-You have two options:
-1.  Remove the advanced capabilities from your project if you don't actually need them.
-2.  Upgrade to a paid Apple Developer Program membership, which is what I did.
+**The fix:**
+Two options: remove the capabilities if you don't actually need them, or upgrade to a paid Apple Developer Program membership. I went with the upgrade.
 
-## Problem 2: Profile Errors After Upgrading
+## Problem 2: Profile errors after upgrading
 
 After upgrading to a paid account and adding it to Xcode, I expected the errors to disappear. Instead, they changed.
 
-**The Error:**
+**The error:**
 `The capability associated with 'PUSH_NOTIFICATIONS' could not be determined.`
 
-**The Cause:**
-A new paid developer account often has pending license agreements that must be accepted before its permissions are fully active. Xcode can't verify the capabilities until this is done.
+**The cause:**
+A new paid developer account often has pending license agreements to accept before the permissions kick in. Xcode can't verify capabilities until that's done.
 
-**The Solution:**
+**The fix:**
 1.  Log in to the [Apple Developer website](https://developer.apple.com/) and accept any new terms.
 2.  In Xcode, go to `Xcode` -> `Settings...` -> `Accounts`.
 3.  Remove your Apple ID by clicking the `-` button, then add it back with the `+` button to force a full refresh.
 
-## Problem 3: The Final, Stubborn Error
+## Problem 3: The stubborn one
 
-Even after fixing the account issues, one error persisted. Xcode insisted the provisioning profile was missing the required capabilities, even though I confirmed the App ID was configured correctly on the developer portal.
+Even after fixing the account issues, one error persisted. Xcode insisted the provisioning profile was missing the required capabilities, even though the App ID was configured correctly on the developer portal.
 
 <Figure
   key="/images/missing-capabilities-error.png"
@@ -53,10 +51,12 @@ Even after fixing the account issues, one error persisted. Xcode insisted the pr
   caption="The error: The profile was missing capabilities that were enabled online."
 />
 
-### Attempted Fixes That Didn't Work
+### Attempted fixes that didn't work
 
-* **Deleting Cached Profiles:** The standard advice is to delete old profiles from `~/Library/MobileDevice/Provisioning Profiles/`. However, this folder didn't exist on my machine because a profile had never been successfully created.
-* **Manual Profile Creation:** I went to the developer portal, manually created a new provisioning profile, downloaded it, and assigned it in Xcode. The error still didn't go away.
+I tried the usual suggestions first:
+
+* Deleting cached profiles from `~/Library/MobileDevice/Provisioning Profiles/` - but this folder didn't even exist on my machine since no profile had ever been successfully created.
+* Manually creating a new provisioning profile on the developer portal, downloading it, and assigning it in Xcode. Still broken.
 
 ## The Solution That Worked: Clearing Derived Data
 

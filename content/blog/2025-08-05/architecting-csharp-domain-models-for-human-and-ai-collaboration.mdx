@@ -6,13 +6,13 @@ draft: false
 summary: 'I went down a rabbit hole of extreme encapsulation in C# only to find a more pragmatic path. Discover the journey from a complex domain model to a simpler one that provides powerful guardrails for AI development tools like GitHub Copilot.'
 ---
 
-I recently went down a deep rabbit hole, chasing the dragon of "perfect" encapsulation in a C# domain model. I was using every modern feature I could, including file-scoped interfaces, to create an absolutely watertight, immutable-from-the-outside domain. I thought it was brilliant.
+I recently went down a deep rabbit hole, chasing "perfect" encapsulation in a C# domain model. I was using every modern feature I could, including file-scoped interfaces, to create an absolutely watertight, immutable-from-the-outside domain. I thought it was brilliant.
 
 Then, during a conversation with my colleague [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), he suggested a different path. He argued that a more pragmatic approach, perhaps moving the domain into its own library, could offer almost all the same benefits with a fraction of the complexity.
 
-I'll be honest—**I fought him on it at first.** I was emotionally attached to the intricate 'fortress' I had built; it was clever, and it worked perfectly. Why would I trade it for something simpler?
+I'll be honest, **I fought him on it at first.** I was emotionally attached to the intricate 'fortress' I had built; it was clever, and it worked. Why would I trade it for something simpler?
 
-But as we talked it through, I started to come around. The simpler design wasn't just 'good enough'; it had its own profound advantages. This realization started a journey that didn't just simplify my code, but also revealed a powerful, unintended benefit: creating the perfect 'guardrails' for AI assistants like GitHub Copilot.
+But as we talked it through, I started to come around. The simpler design wasn't just 'good enough'; it had real advantages of its own. And as I kept pulling on that thread, I stumbled onto something I hadn't expected: a well-structured domain model makes a surprisingly good guardrail for AI tools like GitHub Copilot.
 
 ## The Goal: A Well-Defined Domain
 
@@ -146,11 +146,11 @@ public sealed class Order
 
 ## Approach \#2: The Pragmatic Trust Boundary
 
-After my chat with Daniel, the pragmatic approach became much clearer. The ultimate goal is to isolate your domain model into its own, separate C\# project (e.g., `MySolution.Domain.dll`). This creates a strong physical boundary. When you're building modern applications with frameworks like Minimal APIs, your "app code" often lives in the main web project. Placing your domain in a separate assembly ensures it can't be accidentally coupled with your web or infrastructure concerns.
+After my chat with Daniel, the pragmatic approach became much clearer. The goal is to isolate your domain model into its own, separate C\# project (e.g., `MySolution.Domain.dll`). This creates a strong physical boundary. When you're building applications with frameworks like Minimal APIs, your "app code" often lives in the main web project. Placing your domain in a separate assembly means it can't accidentally get coupled with your web or infrastructure concerns.
 
-This is where the "trust your assembly" idea really comes to life. By marking your setters and methods as `internal`, they are fully public *within* the trusted `MySolution.Domain` project, but completely inaccessible to the `MySolution.WebAPI` project that references it. Your infrastructure code, like Entity Framework configurations, would then live in your web project or a dedicated infrastructure project, keeping your pure domain model free from any persistence-related dependencies.
+This is where the "trust your assembly" idea comes in. By marking your setters and methods as `internal`, they are fully accessible *within* the trusted `MySolution.Domain` project, but completely invisible to the `MySolution.WebAPI` project that references it. Your infrastructure code, like Entity Framework configurations, lives in your web project or a dedicated infrastructure project, keeping the domain model free from persistence-related dependencies.
 
-This approach is much cleaner and still provides the strong boundary we need.
+It's a lot less code to maintain, and the boundary is just as real.
 
 ```csharp title="Domain project (internal setters)"
 // --- In project MySolution.Domain ---
@@ -213,11 +213,11 @@ public sealed class Order
 ✅ Provides a strong physical boundary at the assembly level.\
 ⚠️ A developer working in the same domain assembly could theoretically bypass the Aggregate Root's logic, requiring team discipline and trust.
 
-## The Real Superpower: Guardrails for AI
+## The real superpower: guardrails for AI
 
-Here's where the story gets really interesting. The pragmatic approach (\#2) creates the perfect environment for AI-assisted development.
+This is where it got interesting for me. The pragmatic approach (#2) turns out to work really well for AI-assisted development too.
 
-AI tools like **GitHub Copilot** are phenomenal, but they work based on the context they are given. If you give them an anemic model, the AI has no choice but to suggest a dangerous path that bypasses your business rules.
+AI tools like GitHub Copilot work based on the context they're given. If you give them an anemic model, they'll suggest the most obvious path available, which often means bypassing your business rules entirely.
 
 > **With an Anemic Model, the AI suggests the wrong path:**
 > Because it sees a public setter on the child `OrderItem`, it will suggest directly mutating the property, bypassing all of the `Order`'s rules:
@@ -237,12 +237,12 @@ However, when you provide a rich domain model with a clear, limited public API, 
 > order.UpdateItemQuantity("SKU-123", 5);
 > ```
 
-This creates a safe and reliable foundation. This core domain library is where human developers should focus their expertise, writing the code by hand and backing it with a comprehensive suite of high-quality unit tests to rigorously verify every business rule. Once this trusted foundation exists, the higher-level work—like writing integration tests against the Web API endpoints, or even scaffolding the API controllers themselves—can be safely accelerated by either human developers or AI agents, with confidence that the core business logic is protected.
+The domain library is where I'd put the most human attention: write that code by hand, cover it with unit tests, and verify every business rule thoroughly. Once that foundation is solid, the higher-level work, like integration tests against the Web API endpoints or scaffolding the API controllers, can be accelerated by AI with a lot more confidence. The core logic is protected and the AI can't easily break it even if its suggestion is wrong.
 
 ## Conclusion
 
-Even with nearly two decades of experience building systems, it's easy to get lost in the pursuit of a technically "perfect" solution. This journey was a powerful reminder of that. When you're deep in the weeds of a problem, the allure of an unbreakable, clever design can sometimes obscure a more pragmatic path that delivers the same value with far less complexity. It's a classic case of being too close to the problem to see the simpler light.
+Even with nearly two decades of experience building systems, it's easy to get pulled toward the cleverest solution rather than the right one. When I was deep in building that fortress, I genuinely couldn't see why anyone would want something simpler. It took Daniel asking the right questions to shake me out of it.
 
-Ultimately, this isn't about choosing a "simple" over a "complex" design. It's about choosing the *right* boundary for the problem at hand—one that provides robust protection while still enabling the team to move efficiently.
+This isn't about choosing "simple" over "complex." It's about picking the right boundary for the problem, one that protects what matters while still letting the team move. The file-scoped interface approach is genuinely impressive and there are probably contexts where it's exactly what's needed. But for most domain models, the assembly boundary gives you the same protection with far less ceremony.
 
-In today's world, that "team" increasingly includes AI partners. The biggest takeaway for me was realizing that a well-defined, pragmatic boundary doesn't just benefit human developers. It creates the essential guardrails that make our AI tools dramatically safer and more effective collaborators. And that feels like a huge win. 🚀
+The AI angle was something I didn't see coming. A well-structured domain doesn't just help human developers write correct code, it quietly steers AI tools toward the right patterns too. That's a useful property to have, especially as AI-generated code becomes a bigger part of the picture.

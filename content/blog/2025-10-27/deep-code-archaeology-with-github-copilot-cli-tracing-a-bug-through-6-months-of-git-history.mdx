@@ -8,19 +8,19 @@ summary: 'An archival operation failing on templates created months ago. The kin
 
 
 
-I came across something interesting: template archival was failing with "Cleanup Handlers Invalid" for templates created back in June, but templates from September onwards worked fine. A quick database check showed `CleanupFlagsJson` was NULL for the older ones.
+Template archival was failing with "Cleanup Handlers Invalid" for templates created back in June, but templates from September onwards worked fine. A quick database check showed `CleanupFlagsJson` was NULL for the older ones.
 
-This had all the hallmarks of a refactor that fixed new records but left old data behind, the kind of investigation that traditionally means hours of `git log`, `git show`, and `git diff` across months of history, connecting dots across multiple commits, and building a mental timeline of what changed when.
+Classic sign of a refactor that fixed new records but left old data behind. Normally that means hours of `git log`, `git show`, and `git diff` across months of history, manually connecting dots across commits while building a timeline in your head.
 
-Always looking to leverage my AI team to the fullest, I thought: can GitHub Copilot CLI handle this kind of deep historical analysis?
+I wanted to see if GitHub Copilot CLI could handle this kind of deep historical dig instead.
 
-Spoiler: It absolutely can.
+It could. While I made coffee.
 
 ## The Investigation Challenge
 
-The scenario: A document generation platform where some templates created between May and August couldn't be archived. Templates from September onwards? No problems.
+The scenario: a document generation platform where some templates created between May and August couldn't be archived. Templates from September onwards were fine.
 
-When you archive a template, the system runs cleanup workflows, detach shared resources, notify dependent systems, archive generated documents. Different templates need different cleanup based on their configuration. The `CleanupFlagsJson` field tells the system which workflows to run.
+When you archive a template, the system runs cleanup workflows: detach shared resources, notify dependent systems, archive generated documents. Different templates need different cleanup based on their configuration. The `CleanupFlagsJson` field tells the system which workflows to run.
 
 For the affected templates, that field was NULL. Not all templates from that period, just certain ones. An edge case we needed to understand.
 
@@ -38,20 +38,17 @@ public class DocumentTemplate
 }
 ```
 
-The questions:
-- **When** was this introduced?
-- **Why** weren't the old records migrated?
-- **What's the blast radius?**
+Three questions: when was this introduced, why weren't old records migrated, and what's the blast radius?
 
 The challenge: 50K+ lines of code, 200+ commits in the last 6 months, 15+ files potentially involved in template operations.
 
 ## The Experiment
 
-Traditional approach: 4-6 hours of manual git investigation, `git log` through 200+ commits, `git show` on each suspect commit, `git diff` to compare states, reading through code changes, building a mental timeline, documenting findings.
+The traditional approach would be 4-6 hours of manual git investigation: `git log` through 200+ commits, `git show` on each suspect commit, `git diff` to compare states, reading through code changes, building a mental timeline, documenting findings.
 
-What I wanted to test: Could Copilot CLI handle this kind of deep investigation autonomously?
+I wanted to see if Copilot CLI could do this autonomously instead.
 
-The setup: I'm running Copilot CLI in a secure Docker container using my `copilot_yolo -dotnet` configuration ([detailed here](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox)). This sandboxes Copilot's access while still letting it work with the codebase.
+I'm running Copilot CLI in a secure Docker container using my `copilot_yolo -dotnet` configuration ([detailed here](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox)), which sandboxes Copilot's access while still letting it work with the codebase.
 
 ```bash title="Terminal"
 copilot_yolo -dotnet

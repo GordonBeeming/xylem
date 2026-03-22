@@ -6,19 +6,21 @@ draft: false
 summary: 'I recently spoke at the SSW Brisbane User Group about shifting from writing code to orchestrating AI agents. Here is the recording and a breakdown of the specific tools, workflows, and security sandboxes I use to ship faster.'
 ---
 
-We are moving past the point of just asking a chatbot to write a function. We are entering the era of **orchestration**, where the developer's role shifts from typing every line to managing a team of AI agents to get the job done.
+Asking a chatbot to write a function is table stakes now. What I've been focused on lately is orchestration — shifting from writing code to managing a team of AI agents that do the heavy lifting for me.
 
-Below is the recording of my talk at the [SSW Brisbane User Group](https://www.meetup.com/en-AU/brisbane-full-stack-user-group/events/311865539/) where I demonstrate the tools I use (including a custom Dockerized CLI) to become a "10x developer"—not by typing faster, but by working smarter.
+Below is the recording of my talk at the [SSW Brisbane User Group](https://www.meetup.com/en-AU/brisbane-full-stack-user-group/events/311865539/) where I walk through the tools I use (including a custom Dockerized CLI) and why I think the "10x developer" idea is less about typing speed and more about knowing which agent to point at a problem.
 
 <YouTubeEmbed height="315" src="//www.youtube.com/embed/4DrWJybHl54" frameborder="0" width="560" allowfullscreen title="How I Became a 10x Dev Using AI Agents, GitHub Copilot & Gemini | Gordon Beeming | User Group" duration={5146} />
 
-## Key Concepts
+## Key concepts
 
-If you don't have time to watch the full session, here are the core facts and workflows discussed:
+If you don't have time to watch the full session, here are the core ideas I cover:
 
-* **Orchestration over Coding:** The goal is to fail fast and ship faster by managing agents rather than writing boilerplate.
-* **Context is King:** AI models like Gemini have massive context windows. Instead of short prompts, "brain dump" your entire messy thought process. The AI cleans it up and challenges your assumptions.
-* **Documentation Tax is Gone:** Use conversational AI to generate Architecture Decision Records (ADRs) and specs from your brainstorming sessions.
+The goal is to fail fast and ship faster by managing agents rather than writing boilerplate yourself. That means the actual coding is often the last thing you touch.
+
+Gemini's context window is huge, and I use that deliberately. Instead of crafting a precise prompt, I brain-dump my entire messy thought process and let the model clean it up and push back on my assumptions. It's a genuinely different way of working.
+
+One side effect: the "documentation tax" mostly disappears. ADRs and specs come out of your brainstorming sessions almost automatically when you're already having that conversation with an AI.
 
 ## The Tooling Ecosystem
 

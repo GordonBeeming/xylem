@@ -5,6 +5,7 @@ import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { Comments } from "@/components/blog/Comments";
 import { TagPill } from "@/components/ui/TagPill";
 import { formatDate } from "@/lib/content";
+import { EditInTinaButton } from "@/components/blog/EditInTinaButton";
 import type { PostMeta } from "@/lib/tina-helpers";
 
 interface PostLayoutProps {
@@ -58,6 +59,7 @@ export function PostLayout({
               &middot;
             </span>
             <span>{meta.readingTime.text}</span>
+            <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
           </div>
 
           {/* Tags */}

@@ -68,6 +68,18 @@
   --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', Menlo, monospace;
 }
 
+/* Hero / accent - outside @theme because rgba() values aren't valid theme tokens */
+:root {
+  --color-hero-gradient-start: #0063B2;
+  --color-hero-gradient-mid: #004E8C;
+  --color-hero-gradient-end: #003A6B;
+  --color-hero-radial: rgba(70, 203, 255, 0.15);
+  --color-hero-glow: rgba(70, 203, 255, 0.6);
+  --color-hero-glow-subtle: rgba(70, 203, 255, 0.15);
+  --color-hero-terminal-border: rgba(70, 203, 255, 0.15);
+  --color-hero-terminal-text: #46CBFF;
+}
+
 /* Dark mode overrides */
 .dark {
   --color-surface-primary: #1A1A1A;
@@ -93,6 +105,45 @@
 
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
   --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(70, 203, 255, 0.1);
+}
+
+/* SSW Theme - Light mode */
+.ssw-theme {
+  --color-brand-primary: #CC4141;
+  --color-brand-accent: #9E3232;
+  --color-brand-highlight: #E86565;
+
+  --color-interactive-default: #CC4141;
+  --color-interactive-hover: #A83636;
+  --color-interactive-focus: #E86565;
+
+  --color-info: #CC4141;
+
+  --color-hero-gradient-start: #CC4141;
+  --color-hero-gradient-mid: #A83636;
+  --color-hero-gradient-end: #8B2D2D;
+  --color-hero-radial: rgba(232, 101, 101, 0.15);
+  --color-hero-glow: rgba(232, 101, 101, 0.6);
+  --color-hero-glow-subtle: rgba(232, 101, 101, 0.15);
+  --color-hero-terminal-border: rgba(232, 101, 101, 0.15);
+  --color-hero-terminal-text: #E86565;
+
+  --shadow-glow: 0 0 20px rgba(204, 65, 65, 0.15);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(204, 65, 65, 0.08);
+}
+
+/* SSW Theme - Dark mode */
+.ssw-theme.dark {
+  --color-brand-primary: #E86565;
+  --color-brand-accent: #CC4141;
+
+  --color-interactive-default: #E86565;
+  --color-interactive-hover: #F08080;
+  --color-interactive-focus: #E86565;
+
+  --color-hero-terminal-text: #F08080;
+
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(232, 101, 101, 0.1);
 }
 
 /* Base styles */
@@ -166,18 +217,18 @@ body {
 
 @keyframes avatarGlow {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(70,203,255,0.15), 0 0 20px rgba(70,203,255,0.1);
-    border-color: rgba(70,203,255,0.4);
+    box-shadow: 0 0 0 4px var(--color-hero-glow-subtle), 0 0 20px var(--color-hero-glow-subtle);
+    border-color: var(--color-hero-glow);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(70,203,255,0.25), 0 0 40px rgba(70,203,255,0.2);
-    border-color: rgba(70,203,255,0.8);
+    box-shadow: 0 0 0 6px var(--color-hero-glow), 0 0 40px var(--color-hero-glow-subtle);
+    border-color: var(--color-hero-glow);
   }
 }
 
 .hero-typing-text {
   display: inline-block;
-  border-right: 2px solid #46CBFF;
+  border-right: 2px solid var(--color-hero-terminal-text);
   animation: typing 2.5s steps(44, end) 1s forwards, blink-border 1s steps(1) infinite 3.5s;
   white-space: nowrap;
   overflow: hidden;
@@ -192,7 +243,7 @@ body {
 }
 
 @keyframes blink-border {
-  0%, 50% { border-color: #46CBFF; }
+  0%, 50% { border-color: var(--color-hero-terminal-text); }
   51%, 100% { border-color: transparent; }
 }
 

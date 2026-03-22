@@ -20,9 +20,9 @@ interface MainProps {
 }
 
 const bookColors = [
-  "linear-gradient(135deg, #0063B2 0%, #004E8C 100%)",
-  "linear-gradient(135deg, #0075A3 0%, #005A7D 100%)",
-  "linear-gradient(135deg, #003A6B 0%, #002347 100%)",
+  "linear-gradient(135deg, var(--color-hero-gradient-start) 0%, var(--color-hero-gradient-mid) 100%)",
+  "linear-gradient(135deg, var(--color-brand-accent) 0%, var(--color-hero-gradient-mid) 100%)",
+  "linear-gradient(135deg, var(--color-hero-gradient-end) 0%, var(--color-hero-gradient-end) 100%)",
 ];
 
 type SocialKind =
@@ -50,13 +50,18 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="hero-section relative overflow-hidden bg-[linear-gradient(135deg,#0063B2_0%,#004E8C_50%,#003A6B_100%)] px-6 pt-24 pb-32 text-center">
+      <section
+        className="hero-section relative overflow-hidden px-6 pt-24 pb-32 text-center"
+        style={{
+          background: "linear-gradient(135deg, var(--color-hero-gradient-start) 0%, var(--color-hero-gradient-mid) 50%, var(--color-hero-gradient-end) 100%)",
+        }}
+      >
         {/* Radial glow overlay */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(70,203,255,0.15) 0%, transparent 70%)",
+              "radial-gradient(ellipse at 50% 0%, var(--color-hero-radial) 0%, transparent 70%)",
           }}
         />
         {/* Dot pattern */}
@@ -76,7 +81,7 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
               poster="/static/images/avatar.jpg"
               alt="Gordon Beeming"
               size={150}
-              className="border-2 border-[rgba(70,203,255,0.6)] shadow-xl"
+              className="border-2 border-[var(--color-hero-glow)] shadow-xl"
             />
           </div>
 
@@ -106,12 +111,18 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
 
           {/* Terminal */}
           <div
-            className="mx-auto inline-block w-full max-w-[520px] rounded-lg border border-[rgba(70,203,255,0.15)] bg-black/25 px-6 py-4 text-left font-mono text-sm text-[#46CBFF]"
+            className="mx-auto inline-block w-full max-w-[520px] rounded-lg bg-black/25 px-6 py-4 text-left font-mono text-sm"
+            style={{
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: "var(--color-hero-terminal-border)",
+              color: "var(--color-hero-terminal-text)",
+            }}
             aria-hidden="true"
           >
             <div>
               <span className="text-white/50">~/gordonbeeming $</span>{" "}
-              <span className="text-[#46CBFF]">cat status.txt</span>
+              <span style={{ color: "var(--color-hero-terminal-text)" }}>cat status.txt</span>
             </div>
             <div className="mt-1">
               <span className="hero-typing-text">
@@ -125,7 +136,7 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
       {/* Latest Posts Section */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <AnimateOnScroll>
-          <h2 className="mb-2 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
+          <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
             Latest Posts
           </h2>
           <p className="mb-9 pl-[19px] text-[15px] text-[var(--color-text-secondary)]">
@@ -159,7 +170,7 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
       <div className="bg-[var(--color-surface-tertiary)]">
         <section className="mx-auto max-w-7xl px-6 py-16">
           <AnimateOnScroll>
-            <h2 className="mb-2 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
+            <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
               Projects
             </h2>
             <p className="mb-9 pl-[19px] text-[15px] text-[var(--color-text-secondary)]">
@@ -248,7 +259,7 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
       {/* Books Section */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <AnimateOnScroll>
-          <h2 className="mb-2 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
+          <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
             Books I&apos;ve Written
           </h2>
           <p className="mb-9 pl-[19px] text-[15px] text-[var(--color-text-secondary)]">

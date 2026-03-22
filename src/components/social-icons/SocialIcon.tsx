@@ -84,7 +84,7 @@ export function SocialIcon({ kind, href, size = 20 }: SocialIconProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={platformLabels[kind]}
-      className="inline-flex items-center justify-center text-white/35 transition-all duration-200 hover:text-[#46CBFF] hover:-translate-y-px"
+      className="inline-flex items-center justify-center text-white/35 transition-all duration-200 hover:text-[var(--color-brand-highlight)] hover:-translate-y-px"
     >
       <svg
         viewBox="0 0 24 24"

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
+import { FeatureFlagScript } from "@/components/FeatureFlagScript";
+import { FeatureFlagProvider } from "@/components/FeatureFlagProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
@@ -80,11 +82,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-surface-primary text-text-primary antialiased">
+        <FeatureFlagScript />
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
-          <Header />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <FeatureFlagProvider>
+            <Header />
+            <main id="main-content">{children}</main>
+            <Footer />
+          </FeatureFlagProvider>
         </ThemeProviders>
       </body>
     </html>

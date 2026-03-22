@@ -435,34 +435,18 @@ Once it found the September refactor, it went further automatically: comparing b
 ### Auto-documentation
 The whole investigation ended up in a structured markdown file with timeline diagrams, code snippets, SQL queries, and remediation options. That becomes a permanent artifact you can share with the team.
 
-## What This Means for Complex Investigations
+## What this means for complex investigations
 
-The ability to delegate deep historical analysis to Copilot CLI changes how we approach certain types of work:
+This type of bug - "it worked last month, something changed somewhere in 200 commits" - used to just cost half a day. You'd block your calendar, grab coffee, and grind through git history. Now I can hand it off in 5 minutes and come back to a complete writeup.
 
-**Time-to-insight:** 5 minutes of setup vs. half a workday of archaeology
+It's not a silver bullet. Copilot still needs a clear prompt and a well-structured codebase to navigate. But for the right problems, it's genuinely useful:
 
-**Parallel processing:** Git history analysis runs concurrently while you work on something else
-
-**Context retention:** AI excels at connecting dots across months of commits, something humans struggle with
-
-**Documentation bonus:** The investigation report becomes a permanent artifact
-
-**Best applications:**
 - "It worked last month" mysteries
 - Data corruption root cause analysis
 - Blast radius assessments
 - Multi-file architectural change audits
 - Production bug origin stories
 
-This isn't replacing developers, it's augmenting our ability to understand complex codebases across time.
+The investigation runs while you're doing something else. The output is already documented. That's worth a lot.
 
-The investigation that would traditionally consume half a workday now takes 5 minutes to initiate and runs while you're productive elsewhere. That's a productivity multiplier worth paying attention to.
-
-**Tools used:**
-- GitHub Copilot CLI
-- Git
-- SQL Server
-
-**Time saved:** ~4 hours  
-**Coffee consumed:** 1 cup  
-**Investigation quality:** Complete
+Tools used: GitHub Copilot CLI, Git, SQL Server. Time saved: ~4 hours. Coffee consumed: 1 cup.

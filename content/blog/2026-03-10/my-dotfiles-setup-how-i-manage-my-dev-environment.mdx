@@ -252,11 +252,11 @@ Stow creates the symlinks, and everything keeps working as before, except now it
 
 ### 4. Or let AI do the heavy lifting
 
-If you've already got a bunch of config files scattered around and don't want to move them one by one, this is a great task for an AI coding assistant. I used [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) for my setup, and you could say something like:
+If you've already got a bunch of config files scattered around and don't want to move them one by one, this is a good task for an AI coding assistant. I used [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) for my setup, and you could say something like:
 
 > "I want to set up a dotfiles repo at ~/dotfiles using GNU Stow. Find my .gitconfig, .zshrc, .config/starship.toml, and any other config files worth tracking, move them into the right structure in ~/dotfiles, and stow them back as symlinks."
 
-Claude (or whatever assistant you use) can explore your home directory, identify the configs worth managing, create the directory structure, move the files, set up the ignore file, and run `stow .` — all in one go. It's especially helpful because it'll catch things you might forget, like SSH configs or tool-specific settings buried in `.config/`.
+Claude (or whatever assistant you use) can explore your home directory, identify the configs worth managing, create the directory structure, move the files, set up the ignore file, and run `stow .` in one go. It's especially useful for catching things you might forget, like SSH configs or tool-specific settings buried in `.config/`.
 
 ### 5. Commit and push
 

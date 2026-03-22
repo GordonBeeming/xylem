@@ -95,6 +95,34 @@
   --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(70, 203, 255, 0.1);
 }
 
+/* SSW Theme - Light mode */
+.ssw-theme {
+  --color-brand-primary: #CC4141;
+  --color-brand-accent: #9E3232;
+  --color-brand-highlight: #E86565;
+
+  --color-interactive-default: #CC4141;
+  --color-interactive-hover: #A83636;
+  --color-interactive-focus: #E86565;
+
+  --color-info: #CC4141;
+
+  --shadow-glow: 0 0 20px rgba(204, 65, 65, 0.15);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(204, 65, 65, 0.08);
+}
+
+/* SSW Theme - Dark mode */
+.ssw-theme.dark {
+  --color-brand-primary: #E86565;
+  --color-brand-accent: #CC4141;
+
+  --color-interactive-default: #E86565;
+  --color-interactive-hover: #F08080;
+  --color-interactive-focus: #E86565;
+
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(232, 101, 101, 0.1);
+}
+
 /* Base styles */
 body {
   background-color: var(--color-surface-primary);

@@ -7,6 +7,7 @@ const navigationLinks = [
   { href: "/tags", label: "Tags" },
   { href: "/about", label: "About" },
   { href: "/color-palette", label: "Color Palette" },
+  { href: "/flags", label: "Flags" },
 ];
 
 const supportLinks = [

@@ -227,7 +227,7 @@ AI tools like GitHub Copilot work based on the context they're given. If you giv
 > item.Quantity = 5;
 > ```
 
-However, when you provide a rich domain model with a clear, limited public API, you create **guardrails**. You guide the AI down the only correct and safe path.
+When you provide a rich domain model with a clear, limited public API, the AI only sees what's actually accessible. It gets guided to the correct path because there's no other path to take.
 
 > **With a Rich Domain Model, the AI suggests the right path:**
 > Because the setters are protected (`private` or `internal`), it's guided to the only public method available on the aggregate root:

@@ -51,7 +51,7 @@ build: {
 
 Simple enough. Here's where it falls apart.
 
-## Gotcha 1: Static Export Means No Server Features
+## Gotcha 1: static export means no server features
 
 When you set `output: "export"`, Next.js generates a fully static site — no Node.js server, no API routes, no middleware, no rewrites, no redirects. If you have any API routes (like an OG image generator at `/api/og`), the build will fail:
 

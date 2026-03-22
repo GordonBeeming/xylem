@@ -11,7 +11,9 @@ export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
 
   if (!enabled) return null;
 
-  const editUrl = `/admin#/~/${relativePath}`;
+  // TinaCMS admin URL: collection name + relative path with / encoded as ~2F, no extension
+  const tinaPath = relativePath.replace(/\.mdx$/, "").replace(/\//g, "~2F");
+  const editUrl = `/admin#/collections/post/${tinaPath}`;
 
   return (
     <a

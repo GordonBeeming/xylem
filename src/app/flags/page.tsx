@@ -1,38 +1,42 @@
 "use client";
 
 import { Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { FEATURE_FLAGS } from "@/lib/feature-flags";
 import { useFeatureFlags } from "@/components/FeatureFlagProvider";
 
 function FlagsContent() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { flags, setFlag, mounted } = useFeatureFlags();
   const [copied, setCopied] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   // Auto-set flags from URL params and redirect
   useEffect(() => {
     if (!mounted) return;
 
+    // Use window.location.search to read actual URL params,
+    // avoiding Next.js client-side router cache of searchParams
+    const urlParams = new URLSearchParams(window.location.search);
     const flagKeys = FEATURE_FLAGS.map((f) => f.key);
     const paramsToSet: Array<{ key: string; value: boolean }> = [];
 
     for (const key of flagKeys) {
-      const paramValue = searchParams.get(key);
+      const paramValue = urlParams.get(key);
       if (paramValue !== null) {
         paramsToSet.push({ key, value: paramValue === "true" });
       }
     }
 
     if (paramsToSet.length > 0) {
+      setRedirecting(true);
       for (const { key, value } of paramsToSet) {
         setFlag(key, value);
       }
       router.replace("/");
     }
-  }, [mounted, searchParams, setFlag, router]);
+  }, [mounted, setFlag, router]);
 
   const generateLink = useCallback(() => {
     const enabledFlags = FEATURE_FLAGS.filter((f) => flags[f.key]);
@@ -48,12 +52,7 @@ function FlagsContent() {
     setTimeout(() => setCopied(false), 2000);
   }, [generateLink]);
 
-  // Check if we have URL params that will trigger redirect
-  const hasUrlParams = FEATURE_FLAGS.some(
-    (f) => searchParams.get(f.key) !== null
-  );
-
-  if (!mounted || hasUrlParams) {
+  if (!mounted || redirecting) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
         <p className="text-[var(--color-text-secondary)]">Loading flags...</p>

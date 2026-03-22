@@ -50,25 +50,25 @@ Everything else (all 30+ custom aliases, PATH entries, 1Password SSH agent, rben
 
 The migration had six phases:
 
-**Phase 0 — Backup.** Claude backed up my entire dotfiles repo, Oh My Zsh installation, Powerlevel10k config, and recorded my nvm Node versions. Safety net in place.
+**Phase 0 - Backup.** Claude backed up my entire dotfiles repo, Oh My Zsh installation, Powerlevel10k config, and recorded my nvm Node versions. Safety net in place.
 
-**Phase 1 — Install new tools.** One `brew install` for the CLI tools, one `brew install --cask` for Ghostty. Then `fnm install` for each Node version I had in nvm.
+**Phase 1 - Install new tools.** One `brew install` for the CLI tools, one `brew install --cask` for Ghostty. Then `fnm install` for each Node version I had in nvm.
 
-**Phase 2–3 — Config files.** Claude created the Ghostty config, and while it was at it, noticed I had several config files that weren't in my dotfiles repo (Claude settings, SSH config, GitHub CLI config, git global ignore). It moved those into my Stow-managed dotfiles too. Nice bonus I didn't ask for.
+**Phase 2-3 - Config files.** Claude created the Ghostty config, and while it was at it, noticed I had several config files that weren't in my dotfiles repo (Claude settings, SSH config, GitHub CLI config, git global ignore). It moved those into my Stow-managed dotfiles too. Nice bonus I didn't ask for.
 
-**Phase 4 — The rewrite.** This was the big one. Claude replaced my 202-line `.zshrc` (mostly Oh My Zsh boilerplate comments) with a clean Zinit-based config. It cherry-picked only the four OMZ libraries I actually used (`git.zsh`, `directories.zsh`, `theme-and-appearance.zsh`, `async_prompt.zsh`) and the `git` plugin, then added the new tools on top.
+**Phase 4 - The rewrite.** This was the big one. Claude replaced my 202-line `.zshrc` (mostly Oh My Zsh boilerplate comments) with a clean Zinit-based config. It cherry-picked only the four OMZ libraries I actually used (`git.zsh`, `directories.zsh`, `theme-and-appearance.zsh`, `async_prompt.zsh`) and the `git` plugin, then added the new tools on top.
 
-It also cleaned up my `.zprofile` — I'd been carrying Amazon Q/Fig hooks from an app I'd uninstalled ages ago.
+It also cleaned up my `.zprofile`. I'd been carrying Amazon Q/Fig hooks from an app I'd uninstalled ages ago.
 
-**Phase 5 — Verify.** Claude ran the new config in an interactive shell and checked: Node version, git aliases, SSH authentication, custom aliases, rbenv, Cargo, pnpm, dotnet — everything passed.
+**Phase 5 - Verify.** Claude ran the new config in an interactive shell and checked: Node version, git aliases, SSH authentication, custom aliases, rbenv, Cargo, pnpm, dotnet. Everything passed.
 
-**Phase 6 — Cleanup.** Removed nvm, Oh My Zsh, Powerlevel10k, iTerm2, Warp, and the leftover Amazon Q/Fig cask. Even found I had Google Cloud SDK installed that I didn't know about and removed that too.
+**Phase 6 - Cleanup.** Removed nvm, Oh My Zsh, Powerlevel10k, iTerm2, Warp, and the leftover Amazon Q/Fig cask. Even found I had Google Cloud SDK installed that I didn't know about and removed that too.
 
 ## The Result
 
 Shell startup went from a noticeable pause to **fast**, measured as quick as **210ms**. Consistent. Every time.
 
-The new prompt is clean — just the directory name, git branch, and a `>`. No more rainbow powerline segments, no 1,700-line config file. Starship detects what's relevant (Node version, Python env, git status) and shows it. Nothing else.
+The new prompt is clean: just the directory name, git branch, and a `>`. No more rainbow powerline segments, no 1,700-line config file. Starship detects what's relevant (Node version, Python env, git status) and shows it. Nothing else.
 
 The things I didn't know I was missing:
 

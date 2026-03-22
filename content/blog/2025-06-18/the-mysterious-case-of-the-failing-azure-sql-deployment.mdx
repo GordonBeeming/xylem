@@ -8,20 +8,20 @@ summary: 'A perfectly stable GitHub Actions deployment to Azure SQL suddenly fai
 
 
 
-It's the call every developer dreads… “The deployment is failing.”
+It's the message every developer dreads: “The deployment is failing.”
 
-You check the logs, and sure enough, a workflow that has been running perfectly for months has suddenly decided to break. No code has changed on the `main` branch, no configuration *seems* to have been altered. Yet, here we are.
+You check the logs. A workflow that's been running fine for months has suddenly broken. Nothing changed on `main`. No configuration was touched, as far as you can tell. And yet.
 
-This is the story of one such mystery, a journey down a rabbit hole that starts with a scary-looking identity error and ends with a surprising culprit.
+This is what happened when I hit one of those situations -- where the error message points you in completely the wrong direction.
 
 ## The Scene of the Crime
 
-The setup is modern and, until now, has been robust:
+The setup had been running without issues:
 * A **GitHub Actions** workflow for CI/CD.
 * **Passwordless deployments** to Azure using OpenID Connect (OIDC).
 * A **PowerShell script** to run permission scripts on **Azure SQL** using `Invoke-Sqlcmd`.
 
-Then, one afternoon, the pipeline glows red. 😱
+Then one afternoon, everything went red.
 
 ## The Misleading First Clue
 
@@ -29,19 +29,19 @@ The first thing you see in the logs is this terrifying error message:
 
 <Figure key="/images/2025-06-18-12-44-24.png" src="/images/2025-06-18-12-44-24.png" alt="A screenshot of the GitHub Actions log showing a PowerShell error message. The log displays Invoke-Sqlcmd ManagedIdentityCredential authentication failed Managed Identity Authentication unavailable Either the requested identity has not been assigned to this resource or other errors could be present Content error invalid_request error_description Identity not found. The error message is highlighted in red, indicating a failed deployment step. The overall tone is urgent and frustrating, reflecting a deployment failure in a technical environment." width="0" height="0" caption="The error that sends you looking in all the wrong places." />
 
-Every instinct screams that this is an Azure AD problem. Did someone delete the Service Principal? Was the Federated Credential on the App Registration removed? Did a new Conditional Access policy just drop and ruin my day?
+Your first instinct is Azure AD. Did someone delete the Service Principal? Was the Federated Credential on the App Registration removed? Did a new Conditional Access policy just land without warning?
 
-You go down the checklist:
-* ✅ App Registration exists.
-* ✅ Federated Credential looks fine.
-* ✅ Permissions haven't changed.
-* ✅ Entra admin says no new policies were applied.
+The checklist:
+* App Registration exists.
+* Federated Credential looks fine.
+* Permissions haven't changed.
+* Entra admin confirms no new policies were applied.
 
-Nothing makes sense.
+Everything checks out. Which means the error message is lying to you.
 
 ## The Breakthrough
 
-The big break in the case came from a simple observation: a deployment step *before* the failing PowerShell script was working perfectly. A Bicep deployment in the same job, using the same identity, was successfully deploying infrastructure to Azure.
+The turning point was a pretty simple observation: the step *before* the failing PowerShell script was working fine. A Bicep deployment in the same job, using the same identity, was successfully deploying infrastructure to Azure.
 
 This meant the failure was isolated to the PowerShell step. The GitHub Actions log looked conceptually like this:
 
@@ -61,24 +61,24 @@ Invoke-Sqlcmd: ManagedIdentityCredential authentication failed...
 ❌  Failure - Permission Scripts (0m 12s)
 ```
 
-This tells us something crucial:
+Two things became clear:
 
-1.  The fundamental authentication from GitHub to Azure **is working**.
-2.  The Service Principal **is valid** and can get a token for the Azure Resource Manager (ARM) API.
+1.  The authentication from GitHub to Azure was working.
+2.  The Service Principal was valid and could get a token for the Azure Resource Manager (ARM) API.
 
-So, the problem isn't the identity itself, but something specific to the PowerShell script's attempt to connect to Azure SQL.
+The problem wasn't the identity. It was something specific to how the PowerShell script was connecting to Azure SQL.
 
 ## The Real Culprit
 
-After a lot of debugging, we proved that the Service Principal *could* get a token for Azure SQL using the `Get-AzAccessToken` cmdlet directly. The problem was that `Invoke-Sqlcmd`, when using `Authentication=Active Directory Default`, was failing to find and use that token correctly.
+After digging into it, I confirmed that the Service Principal *could* get a token for Azure SQL -- running `Get-AzAccessToken` directly worked fine. The issue was that `Invoke-Sqlcmd`, when using `Authentication=Active Directory Default`, was failing to find and use that token on its own.
 
-The real culprit was a subtle incompatibility or bug in the SQL driver being used by `Invoke-Sqlcmd` on the GitHub runner. It simply couldn't complete the passwordless authentication handshake on its own.
+Something in the SQL driver on the GitHub runner couldn't complete the passwordless authentication handshake. Whether it's a bug or an incompatibility, I'm not sure -- but the behavior was consistent and reproducible.
 
 ## The Solution
 
-The solution is to stop relying on `Invoke-Sqlcmd`'s internal authentication mechanism and instead handle it ourselves. We get the token using the reliable `Get-AzAccessToken` cmdlet and then "spoon-feed" it directly to `Invoke-Sqlcmd`.
+The fix is to stop relying on `Invoke-Sqlcmd`'s internal authentication and handle it yourself. Get the token with `Get-AzAccessToken` and pass it directly to `Invoke-Sqlcmd`.
 
-Here is the final, robust PowerShell class that implements this pattern, including token caching to make multiple calls more efficient.
+Below is the PowerShell class I landed on. It also caches the token so multiple calls within the same script don't each hit the token endpoint.
 
 ```powershell title="SqlFunctions.psm1"
 using module ./Logger.psm1 # Custom logging module
@@ -154,13 +154,14 @@ class SqlFunctions {
 }
 ```
 
-The key takeaways from the working code are:
-1.  **Get the token manually** with `Get-AzAccessToken -ResourceUrl "https://database.windows.net/"`.
-2.  **Pass the token string** directly to `Invoke-Sqlcmd` via the `-AccessToken $token.Token` parameter.
-3.  **Use `-ErrorAction Stop`** to ensure that if `Invoke-Sqlcmd` does fail, it generates an error that your `try/catch` block will actually see.
+Three things in this code are doing the actual work:
 
-## Cheers
+1. Get the token yourself with `Get-AzAccessToken -ResourceUrl "https://database.windows.net/"` -- don't let `Invoke-Sqlcmd` try to figure it out.
+2. Pass the token string directly via `-AccessToken $token.Token`.
+3. Add `-ErrorAction Stop` so that if `Invoke-Sqlcmd` fails, the error actually surfaces and your `try/catch` block catches it. Without this, failures can silently pass.
 
-Sometimes the loudest error message is just a distraction. By digging deeper and isolating the problem, we found the issue wasn't with the identity, but with the tooling. Hopefully, this journey saves you from a few sleepless nights!
+## Wrapping up
 
-If you found this useful let me know on [X (@GordonBeeming)](https://x.com/GordonBeeming/), [LinkedIn (gordon-beeming)](https://www.linkedin.com/in/gordon-beeming/) or leave a comment below 😅 ... It would be cool to hear if this helped you out! 👀
+The `Identity not found` error had nothing to do with the identity. It was `Invoke-Sqlcmd` failing to complete the auth handshake internally, while the underlying Service Principal was perfectly healthy the whole time. Once I isolated the problem to the PowerShell step specifically, the fix was straightforward.
+
+If you've hit something similar, or if this helped you avoid a few hours of chasing the wrong thing, let me know on [X (@GordonBeeming)](https://x.com/GordonBeeming/) or [LinkedIn (gordon-beeming)](https://www.linkedin.com/in/gordon-beeming/), or drop a comment below.

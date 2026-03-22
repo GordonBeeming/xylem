@@ -8,7 +8,7 @@ summary: 'Q1 2026 brings copilot_here to your favorite package managers (Homebre
 
 I'd like to start off by saying thanks to [@tudorsmt](https://github.com/tudorsmt), [@epetutsc](https://github.com/epetutsc), [@Tasteful](https://github.com/Tasteful), and [@christiansparre](https://github.com/christiansparre) for logging issues and feature requests that helped shape this quarter's improvements.
 
-The first quarter of 2026 has been packed with new capabilities for [copilot_here](https://copilot_here.gordonbeeming.com). The headline feature is that you can now install via your favorite package manager — Homebrew, WinGet, or as a .NET global tool — instead of running install scripts. We've also added a Golang image variant, support for Podman and OrbStack as container runtimes, and a model configuration system that lets you set your preferred AI model per-project or globally.
+Q1 has been busy for [copilot_here](https://copilot_here.gordonbeeming.com). The change I'm most happy about is proper package manager support — you can now install via Homebrew, WinGet, or as a .NET global tool instead of piping a script from the internet. Beyond that, there's a new Golang image variant, Podman and OrbStack support as container runtimes, and a model configuration system so you can pin your preferred AI model per-project or globally.
 
 If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
 
@@ -27,7 +27,7 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 
 ## 1. Install Anywhere: Package Manager Support
 
-The biggest user-facing change this quarter is that `copilot_here` is now available through the package managers you already use. No more piping scripts from the internet — just install it the way you install everything else.
+You can now install `copilot_here` through the package managers you already use. No more piping scripts from the internet.
 
 **.NET Global Tool:**
 ```bash title="Terminal"
@@ -51,15 +51,15 @@ brew install copilot_here
 winget install GordonBeeming.CopilotHere
 ```
 
-All three channels are automatically published on every release via CI, so you'll always get the latest version through your package manager's normal update flow.
+All three channels are published automatically on every release via CI, so your package manager's normal update flow will keep you current.
 
-The existing `curl`/`iwr` install scripts continue to work if you prefer that approach.
+The existing `curl`/`iwr` install scripts still work if you'd rather stick with those.
 
 ---
 
 ## 2. Golang Image Variant
 
-We've added a new `golang` image variant with the full Go toolchain pre-installed, including `go` and `gofmt`.
+There's a new `golang` image variant with the full Go toolchain pre-installed (`go` and `gofmt`).
 
 Use it with the `--golang` or `-go` flag:
 
@@ -68,19 +68,15 @@ copilot_here --golang "add unit tests for this Go module"
 copilot_yolo --golang "refactor this handler"
 ```
 
-This brings our image lineup to: **Base**, **.NET** (8/9/10), **Playwright**, **Rust**, and now **Golang** — plus compound variants like `dotnet-playwright` and `dotnet-rust`.
+The image lineup is now: Base, .NET (8/9/10), Playwright, Rust, and Golang, plus compound variants like `dotnet-playwright` and `dotnet-rust`.
 
 ---
 
 ## 3. Container Runtime Freedom
 
-Up until now, `copilot_here` required Docker. That's no longer the case.
+`copilot_here` used to require Docker. Not anymore.
 
-We now support **Podman** and **OrbStack** as container runtimes, with automatic detection:
-
-- **Podman**: Full support including rootless containers. Auto-detects Podman Compose support.
-- **OrbStack**: Automatically detected when your Docker context is set to OrbStack.
-- **Auto-detection**: Tries Docker first, then falls back to Podman.
+Podman and OrbStack are now supported as container runtimes. Detection is automatic: Docker is tried first, then Podman. OrbStack is picked up when your Docker context is set to use it. Podman works rootless and auto-detects Podman Compose if it's available.
 
 You can also explicitly configure your preferred runtime:
 
@@ -102,7 +98,7 @@ Thanks to [@tudorsmt](https://github.com/tudorsmt) for the original request in [
 
 ## 4. Model Configuration
 
-You can now configure which AI model `copilot_here` uses, without passing `--model` every time.
+You can now save a model preference so you don't have to pass `--model` every time.
 
 ```bash title="Terminal"
 # Set model for the current project
@@ -121,15 +117,15 @@ copilot_here --show-model
 copilot_here --list-models
 ```
 
-**Configuration priority:** CLI argument > local config > global config > default.
+Priority order: CLI argument beats local config, which beats global config, which beats the built-in default.
 
-A special `default` value lets you override a global setting at the local level to explicitly use Copilot CLI's default model.
+There's also a special `default` value you can set at the local level to explicitly opt back into Copilot CLI's default model, even if you've set something globally.
 
 ---
 
 ## 5. Custom Mount Paths
 
-Previously, when you mounted a directory, the container path was always auto-computed to match the host path. Now you can specify both sides using the `host:container` format:
+Before this change, the container path was always auto-computed from the host path. Now you can specify both sides using `host:container` format:
 
 ```bash title="Terminal"
 # Mount with a custom container path
@@ -139,7 +135,7 @@ copilot_here --mount /host/data:/app/data
 copilot_here --mount-rw /host/output:/app/output
 ```
 
-This is especially useful on Windows where host paths don't map cleanly to Linux container paths, or when your project expects files at a specific location inside the container.
+Handy on Windows where host paths don't translate cleanly to Linux container paths, and for any project that expects files at a fixed location inside the container.
 
 Thanks to [@Tasteful](https://github.com/Tasteful) for the request in [#62](https://github.com/GordonBeeming/copilot_here/issues/62).
 
@@ -147,9 +143,9 @@ Thanks to [@Tasteful](https://github.com/Tasteful) for the request in [#62](http
 
 ## 6. Enhanced Image Name Handling
 
-You can now use absolute image references with `copilot_here`, making it possible to use custom Docker images that aren't hosted under the default `ghcr.io/gordonbeeming/copilot_here` registry.
+`copilot_here` now accepts absolute image references, so you can bring your own Docker images rather than being locked to the `ghcr.io/gordonbeeming/copilot_here` registry.
 
-This was a frequently requested feature — thanks to [@christiansparre](https://github.com/christiansparre) for raising it in [#68](https://github.com/GordonBeeming/copilot_here/issues/68).
+Thanks to [@christiansparre](https://github.com/christiansparre) for raising this in [#68](https://github.com/GordonBeeming/copilot_here/issues/68) — it came up a lot.
 
 ---
 

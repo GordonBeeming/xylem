@@ -6,21 +6,21 @@ draft: false
 summary: 'Sharpen your Rust and TDD skills with this extensive 25-step coding challenge. Build a complete Markdown-to-HTML renderer from scratch, one test at a time. Perfect for deliberate practice.'
 ---
 
-The gap between knowing a language's syntax and truly feeling proficient is a journey every developer takes. For me, that journey currently involves learning Rust. To bridge that gap, I've been searching for challenges that push me to not only write code but to think in a structured way and get faster with my IDE's shortcuts.
+There's a gap between knowing a language's syntax and actually feeling comfortable in it. For me, that gap is currently Rust. I've been looking for challenges that push me to write code in a structured way and get faster with my IDE shortcuts - not just toy examples, but something with enough surface area to feel real.
 
-This led me down the rabbit hole of code katas. Inspired by classics like the [String Calculator by Roy Osherove](https://osherove.com/tdd-kata-1), I've created a more extensive challenge: a 25-step kata to build a Markdown-to-HTML renderer from scratch.
+That search brought me to code katas. Inspired by classics like the [String Calculator by Roy Osherove](https://osherove.com/tdd-kata-1), I put together a more substantial challenge: a 25-step kata to build a Markdown-to-HTML renderer from scratch.
 
-While I'm using this to sharpen my Rust skills, the beauty of this kata is that it's completely language-agnostic. The principles of Test-Driven Development (TDD) apply everywhere. So, I have a challenge for you: take this on in your favorite language, be it C#, Python, TypeScript, or anything else, and **leave a comment below to let us know which one you used!** It would be awesome to see a collection of solutions in different languages.
+I'm working through this in Rust, but the kata is completely language-agnostic. TDD works the same way whether you're in C#, Python, TypeScript, or anything else. So here's the challenge: pick your language and **leave a comment below letting us know which one you used.** I'd love to see solutions in different languages stack up.
 
-Our guide on this journey will be the simple, powerful TDD cycle of Red-Green-Refactor.
+The structure throughout is the TDD cycle of Red-Green-Refactor.
 
 <Figure key="/images/tdd-cycle-diagram.png" src="/images/tdd-cycle-diagram.png" alt="A diagram showing a cycle with three parts: Red, Green, and Refactor." width="600" height="0" caption="The Red-Green-Refactor cycle will be our guide for this journey." />
 
-The goal isn't just to finish. It's to embrace the TDD rhythm: write a failing test (Red), make it pass with the simplest code (Green), and then clean it up (Refactor). Let's get started! 🦀
+The goal is to embrace the TDD rhythm: write a failing test (Red), make it pass with the simplest code possible (Green), then clean it up (Refactor). Resist the urge to skip ahead.
 
 ## The Challenge
 
-Your task is to create a function that takes a string of Markdown and returns the correctly formatted HTML string. We will build up the functionality one feature at a time, ensuring our test suite is always green before moving to the next step.
+Your task is to create a function that takes a string of Markdown and returns the correctly formatted HTML string. Build up the functionality one feature at a time, keeping the test suite green before moving to the next step.
 
 ## The 25 Progressions
 
@@ -136,7 +136,7 @@ Here is the step-by-step path to build your renderer. Each step represents a new
     * **Input**: `[Tiani's Site](https://tianibeeming.com \"Tiani Beeming\")`
     * **Output**: `<p><a href="https://tianibeeming.com" title="Tiani Beeming">Tiani's Site</a></p>`
 
-And there you have it! After 25 steps, you'll have a renderer capable of turning complex Markdown into clean HTML.
+After 25 steps, you'll have a renderer capable of turning complex Markdown into clean HTML.
 
 For example, a piece of Markdown like this:
 
@@ -149,7 +149,7 @@ This paragraph contains **bold text** and a link to [my wife Tiani's blog](https
 - List Item 2
 ````
 
-...will produce the following satisfying HTML output. 🎉
+...will produce the following HTML output.
 
 ```html title="Expected HTML output"
 <h1>My Document</h1>
@@ -160,8 +160,6 @@ This paragraph contains **bold text** and a link to [my wife Tiani's blog](https
 </ul>
 ```
 
-And that's the full 25-step progression! Following these steps won't just leave you with a functional Markdown renderer; it will give you dozens of reps in the TDD cycle, making the process feel like second nature.
+That's the full 25-step progression. By the time you're done, you'll have a functional Markdown renderer and dozens of reps through the TDD cycle. The process starts to feel natural somewhere around step 10 - that's when it clicks.
 
-I'm genuinely excited to see what you build with this. Please, share your experience and the language you used in the comments below.
-
-Happy coding!
+Drop a comment below with the language you used and how it went.

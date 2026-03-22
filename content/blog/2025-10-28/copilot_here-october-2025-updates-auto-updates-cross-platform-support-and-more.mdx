@@ -6,7 +6,7 @@ draft: false
 summary: 'The October 2025 updates to copilot_here bring auto-updating scripts, full Windows support, argument pass-through for native Copilot features like --resume, smart image cleanup, and a bunch of quality-of-life improvements that make the Docker-based Copilot CLI experience even better.'
 ---
 
-I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that transformed it from "works on my machine" to "works everywhere, smoothly."
+I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that took it from "works on my machine" to "works everywhere, without drama."
 
 ## What's New in October 2025
 
@@ -48,13 +48,13 @@ if ! id appuser >/dev/null 2>&1; then
 fi
 ```
 
-Is running as root in a local development container ideal? No. But it's a reasonable fallback for Windows users, and the warning message lets them know what's happening. Sometimes "works everywhere" beats "theoretically more secure but broken."
+Running as root in a local dev container isn't ideal. But it beats silently failing, and the warning at least tells users what happened. For a local sandbox tool, I'll take "works on Windows with a caveat" over "crashes on Windows with a cryptic error."
 
-This also meant Windows needed to be a first-class citizen in the documentation, not an afterthought. So I restructured the entire README to show PowerShell instructions alongside bash/zsh, with equal prominence.
+I also restructured the README to show PowerShell instructions alongside bash/zsh rather than buried in a footnote.
 
 ## 2. Auto-Updating Scripts
 
-Here's a fun problem: the Docker image itself can auto-update via `docker pull`, but what about the shell functions users add to their `.bashrc` or `.zshrc`? Those live on the host machine.
+The Docker image can auto-update via `docker pull`, but what about the shell functions users add to their `.bashrc` or `.zshrc`? Those live on the host machine and don't update themselves.
 
 ### The Challenge
 
@@ -85,13 +85,13 @@ Reloading shell function...
  Scripts updated successfully!
 ```
 
-The beauty is that it updates the file *and* reloads the function in your current session, so you don't even need to restart your terminal.
+It updates the file and reloads the function in your current session, so you don't need to restart your terminal.
 
-**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file. This way your dotfiles stay in sync automatically.
+**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file, so your dotfiles stay in sync.
 
 ## 3. Quick Install Method
 
-I had this elaborate setup where users needed to copy shell function code from the README and paste it into their config files. It worked, but it was clunky. Then I realized: why not just let them download and source a script file?
+The old setup required users to copy shell function code from the README and paste it into their config files. It worked, but it was awkward. Why not just let them download and source a script file?
 
 ### Before (Manual Mode):
 ```bash title="Terminal"
@@ -107,7 +107,7 @@ I had this elaborate setup where users needed to copy shell function code from t
 curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
 ```
 
-One command. That's it. And because the script now lives in its own file, updating is as simple as `copilot_here --update`.
+One command. And because the script lives in its own file now, updating is just `copilot_here --update`.
 
 I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
 
@@ -119,9 +119,7 @@ fi
 
 ## 4. Argument Pass-Through: Unlocking Native Copilot Features
 
-Initially, I had built-in support for specific flags like `--help` and `--no-cleanup`. But what about all the other arguments that GitHub Copilot CLI supports?
-
-I was basically re-implementing argument parsing for no reason. So I added automatic pass-through:
+I had built-in support for specific flags like `--help` and `--no-cleanup`, but that meant I was re-implementing argument parsing for flags the underlying CLI already handled. So I added automatic pass-through instead:
 
 ```bash title="Argument pass-through logic"
 # Built-in wrapper args
@@ -137,7 +135,7 @@ for arg in "$@"; do
 done
 ```
 
-Now users can run any Copilot CLI command without me having to explicitly support it:
+Now any Copilot CLI argument just works, whether I've explicitly accounted for it or not:
 
 ```bash title="Terminal"
 copilot_here --model gpt-4 "explain this code"
@@ -145,9 +143,9 @@ copilot_here -v  # Show version
 copilot_here --whatever-future-flag-gets-added
 ```
 
-### The --resume Flag: A Game Changer
+### The --resume flag
 
-One particularly useful feature this unlocks is the `--resume` flag. When Copilot is working through a multi-step task and something interrupts it (network hiccup, timeout, etc.), you can just resume right where it left off:
+One feature this unlocks is `--resume`. When Copilot is mid-task and something interrupts it (network hiccup, timeout, whatever), you can pick up right where it left off:
 
 ```bash title="Terminal"
 copilot_here --resume
@@ -155,13 +153,13 @@ copilot_here --resume
 
 <Figure key="copilot-resume-example" src="/images/copilot-resume-example.png" alt="Screenshot showing the --resume flag allowing continuation of a previous Copilot session" width="0" height="0" caption="The --resume flag picks up right where you left off" />
 
-This is incredibly useful for long-running tasks where you don't want to start over from scratch. And because of the argument pass-through, it just works—no special handling needed on my end.
+For long-running tasks, not having to start over is a real time-saver. And since it goes through the pass-through logic, there's nothing special I had to do to support it.
 
 When you run `copilot_here --help`, it shows both the wrapper's help AND the underlying Copilot CLI help, so you can discover features like `--resume` naturally.
 
 ## 5. Script Versioning
 
-One thing I learned from maintaining scripts in the wild: you need to know which version someone is running when they report an issue. So every script now has a version header:
+When someone reports an issue, the first question is always "which version are you on?" So every script now has a version header:
 
 ```bash title="Script version header"
 # Version: 2025-10-28
@@ -169,22 +167,22 @@ One thing I learned from maintaining scripts in the wild: you need to know which
 
 The format is `YYYY-MM-DD` for the primary version, and if I make multiple updates in one day, it becomes `YYYY-MM-DD.1`, `YYYY-MM-DD.2`, etc.
 
-This has already saved me multiple times when testing changes. Instead of "are you running the latest version?", I can say "you need version 2025-10-28 or later for that feature."
+This already came up while testing changes. Instead of the vague "are you on the latest?", I can say "you need 2025-10-28 or later for that."
 
 ## 6. YOLO Mode Enhancements
 
-One of the more fun additions was `copilot_yolo` mode. While `copilot_here` asks for confirmation before executing commands (safe, sensible), sometimes you just want to let Copilot do its thing without interruption:
+`copilot_yolo` mode lets you skip confirmation prompts entirely. Where `copilot_here` asks before executing commands, YOLO mode just runs:
 
 ```bash title="Terminal"
 copilot_yolo "fix all the linting errors in this project"
 # Auto-approves all tool usage, including file modifications
 ```
 
-I added a `--allow-all-paths` flag specifically for YOLO mode, which combines with auto-approval to create a fully automated experience. It's genuinely useful for trusted workflows, though I wouldn't recommend it for production systems 😅
+I added a `--allow-all-paths` flag specifically for this, which pairs with auto-approval for a fully hands-off run. Useful for workflows you trust. I'd leave it off for anything touching production.
 
 ## 7. Smart Image Cleanup
 
-One annoying thing that was happening: every time you ran `copilot_here`, it would clean up ALL unused images and then immediately pull the latest one again. Even if the latest one was literally the image you just removed. Talk about a waste of bandwidth and time.
+Every run was cleaning up all unused images and then immediately pulling the latest one back down. Even if the image it just removed was the current latest. A full download, every single run.
 
 ### The Problem
 
@@ -217,46 +215,26 @@ if [ -n "$image_date" ] && [ "$image_date" -lt "$cutoff_date" ]; then
 fi
 ```
 
-Benefits:
-- **Bandwidth savings**: Keeps the current image, no re-downloading
-- **Time savings**: No unnecessary pulls on every launch
-- **Disk space management**: Still cleans up old images after 7 days
-- **No more errors**: `<none>` images are filtered out
+The cleanup now runs after pulling the new image, so it can never remove what it just downloaded. Old images get pruned after 7 days, `<none>` tags are filtered out, and the redundant re-download on every launch is gone.
 
-The cleanup runs AFTER pulling the new image, so it can never remove what it just downloaded. Smart, right?
+## Lessons learned
 
-## Lessons Learned
+Cross-platform is genuinely hard. What works on macOS can fail on Windows in ways you won't predict. Test early, or at least make failure modes graceful rather than silent.
 
-### 1. **Cross-Platform Is Hard**
-What works on macOS might fail spectacularly on Windows. Test early, test often, or at minimum make failure modes graceful.
+Auto-update everything you can. Manual update processes are where scripts go to die, because nobody runs them.
 
-### 2. **Auto-Update Everything**
-If you can automate updates (Docker images, scripts, whatever), do it. Manual update processes are where software goes to die.
+Pass-through beats re-implementation. Don't rebuild what the underlying tool already does - wrap it and get out of the way. That's how `--resume` and every other future Copilot flag just works without any extra effort on my part.
 
-### 3. **Pass-Through > Re-Implementation**
-Don't rebuild what already exists. Wrap it gracefully and get out of the way. This is how features like `--resume` just work without any extra code.
+Version your scripts. Future you will thank present you the first time someone files a bug report.
 
-### 4. **Version Everything**
-Future you (and your users) will thank you when debugging issues.
+The README is part of the product. A tool that works but confuses people on install might as well not work.
 
-### 5. **Documentation Is A Product Feature**
-Spend the time to make your README clear and comprehensive. It's often the only thing between users and frustration.
+## What's next
 
-### 6. **Smart Defaults Beat Configuration**
-Seven days for image cleanup is reasonable for most users. If someone needs different behavior, they can use `--no-cleanup`.
+A few things I'm still poking at:
 
-## What's Next?
+- Better error messages when GitHub token scopes are wrong (currently the error is cryptic)
+- Support for custom Docker registries for enterprise setups
+- A configurable cleanup period, though honestly 7 days hasn't caused complaints yet
 
-The core functionality is solid now, but there are a few ideas I'm exploring:
-
-- Better error messages when GitHub token scopes are wrong
-- Support for custom Docker registries (for enterprise setups)
-- Maybe a configurable cleanup period (though 7 days seems to work well)
-
-But honestly? It works really well now. Sometimes the best feature is knowing when to stop adding features.
-
-If you want to try it out, the project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here)
-
-The installation is literally three commands, and you'll have GitHub Copilot CLI running in a secure, sandboxed environment that stays up-to-date automatically. Give it a shot, and let me know what you think!
-
-*Have questions or suggestions? Drop a comment below or open an issue on GitHub!*
+The project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here). Install takes three commands and you get Copilot CLI running in a sandboxed container that keeps itself up to date. Give it a try and open an issue if something breaks.

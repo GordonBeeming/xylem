@@ -6,11 +6,11 @@ draft: false
 summary: 'Setting your initial directory in iTerm2 should be simple. But sometimes, despite your best efforts in the settings UI, you keep landing in the root directory. Here is the "brute force" fix to get you back into your workspace.'
 ---
 
-Do you know those moments where you set a preference in an app, click save, and the app just... ignores you? 🙄
+You know those moments where you set a preference in an app, click save, and the app just... ignores you?
 
-I recently ran into this with iTerm2 on my MacBook. I wanted every new terminal session to start in my GitHub folder, like I used with Warp. But no matter what I did in the profile settings, I kept landing at `/`. 
+I recently ran into this with iTerm2 on my MacBook. I wanted every new terminal session to start in my GitHub folder, like I had set up in Warp. But no matter what I did in the profile settings, I kept landing at `/`.
 
-I even tried giving iTerm2 "Full Disk Access" in macOS to see if that worked... it didn't. 😤
+I even tried giving iTerm2 "Full Disk Access" in macOS to see if that would help. It didn't.
 
 ## The Problem
 
@@ -25,13 +25,13 @@ In iTerm2, you should be able to go to your Profile settings and simply define y
   caption="Welcome to / ... not exactly where I wanted to be. 🙃" 
 />
 
-Not exactly the productivity boost I was looking for... but `opencode` works better in iTerm than Warp... so I need to make it work! 😅
+Not exactly the productivity boost I was looking for. That said, `opencode` works better in iTerm than Warp, so I needed to make it work.
 
 ## The "Hack" Solution
 
-After checking for hidden `cd` commands in my `.zshrc` and toggling every "Advanced Configuration" option known to man, I went for the brute force approach. 🛠️
+After checking for hidden `cd` commands in my `.zshrc` and toggling every "Advanced Configuration" option I could find, I went for the brute force approach.
 
-If iTerm2 won't *start* in the right directory using the standard UI toggle, we'll just tell it to *move* there the split second it opens. 
+If iTerm2 won't *start* in the right directory using the standard UI setting, just tell it to *move* there the moment it opens.
 
 ### The Fix
 
@@ -56,12 +56,8 @@ caption="The ultimate 'I'm the captain now' move for your terminal 🫡"
 
 ## Why this works
 
-By using **Send text at start**, iTerm2 waits for the shell to initialize and then "types" that command for you. ⌨️
+The **Send text at start** field tells iTerm2 to wait for the shell to finish initializing, then type that command automatically.
 
-✅ It bypasses the buggy initial directory logic.
-✅ The `&& clear` part ensures your terminal stays clean so you don't even see the "hack" happening. ✨
-✅ It respects your login environment (paths, aliases, etc.) because it runs *after* the shell is ready.
+It bypasses the buggy initial directory logic entirely. The `&& clear` part keeps the terminal clean so the whole thing is invisible in practice. And because it runs after the shell is ready, your login environment — paths, aliases, all of it — is already loaded.
 
-Is it a bit of a hack? **Yes.** Does it save me 5 seconds and a bit of sanity every time I open a terminal? **Absolutely.** ✅
-
-Happy coding! 👨‍💻
+Is it a hack? Yes. Does it save me a few seconds and a small amount of frustration every time I open a terminal? Also yes.

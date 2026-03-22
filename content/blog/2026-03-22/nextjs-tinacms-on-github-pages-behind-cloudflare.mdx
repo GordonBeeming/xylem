@@ -8,9 +8,9 @@ summary: 'The gotchas I hit deploying a Next.js static export site with TinaCMS 
 
 I recently moved this blog to a setup where Next.js builds a static export (hosted on GitHub Pages), TinaCMS provides a Git-backed CMS admin panel, and a Cloudflare Worker sits in front handling the custom domain, security headers, and CSP.
 
-It works great now, but getting here involved a few gotchas that weren't immediately obvious. This post documents the architecture and the fixes so you don't have to figure them out the hard way 🙃
+It works well now, but getting here involved a few gotchas that weren't immediately obvious. Here's what I hit and how I fixed each one.
 
-## The Architecture
+## The architecture
 
 The request flow looks like this:
 
@@ -20,7 +20,7 @@ Browser → gordonbeeming.com
        → gordonbeeming.github.io/xylem/ (GitHub Pages static files)
 ```
 
-The Cloudflare Worker does the heavy lifting at the edge:
+The Cloudflare Worker runs at the edge and handles:
 
 - **Path rewriting** — prepends the repo name (`/xylem`) to paths before forwarding to GitHub Pages
 - **Security headers** — adds `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, etc.
@@ -49,9 +49,9 @@ build: {
 },
 ```
 
-Simple enough, right? Here's where it gets interesting.
+Simple enough. Here's where it falls apart.
 
-## Gotcha 1: Static Export Means No Server Features
+## Gotcha 1: static export means no server features
 
 When you set `output: "export"`, Next.js generates a fully static site — no Node.js server, no API routes, no middleware, no rewrites, no redirects. If you have any API routes (like an OG image generator at `/api/og`), the build will fail:
 
@@ -76,9 +76,9 @@ This means `pnpm dev` still works locally with API routes (it runs in dev mode, 
 
 For anything the API routes were doing, you need a static alternative. In my case, the `/api/og` route generated Open Graph images on-the-fly using `next/og`. I replaced it with a build-time script (`scripts/generate-og-images.mjs`) that uses [satori](https://github.com/vercel/satori) and [@resvg/resvg-js](https://github.com/nickvdyck/resvg-js) to pre-render every OG image as a PNG into `public/og/`. Same visual output, but generated at build time instead of on each request.
 
-The bigger implication is that **redirects defined in `next.config.ts` don't work with static export**. If you have URL redirect rules (I had 146 of them for old blog post URLs), they need to move to the Cloudflare Worker.
+The other thing that catches people out: **redirects defined in `next.config.ts` don't work with static export**. If you have URL redirect rules (I had 146 of them for old blog post URLs), they need to move to the Cloudflare Worker.
 
-## Gotcha 2: GitHub Pages Redirect Leaks
+## Gotcha 2: GitHub Pages redirect leaks
 
 This one is subtle and took a while to track down.
 
@@ -113,7 +113,7 @@ if (location && domain === "gordonbeeming.com") {
 
 Now the browser stays on `gordonbeeming.com` and never sees the `github.io` URL.
 
-## Gotcha 3: TinaCMS Admin on a Proxied Domain
+## Gotcha 3: TinaCMS admin on a proxied domain
 
 TinaCMS Cloud needs to know the URL of your site so the login flow works correctly. If the **Site URL** in your [TinaCMS Cloud dashboard](https://app.tina.io) doesn't match the URL in the browser, the login window won't close after authentication — it just hangs.
 
@@ -128,7 +128,7 @@ If you set `basePath: "xylem"`, TinaCMS would generate asset paths like `/xylem/
 
 Without the `Location` header fix from Gotcha 2, visiting `/admin` redirects to `github.io` where TinaCMS shows "Failed loading TinaCMS assets" because everything is misaligned.
 
-## Gotcha 4: Redirects at the Edge
+## Gotcha 4: redirects at the edge
 
 Since Next.js static export can't handle redirects, they need to live in the Cloudflare Worker. I migrated all 146 redirect rules into a simple map:
 
@@ -190,9 +190,9 @@ if (redirectDest) {
 }
 ```
 
-## The Full Picture
+## The full picture
 
-Here's a summary of the key configuration across the stack:
+Here's how the configuration breaks down across each layer:
 
 | Layer | Config | Key Setting |
 |-------|--------|-------------|
@@ -202,11 +202,11 @@ Here's a summary of the key configuration across the stack:
 | GitHub Actions | `deploy.yml` | Remove API routes before build, deploy to Pages |
 | Cloudflare Worker | `src/index.js` | Path rewriting, Location header rewriting, redirects |
 
-## This Is a Living Post
+## This is a living post
 
-I'll update this post if I run into more gotchas with this setup. The beauty of a Git-backed CMS is that the post history is right there in the commit log 😄
+I'll update this if I hit more gotchas. The post history is in the commit log if you're curious what changed.
 
-If you're running a similar setup and hit something I haven't covered, feel free to reach out — I'd love to add it here.
+If you're running a similar setup and hit something I haven't covered, reach out — I'd be happy to add it here.
 
 **Repos:**
 - [xylem](https://github.com/GordonBeeming/xylem) — the Next.js site

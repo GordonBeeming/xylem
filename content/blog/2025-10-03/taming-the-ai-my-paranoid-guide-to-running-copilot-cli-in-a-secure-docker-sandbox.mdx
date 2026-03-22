@@ -8,36 +8,36 @@ summary: 'I love the new GitHub Copilot CLI, but as someone who is a little para
 
 
 
-I love the new GitHub Copilot CLI. It feels like magic. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me... uneasy. 😅
+I love the new GitHub Copilot CLI. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me uneasy.
 
-The real power of the Copilot CLI comes from its ability to execute commands, but that requires a level of trust. I wanted the power of Copilot without giving it the keys to my entire kingdom. The goal was to use powerful features like `--allow-all-tools` with more confidence.
+The Copilot CLI gets its usefulness from executing commands, but that requires a level of trust I wasn't fully comfortable handing over. I wanted to use features like `--allow-all-tools` without feeling like I was handing over the keys to my entire machine.
 
-What if I could build a secure cage for it? A place where it can be helpful, but where its ability to cause chaos is strictly limited. So, I decided to put it in Docker.
+So I decided to put it in Docker.
 
-## The "Why": My Wishlist for a Perfect Copilot Environment
+## The "Why": My wishlist for a perfect Copilot environment
 
-Before diving in, I had a clear set of goals for what the ideal setup would look like:
+I had four goals for what this setup needed to do:
 
-* ✅ **Secure Isolation:** The tool should only see the files in my current project directory. Nothing else.
-* ✅ **Auto-Authentication:** It must seamlessly use my existing `gh` login without any extra steps.
-* ✅ **Portability & Cleanliness:** No global Node.js or `npm` packages on my host machine.
-* ✅ **Cognitive Ease:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
+* **Secure isolation:** The tool should only see the files in my current project directory. Nothing else.
+* **Auto-authentication:** It should use my existing `gh` login without any extra steps.
+* **Portability:** No global Node.js or `npm` packages on my host machine.
+* **Peace of mind:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
 
-## The Breakthrough: Why the Cage Makes the Tiger Safer
+## The breakthrough: why the cage makes the tiger safer
 
-After a bit of trial and error (and a lot of debugging!), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which dramatically reduces the "blast radius" of any potential mistakes.
+After a bit of trial and error (and a lot of debugging), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which shrinks the "blast radius" of any potential mistakes.
 
-You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" And you'd be absolutely right. It would.
+You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" You'd be right. It would.
 
-The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your **current project directory**. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
+The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your current project directory. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
 
-It's also important to note that this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. This means if you have a secure local network, Copilot inherits that, but it can also access local resources, which is something to be aware of.
+One thing worth knowing: this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. Copilot can reach local resources, which is something to keep in mind.
 
-This isolation is what provides the **cognitive ease**. The container provides a strong safety net, which makes me optimistically more comfortable using a powerful but risky feature like `--allow-all-tools`. The risk isn't eliminated, but it's lowered to a level I'm comfortable with. For me, that trade-off is a worthy option.
+That isolation is what gives me enough comfort to actually use `--allow-all-tools`. The risk isn't gone, but it's contained to a level I can live with.
 
 <Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="The final, working setup! It took a while to get here, but it was worth it." />
 
-## The Final Setup: The Code
+## The final setup: the code
 
 The complete solution is hosted on GitHub at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). The setup consists of two files: a `Dockerfile` to build the environment and an `entrypoint.sh` script to handle user permissions.
 
@@ -110,17 +110,17 @@ chown -R $USER_ID:$GROUP_ID /home/appuser
 exec gosu appuser "$@"
 ```
 
-## Understanding the Modes and Features
+## Understanding the modes and features
 
-The setup provides flexible options to match different workflows and security preferences.
+The setup has two execution modes and a bunch of image variants.
 
-### Execution Modes
+### Execution modes
 
-**Safe Mode (`copilot_here`)** - Always asks for confirmation before executing commands. Recommended for general development work where you want control over what gets executed.
+**Safe mode (`copilot_here`)** - Always asks for confirmation before executing commands. Good for everyday work where you want to stay in control.
 
-**YOLO Mode (`copilot_yolo`)** - Automatically approves all tool usage without confirmation. Convenient for trusted workflows but use with caution as it can execute commands without prompting.
+**YOLO mode (`copilot_yolo`)** - Auto-approves all tool usage without prompting. Useful for trusted workflows, but be aware it will run commands without asking.
 
-### Image Variants
+### Image variants
 
 All functions support switching between Docker image variants using flags:
 - **No flag** - Base image (Node.js, Git, basic tools)
@@ -133,19 +133,19 @@ All functions support switching between Docker image variants using flags:
 - **`--rust`** (`-rs`) - Rust image (includes Rust toolchain)
 - **`--dotnet-rust`** (`-dr`) - .NET + Rust image
 
-### Additional Options
+### Additional options
 
 - **`-h` or `--help`** - Show usage help and examples (Bash/Zsh) or `-h` / `-Help` (PowerShell)
 - **`--no-cleanup`** - Skip cleanup of unused Docker images (Bash/Zsh) or `-NoCleanup` (PowerShell)
 - **`--no-pull`** - Skip pulling the latest image (Bash/Zsh) or `-NoPull` (PowerShell)
 
-Both modes include security checks for proper GitHub token scopes and warn about overly privileged tokens. The functions also automatically clean up unused Docker images tagged with the project label, keeping your system tidy.
+Both modes check your GitHub token scopes and warn if the token has more permissions than needed. They also clean up unused Docker images tagged with the project label automatically.
 
-## Setup Instructions
+## Setup instructions
 
-Getting started is now easier than ever with automatic installation options for both platforms.
+Both platforms have a one-liner installer.
 
-### Quick Install (Recommended)
+### Quick install (recommended)
 
 **For Linux/macOS (Bash/Zsh):**
 
@@ -159,35 +159,26 @@ curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-l
 iex ([System.Text.Encoding]::UTF8.GetString((iwr -UseBasicParsing 'https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.ps1').Content))
 ```
 
-This will download the script and configure your PowerShell profile automatically.
+This downloads the script and configures your PowerShell profile.
 
-### Keeping Up-to-Date
+### Keeping up-to-date
 
-The scripts include automatic update functionality:
+To update to the latest version:
 
 ```bash title="Terminal"
 # Linux/macOS or Windows PowerShell
 copilot_here --update
 ```
 
-This will:
-- Download and install the latest version of the CLI binary
-- Show you the version change
-- Automatically reload the updated functions
+This downloads the latest CLI binary, shows you what version changed, and reloads the updated functions in your current shell.
 
-### Manual Installation
+### Manual installation
 
-For manual installation or to see all available options and features, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo includes:
-- Detailed documentation on all command-line flags
-- Information about image variants (base, .NET, .NET + Playwright, Rust, and more)
-- Advanced configuration options including Airlock network isolation
-- Manual installation code blocks if you prefer to copy/paste directly
+For manual installation or a full list of options, visit the [GitHub repository](https://github.com/GordonBeeming/copilot_here). The repo has docs on all flags, the image variants, Airlock network isolation config, and copy-paste install blocks if you prefer that approach.
 
 ## Usage
 
-Once set up, using it is simple on any platform.
-
-### Get Help
+### Get help
 
 ```bash title="Terminal"
 # Linux/macOS
@@ -199,7 +190,7 @@ copilot_here -Help
 copilot_yolo -Help
 ```
 
-### Interactive Mode
+### Interactive mode
 
 Start a full chat session with the welcome banner:
 
@@ -214,11 +205,11 @@ copilot_here -d
 copilot_here -dp
 ```
 
-### Non-Interactive Mode
+### Non-interactive mode
 
-Pass a prompt directly to get a quick response.
+Pass a prompt directly for a quick response.
 
-**Safe Mode** (asks for confirmation before executing):
+**Safe mode** (asks for confirmation before executing):
 
 ```bash title="Terminal"
 # Base image
@@ -234,7 +225,7 @@ copilot_here -dp "run playwright tests for this app"
 copilot_here --no-cleanup --no-pull "quick question"
 ```
 
-**YOLO Mode** (auto-approves execution):
+**YOLO mode** (auto-approves execution):
 
 ```bash title="Terminal"
 # Base image
@@ -250,36 +241,32 @@ copilot_yolo -dp "write playwright tests for the login page"
 copilot_yolo --no-cleanup "generate README"
 ```
 
-## Beyond the Basics: Specialized Docker Image Variants
+## Beyond the basics: specialized Docker image variants
 
-As the project evolved, I realized that different development scenarios call for different tools. That's why I created specialized image variants that build on the secure foundation of the base image while adding language-specific capabilities.
+As the project grew, I kept running into cases where the base image wasn't enough. .NET projects need SDKs. Browser tests need Chromium. So I added specialized variants on top of the base image.
 
-### Available Image Variants
+### Available image variants
 
-**Base Image (`latest`)**: The standard Copilot CLI environment with Node.js 20, Git, and essential tools. Perfect for general-purpose development and scripting.
+**Base image (`latest`)**: Node.js 20, Git, and basic tools. Works for general scripting and anything that doesn't need a specific runtime.
 
-**.NET Image (`dotnet`)**: Extends the base image with .NET 8.0 and 9.0 SDKs, along with ASP.NET Core runtimes and ICU libraries for internationalization support. Ideal for .NET development without the overhead of browser testing tools.
+**.NET image (`dotnet`)**: Adds .NET 8.0 and 9.0 SDKs with ASP.NET Core runtimes and ICU libraries. Good for .NET work when you don't need browser testing on top.
 
-**.NET + Playwright Image (`dotnet-playwright`)**: The full-featured variant that includes everything from the .NET image plus Playwright 1.56.0 and Chromium browser with all dependencies. This is perfect for end-to-end testing and browser automation scenarios. Note that this image is approximately 500-600MB larger due to the Chromium binaries.
+**.NET + Playwright image (`dotnet-playwright`)**: Everything in the .NET image, plus Playwright 1.56.0 and Chromium with all its dependencies. About 500-600MB larger than the base image because of the Chromium binaries, so only use it when you need it.
 
-The beauty of the refactored setup is that you can switch between variants using simple flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
+You switch between variants with flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
 
-### Automatic Cleanup
+### Automatic cleanup
 
-One of the newer features is automatic image cleanup. The functions now automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) while keeping only the one you're currently using. This helps keep your Docker storage clean without manual intervention.
+The functions automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) and keep only the one you're currently using. This stops old image versions from quietly eating your disk space.
 
-If you want to skip the cleanup for faster execution, use the `--no-cleanup` flag (or `-NoCleanup` on PowerShell). Similarly, you can skip pulling the latest image with `--no-pull` (or `-NoPull`) if you want even faster startup times.
+If you want to skip the cleanup for faster startup, use `--no-cleanup` (or `-NoCleanup` on PowerShell). You can also skip pulling the latest image with `--no-pull` (or `-NoPull`) if you need to move fast and already have the image locally.
 
-## Conclusion: Security and Convenience Can Coexist
+## Conclusion: security and convenience can coexist
 
-For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
+I reach for Docker a lot when I'm evaluating new CLI tools. It's not just for deploying apps; it's genuinely useful for building a sandbox around things you don't fully trust yet.
 
-This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. It doesn't mean my caution disappears entirely, I'll still keep a close eye on the configurations of the specific projects I run this in, but it provides a valuable safety net. In my own daily workflow, I have both versions installed: the default `copilot_here` for safe, everyday use, and `copilot_yolo` for when I'm working in a trusted project and value speed above all.
+This setup doesn't make me reckless. I still pay attention to the projects I run it in. But it lowers the stakes enough that I can actually let the tool do what it's designed to do. In my daily workflow I keep both versions installed: `copilot_here` for normal use, and `copilot_yolo` for trusted projects where I want speed over caution.
 
-The specialized image variants add another layer of flexibility, allowing me to choose the right tool for the job. When I'm working on a .NET project, I can use the `dotnet` variant with a simple `-d` flag. When I need to run browser tests, the `dotnet-playwright` variant is just a `-dp` away.
+The image variants mean I'm not stuck picking between "works for my project" and "doesn't bloat my Docker storage". `-d` for .NET, `-dp` when I need browser tests. Simple enough that I actually use it instead of second-guessing which image to reach for.
 
-The refactored setup with helper functions, automatic cleanup, and built-in help text makes the whole experience more polished and user-friendly. You can easily see what options are available with `--help`, and the system keeps itself tidy by cleaning up old images automatically.
-
-Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
-
-You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!
+All the source code is at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try.

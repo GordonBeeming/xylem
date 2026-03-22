@@ -8,61 +8,53 @@ summary: 'Stop writing huge system prompts every time you need AI help. Start bu
 
 
 
-I'm often in this situation: I need my AI assistant to help with a task, but first, I have to write a 10-paragraph system prompt explaining my *entire* project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
+I'm often in this situation: I need my AI assistant to help with a task, but first I have to write a 10-paragraph system prompt explaining my entire project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
 
-By the time I'm done writing the prompt, I could have written the code myself. 😅
+By the time I'm done writing the prompt, I could have written the code myself.
 
 What if you didn't have to? What if you could just *select your specialist* from a dropdown:
--   **"Issue Scribe"** (for creating PBIs)
--   **"Task Planner"** (for planning tasks)
--   **"Test Writer"** (for writing integration tests)
--   **"Backlog Analyst"** (for refining the backlog)
+-   "Issue Scribe" (for creating PBIs)
+-   "Task Planner" (for planning tasks)
+-   "Test Writer" (for writing integration tests)
+-   "Backlog Analyst" (for refining the backlog)
 
-...and *then* ask your question?
+...and then ask your question?
 
-This isn't a fantasy. You can build this "virtual team" of specialists right inside your IDE using VS Code's **Custom Chat Modes**.
+You can build this "virtual team" of specialists right inside your IDE using VS Code's Custom Chat Modes.
 
-Keep reading. 👇
+## The generalist AI problem
 
-## The Generalist AI Problem
+Your default AI chat doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your tech stack (e.g., "we always use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
 
-Your default AI chat is a jack-of-all-trades and a master of *none*.
+This leads to "prompt fatigue" and a lot of wasted time correcting generic, often wrong suggestions.
 
-It doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your specific tech stack (e.g., "we *always* use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
+### But what about `copilot-instructions.md`?
 
-This leads to "prompt fatigue" and a lot of wasted time correcting the AI's generic, and often wrong, suggestions.
-
-### But What About `copilot-instructions.md`?
-
-You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` (or equivalent) file!"
+You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` file!"
 
 I've been down that road, and it backfires.
 
-That instruction file is loaded *every single time* you ask a question. Soon, it becomes a massive, 500-line monster. When you want to ask a simple, one-off question about a regex, the AI is being burdened with hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas.
+That instruction file is loaded every single time you ask a question. It quickly becomes a 500-line monster. When you want to ask a simple question about a regex, the AI is wading through hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas. It pollutes the prompt and makes responses worse for everyday tasks.
 
-It pollutes the prompt, slows down the AI, and makes it *less* effective for simple tasks.
+## The solution: a virtual team
 
-## The Solution: Your Virtual Team
+Custom Chat Modes fix this. Instead of one giant instruction file, you create a set of specialists.
 
-Custom Chat Modes solve this. Instead of one giant instruction file, you create a *set* of specialists.
-
-Each file defines that agent's **persona**, its **rules**, and, most importantly, the **tools** it's allowed to use. The context is only loaded when you *explicitly choose* that specialist.
-
-When you want to chat, you just pick the right "person" for the job from the chat UI.
+Each file defines that agent's persona, its rules, and the tools it's allowed to use. The context is only loaded when you explicitly choose that specialist. When you want to chat, you pick the right person for the job from the chat UI.
 
 <Figure key="/images/chat-mode-picker.png" src="/images/chat-mode-picker.png" alt="A screenshot of the VS Code chat dropdown menu, showing custom chat modes like 'Backlog Refinement', 'Create PBIs', 'Tests', and 'Task Planner'." width="400" height="0" caption="Choosing the right specialist from the chat mode dropdown." />
 
-## Meet the "Team"
+## Meet the team
 
-Let's imagine we're working on a C# e-commerce project called "E-Shop." It's a modular monolith using EF Core, MediatR, and Blazor.
+Let's say we're working on a C# e-commerce project called "E-Shop" - a modular monolith using EF Core, MediatR, and Blazor.
 
-The core principle for all our specialists is: **Ask clarifying questions before you act.** They must iterate with the user until all ambiguities are resolved, *then* execute the task.
+The core principle for all our specialists is: ask clarifying questions before you act. They iterate with the user until all ambiguities are resolved, then execute the task.
 
 Here are a few specialists we can create:
 
 ### 1. The "Issue Scribe"
 
-This agent is our strict, non-technical assistant. Its *only* job is to create perfectly formatted PBIs and bug reports.
+This agent is a strict, non-technical assistant. Its only job is to create properly formatted PBIs and bug reports.
 
 **How we use it:**
 > **USER:**
@@ -70,9 +62,9 @@ This agent is our strict, non-technical assistant. Its *only* job is to create p
 > The login form isn't showing an error when I use a bad password.
 >
 > **AGENT:**
-> Thanks for the report. I'm ready to write this up as a 🐞 Bug. To make sure it's actionable, I need a bit more detail:
-> 1. What's the *exact* URL of the login form you were on?
-> 2. What did you *expect* to see?
+> I'm ready to write this up as a bug. To make it actionable, I need a few more details:
+> 1. What's the exact URL of the login form?
+> 2. What did you expect to see?
 > 3. Does this happen for all users?
 >
 > **USER:**
@@ -81,11 +73,11 @@ This agent is our strict, non-technical assistant. Its *only* job is to create p
 > 3. It seems to be for all non-admin users.
 >
 > **AGENT:**
-> Great, thank you. I've created 🐞 **Bug - /admin/login no error on bad password (Issue #1234)** with all those details and added the 'needs-triage' label.
+> Got it. I've created "Bug - /admin/login no error on bad password (Issue #1234)" with those details and added the 'needs-triage' label.
 
 ### 2. The "Task Planner"
 
-This is our senior developer. It takes a PBI and a developer's high-level thoughts and turns them into a detailed, full-stack execution plan. This is the real magic. 🪄
+This one acts as a senior developer. It takes a PBI and a developer's high-level thoughts and turns them into a detailed, full-stack execution plan. Honestly this is where I find it most useful.
 
 **How we use it:**
 > **USER:**
@@ -97,10 +89,10 @@ This is our senior developer. It takes a PBI and a developer's high-level though
 > - Update homepage query
 >
 > **AGENT:**
-> Okay, I've fetched PBI #123 and searched the codebase. Your plan is solid. I have a few architectural questions before I can generate the full task list:
-> 1.  **Domain:** I see `Product` is in the `Catalog` module. When you add `IsFeatured` to `Product.cs`, should this also be added to the `ProductDto` in `Catalog.Contracts`?
-> 2.  **Data:** The homepage query uses a materialized view. What should the default `IsFeatured` value be for existing products?
-> 3.  **Admin UI:** For the `ProductEditor.razor`, does this new flag need to be logged in our `AuditTrailService`?
+> I've fetched PBI #123 and searched the codebase. Before I generate the full task list, I have a few architectural questions:
+> 1. I see `Product` is in the `Catalog` module. When you add `IsFeatured` to `Product.cs`, should this also be added to the `ProductDto` in `Catalog.Contracts`?
+> 2. The homepage query uses a materialized view. What should the default `IsFeatured` value be for existing products?
+> 3. For the `ProductEditor.razor`, does this new flag need to be logged in our `AuditTrailService`?
 >
 > **USER:**
 > 1. Yes, please add it to the ProductDto.
@@ -108,12 +100,12 @@ This is our senior developer. It takes a PBI and a developer's high-level though
 > 3. Good catch, yes, please add a step to log this to the AuditTrailService.
 >
 > **AGENT:**
-> Excellent, that's everything I need. Here is the complete, step-by-step execution plan for PBI #123...
+> Here is the complete, step-by-step execution plan for PBI #123...
 > (Generates the full, detailed markdown plan)
 
 ### 3. The "Test Writer"
 
-This agent is an expert in our *exact* testing stack. No more generic NUnit code when we use xUnit.
+This agent knows your exact testing stack. No more generic NUnit code when your project uses xUnit.
 
 **How we use it:**
 > **USER:**
@@ -121,21 +113,21 @@ This agent is an expert in our *exact* testing stack. No more generic NUnit code
 > Write an integration test for the UpdateProductCommand.
 >
 > **AGENT:**
-> Happy to help. I'm prepping the test using our `WebAPIApplicationFactory` and `Testcontainers`. To make the test accurate, I need two things:
-> 1. What's the key scenario to verify? The 'happy path', or an invalid `ProductId`?
-> 2. Our setup uses `Bogus`. Are there any *specific* properties the pre-existing product must have?
+> I'll use our `WebAPIApplicationFactory` and `Testcontainers`. Before I start, two questions:
+> 1. What's the key scenario to verify? The happy path, or an invalid `ProductId`?
+> 2. Our setup uses `Bogus`. Are there any specific properties the pre-existing product needs to have?
 >
 > **USER:**
-> 1. Let's test the 'happy path' where IsFeatured is set to 'true'.
+> 1. Let's test the happy path where IsFeatured is set to 'true'.
 > 2. Yes, please make sure the product has IsArchived = false before the update.
 >
 > **AGENT:**
-> Perfect. Here is the generated xUnit test file `UpdateProductCommandTests_HappyPath_ShouldUpdateIsFeatured.cs` using Testcontainers, Bogus, and FluentAssertions...
+> Here is the generated xUnit test file `UpdateProductCommandTests_HappyPath_ShouldUpdateIsFeatured.cs` using Testcontainers, Bogus, and FluentAssertions...
 > (Generates the full code file)
 
 ### 4. The "Backlog Analyst"
 
-This is our read-only Scrum Master. Its job is to scan the backlog and give us insights.
+This one is a read-only Scrum Master. Its job is to scan the backlog and surface insights.
 
 **How we use it:**
 > **USER:**
@@ -143,29 +135,27 @@ This is our read-only Scrum Master. Its job is to scan the backlog and give us i
 > /find-duplicates
 >
 > **AGENT:**
-> Understood. I'm about to scan all open issues for semantic duplicates. To help narrow the search, is there a specific **keyword** you want me to focus on (e.g., 'login', 'performance'), or should I scan *all* open issues?
+> Before I scan all open issues, is there a specific keyword you want me to focus on (e.g., 'login', 'performance'), or should I scan everything?
 >
 > **USER:**
-> Good idea. Let's just search for duplicates related to 'login'.
+> Let's just search for duplicates related to 'login'.
 >
 > **AGENT:**
-> Okay, scanning for semantic duplicates related to 'login'... I've found 2 potential pairs for you to review: [List of duplicate issues].
+> Scanning for semantic duplicates related to 'login'... Found 2 potential pairs for you to review: [List of duplicate issues].
 
-## How to Build Them
+## How to build them
 
-This is the best part: it's just markdown!
+It's just markdown. As the [official documentation](https://code.visualstudio.com/docs/copilot/customization/custom-chat-modes) explains, you create a file (e.g., `task-planner.chatmode.md`) in your project's `.github/chatmodes` directory. The file has two parts:
 
-As the [official documentation](https://code.visualstudio.com/docs/copilot/customization/custom-chat-modes) explains, you just create a file (e.g., `task-planner.chatmode.md`) in your project's `.github/chatmodes` directory. The file has two parts:
+1. A YAML frontmatter block that defines the tools and model.
+2. Markdown content after the `---` delimiter, which is the system prompt.
 
-**1. The Frontmatter (The 'Brain'):** This YAML block at the top defines the tools and model.
-**2. The System Prompt (The 'Personality'):** This is just the markdown content *after* the `---` frontmatter.
+## Get started: templates to copy
 
-## Get Started: Steal These Templates!
-
-Want to make your own? Here are some trimmed-down, generic versions of the chat modes above. Copy these into your `.github/chatmodes` folder and start customizing!
+Here are trimmed-down, generic versions of the chat modes above. Drop them into your `.github/chatmodes` folder and start customizing.
 
 ### `issue-scribe.chatmode.md`
-**How to Customize:** Add your project's *exact* issue templates, required labels (like 'triage' or 'bug'), and any users you want to @-mention by default.
+Customize it with your project's exact issue templates, required labels (like 'triage' or 'bug'), and any users you want to @-mention by default.
 
 ```markdown title="issue-scribe.chatmode.md"
 ---
@@ -188,7 +178,7 @@ You are an expert "Issue Scribe." Your only job is to create or update GitHub is
 
 ### `task-planner.chatmode.md`
 
-**How to Customize:** Customize it with your project's *architecture* (e.g., 'Modular Monolith', 'Microservices'), *tech stack* (e.g., 'React, Node, Postgres', 'C\#, EF Core, Blazor'), and *key file locations* (e.g., 'Domain models are in /src/Domain').
+Fill in your project's architecture (e.g., Modular Monolith, Microservices), tech stack (e.g., React/Node/Postgres or C#/EF Core/Blazor), and key file locations (e.g., "Domain models are in /src/Domain").
 
 ```markdown title="task-planner.chatmode.md"
 ---
@@ -212,7 +202,7 @@ You are a senior "Task Planner." Your job is to act as a pair-planner with a dev
 
 ### `test-writer.chatmode.md`
 
-**How to Customize:** Add your *exact* testing frameworks (e.g., 'xUnit', 'Jest', 'Pytest'), *assertion libraries* (e.g., 'FluentAssertions', 'Chai'), and *mocking/data tools* (e.g., 'Testcontainers', 'Bogus', 'Moq', 'NSubstitute').
+Add your exact testing frameworks (e.g., xUnit, Jest, Pytest), assertion libraries (e.g., FluentAssertions, Chai), and mocking/data tools (e.g., Testcontainers, Bogus, Moq, NSubstitute).
 
 ```markdown title="test-writer.chatmode.md"
 ---
@@ -236,7 +226,7 @@ You are a "Test Writer," an expert in our project's testing stack.
 
 ### `backlog-analyst.chatmode.md`
 
-**How to Customize:** Add your team's *labels* (e.g., 'p1-urgent', 'needs-replicate', 'epic') and *keywords* that define what 'oversized' means to you.
+Add your team's labels (e.g., 'p1-urgent', 'needs-replicate', 'epic') and the keywords that define what "oversized" means on your project.
 
 ```markdown title="backlog-analyst.chatmode.md"
 ---
@@ -256,10 +246,8 @@ You are a "Backlog Analyst." You are read-only and CANNOT modify issues.
 -   `/find-priority`: List all issues with the specified priority label.
 ```
 
-## It's a Game-Changer
+## Worth trying
 
-Stop trying to prompt-engineer a generalist AI and start *architecting* a team of specialists.
+There's a practical upside to this that I didn't fully appreciate until I'd been using it for a while: onboarding. When a junior dev picks up a complex ticket, the Task Planner can walk through the architecture and produce a step-by-step plan scoped to your actual codebase. The Test Writer generates tests in the frameworks you actually use. Neither of those things happen reliably with a generic chat window.
 
-This approach has been a huge productivity boost. It reduces mental overhead, ensures consistency, and makes it incredibly easy to onboard new devs (or even junior devs) onto complex tasks. The **Task Planner** can build the *exact* plan for them, and the **Test Writer** can write the *exact* test.
-
-Give it a try. Start with one simple persona and see how it transforms your workflow. 🚀
+Start with one persona - the Task Planner is probably the highest-value starting point - and go from there.

@@ -8,11 +8,11 @@ summary: 'My blog needed a facelift. Instead of weeks of manual CSS changes, I u
 
 My personal blog, which has been running on the `tailwind-nextjs-starter-blog` template, has served me well. It was a pragmatic choice, suggested by [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), to just get something up and running quickly. The plan was always to come back and give it a unique design "later". Well, "later" finally arrived.
 
-The site was functional, but it looked like many other blogs out there. I wanted a design that was uniquely mine, reflected my brand, and made better use of the screen real estate. This is the story of how I redesigned it, not in weeks, but over a few hours, with AI as my development partner.
+The site was functional, but it looked like a lot of other blogs out there. I wanted something that felt more like mine, reflected my brand, and made better use of the screen real estate. So I redesigned it - not over weeks, but in a few hours, with AI doing most of the work.
 
 ## The "Before": A Sea of Sameness
 
-First, let's look at the starting point. The template is clean and readable, but it's very generic, with a simple list of posts and a sidebar for tags and dates.
+The template is clean and readable, but it's very generic - a simple list of posts with a sidebar for tags and dates.
 
 <Figure
   key="/images/blog-redesign-before.png"
@@ -22,34 +22,30 @@ First, let's look at the starting point. The template is clean and readable, but
   height="0"
   caption="The original template: functional, but generic and with a lot of wasted space."
 />
-I had previously tinkered with AI-driven UI builders like `v0` and `b0lt.new`, but found they weren't quite right for evolving an existing project. It was time for a more structured approach.
+I'd played around with AI-driven UI builders like `v0` and `b0lt.new` before, but they weren't great for evolving an existing project. I needed a more structured approach.
 
 ## The Process: An AI-Powered Workflow
 
-Instead of diving straight into code, I decided to treat this like a proper project, with a planning phase and an execution phase, using a different AI tool for each task.
+Instead of diving straight into code, I split this into two phases: planning and execution, with a different AI tool for each.
 
 ### Step 1: The Tech Lead (Gemini)
 
-Before writing a single line of code, I needed a plan. I opened a conversation with **Gemini** and tasked it with being my **Tech Lead**. I gave it my requirements:
-- Use my specific brand colors.
-- Create a more modern, card-based layout.
-- Keep the tech stack but change the visuals.
-- It must support light and dark modes.
+Before writing a single line of code, I needed a plan. I opened a conversation with **Gemini** and gave it a brief: use my brand colors, switch to a card-based layout, keep the tech stack, support light and dark modes.
 
-Gemini produced a detailed Product Backlog Item (PBI) with a user story and specific, actionable acceptance criteria for everything from global theming to the layout of the blog archive page.
+Gemini turned that into a proper Product Backlog Item (PBI) with a user story and acceptance criteria covering everything from global theming to the blog archive page layout.
 
 ### Step 2: The Iterative Build with GitHub Copilot
 
-With a solid plan in hand, it was time to build. I handed the requirements over to **GitHub Copilot** on github.com ([Using Copilot to work on an issue](https://docs.github.com/copilot/using-github-copilot/coding-agent/using-copilot-to-work-on-an-issue)). This is where the magic happened. I kicked off the session, and while my wife and I were watching TV, Copilot went to work.
+With the plan done, I handed the requirements to **GitHub Copilot** on github.com ([Using Copilot to work on an issue](https://docs.github.com/copilot/using-github-copilot/coding-agent/using-copilot-to-work-on-an-issue)), kicked off the session, and went to watch TV with my wife while it ran.
 
-The initial implementation took just over 26 minutes to complete, providing a fantastic starting point. Of course, no first draft is ever perfect. The initial pass from Copilot was about 80% there, but some things needed tweaking. This began an incredibly efficient refinement loop, all within the same GitHub pull request.
+The initial implementation finished in just over 26 minutes. It was about 80% there - a solid starting point, but with things that needed tweaking. That kicked off a refinement loop, all within the same pull request.
 
-For each issue I found, the process was simple:
+For each issue I found, the process was:
 1.  Describe the problem to **Gemini**.
 2.  Ask it to write clear, constructive feedback for the pull request.
 3.  Paste that feedback as a comment for the **Copilot agent** to action.
 
-This created a powerful feedback cycle. I didn't have to spend time crafting perfectly worded developer instructions; Gemini handled the "what" and "why," and Copilot handled the "how." The image below shows the complete session history, from the initial build to the multiple rounds of review and refinement.
+I didn't have to spend time crafting perfectly worded developer instructions. Gemini handled the "what" and "why," Copilot handled the "how." The image below shows the full session history, from the initial build through to the review and refinement rounds.
 
 <Figure
   key="/images/copilot-iterative-session.png"
@@ -62,7 +58,7 @@ This created a powerful feedback cycle. I didn't have to spend time crafting per
 
 ## The "After": A Unique Identity
 
-After a few of these refinement sessions (and a few manual tweaks I made myself), the redesign was complete. The result is a site that feels like my own. It's more visually engaging, the information density is much higher, and it's built on the same solid foundation as before.
+After a few of those refinement rounds - plus a handful of manual tweaks I made myself - the redesign was done. The result actually feels like my site now. More visual, denser with content, and still on the same codebase.
 
 <Figure
   key="/images/blog-redesign-after.png"
@@ -75,6 +71,6 @@ After a few of these refinement sessions (and a few manual tweaks I made myself)
 
 ## Conclusion
 
-This experience was a powerful demonstration of how to effectively use AI tools in a real-world project. By using Gemini for high-level planning and structured feedback, and the GitHub Copilot agent for the heavy lifting of implementation and iteration, I was able to complete a significant redesign far more quickly and efficiently than if I had done it all manually.
+What surprised me most was how well the two tools complemented each other. Gemini thinks in structures and requirements; Copilot executes against them. Neither alone would have gotten this done as cleanly.
 
-The key was treating the AI as a partner in a well-defined workflow: **Gemini as the Tech Lead**, **Copilot as the Developer**, and **myself as the Product Owner**, guiding the overall vision. If you've been putting off a project like this, maybe it's time to give this AI-powered approach a try.
+I've been skeptical of "AI-assisted development" as a concept - it can mean a lot of things. But framing it with clear roles worked: Gemini as the tech lead, Copilot as the developer, me as the product owner keeping the vision on track. That structure is what made the whole thing click. If you've got a project sitting on the back burner, it might be worth giving this a go.

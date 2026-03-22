@@ -6,37 +6,33 @@ draft: false
 summary: 'I kept hitting a wall with the Copilot CLI, finding my AI assistant getting ''stuck'' or ''slow''. The problem wasn''t the AI... it was my workflow. Here''s why you need to let your AI ''call it a day''.'
 ---
 
-Ever been deep in a coding session with an AI, like the Copilot CLI, and everything is just... *flowing*? 🌊 You're building, iterating, and solving problems.
+Ever been deep in a coding session and everything is just... *flowing*? You're building, fixing, making progress.
 
-Then, an hour later, you ask a simple question, and the response is... weird. It's slow, overly complex, or just completely misses the point.
+Then an hour later you ask something simple and the response is off. Slow, over-engineered, or just wrong. You rephrase. Nothing. You start wondering if the AI is broken.
 
-You try rephrasing. You get frustrated. You think the AI is 'stuck' or 'broken'.
+I kept hitting this wall. Took me a while to figure out the problem wasn't the AI. It was me.
 
-I've been falling into this trap *constantly*. It turns out, the problem wasn't the AI. It was me.
+I kept forgetting to let my AI start fresh.
 
-I was forgetting to let my AI 'go home' for the day.
+## The context trap: my "tired" AI
 
-Keep reading, this one's a game-changer for your AI-powered workflow. 😅
+I'm a big fan of the [Copilot CLI](https://github.com/features/copilot/cli) (which I run using my [copilot_yolo](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) alias). Lately I've been running it with `claude-sonnet-4.5`.
 
-## The Context Trap: My "Tired" AI
-
-I'm a big fan of the [Copilot CLI](https://github.com/features/copilot/cli) (which I run using my [copilot_yolo](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) alias). Lately, I've been using it with models like `claude-sonnet-4.5`.
-
-My typical workflow starts with me jumping into an interactive session:
+My typical workflow starts with jumping into an interactive session:
 
 ```bash title="Terminal"
 # This starts my sandboxed, interactive session
 copilot_yolo
 ````
 
-Now I'm *inside* the Copilot CLI, and my prompt changes. My workflow would go something like this (imagine this as **one continuous terminal session**):
+Now I'm *inside* the Copilot CLI, prompt changed and ready to go. My workflow looks something like this (imagine this as **one continuous terminal session**):
 
 ```text title="Copilot prompt"
 (copilot) Create a C# 'Person' class. Also, create a 'PersonRepository'
    class that can save a List<Person> to a JSON file and read it back.
 ```
 
-The AI responds with the perfect classes, maybe in two separate code blocks.
+The AI spits out the classes I asked for, probably across two code blocks.
 
 ```csharp title="Person.cs"
 public class Person
@@ -72,24 +68,24 @@ public class PersonRepository
 }
 ```
 
-This is great\! Task 1 of my PBI is done.
+Task 1 of my PBI done.
 
-Now, imagine I *keep going*. In the same chat, I add unit tests for the repository. Then I add a validation class for the `Person` model. Then I refactor the `SavePeople` method to be async. Then I add logging...
+Now imagine I *keep going*. Same chat. I add unit tests for the repository, then a validation class for the `Person` model, then I refactor `SavePeople` to be async, then I add logging...
 
-This is where the trap is set. I've now stacked *dozens* of small, related-but-separate tasks on top of each other. I've left the chat open all morning. The context is now *massive*. It's loaded with my model, my repo, my unit tests, my async logic, a validation class, and logging configuration.
+That's the trap. I've stacked up *dozens* of small tasks in one session. The context is now carrying my model, my repo, unit tests, async logic, a validation class, and logging config. All of it.
 
-Now I'm ready to start the *next* PBI task: building the API.
+Then I'm ready for the *next* PBI task: building the API.
 
-I'm still in the **same terminal window** and I type:
+Still in the **same terminal window**, I type:
 
 ```text title="Copilot prompt (stale context)"
 (copilot) Now, create a simple ASP.NET Core Minimal API endpoint
    that uses this repository to get all people and add a new person.
 ```
 
-This *feels* like the right next step. But the AI is now 'thinking' about *everything* we've done. It's trying to process this new task through the lens of file I/O, unit test frameworks, my logging setup, and the `FluentValidation` library I added 20 prompts ago.
+Seems like the natural next step. But the AI is now wading through everything we did before. It's trying to answer through the lens of file I/O, test frameworks, my logging setup, and the `FluentValidation` library I mentioned 20 prompts back.
 
-The result I get back might be... weird.
+The output comes back weird.
 
 ```csharp title="Confused output (context bloat)"
 // This is the "confused" output
@@ -113,27 +109,27 @@ app.MapGet("/people", (PersonRepository repo) => {
 // ...and so on...
 ```
 
-The AI is "confused" by the sheer weight of the context baggage. It's trying to be helpful by remembering everything, but it ends up mixing concerns and grabbing irrelevant details from 30 prompts ago.
+It's not broken. It's just dragging too much baggage. It tries to be thorough by remembering everything, and ends up pulling in stuff from 30 prompts ago that has nothing to do with what I asked.
 
-## The Solution: Let Your AI Call It a Day
+## The solution: let your AI start over
 
-This brings me to my analogy: **An AI chat context is like a mental workday.**
+Here's how I think about it: **an AI chat context is like a workday.**
 
-Think about your own brain. You start the day fresh. You work on 'Task A' (the repository). You load that context. Then 'Task B' (the tests). Then 'Task C' (validation). By the time you're on 'Task M' (the API), your "mental RAM" is full. You're carrying the baggage of an entire morning's work.
+You start fresh in the morning. You work through 'Task A' (the repository), load all that context, then move to 'Task B' (tests), then 'Task C' (validation). By the time you hit 'Task M' (the API), your brain is full. You're still carrying everything from the morning.
 
-But with the AI, I was asking it to start 'Task M' while still holding all the mental baggage from 'Task A' through 'Task L'. It's like trying to start a new, complex project at 4:55 PM on a Friday. You're just not going to get good results. 😫
+I was doing the same thing to the AI. Asking it to start 'Task M' while it was still holding 'Task A' through 'Task L'. That's like handing someone a brand new brief at 4:55 PM on a Friday. It's not going to go well.
 
-The fix is ridiculously simple. Right there **inside your running Copilot session**:
+The fix is one command. Run it **inside your Copilot session**:
 
 ```text title="Clear context"
 (copilot) /clear
 ```
 
-The context is wiped. The "workday" is over. The AI is "fresh" and ready for a brand new, clean briefing. ☀️
+Context cleared. Clean slate. Ready to go again.
 
-(And for those times you *intentionally* want to jump back into your previous session's context, you can use native flags like `--resume` when you start your session. The point is to be *deliberate* about your context.)
+(If you actually want to pick up where you left off, you can use flags like `--resume` when starting a new session. The point is to be intentional about it rather than just leaving old context sitting there.)
 
-Now, in that **same session** (just after clearing it), I give it a *clean brief* for the new task:
+Now I give it a clean brief for the new task:
 
 ```text title="Copilot prompt (clean context)"
 (copilot) Create a simple ASP.NET Core Minimal API. Assume I have an
@@ -141,7 +137,7 @@ Now, in that **same session** (just after clearing it), I give it a *clean brief
    GET /people (using LoadPeople) and POST /people (using SavePeople).
 ```
 
-The result is clean, fast, and perfect. It focuses *only* on the API task.
+The output is focused. Just the API, nothing else.
 
 ```csharp title="Clean API output"
 var builder = WebApplication.CreateBuilder(args);
@@ -165,8 +161,8 @@ app.MapPost("/people", (Person person, IPersonRepository repo) => {
 app.Run();
 ```
 
-No logging. No validation. No file logic. Just the task I asked for. 💡
+No logging. No validation. No file I/O. Just what I asked for.
 
-This isn't a failure or 'giving up' on the AI. It's just good workflow hygiene. Even if tasks are related, they often deserve their own fresh context.
+This isn't giving up on your AI or admitting the session went sideways. It's just good hygiene. Related tasks can still deserve separate contexts. When you're starting something new, give the AI the same clean start you'd want yourself.
 
 A new task deserves a new context.

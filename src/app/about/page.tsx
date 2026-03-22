@@ -179,7 +179,7 @@ export default function AboutPage() {
 
         {/* Main content - Bio */}
         <div className="prose prose-lg max-w-none">
-          <h2 className="mb-6 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
+          <h2 className="mb-6 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
             About Me
           </h2>
           <div className="space-y-4 text-[var(--color-text-primary)]">

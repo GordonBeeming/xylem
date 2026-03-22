@@ -21,7 +21,7 @@ export default async function ProjectsPage() {
     <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
       {/* Page hero */}
       <div className="mb-10">
-        <h1 className="mb-2 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)] md:text-4xl">
+        <h1 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)] md:text-4xl">
           Projects
         </h1>
         <p className="pl-[19px] text-[15px] text-[var(--color-text-secondary)]">

@@ -104,7 +104,7 @@ export default function ColorPalettePage() {
       <div className="flex flex-col gap-10">
         {/* Header */}
         <div>
-          <h1 className="mb-2 border-l-[3px] border-l-[#0063B2] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)] md:text-4xl">
+          <h1 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)] md:text-4xl">
             My Color Palette
           </h1>
           <p className="mt-4 pl-[19px] text-lg text-[var(--color-text-secondary)]">

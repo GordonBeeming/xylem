@@ -31,7 +31,7 @@ export function Footer() {
         <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr_1fr] md:gap-12">
           {/* Brand */}
           <div>
-            <div className="mb-3 text-lg font-extrabold text-[#46CBFF]">
+            <div className="mb-3 text-lg font-extrabold text-[var(--color-brand-highlight)]">
               xylem | Gordon Beeming
             </div>
             <p className="max-w-xs text-sm leading-7 text-white/55">
@@ -51,7 +51,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/55 transition-colors duration-200 hover:text-[#46CBFF]"
+                    className="text-sm text-white/55 transition-colors duration-200 hover:text-[var(--color-brand-highlight)]"
                   >
                     {link.label}
                   </Link>
@@ -72,7 +72,7 @@ export function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-white/55 transition-colors duration-200 hover:text-[#46CBFF]"
+                    className="text-sm text-white/55 transition-colors duration-200 hover:text-[var(--color-brand-highlight)]"
                   >
                     {link.label}
                   </a>

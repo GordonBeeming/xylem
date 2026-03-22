@@ -16,12 +16,13 @@ export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
   return (
     <a
       href={editUrl}
-      className="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border-strong)] bg-[var(--color-surface-secondary)] px-3 py-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-primary)]"
+      title="Edit in Tina"
+      className="inline-flex items-center justify-center text-[var(--color-text-tertiary)] transition-colors hover:text-[var(--color-brand-primary)]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="14"
-        height="14"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -33,7 +34,7 @@ export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
         <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
         <path d="m15 5 4 4" />
       </svg>
-      Edit in Tina
+      <span className="sr-only">Edit in Tina</span>
     </a>
   );
 }

@@ -59,6 +59,7 @@ export function PostLayout({
               &middot;
             </span>
             <span>{meta.readingTime.text}</span>
+            <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
           </div>
 
           {/* Tags */}
@@ -69,11 +70,6 @@ export function PostLayout({
               ))}
             </div>
           )}
-
-          {/* Edit in Tina (feature-flagged) */}
-          <div className="mt-4">
-            <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
-          </div>
         </header>
 
         {/* Article Body */}

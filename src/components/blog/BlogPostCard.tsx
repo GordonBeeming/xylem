@@ -27,7 +27,7 @@ export function BlogPostCard({ post, headingLevel = 3 }: BlogPostCardProps) {
     <article>
       <Link
         href={`/blog/${post.slug}`}
-        className="block rounded-xl border-l-2 border-l-transparent bg-[var(--color-surface-secondary)] p-6 shadow-[var(--shadow-card)] transition-all duration-200 ease-[var(--ease-default)] hover:-translate-y-0.5 hover:border-l-[#0063B2] hover:shadow-[var(--shadow-card-hover)]"
+        className="block rounded-xl border-l-2 border-l-transparent bg-[var(--color-surface-secondary)] p-6 shadow-[var(--shadow-card)] transition-all duration-200 ease-[var(--ease-default)] hover:-translate-y-0.5 hover:border-l-[var(--color-brand-primary)] hover:shadow-[var(--shadow-card-hover)]"
       >
         <time
           dateTime={post.date}

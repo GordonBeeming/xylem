@@ -14,25 +14,25 @@ I kept hitting this wall. Took me a while to figure out the problem wasn't the A
 
 I kept forgetting to let my AI start fresh.
 
-## The Context Trap: My "Tired" AI
+## The context trap: my "tired" AI
 
-I'm a big fan of the [Copilot CLI](https://github.com/features/copilot/cli) (which I run using my [copilot_yolo](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) alias). Lately, I've been using it with models like `claude-sonnet-4.5`.
+I'm a big fan of the [Copilot CLI](https://github.com/features/copilot/cli) (which I run using my [copilot_yolo](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) alias). Lately I've been running it with `claude-sonnet-4.5`.
 
-My typical workflow starts with me jumping into an interactive session:
+My typical workflow starts with jumping into an interactive session:
 
 ```bash title="Terminal"
 # This starts my sandboxed, interactive session
 copilot_yolo
 ````
 
-Now I'm *inside* the Copilot CLI, and my prompt changes. My workflow would go something like this (imagine this as **one continuous terminal session**):
+Now I'm *inside* the Copilot CLI, prompt changed and ready to go. My workflow looks something like this (imagine this as **one continuous terminal session**):
 
 ```text title="Copilot prompt"
 (copilot) Create a C# 'Person' class. Also, create a 'PersonRepository'
    class that can save a List<Person> to a JSON file and read it back.
 ```
 
-The AI responds with the perfect classes, maybe in two separate code blocks.
+The AI spits out the classes I asked for, probably across two code blocks.
 
 ```csharp title="Person.cs"
 public class Person

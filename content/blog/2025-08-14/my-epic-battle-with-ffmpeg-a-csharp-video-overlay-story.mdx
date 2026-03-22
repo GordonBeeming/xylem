@@ -33,9 +33,9 @@ The new approach works because each step is a small, verifiable command that FFm
 
 It's not as tidy since it writes temporary files to disk, but it has one thing going for it: **it actually works.**
 
-## The Final Working Code
+## The final working code
 
-This C# code implements the robust "Back to Basics" strategy. It uses the excellent `FFMpegCore` library to probe videos and run the processing steps. It correctly creates three intermediate `.ts` files and then joins them into the final, perfect output video.
+This C# code follows the "back to basics" approach. It uses the `FFMpegCore` library to probe videos and run each processing step, creating three intermediate `.ts` files before joining them into the final output.
 
 ```csharp title="VideoEditor.cs"
 using System.Globalization;
@@ -159,9 +159,9 @@ await editor.AddStartEndOverlayAsync(
 ```
 **Figure: Program.cs**
 
-## The Final Result
+## The final result
 
-After that long journey, it's great to see the final result. Here are the source videos and the final processed output. The complete, working source code for this project is also available on GitHub.
+After all that, it's satisfying to see it working. Below are the source videos and the final output. The full source code is also on GitHub.
 
 * **Intro Overlay:** [youtu.be/H6f-cZvN3aY](https://youtu.be/H6f-cZvN3aY)
 * **Outro Overlay:** [youtu.be/MuhmD6V-e-U](https://youtu.be/MuhmD6V-e-U)
@@ -172,7 +172,7 @@ After that long journey, it's great to see the final result. Here are the source
 
 * **Final Video with Overlays:** [youtu.be/0zy_K4AHnfQ](https://youtu.be/0zy_K4AHnfQ)
 
-It's incredibly satisfying to see the code produce the exact intended result after such a battle!
+Seeing the code produce exactly the right result after that much trial and error genuinely felt good.
 
 ---
 

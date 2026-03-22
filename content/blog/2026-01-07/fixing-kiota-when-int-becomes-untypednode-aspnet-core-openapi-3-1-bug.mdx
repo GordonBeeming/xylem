@@ -33,11 +33,11 @@ Because of that, the ASP.NET Core OpenAPI generator produces a schema that looks
 }
 ```
 
-It's saying "this can be an integer OR a string". 
+It's saying "this can be an integer OR a string".
 
-**Kiota doesn't like this.** It sees a union type with a format specifier and gives up, falling back to `UntypedNode` (or `string` in some versions).
+Kiota sees that union type with a format specifier and gives up, falling back to `UntypedNode` (or `string` in some versions).
 
-## Attempt 1: The Transformer Approach (Too Complex)
+## Attempt 1: the transformer approach (too complex)
 
 My first thought was to fix the schema manually using an `IOpenApiDocumentTransformer`. I wrote a transformer that walked through the schema, found properties with `format: int32` and `type: [integer, string]`, and forced them to just `type: integer`.
 

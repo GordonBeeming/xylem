@@ -76,13 +76,9 @@ find /src -type f -name "*.cs" | grep -i "template"
 find /src -type f -name "*.cs" | xargs grep -l "CleanupFlagsJson"
 ```
 
-**Found:**
-- 12 files referencing `CleanupFlagsJson`
-- `CreateTemplate.cs` endpoint
-- `ArchiveTemplate.cs` endpoint (where the error occurred)
-- `CleanupWorkflowRegistry.cs` service
+Found 12 files referencing `CleanupFlagsJson`, including `CreateTemplate.cs`, `ArchiveTemplate.cs` (where the error occurred), and `CleanupWorkflowRegistry.cs`.
 
-### Phase 2: Search Git History
+### Phase 2: Search git history
 
 Next, it traced the timeline through git commits:
 
@@ -91,11 +87,11 @@ git log --all --since="2025-05-01" --oneline -- src/Templates/CreateTemplate.cs
 git log --all --since="2025-05-01" --oneline -- src/Templates/ArchiveTemplate.cs
 ```
 
-**Key commits identified across 6 months:**
+Two commits stood out across 6 months of history:
 - `2ef4a91` (July 10, 2025): "Fix template preview rendering"
 - `7c2b8a3` (Sept 3, 2025): "Add cleanup workflow registry for template archival"
 
-### Phase 3: The Code Comparison Across Git History
+### Phase 3: Code comparison across git history
 
 Copilot then used `git show` to compare the code before and after the September refactor:
 

@@ -57,13 +57,11 @@ In under 5 minutes, I had a good-looking, functional React frontend that I could
 
 ## Step 3: The Critical Refactor - Unlocking Parallel Work
 
-Okay, so I have a great starting point, but it's all in one giant `App.tsx` file. Now, I've known for a long time that a monolithic structure is a roadblock. The key lesson I've learned from my recent experiments with AI agents, like the ones I [covered in my last post](https://gordonbeeming.com/blog/2025-09-16/my-ai-powered-workflow-building-a-full-stack-app-with-chatgpt-and-github-copilot), is about *how* you direct the AI to solve this problem.
+So I have a great starting point, but it's all in one giant `App.tsx` file. A monolithic structure is a roadblock, and this is something I've learned from my recent experiments with AI agents, like the ones I [covered in my last post](https://gordonbeeming.com/blog/2025-09-16/my-ai-powered-workflow-building-a-full-stack-app-with-chatgpt-and-github-copilot). A specific, well-defined task gives an agent like GitHub Copilot something real to work with. A vague prompt gives you vague results.
 
-Giving a specific, well-defined task to an agent like GitHub Copilot yields a much better result than a vague, high-level prompt.
+My first step wasn't to hack at the code myself. I went back to Gemini and asked it to write a PBI for the task: "Refactor the application from a single monolithic component into a true multi-page app structure using React Router DOM."
 
-So, armed with that knowledge, my first step wasn't to hack at the code myself. I went straight back to my AI Product Manager, Gemini, and asked it to create a PBI specifically for this task: "Refactor the application from a single monolithic component into a true multi-page app structure using React Router DOM."
-
-With that clear, focused PBI in hand, I created a new GitHub issue and assigned it directly to Copilot.
+With that focused PBI in hand, I created a new GitHub issue and assigned it directly to Copilot.
 
 <Figure key="/images/multi-page-refactor-pr.png" src="/images/multi-page-refactor-pr.png" alt="A screenshot of the GitHub Pull Request where Copilot refactored the single-page app into a multi-page structure with React Router, showing a detailed summary of the changes." width="0" height="0" caption="The key was getting the AI to write a specific PBI for the AI developer to execute. Better instructions lead to better outcomes." />
 

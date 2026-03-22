@@ -46,18 +46,17 @@ Not a chance. Any kid who wants to change their password will go straight back t
 
 ## Option 2: The "Enterprise" Way (Profiles)
 
-You can create a `.mobileconfig` file (an Apple Configuration Profile) that uses the `DisabledSystemSettings` payload. This is how schools and businesses do it.
+You can create a `.mobileconfig` file (an Apple Configuration Profile) that uses the `DisabledSystemSettings` payload. This is how schools and businesses manage Macs.
 
-You write an XML file, double-click it to install, and it hard-locks those settings.
+Write an XML file, double-click it to install, and it hard-locks those settings.
 
-**The Verdict:** ⚠️
-It works great, but managing XML files for simple settings toggles is a bit of a hassle if you aren't running a full MDM server. I decided to save the "Profile" approach for something more important (NextDNS).
+This actually works well. The catch is that managing XML files for simple toggles is fiddly if you're not running a full MDM server. I decided to save the profile approach for something that really needed it (NextDNS), and go a different route for the settings locks.
 
 ## Option 3: The "Developer" Way (My Pick)
 
-We can use the `defaults` command to modify the **Global Preferences** (`/Library/Preferences`). This affects *all* users on the machine, so you can run this from your Admin account and it locks down their Standard account instantly.
+The `defaults` command can write to the **Global Preferences** at `/Library/Preferences`, which affects all users on the machine. Run it from your Admin account and it locks down their Standard account immediately - no profile installation, no reboot required.
 
-It allows for much faster scripting and toggling than installing/removing profiles.
+It's also much faster to script and toggle than dealing with profiles.
 
 ### The Strategy: "The Wi-Fi Gap"
 

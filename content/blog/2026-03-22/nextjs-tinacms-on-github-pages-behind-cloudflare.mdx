@@ -8,7 +8,7 @@ summary: 'The gotchas I hit deploying a Next.js static export site with TinaCMS 
 
 I recently moved this blog to a setup where Next.js builds a static export (hosted on GitHub Pages), TinaCMS provides a Git-backed CMS admin panel, and a Cloudflare Worker sits in front handling the custom domain, security headers, and CSP.
 
-It works great now, but getting here involved a few gotchas that weren't immediately obvious. This post documents the architecture and the fixes so you don't have to figure them out the hard way 🙃
+It works well now, but getting here involved a few gotchas that weren't immediately obvious. Here's what I hit and how I fixed each one.
 
 ## The Architecture
 
@@ -20,7 +20,7 @@ Browser → gordonbeeming.com
        → gordonbeeming.github.io/xylem/ (GitHub Pages static files)
 ```
 
-The Cloudflare Worker does the heavy lifting at the edge:
+The Cloudflare Worker runs at the edge and handles:
 
 - **Path rewriting** — prepends the repo name (`/xylem`) to paths before forwarding to GitHub Pages
 - **Security headers** — adds `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, etc.

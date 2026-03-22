@@ -6,19 +6,19 @@ draft: false
 summary: 'Everything was working perfectly off the NAS... then you rebooted. Suddenly, Home Assistant is asking for a "New Install." Here is why your data is hiding and how to fix it.'
 ---
 
-I finally bit the bullet and got a NAS at home; I ended up going the UniFi route to add to the rest of my UniFi gear 🤩. Naturally, the first thing I wanted to do was get my home automation data off my server's local SSD and onto that new storage. 
+I finally bit the bullet and got a NAS at home; I ended up going the UniFi route to add to the rest of my UniFi gear. Naturally, the first thing I wanted to do was get my home automation data off my server's local SSD and onto that new storage.
 
-Everything was humming along perfectly... until I did a routine server reboot.
+Everything worked great... until I did a routine server reboot.
 
-When the system came back up, I navigated to my Home Assistant URL expecting my usual dashboard, but instead, I was greeted with the "Welcome! Let's get started" screen. 😱
+When the system came back up, I navigated to my Home Assistant URL expecting my usual dashboard, but instead got the "Welcome! Let's get started" screen.
 
-How did a working NAS setup turn into a fresh install in the time it took to reboot?
+All that data, gone? No - just hiding. Here's what happened.
 
-## The Scenario: The Race Condition
+## The race condition
 
-This usually happens because of a simple race condition. When your server reboots, Docker is often faster than the network mount. If the NAS isn't "there" the exact second Docker tries to start the container, Docker doesn't wait, it just assumes you want to store data locally. 
+This usually happens because of a simple race condition. When your server reboots, Docker is often faster than the network mount. If the NAS isn't available the moment Docker tries to start the container, Docker doesn't wait - it just assumes you want to store data locally.
 
-It creates a new folder on your local drive and starts a fresh installation right there. If you check your mount point, you'll see the folders exist, but they are just empty "ghosts" on your local disk:
+It creates a new folder on your local drive and starts a fresh install right there. If you check your mount point, the folders exist, but they're just empty shells on your local disk:
 
 ```bash title="Terminal"
 oak@pokedex:~$ ls -la /mnt/

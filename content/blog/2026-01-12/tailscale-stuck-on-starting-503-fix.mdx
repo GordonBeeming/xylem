@@ -22,16 +22,16 @@ Turns out "Starting..." is Tailscale's way of saying it can't talk to its own ba
 
 ## The Problem
 
-The issue usually isn't your credentials; it's a communication breakdown between the Tailscale GUI/CLI and the `tailscaled.exe` service.
+The issue usually isn't your credentials. It's a broken connection between the Tailscale GUI/CLI and the `tailscaled.exe` service.
 
-When you dig deeper into the CLI, you might see an error about a missing **Named Pipe**. Specifically something like:
+Dig a bit deeper in the CLI and you'll likely see something about a missing named pipe:
 
 ```text title="Error output"
 open \\.\pipe\ProtectedPrefix\Administrators\Tailscale\tailscaled: The system cannot find the file specified.
 
 ```
 
-In plain English: The "phone line" between the app and the service is disconnected, and no amount of clicking "Login" in the UI is going to plug it back in.
+The pipe between the app and the service is gone. Clicking "Login" in the UI won't fix it.
 
 ## The Solution
 

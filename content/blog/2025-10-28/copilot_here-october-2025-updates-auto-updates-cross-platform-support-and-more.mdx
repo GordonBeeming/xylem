@@ -135,7 +135,7 @@ for arg in "$@"; do
 done
 ```
 
-Now users can run any Copilot CLI command without me having to explicitly support it:
+Now any Copilot CLI argument just works, whether I've explicitly accounted for it or not:
 
 ```bash title="Terminal"
 copilot_here --model gpt-4 "explain this code"
@@ -143,9 +143,9 @@ copilot_here -v  # Show version
 copilot_here --whatever-future-flag-gets-added
 ```
 
-### The --resume Flag: A Game Changer
+### The --resume flag
 
-One particularly useful feature this unlocks is the `--resume` flag. When Copilot is working through a multi-step task and something interrupts it (network hiccup, timeout, etc.), you can just resume right where it left off:
+One feature this unlocks is `--resume`. When Copilot is mid-task and something interrupts it (network hiccup, timeout, whatever), you can pick up right where it left off:
 
 ```bash title="Terminal"
 copilot_here --resume
@@ -153,7 +153,7 @@ copilot_here --resume
 
 <Figure key="copilot-resume-example" src="/images/copilot-resume-example.png" alt="Screenshot showing the --resume flag allowing continuation of a previous Copilot session" width="0" height="0" caption="The --resume flag picks up right where you left off" />
 
-This is incredibly useful for long-running tasks where you don't want to start over from scratch. And because of the argument pass-through, it just works—no special handling needed on my end.
+For long-running tasks, not having to start over is a real time-saver. And since it goes through the pass-through logic, there's nothing special I had to do to support it.
 
 When you run `copilot_here --help`, it shows both the wrapper's help AND the underlying Copilot CLI help, so you can discover features like `--resume` naturally.
 

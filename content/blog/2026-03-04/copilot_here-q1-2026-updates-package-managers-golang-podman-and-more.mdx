@@ -8,7 +8,7 @@ summary: 'Q1 2026 brings copilot_here to your favorite package managers (Homebre
 
 I'd like to start off by saying thanks to [@tudorsmt](https://github.com/tudorsmt), [@epetutsc](https://github.com/epetutsc), [@Tasteful](https://github.com/Tasteful), and [@christiansparre](https://github.com/christiansparre) for logging issues and feature requests that helped shape this quarter's improvements.
 
-The first quarter of 2026 has been packed with new capabilities for [copilot_here](https://copilot_here.gordonbeeming.com). The headline feature is that you can now install via your favorite package manager — Homebrew, WinGet, or as a .NET global tool — instead of running install scripts. We've also added a Golang image variant, support for Podman and OrbStack as container runtimes, and a model configuration system that lets you set your preferred AI model per-project or globally.
+Q1 has been busy for [copilot_here](https://copilot_here.gordonbeeming.com). The change I'm most happy about is proper package manager support — you can now install via Homebrew, WinGet, or as a .NET global tool instead of piping a script from the internet. Beyond that, there's a new Golang image variant, Podman and OrbStack support as container runtimes, and a model configuration system so you can pin your preferred AI model per-project or globally.
 
 If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
 
@@ -27,7 +27,7 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 
 ## 1. Install Anywhere: Package Manager Support
 
-The biggest user-facing change this quarter is that `copilot_here` is now available through the package managers you already use. No more piping scripts from the internet — just install it the way you install everything else.
+You can now install `copilot_here` through the package managers you already use. No more piping scripts from the internet.
 
 **.NET Global Tool:**
 ```bash title="Terminal"
@@ -51,9 +51,9 @@ brew install copilot_here
 winget install GordonBeeming.CopilotHere
 ```
 
-All three channels are automatically published on every release via CI, so you'll always get the latest version through your package manager's normal update flow.
+All three channels are published automatically on every release via CI, so your package manager's normal update flow will keep you current.
 
-The existing `curl`/`iwr` install scripts continue to work if you prefer that approach.
+The existing `curl`/`iwr` install scripts still work if you'd rather stick with those.
 
 ---
 

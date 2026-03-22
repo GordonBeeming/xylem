@@ -74,11 +74,11 @@ Here's what each setting does:
 
 Set `Max-Age` to at least 1 year, turn on `Include subdomains` and `Preload`, then save.
 
-## Part 2: Joining the HSTS Preload List
+## Part 2: Joining the HSTS preload list
 
-With HSTS enabled in Cloudflare, you're protecting returning visitors. But what about someone visiting your site for the very first time? That initial HTTP request could still be vulnerable.
+With HSTS active in Cloudflare, returning visitors are protected. But someone hitting your site for the first time still makes that initial HTTP request before the browser knows to upgrade it.
 
-The **HSTS Preload List** solves this. It's a list of domains that are hardcoded directly into major browsers like Chrome, Firefox, Edge, and Safari. If your site is on this list, the browser knows to *only* use HTTPS for it, even for the very first visit. This is the gold standard. 🏆
+The **HSTS Preload List** closes that gap. It's a list of domains hardcoded directly into Chrome, Firefox, Edge, and Safari. If your domain is on it, the browser forces HTTPS from the very first request, before any headers have been exchanged.
 
 Here’s how to get on it:
 
@@ -90,7 +90,7 @@ Here’s how to get on it:
 
 <Figure key="/images/hsts-preload-check.png" src="/images/hsts-preload-check.png" alt="The hstspreload.org website showing a successful eligibility check for a domain." width="0" height="0" caption="Successful eligibility check on hstspreload.org" />
 
-Be aware that inclusion is not instant. It can take weeks or even months for your domain to be included in new browser releases.
+Inclusion isn't instant - it can take weeks or months to appear in new browser releases, so submit sooner rather than later.
 
 ## Verification: Did It Work?
 

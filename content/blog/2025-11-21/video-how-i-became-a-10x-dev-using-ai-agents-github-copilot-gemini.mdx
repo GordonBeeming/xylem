@@ -34,18 +34,19 @@ GitHub Spark is for prototyping. I used it to spin up a React app for my wife's 
 
 Tina CMS handles content. It decouples content management from the codebase so I can use a visual editor while keeping everything in Git.
 
-## The "Fix": Securing the Copilot CLI
+## The "fix": securing the Copilot CLI
 
-The GitHub Copilot CLI is powerful but risky. Giving an AI agent full read/write access to your file system and terminal can lead to it nuking files or hallucinating commands.
+The GitHub Copilot CLI is where things get interesting — and where things can go badly wrong. Giving an AI agent full read/write access to your file system and terminal is a real risk. It can nuke files, hallucinate commands, and generally make a mess if you're not careful.
 
-To use the CLI safely and efficiently, I built a **Secure Portable Copilot CLI Environment**.
+To deal with that, I built a sandboxed environment for it.
 
 <Figure key="/images/docker-copilot-cli-sandbox.png" src="/images/docker-copilot-cli-sandbox.png" alt="Terminal showing the Docker container startup for the Copilot CLI sandbox." width="0" height="0" caption="My secure Docker sandbox for the Copilot CLI" />
 
-### How it works:
-1.  **Dockerized Sandbox:** The CLI runs inside a container, not on my host machine.
-2.  **Read-Only Mounts:** Critical paths (like `.git` folders or core domain logic) are mounted as read-only. The AI can read them for context but cannot modify them.
-3.  **"YOLO Mode":** Because the environment is sandboxed, I can disable the constant "Are you sure?" confirmation prompts. This allows the agent to work in the background autonomously while I focus on other tasks.
+### How it works
+
+The CLI runs inside a Docker container, not on my host machine. Critical paths — like `.git` folders or core domain logic — are mounted read-only, so the AI can use them for context but can't touch them.
+
+The real benefit: because the environment is sandboxed, I can turn off the constant "Are you sure?" confirmation prompts. That's what I call YOLO Mode. The agent runs in the background on its own while I'm working on something else, without interrupting me every 30 seconds.
 
 ## Summary
 

@@ -48,13 +48,13 @@ That's where my `copilot_here` project comes in. For these deep investigations, 
 copilot_here --save-mount-global ~/investigations:rw
 ````
 
-Now, **no matter what project directory I'm in**, when I run `copilot_yolo`, it will always have my `~/investigations` folder mounted with read/write access. When I'm in a project repo and run my meta-prompt, the AI has full context of the code *and* a safe, persistent place to write its report.
+Now, no matter what project directory I'm in, when I run `copilot_yolo`, it will always have my `~/investigations` folder mounted with read/write access. When I'm in a project repo and run my meta-prompt, the AI has full context of the code and a safe, persistent place to write its report.
 
-It's the perfect, clean workflow:
+This makes for a clean workflow:
 
   * The AI can write its findings.
   * The report lives in a central `~/investigations` folder on my host machine.
-  * It doesn't pollute my project's `git status` with a large, un-committed markdown file.
+  * It doesn't pollute my project's `git status` with a large, uncommitted markdown file.
 
 This global mount feature is part of the new November 2025 updates to `copilot_here`. You can read all about it here:
 **[Copilot CLI in Docker: November 2025 Updates - Better Context and Flexible Mounts](https://www.google.com/search?q=https://gordonbeeming.com/blog/2025-11-30/copilot-cli-in-docker-november-2025-updates-better-context-and-flexible-mounts)**

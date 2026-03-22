@@ -52,7 +52,7 @@ zinit snippet OMZL::async_prompt.zsh
 zinit snippet OMZP::git
 ```
 
-On top of that, a few plugins that make the shell genuinely nicer to use:
+On top of that, a few plugins that actually improve the shell experience:
 
 - **[eza](https://github.com/eza-community/eza)** — replaces `ls` with icons, git status, and directory-first sorting
 - **[zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)** — highlights commands as you type them
@@ -98,14 +98,9 @@ A few other aliases I use daily:
 
 ## 1Password SSH Integration
 
-All my SSH keys live in 1Password. No private keys on disk at all. The setup is:
+All my SSH keys live in 1Password. No private keys on disk at all. My `.zshrc` sets `SSH_AUTH_SOCK` to 1Password's agent socket, the `.ssh/config` points `IdentityAgent` to the same socket, commits are signed using 1Password's `op-ssh-sign` binary, and `OP_BIOMETRIC_UNLOCK_ENABLED=true` means I authenticate with Touch ID.
 
-1. **SSH agent**: My `.zshrc` sets `SSH_AUTH_SOCK` to 1Password's agent socket
-2. **SSH config**: The `.ssh/config` points `IdentityAgent` to the same socket
-3. **Git signing**: Commits are signed using 1Password's `op-ssh-sign` binary
-4. **Biometric**: `OP_BIOMETRIC_UNLOCK_ENABLED=true` means I authenticate with Touch ID
-
-When I push to GitHub or sign a commit, 1Password pops up a Touch ID prompt. That's it. No `ssh-add`, no passphrase management, no key files to protect.
+When I push to GitHub or sign a commit, 1Password pops up a Touch ID prompt. That's it. No `ssh-add`, no passphrase management, no key files sitting on disk.
 
 ## Editor-Like Terminal Input
 

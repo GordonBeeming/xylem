@@ -12,7 +12,7 @@ I'd been running iTerm2 + Oh My Zsh + Powerlevel10k + nvm for years. It worked. 
 
 Then I read [Matt Wicks' blog post about his modern Zsh setup](https://wicksipedia.com/blog/modern-zsh-setup/) and thought: I'm in the exact same position. Heavy framework, slow prompt, nvm dragging down every shell startup. Matt had done the research, benchmarked the tools, and landed on a stack that starts in 120ms. I wanted that.
 
-Around the same time, I'd been chatting with [Matt Goldman](https://www.linkedin.com/in/matt-goldman/) and a bunch of other devs who had all independently started using Ghostty. The stars sort of aligned — everyone was moving to lighter, faster tools, and it felt like the nudge I needed to finally make the switch.
+Around the same time, I'd been chatting with [Matt Goldman](https://www.linkedin.com/in/matt-goldman/) and a bunch of other devs who had all independently started using Ghostty. Everyone was moving to lighter, faster tools, and it felt like the nudge I needed to finally make the switch.
 
 The only thing holding me back was the migration itself. I didn't want to spend a Saturday afternoon debugging shell configs.
 
@@ -81,7 +81,7 @@ The things I didn't know I was missing:
 
 The single most important quality I need in a terminal is text-editor-like input. Being able to move around the command line the same way I move around text in a code editor — arrow keys, Option+Arrow to jump words, Cmd+Arrow for line start/end, Option+Backspace to delete a word — is a deal breaker for me. It's the reason I was primarily using Warp. If a terminal doesn't support that fully, I can't use it as my daily driver.
 
-And Warp was awesome for that — genuinely the best terminal I've used for text editing in the input. But over time, every other update seemed to enable some new AI feature I had to go find and switch off. The UI kept getting busier, more panels, more suggestions, more things competing for attention. It stopped feeling like a terminal and started feeling like a platform. I just wanted a fast, clean shell.
+And Warp was great for that -- the best terminal I've used for text editing in the input. But over time, every other update seemed to enable some new AI feature I had to go find and switch off. The UI kept getting busier, more panels, more suggestions, more things competing for attention. It stopped feeling like a terminal and started feeling like a platform. I just wanted a fast, clean shell.
 
 The other long-standing sore point with Warp was the lack of Secure Keyboard Entry. This is a macOS feature that prevents other applications from intercepting your keystrokes — pretty important when you're typing passwords or tokens in a terminal. Terminal.app, iTerm2, and Ghostty all support it. Warp has had an [open issue for it since April 2023](https://github.com/warpdotdev/Warp/issues/2891) with 40+ upvotes and no resolution. It's likely a hard problem to solve given Warp's custom input model — probably the same reason it can offer such great text editing. But it meant I was always slightly uneasy using Warp for sensitive work. Ghostty has Secure Keyboard Entry built in, right there in the app menu.
 

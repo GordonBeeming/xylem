@@ -6,11 +6,11 @@ draft: false
 summary: 'Terminal tab titles normally show the running process name, so when every panel is running Claude Code or copilot they all look the same. A small zsh hook fixes this by showing the git repo name instead.'
 ---
 
-Terminal tab titles normally show the name of the running process — `zsh`, `node`, `python`, whatever is active. When nothing specific is running, they fall back to the working directory path. This works fine most of the time.
+Terminal tab titles normally show the name of the running process: `zsh`, `node`, `python`, whatever is active. When nothing specific is running, they fall back to the working directory path. This works fine most of the time.
 
 Until you start running AI coding tools.
 
-When you've got four panels in a single Ghostty tab — Claude Code in one, GitHub Copilot CLI in another, a couple of regular shells — the tabs all show the same thing: "claude" or "copilot". Switch to a different repo in another tab with the same layout and now you've got eight panels across two tabs and every title says either "claude" or "copilot". You have to scan the actual output in each panel to spot a file path and figure out which project you're looking at.
+When you've got four panels in a single Ghostty tab, Claude Code in one, GitHub Copilot CLI in another, a couple of regular shells, the tabs all show the same thing: "claude" or "copilot". Switch to a different repo in another tab with the same layout and now you've got eight panels across two tabs and every title says either "claude" or "copilot". You have to scan the actual output in each panel to spot a file path and figure out which project you're looking at.
 
 If you're using [copilot_here](https://github.com/gordonbeeming/copilot_here) (my sandboxed Docker wrapper for GitHub Copilot CLI), this is actually better — it sets custom tab titles that tell you what's going on at a glance. Normal mode shows "🤖 xylem", YOLO mode (auto-approve everything) shows "🤖⚡️ xylem", and if you've got [Airlock](https://github.com/gordonbeeming/copilot_here#network-airlock) enabled — the secure network isolation mode that restricts which domains the container can reach — you get "🤖 xylem 🛡️". You can immediately tell which project, which mode, and whether network isolation is active, all from the tab title. But it only applies to the copilot_here panels, not to your Claude Code sessions or regular shells.
 

@@ -23,25 +23,25 @@ The fix is to include the "how" — but the *way* you do this depends entirely o
 
 Are you writing the ADR *before* implementation (proactive) or *after* (reactive)? Both are valid, but the "how" section serves a different purpose in each case.
 
-### Scenario 1: ADR Up-Front (The "Expected Touchpoints")
+### Scenario 1: ADR up-front (the "Expected Touchpoints")
 
-This is the recommended approach. You write the ADR as part of the design phase, *before* a single line of code is written.
+Write the ADR as part of the design phase, *before* a single line of code is written. This is the recommended approach.
 
-In this case, the "how" section should be called **"Expected Implementation Touchpoints"** or **"Implementation Plan."**
+Call the "how" section **"Expected Implementation Touchpoints"** or **"Implementation Plan."**
 
-* **What it is:** A high-level list of the files, modules, and classes you *expect* to change. It's your *plan* for implementing the decision.
-* **Its Value:** It defines the *scope* of the work. It forces the team to think through the "blast radius" of the change and creates a checklist for the developer.
-* **Crucial Rule:** You **do not** go back and update this section after the work is done. Its value is as a snapshot of the *plan*, not the final implementation. If the implementation differed, that's a valuable piece of information in itself (and might be worth a comment in the PR).
+It's a high-level list of the files, modules, and classes you *expect* to change — your *plan* for implementing the decision. It defines the scope of the work, forces the team to think through the blast radius of the change, and gives the developer a checklist to work from.
 
-### Scenario 2: ADR After-the-Fact (The "Implementation Snapshot")
+One rule: do **not** go back and update this section after the work is done. Its value is as a snapshot of the *plan*, not the final implementation. If the reality differed from the plan, that's useful information in itself (and worth a comment in the PR).
 
-Sometimes, you're documenting a decision that was already made, or you're just getting started with ADRs and are "back-filling" your decision log.
+### Scenario 2: ADR after-the-fact (the "Implementation Snapshot")
 
-In this case, the "how" section should be called **"Implementation Snapshot."**
+Sometimes you're documenting a decision that was already made, or you're getting started with ADRs and back-filling your decision log.
 
-* **What it is:** A set of small, illustrative code snippets that capture the *actual pattern* that was implemented.
-* **Its Value:** It's a concrete record of the "how." It connects the abstract decision to the real code, dramatically reducing "digital archaeology" for future developers.
-* **Crucial Rule:** This is a *snapshot*, not a live-updating document. You are capturing the *pattern*, not creating a maintenance burden.
+Call the "how" section **"Implementation Snapshot."**
+
+It's a set of small, illustrative code snippets that capture the *actual pattern* that was implemented. It connects the abstract decision to the real code, so future developers don't have to dig through PR history to figure out how something was originally built.
+
+One rule: this is a *snapshot*, not a live-updating document. You're capturing the *pattern*, not committing to maintaining it.
 
 ## The Pros and Cons of Adding the "How"
 

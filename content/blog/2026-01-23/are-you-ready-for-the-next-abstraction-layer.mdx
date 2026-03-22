@@ -20,10 +20,10 @@ We moved from "writing auth" to "implementing identity." We shifted from the eng
 
 ## The Evolution of Sending a Mail
 
-Let's look at SMTP (Simple Mail Transfer Protocol) as our guide to see how we got here. 🚀
+Let's look at SMTP (Simple Mail Transfer Protocol) as our guide to see how we got here.
 
 ### 1. The "Handshake" Era
-Long ago, if you wanted to send an email, you basically had to speak the language of the server directly. You'd open a TCP connection and start a manual dialogue. In this example, **S** is the Server and **C** is you, the Client:
+Long ago, if you wanted to send an email, you basically had to speak the language of the server directly. You'd open a TCP connection and start a manual dialogue. In this example, **S** is the server and **C** is you, the client:
 
 ```text title="Raw SMTP handshake"
 S: 220 smtp.gordonbeeming.com ESMTP Postfix

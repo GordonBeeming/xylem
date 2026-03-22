@@ -59,7 +59,7 @@ copilot_here --set-image dotnet-10
 
 ## 3. Playwright Image
 
-For those sites that use node apps but don't require dotnet, we've added a new image that extends the base image with Playwright capabilities.
+For projects that use Node but don't need .NET, there's a new image that extends the base with Playwright capabilities.
 
 **Tag:** `playwright`
 
@@ -79,11 +79,11 @@ copilot_here --playwright
 
 ## 4. Airlock Network Isolation
 
-This is the big security feature of this release. While `copilot_here` already sandboxes file system access, the container still had unrestricted network access. **Airlock** changes that by routing all network traffic through a custom Rust-based HTTPS proxy that enforces an allowlist.
+The container already sandboxed filesystem access, but network access was wide open. Airlock closes that gap by routing all network traffic through a custom Rust-based HTTPS proxy that enforces an allowlist.
 
 ### Why Airlock?
 
-When you give an AI tool access to your codebase, you're trusting it not to exfiltrate data. While GitHub Copilot is trustworthy, defense-in-depth is a good practice. Airlock ensures that even if something goes wrong, the AI can only talk to the endpoints you've explicitly approved.
+When you give an AI tool access to your codebase, you're trusting it not to exfiltrate data. GitHub Copilot is trustworthy, but I'd rather not rely on trust alone. With Airlock, even if something goes wrong, the AI can only talk to the endpoints you've explicitly approved.
 
 ### How It Works
 

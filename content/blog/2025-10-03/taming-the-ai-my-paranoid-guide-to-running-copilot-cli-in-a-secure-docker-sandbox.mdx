@@ -255,11 +255,11 @@ As the project grew, I kept running into cases where the base image wasn't enoug
 
 You switch between variants with flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
 
-### Automatic Cleanup
+### Automatic cleanup
 
-One of the newer features is automatic image cleanup. The functions now automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) while keeping only the one you're currently using. This helps keep your Docker storage clean without manual intervention.
+The functions automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) and keep only the one you're currently using. This stops old image versions from quietly eating your disk space.
 
-If you want to skip the cleanup for faster execution, use the `--no-cleanup` flag (or `-NoCleanup` on PowerShell). Similarly, you can skip pulling the latest image with `--no-pull` (or `-NoPull`) if you want even faster startup times.
+If you want to skip the cleanup for faster startup, use `--no-cleanup` (or `-NoCleanup` on PowerShell). You can also skip pulling the latest image with `--no-pull` (or `-NoPull`) if you need to move fast and already have the image locally.
 
 ## Conclusion: Security and Convenience Can Coexist
 

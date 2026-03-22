@@ -402,24 +402,16 @@ if (template.CleanupFlagsJson == null)
 
 We went with Option 1 for the clean fix with no technical debt. For templates where the feature data was more complex or missing, we combined Options 1 and 2 to handle the different cases.
 
-## The Results
+## The results
 
-After ~25 minutes running in the background, Copilot delivered:
+After ~25 minutes running in the background, Copilot delivered a 3,200-word investigation document with a complete timeline, 5 key commits identified and analyzed, SQL queries ready to run, 3 remediation options with code samples, and a clear blast radius of 47 affected templates.
 
-**Investigation Artifacts:**
-- 3,200-word investigation document with complete timeline
-- 5 key commits identified and analyzed
-- SQL queries to find all affected records (ready to run)
-- 3 remediation options with code samples
-- Blast radius: 47 affected templates
-- Root cause: Edge case in template creation code path (May-August)
-- Edge case resolved: September 3, 2025
-- Why records remained: No migration for existing NULL records
+Root cause: edge case in the template creation code path from May-August. Fixed on September 3, 2025. No migration for existing NULL records, so old data stayed broken.
 
-**Time Comparison:**
+Time comparison:
 - Traditional manual approach: 4-6 hours
-- Copilot CLI approach: 5 minutes active time, 0 minutes waiting
-- Investigation depth: 6 months of git history, 50+ commits analyzed
+- Copilot CLI approach: 5 minutes active, 0 minutes waiting
+- Coverage: 6 months of git history, 50+ commits
 
 ## What Made This Work
 

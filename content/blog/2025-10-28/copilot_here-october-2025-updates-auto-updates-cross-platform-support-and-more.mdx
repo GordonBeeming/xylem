@@ -217,25 +217,17 @@ fi
 
 The cleanup now runs after pulling the new image, so it can never remove what it just downloaded. Old images get pruned after 7 days, `<none>` tags are filtered out, and the redundant re-download on every launch is gone.
 
-## Lessons Learned
+## Lessons learned
 
-### 1. **Cross-Platform Is Hard**
-What works on macOS might fail spectacularly on Windows. Test early, test often, or at minimum make failure modes graceful.
+Cross-platform is genuinely hard. What works on macOS can fail on Windows in ways you won't predict. Test early, or at least make failure modes graceful rather than silent.
 
-### 2. **Auto-Update Everything**
-If you can automate updates (Docker images, scripts, whatever), do it. Manual update processes are where software goes to die.
+Auto-update everything you can. Manual update processes are where scripts go to die, because nobody runs them.
 
-### 3. **Pass-Through > Re-Implementation**
-Don't rebuild what already exists. Wrap it gracefully and get out of the way. This is how features like `--resume` just work without any extra code.
+Pass-through beats re-implementation. Don't rebuild what the underlying tool already does - wrap it and get out of the way. That's how `--resume` and every other future Copilot flag just works without any extra effort on my part.
 
-### 4. **Version Everything**
-Future you (and your users) will thank you when debugging issues.
+Version your scripts. Future you will thank present you the first time someone files a bug report.
 
-### 5. **Documentation Is A Product Feature**
-Spend the time to make your README clear and comprehensive. It's often the only thing between users and frustration.
-
-### 6. **Smart Defaults Beat Configuration**
-Seven days for image cleanup is reasonable for most users. If someone needs different behavior, they can use `--no-cleanup`.
+The README is part of the product. A tool that works but confuses people on install might as well not work.
 
 ## What's Next?
 

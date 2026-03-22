@@ -206,9 +206,9 @@ if (product.Stock < order.Quantity)
 
 Before using a built-in exception, take 10 seconds to read its documentation summary. If your scenario doesn't match the intended purpose, don't use it. That one habit prevents most of the confusion described above.
 
-### Rule 3: Use Guard Clauses for Arguments
+### Rule 3: Use guard clauses for arguments
 
-Check your arguments at the very top of your methods before any work is done. This ensures you fail fast and correctly.
+Check arguments at the top of your methods before any work is done. Fail fast, fail correctly.
 
 ```csharp title="Guard clause example"
 public void UpdateUser(User user)

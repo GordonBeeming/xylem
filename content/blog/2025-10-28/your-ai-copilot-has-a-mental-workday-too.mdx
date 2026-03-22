@@ -125,11 +125,11 @@ The fix is one command. Run it **inside your Copilot session**:
 (copilot) /clear
 ```
 
-The context is wiped. The "workday" is over. The AI is "fresh" and ready for a brand new, clean briefing. ☀️
+Context cleared. Clean slate. Ready to go again.
 
-(And for those times you *intentionally* want to jump back into your previous session's context, you can use native flags like `--resume` when you start your session. The point is to be *deliberate* about your context.)
+(If you actually want to pick up where you left off, you can use flags like `--resume` when starting a new session. The point is to be intentional about it rather than just leaving old context sitting there.)
 
-Now, in that **same session** (just after clearing it), I give it a *clean brief* for the new task:
+Now I give it a clean brief for the new task:
 
 ```text title="Copilot prompt (clean context)"
 (copilot) Create a simple ASP.NET Core Minimal API. Assume I have an
@@ -137,7 +137,7 @@ Now, in that **same session** (just after clearing it), I give it a *clean brief
    GET /people (using LoadPeople) and POST /people (using SavePeople).
 ```
 
-The result is clean, fast, and perfect. It focuses *only* on the API task.
+The output is focused. Just the API, nothing else.
 
 ```csharp title="Clean API output"
 var builder = WebApplication.CreateBuilder(args);

@@ -128,7 +128,7 @@ If you set `basePath: "xylem"`, TinaCMS would generate asset paths like `/xylem/
 
 Without the `Location` header fix from Gotcha 2, visiting `/admin` redirects to `github.io` where TinaCMS shows "Failed loading TinaCMS assets" because everything is misaligned.
 
-## Gotcha 4: Redirects at the Edge
+## Gotcha 4: redirects at the edge
 
 Since Next.js static export can't handle redirects, they need to live in the Cloudflare Worker. I migrated all 146 redirect rules into a simple map:
 

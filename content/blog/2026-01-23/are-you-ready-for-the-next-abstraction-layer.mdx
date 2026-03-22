@@ -98,13 +98,13 @@ What's different now? It's the move from pattern matching to reasoning. Earlier 
 
 ## Making AI Deterministic: The Role of MCP
 
-So, how do we make AI agents actually "good" teammates? How do we ensure they stay focused on that business value without getting lost in the weeds? 🤖
+So, how do we make AI agents actually "good" teammates? How do we keep them focused on business value without getting lost in the weeds?
 
-They need to know **exactly** when to do "what."
+They need to know exactly when to do what.
 
-Take a basic **GitHub MCP** for example. Normally, if you wanted an agent to create an issue, it would have to know how to interact with the GitHub API, handle the OAuth, and pass all the right data in the correct format.
+Take a basic GitHub MCP for example. Normally, if you wanted an agent to create an issue, it would have to know how to interact with the GitHub API, handle the OAuth, and pass all the right data in the correct format.
 
-With an MCP pre-configured, that entire process is handled outside the LLM's immediate "thought process." The MCP server exposes exactly what **parameters** are needed for the `create_issue` tool. The agent just sees the requirement: "I need a title and a body." It doesn't need to know the endpoint; it just needs to know the **intent**.
+With an MCP pre-configured, that entire process is handled outside the LLM's immediate "thought process." The MCP server exposes exactly what parameters are needed for the `create_issue` tool. The agent just sees the requirement: "I need a title and a body." It doesn't need to know the endpoint; it just needs to know the intent.
 
 ### So, what's the difference between MCP and the .NET SDK?
 

@@ -102,9 +102,9 @@ It's also GPU-accelerated, the config is a simple key-value file, and split pane
 
 ## The AI Part
 
-What made this work wasn't that Claude knows shell scripting (any developer does). It's that Claude could hold the entire context at once: my current `.zshrc`, the blog post's recommendations, my installed packages, my dotfiles structure, my PATH entries, my aliases, my integrations — and produce a migration that preserved everything while replacing the underlying machinery.
+What made this work wasn't that Claude knows shell scripting. It's that Claude could hold the entire context at once: my current `.zshrc`, the blog post's recommendations, my installed packages, my dotfiles structure, my PATH entries, my aliases, my integrations, and produce a migration that preserved everything while replacing the underlying machinery.
 
-The debugging was instant too. When I opened Ghostty and it started in `~` instead of my github folder, Claude checked the Ghostty docs and found the `window-inherit-working-directory` config that was overriding my setting. When I asked what the cloud icon in my prompt meant, it identified it as the `gcloud` module and disabled it. When I noticed `claude` wasn't found on fresh shell startup, it traced the issue to `~/.local/bin` not being in my PATH (it was only added by a script that ran on `reload`).
+The debugging was quick too. When I opened Ghostty and it started in `~` instead of my github folder, Claude checked the Ghostty docs and found the `window-inherit-working-directory` config that was overriding my setting. When I asked what the cloud icon in my prompt meant, it identified it as the `gcloud` module and disabled it. When I noticed `claude` wasn't found on fresh shell startup, it traced the issue to `~/.local/bin` not being in my PATH (it was only added by a script that ran on `reload`).
 
 Each of these would have been a 10-minute Stack Overflow detour. Instead, they were 30-second fixes.
 

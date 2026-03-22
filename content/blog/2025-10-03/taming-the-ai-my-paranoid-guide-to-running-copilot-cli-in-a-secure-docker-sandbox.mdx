@@ -241,19 +241,19 @@ copilot_yolo -dp "write playwright tests for the login page"
 copilot_yolo --no-cleanup "generate README"
 ```
 
-## Beyond the Basics: Specialized Docker Image Variants
+## Beyond the basics: specialized Docker image variants
 
-As the project evolved, I realized that different development scenarios call for different tools. That's why I created specialized image variants that build on the secure foundation of the base image while adding language-specific capabilities.
+As the project grew, I kept running into cases where the base image wasn't enough. .NET projects need SDKs. Browser tests need Chromium. So I added specialized variants on top of the base image.
 
-### Available Image Variants
+### Available image variants
 
-**Base Image (`latest`)**: The standard Copilot CLI environment with Node.js 20, Git, and essential tools. Perfect for general-purpose development and scripting.
+**Base image (`latest`)**: Node.js 20, Git, and basic tools. Works for general scripting and anything that doesn't need a specific runtime.
 
-**.NET Image (`dotnet`)**: Extends the base image with .NET 8.0 and 9.0 SDKs, along with ASP.NET Core runtimes and ICU libraries for internationalization support. Ideal for .NET development without the overhead of browser testing tools.
+**.NET image (`dotnet`)**: Adds .NET 8.0 and 9.0 SDKs with ASP.NET Core runtimes and ICU libraries. Good for .NET work when you don't need browser testing on top.
 
-**.NET + Playwright Image (`dotnet-playwright`)**: The full-featured variant that includes everything from the .NET image plus Playwright 1.56.0 and Chromium browser with all dependencies. This is perfect for end-to-end testing and browser automation scenarios. Note that this image is approximately 500-600MB larger due to the Chromium binaries.
+**.NET + Playwright image (`dotnet-playwright`)**: Everything in the .NET image, plus Playwright 1.56.0 and Chromium with all its dependencies. About 500-600MB larger than the base image because of the Chromium binaries, so only use it when you need it.
 
-The beauty of the refactored setup is that you can switch between variants using simple flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
+You switch between variants with flags like `-d` for .NET or `-dp` for .NET + Playwright, rather than manually editing image names.
 
 ### Automatic Cleanup
 

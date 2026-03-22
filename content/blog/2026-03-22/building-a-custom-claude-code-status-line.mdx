@@ -6,9 +6,9 @@ draft: false
 summary: 'Claude Code gives you a JSON blob and a shell script hook. I used it to build a multi-line status line with repo info, GitButler branches, cost tracking, and rate limits — in one session.'
 ---
 
-I run Claude Code across multiple projects, often with several Ghostty tabs open at once. Every session looks the same from the bottom of the terminal: a model name, a context percentage, and a cost. Useful, but when you're juggling three repos and trying to figure out which session is burning through your rate limit, you need more.
+I run Claude Code across multiple projects, often with several Ghostty tabs open at once. Every session looks the same from the bottom of the terminal: a model name, a context percentage, and a cost. When you're juggling three repos, that's not enough.
 
-Which repo am I in? What GitButler branch is active? Am I close to my 5-hour rate limit? How much have I spent today across all sessions (not that it matters on a Max plan, but it gives you a feel for what this type of workload would cost as an API deployment)? The default status line doesn't answer any of that.
+Which repo am I in? What GitButler branch is active? Am I close to my 5-hour rate limit? How much have I spent today across all sessions (not that it matters on a Max plan, but it gives you a feel for what this type of workload would cost as an API deployment)? The default status line doesn't tell me.
 
 ## The fork-or-build moment
 
@@ -16,9 +16,9 @@ Funny timing — [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/)
 
 > The cost of building has dropped below the cost of compromising.
 
-My first thought was to fork Dan's repo and submit a PR. But then I stopped — does he want the same things I do? I wanted [GitButler](https://gitbutler.com/) virtual branch detection, multi-line layout with grouped sections, [goccc](https://github.com/backstabslash/goccc) integration for cost tracking in AUD, rate limit progress bars, and terminal tab title renaming. Those are my opinions about what a status line should show. They're not wrong, they're just mine.
+My first thought was to fork Dan's repo and submit a PR. But then I stopped. Does he want the same things I do? I wanted [GitButler](https://gitbutler.com/) virtual branch detection, multi-line layout with grouped sections, [goccc](https://github.com/backstabslash/goccc) integration for cost tracking in AUD, rate limit progress bars, and terminal tab title renaming. Those are my opinions about what a status line should show, and they're probably not the same as his.
 
-It's cheap enough now to just have your own opinionated version. An afternoon with Claude Code and I had exactly what I wanted, packaged as an installable repo with auto-updates.
+It's cheap enough now to just have your own version. An afternoon with Claude Code and I had exactly what I wanted, packaged as a repo with auto-updates.
 
 ## How the statusLine hook works
 
@@ -52,19 +52,19 @@ The JSON blob includes everything you need:
 }
 ```
 
-No framework, no daemon, no config schema to learn. Just stdin, stdout, and a shell script.
+That's it. Stdin, stdout, and a shell script.
 
 ## Building it
 
-The whole thing evolved through four iterations in a single Claude Code session.
+I went through four iterations in a single Claude Code session.
 
 ### v1 — repo and branch info
 
 The first version wrapped [goccc](https://github.com/backstabslash/goccc) (a CLI cost calculator that handles session costs, daily totals, and currency conversion) and prepended the repo name and branch. One line, straightforward.
 
-The interesting bit was GitButler detection. I use [GitButler](https://gitbutler.com/) for branch management, which keeps you on a `gitbutler/workspace` branch while your actual virtual branches live inside GitButler's system. A normal `git branch --show-current` would just say "gitbutler/workspace" — not helpful.
+The tricky part was GitButler detection. I use [GitButler](https://gitbutler.com/) for branch management, which keeps you on a `gitbutler/workspace` branch while your actual virtual branches live inside GitButler's system. A normal `git branch --show-current` would just say "gitbutler/workspace" — not helpful.
 
-The fix: check if we're on `gitbutler/workspace`, and if so, query GitButler's CLI for the actual active branches:
+So I check if we're on `gitbutler/workspace`, and if so, query GitButler's CLI for the actual active branches:
 
 ```bash title="statusline.sh"
 current_branch=$(git branch --show-current 2>/dev/null || echo "")
@@ -84,9 +84,9 @@ The `--no-check --no-ahead` flags keep it fast (~30ms). The `🌿` icon means Gi
 
 ### v2 — rate limits and tokens
 
-I discovered Claude Code exposes rate limit data in the JSON: `rate_limits.five_hour.used_percentage` and `resets_at`. Much better than trying to calculate from duration. Added a color-coded progress bar (green → yellow → red) with time remaining until reset.
+Turns out Claude Code exposes rate limit data in the JSON: `rate_limits.five_hour.used_percentage` and `resets_at`. Much better than trying to calculate from duration. I added a color-coded progress bar (green → yellow → red) with time remaining until reset.
 
-Also added token counts — input and output totals — since the context percentage alone doesn't tell you how chatty the session has been.
+I also added token counts, input and output totals, since the context percentage alone doesn't tell you how chatty the session has been.
 
 ### v3 — multi-line grouped layout
 
@@ -102,11 +102,11 @@ Everything on one line was getting cramped. I split it into three lines, each gr
 **Line 2 — Spend & limits**: session cost, daily cost, rate limit bar with countdown.
 **Line 3 — Technical**: context window usage, token counts.
 
-The grouping means your eyes go to the right line for the right question. Glance at line 1 to confirm you're in the right project. Check line 2 to see if you're about to hit a rate limit. Look at line 3 if you're wondering why the model feels slow (high context = more processing).
+Each line answers a different question. Line 1: where am I? Line 2: should I be worried about costs or rate limits? Line 3: why does the model feel slow right now?
 
 ### v4 — hiding empty state
 
-A new session starts with everything zeroed out. Showing `⏱️ 0h0m` and `💭 0% ctx` before you've even sent a message is clutter. The final tweak hides those sections until there's actual data — so a fresh session shows just two clean lines:
+A new session starts with everything zeroed out. Showing `⏱️ 0h0m` and `💭 0% ctx` before you've even sent a message just adds noise. So the script hides those sections until there's actual data. A fresh session shows just two lines:
 
 ```text
 📂 claude-statusline · 🌿 gb/update-readme · 🤖 Opus 4.6 (1M context)
@@ -131,14 +131,12 @@ curl -sSL https://raw.githubusercontent.com/gordonbeeming/claude-statusline/main
 
 ## The bigger picture
 
-This status line took one Claude Code session — maybe two hours of back-and-forth, including the iterations, GitButler integration research, and packaging. The script is about 250 lines of bash.
+This status line took one Claude Code session, maybe two hours of back-and-forth including the iterations, GitButler integration research, and packaging. About 250 lines of bash.
 
-I'm seeing this pattern everywhere now. I'm building [SSMSX](https://github.com/GordonBeeming/ssmsx) — a cross-platform SQL Server Management Studio replacement — because SSMS is Windows-only, Azure Data Studio is nearing end-of-life, and neither feels fast. It's Tauri v2 (Rust) + React + a C# Native AOT sidecar for SQL Server connectivity. A year ago, building your own SSMS would have been absurd. Now it's a project I'm making real progress on in evenings and weekends.
+I keep finding myself in this same situation lately. I'm building [SSMSX](https://github.com/GordonBeeming/ssmsx), a cross-platform SQL Server Management Studio replacement, because SSMS is Windows-only, Azure Data Studio is nearing end-of-life, and neither feels fast. It's Tauri v2 (Rust) + React + a C# Native AOT sidecar for SQL Server connectivity. A year ago, building your own SSMS would have been absurd. Now it's a project I'm making real progress on in evenings and weekends.
 
-Dan put it perfectly: the old debate was buy vs build. Build meant weeks of work, so you bought something close enough. That calculus has shifted. When you can describe what you want and iterate to a working tool in an afternoon, "close enough" stops being the obvious choice. You can have exactly what you need.
-
-The status line is a small example. SSMSX is a bigger one. The principle is the same: the cost of building your own opinionated tooling has dropped to the point where it's often the right call.
+Dan put it well: the old debate was buy vs build. Build meant weeks of work, so you bought something close enough. That's changed. When you can describe what you want and iterate to a working tool in an afternoon, "close enough" stops being the obvious choice.
 
 ## Try it
 
-The repo is at [github.com/GordonBeeming/claude-statusline](https://github.com/GordonBeeming/claude-statusline). Install it, or better yet — read the [Claude Code statusline docs](https://code.claude.com/docs/en/statusline), look at the JSON schema, and build your own. That's kind of the whole point.
+The repo is at [github.com/GordonBeeming/claude-statusline](https://github.com/GordonBeeming/claude-statusline). You can install it, or read the [Claude Code statusline docs](https://code.claude.com/docs/en/statusline) and build your own. The JSON schema has more fields than I'm using, so there's plenty to work with.

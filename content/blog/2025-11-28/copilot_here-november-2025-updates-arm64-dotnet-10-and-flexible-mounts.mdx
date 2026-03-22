@@ -276,15 +276,9 @@ Mounts default to read-only. You have to explicitly request write access with `-
 
 ## 7. Smart Window Titles: Cleaner Terminal Tabs
 
-When running interactive CLI tools, your terminal tab usually just shows the raw command (e.g., `docker run ...`). This isn't helpful when you have multiple tabs open.
+When running interactive CLI tools, your terminal tab usually shows the raw command (`docker run ...`). Not helpful when you have multiple tabs open.
 
-We've added **Smart Window Titles** that automatically update your terminal tab while Copilot is running:
-
-- **Safe Mode**: `🤖 directory-name`
-- **YOLO Mode**: `🤖⚡️ directory-name`
-- **Airlock Mode**: Adds `🛡️` to the end (e.g., `🤖 directory-name 🛡️`)
-
-This makes it instantly obvious which tab is running Copilot, which mode it's in, and whether Airlock network isolation is active. The title automatically reverts when you exit.
+The terminal tab now updates automatically while Copilot is running. Safe Mode shows `🤖 directory-name`, YOLO Mode adds `⚡️`, and Airlock Mode adds `🛡️` at the end. At a glance you can see which tab is running Copilot, which mode it's in, and whether Airlock is active. The title reverts when you exit.
 
 ---
 

@@ -3,7 +3,7 @@ title: 'Building a custom Claude Code status line'
 date: 2026-03-22
 tags: ['Claude Code', 'AI', 'Terminal', 'Productivity', 'GitButler', 'Shell']
 draft: false
-summary: 'Claude Code gives you a JSON blob and a shell script hook. I used it to build a multi-line status line with repo info, GitButler branches, cost tracking, and rate limits — in one session.'
+summary: 'Claude Code gives you a JSON blob and a shell script hook. I used it to build a multi-line status line with repo info, GitButler branches, cost tracking, and rate limits in one session.'
 ---
 
 I run Claude Code across multiple projects, often with several Ghostty tabs open at once. Every session looks the same from the bottom of the terminal: a model name, a context percentage, and a cost. When you're juggling three repos, that's not enough.
@@ -12,7 +12,7 @@ Which repo am I in? What GitButler branch is active? Am I close to my 5-hour rat
 
 ## The fork-or-build moment
 
-Funny timing — [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) published a [blog post about building a custom Claude Code status line](https://www.dandoescode.com/blog/claude-code-custom-statusline) the same day I was doing the same thing. His [LinkedIn post](https://www.linkedin.com/posts/danieljamesmackay_claudecode-ai-devex-share-7441387824324444160-YkXP) nailed it:
+Funny timing, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) published a [blog post about building a custom Claude Code status line](https://www.dandoescode.com/blog/claude-code-custom-statusline) the same day I was doing the same thing. His [LinkedIn post](https://www.linkedin.com/posts/danieljamesmackay_claudecode-ai-devex-share-7441387824324444160-YkXP) nailed it:
 
 > The cost of building has dropped below the cost of compromising.
 
@@ -58,11 +58,11 @@ That's it. Stdin, stdout, and a shell script.
 
 I went through four iterations in a single Claude Code session.
 
-### v1 — repo and branch info
+### v1: repo and branch info
 
 The first version wrapped [goccc](https://github.com/backstabslash/goccc) (a CLI cost calculator that handles session costs, daily totals, and currency conversion) and prepended the repo name and branch. One line, straightforward.
 
-The tricky part was GitButler detection. I use [GitButler](https://gitbutler.com/) for branch management, which keeps you on a `gitbutler/workspace` branch while your actual virtual branches live inside GitButler's system. A normal `git branch --show-current` would just say "gitbutler/workspace" — not helpful.
+The tricky part was GitButler detection. I use [GitButler](https://gitbutler.com/) for branch management, which keeps you on a `gitbutler/workspace` branch while your actual virtual branches live inside GitButler's system. A normal `git branch --show-current` would just say "gitbutler/workspace", which isn't helpful.
 
 So I check if we're on `gitbutler/workspace`, and if so, query GitButler's CLI for the actual active branches:
 
@@ -80,15 +80,15 @@ elif [[ -n "$current_branch" ]]; then
 fi
 ```
 
-The `--no-check --no-ahead` flags keep it fast (~30ms). The `🌿` icon means GitButler, `🔀` means regular git — you can tell at a glance which mode you're in.
+The `--no-check --no-ahead` flags keep it fast (~30ms). The `🌿` icon means GitButler, `🔀` means regular git. You can tell at a glance which mode you're in.
 
-### v2 — rate limits and tokens
+### v2: rate limits and tokens
 
 Turns out Claude Code exposes rate limit data in the JSON: `rate_limits.five_hour.used_percentage` and `resets_at`. Much better than trying to calculate from duration. I added a color-coded progress bar (green → yellow → red) with time remaining until reset.
 
 I also added token counts, input and output totals, since the context percentage alone doesn't tell you how chatty the session has been.
 
-### v3 — multi-line grouped layout
+### v3: multi-line grouped layout
 
 Everything on one line was getting cramped. I split it into three lines, each grouped by type of information:
 
@@ -98,13 +98,13 @@ Everything on one line was getting cramped. I split it into three lines, each gr
 💭 █░░░░░░░░░ 11% ctx · 🧠 45k in / 12k out
 ```
 
-**Line 1 — Identity**: where am I? Repo name, active branch, model.
-**Line 2 — Spend & limits**: session cost, daily cost, rate limit bar with countdown.
-**Line 3 — Technical**: context window usage, token counts.
+**Line 1 (Identity)**: where am I? Repo name, active branch, model.
+**Line 2 (Spend & limits)**: session cost, daily cost, rate limit bar with countdown.
+**Line 3 (Technical)**: context window usage, token counts.
 
 Each line answers a different question. Line 1: where am I? Line 2: should I be worried about costs or rate limits? Line 3: why does the model feel slow right now?
 
-### v4 — hiding empty state
+### v4: hiding empty state
 
 A new session starts with everything zeroed out. Showing `⏱️ 0h0m` and `💭 0% ctx` before you've even sent a message just adds noise. So the script hides those sections until there's actual data. A fresh session shows just two lines:
 
@@ -119,8 +119,8 @@ Once the session is active, the full three-line display appears.
 
 I wanted this installable on any machine, so I created a [repo](https://github.com/GordonBeeming/claude-statusline) with:
 
-- `statusline.sh` — the script itself
-- `install.sh` — installs [goccc](https://github.com/backstabslash/goccc) via Homebrew, copies the script to `~/.claude/scripts/`, and prints the settings.json config
+- `statusline.sh`, the script itself
+- `install.sh`, which installs [goccc](https://github.com/backstabslash/goccc) via Homebrew, copies the script to `~/.claude/scripts/`, and prints the settings.json config
 - Built-in daily auto-update: the script checks once per day if there's a newer version on `main` and pulls it in the background
 
 One-liner install:

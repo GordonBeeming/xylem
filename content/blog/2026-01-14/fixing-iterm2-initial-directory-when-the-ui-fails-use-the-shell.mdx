@@ -56,12 +56,8 @@ caption="The ultimate 'I'm the captain now' move for your terminal 🫡"
 
 ## Why this works
 
-By using **Send text at start**, iTerm2 waits for the shell to initialize and then "types" that command for you. ⌨️
+The **Send text at start** field tells iTerm2 to wait for the shell to finish initializing, then type that command automatically.
 
-✅ It bypasses the buggy initial directory logic.
-✅ The `&& clear` part ensures your terminal stays clean so you don't even see the "hack" happening. ✨
-✅ It respects your login environment (paths, aliases, etc.) because it runs *after* the shell is ready.
+It bypasses the buggy initial directory logic entirely. The `&& clear` part keeps the terminal clean so the whole thing is invisible in practice. And because it runs after the shell is ready, your login environment — paths, aliases, all of it — is already loaded.
 
-Is it a bit of a hack? **Yes.** Does it save me 5 seconds and a bit of sanity every time I open a terminal? **Absolutely.** ✅
-
-Happy coding! 👨‍💻
+Is it a hack? Yes. Does it save me a few seconds and a small amount of frustration every time I open a terminal? Also yes.

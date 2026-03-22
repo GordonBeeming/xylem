@@ -45,17 +45,17 @@ S: 221 2.0.0 Bye
 
 ```
 
-If you missed a character or the server timed out, you were stuck. You weren't just "sending mail"; you were managing a state machine over a socket. 🛠️
+If you missed a character or the server timed out, you were stuck. You weren't just "sending mail"; you were managing a state machine over a socket.
 
-### 2. Building the Trusted Library (The "Black Box" Struggle)
+### 2. Building the trusted library (the "black box" struggle)
 
 We didn't just jump from raw text to magic APIs overnight. First, we started scripting these complexities away. We wrote our own internal wrappers so we didn't have to remember the `HELO` handshake every time.
 
-Then, package management became popular. 📦
+Then package management became popular.
 
-Suddenly, there were SMTP packages on the internet written by people we didn't know. I remember the pushback: *"We shouldn't just use some random person's code in a black box! If we write it ourselves, we can maintain it."* 🤨
+Suddenly there were SMTP packages on the internet written by people we didn't know. I remember the pushback: *"We shouldn't just use some random person's code in a black box! If we write it ourselves, we can maintain it."*
 
-But a fundamental shift happened in our industry: **The move from "Write Everything" to "Buy/Reuse."** We realized that spending time writing custom SMTP retry logic didn't actually add any unique value to our business. If the core outcome is "the customer gets a notification," then writing the transport layer is just overhead. We started prioritizing code that directly drives business value and outsourcing the "plumbing" to packages like `SmtpClient`.
+But a fundamental shift happened in our industry: the move from "Write Everything" to "Buy/Reuse." We realized that spending time writing custom SMTP retry logic didn't actually add any unique value to our business. If the core outcome is "the customer gets a notification," then writing the transport layer is just overhead. We started prioritizing code that directly drives business value and outsourcing the "plumbing" to packages like `SmtpClient`.
 
 And yes, this was full framework days 😅:
 

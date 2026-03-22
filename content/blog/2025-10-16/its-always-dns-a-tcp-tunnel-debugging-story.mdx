@@ -54,32 +54,32 @@ $ (echo > /dev/tcp/mail-catcher-app/2525) &> /dev/null && echo "Success" || echo
 Failure
 ```
 
-Aha\! This was a huge clue. The test on port 80 succeeded, proving the containers could see each other on the network. The failure on port 2525 proved the problem was with the `mail-catcher-app` itself. It wasn't listening for connections on that port from other containers.
+Port 80 succeeded. Port 2525 failed. That narrowed it down considerably - the containers could see each other on the network, but `mail-catcher-app` wasn't accepting connections on the SMTP port from other containers.
 
-### Step 3: A Confusing Contradiction
+### Step 3: A confusing contradiction
 
-This is where things got really confusing. I had a set of facts that just didn't add up.
+Here's where it got weird. I had two facts that couldn't both be true at the same time.
 
-Let's review what we knew was **correctly configured**:
+What was correctly configured:
 
-* **✅ The Azure Ingress:** The `mail-catcher-app` had its "Additional TCP port" correctly configured and enabled for port `2525`. According to the Azure Portal, everything was set up to allow internal TCP traffic.
-* **✅ The Application Logs:** The logs from inside the `mail-catcher-app` container clearly stated, `SMTP Server is listening on port 2525 (::)`. This proved the application was running and listening on the right port and on all network interfaces.
+* **Azure Ingress:** The `mail-catcher-app` had the "Additional TCP port" set up and enabled for `2525`. The Azure Portal showed everything in order.
+* **Application Logs:** The logs inside `mail-catcher-app` said `SMTP Server is listening on port 2525 (::)`. The app was up, listening on the right port, on all interfaces.
 
-But then there was the contradictory fact:
+And then the thing that contradicted all of it:
 
-* **❌ The Network Test:** The `bash` test from the `tunnel-agent-app` to the `mail-catcher-app` still failed with a connection timeout.
+* **Network Test:** The `bash` test from `tunnel-agent-app` to `mail-catcher-app` on port 2525 still timed out.
 
-This setup should have worked. We had a listening application and a correctly configured network path in the Azure Container App environment. When a running application says it's listening, but nothing on the same internal network can connect to it, it almost always points to a subtle networking or DNS problem sitting between the two points. The application itself was fine; the *path* to it was broken.
+App listening: yes. Network path configured: yes. Connection working: no. When you've got a running application that says it's listening but nothing on the same internal network can reach it, the problem is usually somewhere in the path between the two, not in the app itself.
 
-### The Final Twist: It's Always DNS
+### The final twist: it's always DNS
 
-The only variable left was the hostname. This is where it got tricky, because the long, fully qualified domain name (FQDN) that Azure provides **was already working perfectly for the HTTP web UI**.
+The only variable I hadn't changed was the hostname. And I almost didn't touch it, because the Azure FQDN was already working fine for the HTTP web UI:
 
 `mail-catcher-app.internal.region.azurecontainerapps.io`
 
-My `cloudflared` agent was successfully connecting to `http://mail-catcher-app.internal.region...io` to serve the web interface. Because this hostname worked for one service on the container, it never stood out as a potential problem. Why would the same hostname work for HTTP traffic on port 80 but not for TCP traffic on port 2525?
+My `cloudflared` agent was connecting to `http://mail-catcher-app.internal.region...io` without any issue. So why would the same hostname work for HTTP on port 80 but fail for TCP on port 2525?
 
-This was the red herring. On a whim, I changed the hostname in my `bash` test to the simple, internal service discovery name:
+That was the red herring I'd been chasing. On a hunch, I switched to the short internal service name in my `bash` test:
 
 ```bash title="Terminal"
 # Test the TCP port with the SHORT name

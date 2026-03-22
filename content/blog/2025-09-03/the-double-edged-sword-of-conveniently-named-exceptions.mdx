@@ -149,18 +149,18 @@ if (result.IsFailed)
 }
 ```
 
-**Pro-tip:** Consider writing error messages that are safe to show an end-user. A message like *"A premium license is required to grant admin access."* is often more helpful and professional than the more technical *"User must be on the Premium tier."* if it ever needs to be displayed in a UI.
+**Pro-tip:** Write error messages that are safe to show an end user. "A premium license is required to grant admin access." is more useful in a UI than "User must be on the Premium tier."
 
-This approach has clear benefits:
+The tradeoffs here are worth naming honestly:
 
-  * ✅ **Battle-Tested & Feature-Rich:** Using a library like `FluentResults` gives you logging, typed errors, and a fluent API without you having to maintain the core logic.
-  * ✅ **Honest Method Signatures:** The return type `Result` explicitly tells the caller to expect a possible failure.
-  * ✅ **Reduced Logging Costs:** Instead of logging a verbose exception, you can log a concise, structured warning from the result's error collection.
-  * ✅ **No Performance Hit:** You avoid the overhead of throwing and catching exceptions for non-exceptional logic.
-  * ❌ **Dependency:** You'll need to add a NuGet package to your project.
-  * ⚠️ **Adoption:** It requires buy-in from the team to use the pattern consistently.
+  * **Battle-tested library:** `FluentResults` gives you logging, typed errors, and a fluent API without maintaining the core logic yourself.
+  * **Honest method signatures:** The `Result` return type tells callers upfront that failure is possible.
+  * **Lower logging costs:** A concise structured warning is a lot cheaper to ingest than a full stack trace.
+  * **No exception overhead:** You skip the cost of throwing and catching exceptions for non-exceptional logic.
+  * **New dependency:** You'll need to add a NuGet package.
+  * **Team adoption:** The pattern only works if the team uses it consistently.
 
-While the Result pattern is a fantastic goal, its biggest challenge can be introducing it into a codebase that already relies heavily on exceptions for **flow control**. A partial, or "hybrid," implementation can introduce its own set of subtle but dangerous bugs.
+The Result pattern is a solid goal, but introducing it into a codebase that already relies on exceptions for **flow control** is genuinely hard. A partial "hybrid" implementation can introduce its own subtle bugs.
 
 ## A Word of Caution on Hybrid Systems
 

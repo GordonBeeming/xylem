@@ -12,7 +12,7 @@ Until you start running AI coding tools.
 
 When you've got four panels in a single Ghostty tab, Claude Code in one, GitHub Copilot CLI in another, a couple of regular shells, the tabs all show the same thing: "claude" or "copilot". Switch to a different repo in another tab with the same layout and now you've got eight panels across two tabs and every title says either "claude" or "copilot". You have to scan the actual output in each panel to spot a file path and figure out which project you're looking at.
 
-If you're using [copilot_here](https://github.com/gordonbeeming/copilot_here) (my sandboxed Docker wrapper for GitHub Copilot CLI), this is actually better — it sets custom tab titles that tell you what's going on at a glance. Normal mode shows "🤖 xylem", YOLO mode (auto-approve everything) shows "🤖⚡️ xylem", and if you've got [Airlock](https://github.com/gordonbeeming/copilot_here#network-airlock) enabled — the secure network isolation mode that restricts which domains the container can reach — you get "🤖 xylem 🛡️". You can immediately tell which project, which mode, and whether network isolation is active, all from the tab title. But it only applies to the copilot_here panels, not to your Claude Code sessions or regular shells.
+If you're using [copilot_here](https://github.com/gordonbeeming/copilot_here) (my sandboxed Docker wrapper for GitHub Copilot CLI), this is actually better. It sets custom tab titles that tell you what's going on at a glance. Normal mode shows "🤖 xylem", YOLO mode (auto-approve everything) shows "🤖⚡️ xylem", and if you've got [Airlock](https://github.com/gordonbeeming/copilot_here#network-airlock) enabled (the secure network isolation mode that restricts which domains the container can reach) you get "🤖 xylem 🛡️". You can immediately tell which project, which mode, and whether network isolation is active, all from the tab title. But it only applies to the copilot_here panels, not to your Claude Code sessions or regular shells.
 
 I wanted something that works everywhere, at the shell level, for every panel and every tab.
 
@@ -22,7 +22,7 @@ Simple: if I'm inside a git repo, show the repo name as the tab title. If I'm in
 
 ## The fix
 
-Two changes: a zsh function that sets the tab title, and a Ghostty config tweak to stop Ghostty from overriding it.
+Two changes: a zsh function that sets the tab title, and a Ghostty config tweak to stop Ghostty from stepping on it.
 
 ### The zsh hook
 

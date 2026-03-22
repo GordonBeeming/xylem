@@ -92,17 +92,17 @@ Here’s how to get on it:
 
 Inclusion isn't instant - it can take weeks or months to appear in new browser releases, so submit sooner rather than later.
 
-## Verification: Did It Work?
+## Verification: did it work?
 
-You can easily verify that your new header is being sent correctly.
+Two quick ways to check.
 
-1.  **Browser DevTools:** Open your website, open the browser's developer tools (F12 or Ctrl+Shift+I), go to the "Network" tab, and refresh the page. Click on the very first request (the HTML document) and look at the "Response Headers". You should see the `strict-transport-security` header with the values you configured.
+1. **Browser DevTools:** Open the site, hit F12, go to the Network tab, and reload. Click the first request (the HTML document) and look at Response Headers. You should see:
 
     ```http title="Response Headers"
     strict-transport-security: max-age=63072000; includeSubDomains; preload
     ```
 
-2.  **Online Tools:** Use a tool like [securityheaders.com](https://securityheaders.com) to scan your domain. It will analyze your headers and report on your HSTS configuration, among other things.
+2. **Online tools:** [securityheaders.com](https://securityheaders.com) will scan your domain and give you a full breakdown of your security headers, including HSTS.
 
 ## Conclusion
 

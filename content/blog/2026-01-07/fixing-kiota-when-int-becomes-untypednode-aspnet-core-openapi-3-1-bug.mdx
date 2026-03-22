@@ -54,7 +54,7 @@ public sealed class IntegerSchemaTransformer : IOpenApiDocumentTransformer
 }
 ```
 
-While this *sort of* worked, it was fragile. I was patching the symptom rather than the cause, and the transformer code was becoming surprisingly complex to handle all edge cases (nested objects, arrays, etc.). Plus, maintaining custom schema manipulation code is never fun.
+It *sort of* worked, but it was fragile. I was patching the symptom rather than the cause, and the transformer kept growing as I found more edge cases (nested objects, arrays, and so on). Custom schema manipulation code is not something you want to maintain long-term.
 
 ## Attempt 2: The Real Fix (JsonNumberHandling)
 

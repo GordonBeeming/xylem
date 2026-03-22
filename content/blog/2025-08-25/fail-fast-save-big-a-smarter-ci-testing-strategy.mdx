@@ -137,19 +137,14 @@ COPY . .
 
 ## The Payoff: A Smarter, Cheaper Feedback Loop
 
-The results of these changes were fantastic, even if a little counter-intuitive.
+The results were good, though one number looks worse on paper before you understand what happened.
 
-  * **Feedback in Under 3 Minutes:** This is the headline win. Our developers now know if they've broken a core unit test in less than three minutes.
-  * **Massive Cost Savings on Failure:** This solved our initial budget problem. If a PR fails the unit test stage, we save the cost and compute time of running **\~15 long integration tests**. This is even more significant when you remember that GitHub Actions bills by the minute; even if a skipped test would have only run for 5 seconds, we save a full billable minute for *each one*. For \~15 tests, that's a minimum of 15 saved minutes of compute on every failed run.
-  * **The Perfect Trade-Off:** We made a deliberate trade-off.
-      * The **wall-clock time** for a successful run (the time a developer waits) actually increased slightly, from \~7.5 minutes to \~10.5 minutes.
-      * However, the **billable compute minutes** for that successful run **remain exactly the same**. We're running the same jobs, just in a smarter order.
-      * Crucially, that extra \~3 minutes of waiting time is negligible in a real-world workflow. It's easily absorbed by the time a developer spends writing their PR description or reviewing their code. There is **no real-world productivity cost**.
+  * **Feedback in under 3 minutes:** Developers now know within three minutes if they've broken a unit test. That's the number that matters most day-to-day.
+  * **Real cost savings on failures:** If a PR fails the unit test stage, we skip running roughly 15 long-running integration tests. GitHub Actions bills by the minute, so even a test that would have run for 5 seconds costs a full billable minute. For 15 tests, that's a minimum of 15 saved minutes of compute on every failed run -- and failed runs are common.
+  * **The trade-off that isn't really a trade-off:** Wall-clock time for a successful run went up slightly, from ~7.5 minutes to ~10.5 minutes. But the billable compute minutes for a successful run are the same, because we're running the same jobs in a different order. That extra ~3 minutes is time a developer is writing their PR description or reviewing code anyway. In practice, nobody noticed.
 
-It's the ideal outcome: we've gained huge savings on failed builds with no meaningful downside to developer time or our budget on successful ones.
+## Final thoughts
 
-## Final Thoughts
+Making a CI pipeline faster usually means shaving time off the happy path. That's fine, but it's not where we were losing. We were losing on every failed run -- paying full price for work that was already pointless.
 
-The biggest gains in CI efficiency don't always come from shaving seconds off a perfect run. For us, the real win came from striking a better balance. By intelligently handling failures *without negatively impacting the success path*, we created a cheaper, more efficient pipeline and a much better experience for our developers.
-
-Take a look at your own pipelines. Are you paying a "failure tax"? You might find that the biggest improvements come not from chasing speed, but from building a smarter, more balanced process.
+If your pipeline treats a failed build the same as a successful one, you're probably paying a failure tax. Worth looking at.

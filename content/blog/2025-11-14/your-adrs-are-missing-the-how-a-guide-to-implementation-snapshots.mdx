@@ -43,27 +43,30 @@ It's a set of small, illustrative code snippets that capture the *actual pattern
 
 One rule: this is a *snapshot*, not a live-updating document. You're capturing the *pattern*, not committing to maintaining it.
 
-## The Pros and Cons of Adding the "How"
+## The pros and cons of adding the "how"
 
-Adding this extra detail has massive benefits, but you must be aware of the trade-offs.
+Adding this extra detail is worth it, but there are trade-offs to understand.
 
-✅ **Provides Concrete Context**
-Whether it's a *plan* or a *snapshot*, it makes the abstract decision concrete. "We will add caching" becomes "We will register `IDistributedCache` in `Program.cs` and implement the Cache-Aside pattern in the `WeatherService`."
+✅ **Provides concrete context**
+Whether it's a *plan* or a *snapshot*, it makes the abstract decision tangible. "We will add caching" becomes "We will register `IDistributedCache` in `Program.cs` and implement the Cache-Aside pattern in the `WeatherService`."
 
-✅ **Illustrates the *Architectural Pattern***
-This is the main benefit of the "Implementation Snapshot" (Scenario 2). You demonstrate the *how* (e.g., showing the Cache-Aside logic). This pattern is the "architecture" you want to preserve.
+✅ **Illustrates the architectural pattern**
+This is the main benefit of the Implementation Snapshot (Scenario 2). You show the *how* — the Cache-Aside logic, for example — and that pattern is what you actually want to preserve.
 
-✅ **Defines Scope and Reduces "Archeology"**
-The "Expected Touchpoints" (Scenario 1) defines the scope of a new change. The "Implementation Snapshot" (Scenario 2) eliminates the need for future devs to dig through PR history to understand the original implementation.
+✅ **Defines scope and cuts down on archaeology**
+Expected Touchpoints (Scenario 1) defines the scope of a new change before it starts. The Implementation Snapshot (Scenario 2) means future developers don't have to dig through PR history to understand how something was originally built.
 
-❌ **Risk: Staleness / Maintenance Burden**
-This is the biggest fear, but it's easily managed by following the rules.
-* **Mitigation (Scenario 1):** It *cannot* get stale. It is a snapshot of the *plan*. It is *designed* to be immutable.
-* **Mitigation (Scenario 2):** It's a snapshot of the *pattern*, not the *values*. If your cache expiration time changes, the ADR is still 100% correct because the *pattern* of using the cache is unchanged. If the *conceptual pattern* changes (e.g., you switch to "Read-Through" cache), that's a new architectural decision and requires a **new ADR** to supersede the old one.
+❌ **Risk: staleness and maintenance burden**
+This is the most common objection, but it's manageable if you follow the rules.
 
-❌ **Risk: Too Much Noise**
-If you paste 200 lines of code, you'll obscure the *decision*.
-* **Mitigation:** Be ruthless. Show only illustrative snippets. Think key signature changes, DI registration, and high-level patterns, not a line-by-line diff.
+For Scenario 1: it *cannot* get stale. It is a snapshot of the *plan*, designed to be immutable.
+
+For Scenario 2: it's a snapshot of the *pattern*, not the *values*. If your cache expiration time changes, the ADR is still correct because the *pattern* of using the cache is unchanged. If the *pattern itself* changes — say you switch to read-through caching — that's a new architectural decision and warrants a **new ADR** to supersede the old one.
+
+❌ **Risk: too much noise**
+Paste 200 lines of code and you'll bury the actual decision.
+
+Be ruthless. Show only illustrative snippets. Key signature changes, DI registration, high-level patterns — not a line-by-line diff.
 
 ## A Concrete Example: The "Weather API" Caching ADR
 

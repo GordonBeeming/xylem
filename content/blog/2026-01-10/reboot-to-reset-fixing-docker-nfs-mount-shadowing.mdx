@@ -27,15 +27,15 @@ drwxr-xr-x 3 root root 4096 Jan 10 23:16 homebridge
 
 ```
 
-## The "Shadow" Effect
+## The "shadow" effect
 
-This is where it gets confusing. When I browsed directly to the network share in my file explorer, I could see all my files were safe and sound. But back on the server, Docker was already running with a file handle to those local "ghost" directories.
+When I browsed directly to the network share in my file explorer, all my files were safe and sound. But on the server, Docker was already running with a file handle to those local empty directories.
 
-Because Docker started before the mount was ready, the NAS data effectively "covered up" the local folder once it finally connected. But Docker stayed trapped looking at the hidden local version on the SSD.
+Because Docker started before the mount was ready, the NAS data covered the local folder once it finally connected - but Docker was already attached to the local version on the SSD and stayed there.
 
-## How to Verify
+## How to verify
 
-If you suspect your local drive has "shadowed" your mount, you can run this command to see which physical drive is actually holding that folder:
+If you suspect your local drive has shadowed your mount, run this command to see which physical drive is actually backing that folder:
 
 ```bash title="Terminal"
 df -h /mnt/homeassistant/homeassistant_data

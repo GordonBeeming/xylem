@@ -87,15 +87,11 @@ When you give an AI tool access to your codebase, you're trusting it not to exfi
 
 ### How It Works
 
-Airlock uses Docker Compose to create two containers:
-1. **Proxy Container** - A Rust HTTPS proxy that intercepts all traffic and enforces rules
-2. **App Container** - The Copilot CLI, isolated on an internal network that can *only* reach the proxy
+Airlock uses Docker Compose to spin up two containers:
+1. A Rust HTTPS proxy that intercepts all traffic and enforces rules
+2. The Copilot CLI container, isolated on an internal network that can only reach the proxy
 
-The app container has no direct internet access. All traffic must go through the proxy, which:
-- Generates a CA certificate on startup (trusted by the app container)
-- Performs HTTPS interception to inspect request paths
-- Allows or blocks requests based on your configuration
-- Optionally logs all traffic for auditing
+The app container has no direct internet access. All traffic goes through the proxy, which generates a CA certificate on startup (trusted by the app container), performs HTTPS interception to inspect request paths, allows or blocks requests based on your config, and optionally logs all traffic for auditing.
 
 **Network Topology View**
 

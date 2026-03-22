@@ -176,13 +176,13 @@ Seeing the code produce exactly the right result after that much trial and error
 
 ---
 
-## Key Takeaways
+## Key takeaways
 
-After this long journey, here are my main takeaways:
+A few things I took away from this:
 
-* FFmpeg is astonishingly powerful, but its filter graph parser can have obscure bugs or unexpected behaviors, especially with newer versions.
-* When a single, complex command fails silently, **retreat and simplify**. Breaking the problem into smaller, verifiable steps is the best debugging strategy.
-* The **MPEG Transport Stream (`.ts`)** format is your best friend for robustly concatenating video files. It's designed for it.
-* Getting the verbose log output from an external process is the most critical step to understanding what's really going on. The `.NotifyOnError()` method was the key that unlocked the final clues.
+* FFmpeg has a lot of power, but the filter graph parser can behave in unexpected ways, especially on newer versions.
+* When a single complex command fails silently, break it apart. Smaller, verifiable steps are easier to debug.
+* The **MPEG Transport Stream (`.ts`)** format is the right choice when you need to concatenate video files reliably. It's built for that.
+* Getting verbose log output from an external process matters a lot. The `.NotifyOnError()` method was what finally gave me enough information to understand what was going wrong.
 
-Hopefully, this story saves someone else from a week of frustration\! Happy coding.
+Hopefully this saves someone else some time. Happy coding.

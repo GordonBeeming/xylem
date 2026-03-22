@@ -60,14 +60,14 @@ It's also much faster to script and toggle than dealing with profiles.
 
 ### The Strategy: "The Wi-Fi Gap"
 
-I had a specific requirement: **They need to be able to join Wi-Fi at school.**
+My situation had one wrinkle: they need to be able to join Wi-Fi at school.
 
-If you lock the "Network" pane, they can't join new networks. But if you leave the "Network" pane open, they could theoretically change their DNS to bypass my content filters (NextDNS).
+Lock the Network pane and they can't connect to new networks. Leave it open and they could switch their DNS and walk straight past my NextDNS content filters. Neither option on its own is great.
 
-**The Solution:**
-1.  **Unlock** the Network pane (so they can join Wi-Fi).
-2.  **Lock** the Profiles pane (so they can't remove the NextDNS config).
-3.  **Lock** the Security panes (so they can't change passwords).
+The fix is to be selective about what you lock:
+1.  Leave the Network pane open (Wi-Fi still works).
+2.  Lock the Profiles pane (they can't remove the NextDNS config).
+3.  Lock the Security panes (no password or fingerprint changes).
 
 ### Step 1: Install NextDNS as System
 

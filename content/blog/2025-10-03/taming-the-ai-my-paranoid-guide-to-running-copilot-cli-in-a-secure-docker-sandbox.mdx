@@ -261,16 +261,12 @@ The functions automatically remove unused `copilot_here` images (filtered by the
 
 If you want to skip the cleanup for faster startup, use `--no-cleanup` (or `-NoCleanup` on PowerShell). You can also skip pulling the latest image with `--no-pull` (or `-NoPull`) if you need to move fast and already have the image locally.
 
-## Conclusion: Security and Convenience Can Coexist
+## Conclusion: security and convenience can coexist
 
-For me, this project is a perfect illustration of my standard playbook for adopting new command-line tools. Docker's power isn't just in deploying applications; its real magic for my daily workflow is creating these secure, ephemeral sandboxes.
+I reach for Docker a lot when I'm evaluating new CLI tools. It's not just for deploying apps; it's genuinely useful for building a sandbox around things you don't fully trust yet.
 
-This setup gives me the confidence to fully embrace what the Copilot CLI has to offer, without compromising my security posture. It doesn't mean my caution disappears entirely, I'll still keep a close eye on the configurations of the specific projects I run this in, but it provides a valuable safety net. In my own daily workflow, I have both versions installed: the default `copilot_here` for safe, everyday use, and `copilot_yolo` for when I'm working in a trusted project and value speed above all.
+This setup doesn't make me reckless. I still pay attention to the projects I run it in. But it lowers the stakes enough that I can actually let the tool do what it's designed to do. In my daily workflow I keep both versions installed: `copilot_here` for normal use, and `copilot_yolo` for trusted projects where I want speed over caution.
 
-The specialized image variants add another layer of flexibility, allowing me to choose the right tool for the job. When I'm working on a .NET project, I can use the `dotnet` variant with a simple `-d` flag. When I need to run browser tests, the `dotnet-playwright` variant is just a `-dp` away.
+The image variants mean I'm not stuck picking between "works for my project" and "doesn't bloat my Docker storage". `-d` for .NET, `-dp` when I need browser tests. Simple enough that I actually use it instead of second-guessing which image to reach for.
 
-The refactored setup with helper functions, automatic cleanup, and built-in help text makes the whole experience more polished and user-friendly. You can easily see what options are available with `--help`, and the system keeps itself tidy by cleaning up old images automatically.
-
-Ultimately, this approach allows me to balance power with pragmatism, giving me the freedom to use powerful tools like `--allow-all-tools` with a level of comfort I wouldn't have otherwise. I hope it helps you too!
-
-You can find all the source code for this project on my GitHub repo at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try and let me know what you think!
+All the source code is at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try.

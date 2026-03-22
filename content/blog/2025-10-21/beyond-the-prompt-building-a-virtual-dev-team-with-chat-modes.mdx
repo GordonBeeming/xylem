@@ -113,16 +113,16 @@ This agent knows your exact testing stack. No more generic NUnit code when your 
 > Write an integration test for the UpdateProductCommand.
 >
 > **AGENT:**
-> Happy to help. I'm prepping the test using our `WebAPIApplicationFactory` and `Testcontainers`. To make the test accurate, I need two things:
-> 1. What's the key scenario to verify? The 'happy path', or an invalid `ProductId`?
-> 2. Our setup uses `Bogus`. Are there any *specific* properties the pre-existing product must have?
+> I'll use our `WebAPIApplicationFactory` and `Testcontainers`. Before I start, two questions:
+> 1. What's the key scenario to verify? The happy path, or an invalid `ProductId`?
+> 2. Our setup uses `Bogus`. Are there any specific properties the pre-existing product needs to have?
 >
 > **USER:**
-> 1. Let's test the 'happy path' where IsFeatured is set to 'true'.
+> 1. Let's test the happy path where IsFeatured is set to 'true'.
 > 2. Yes, please make sure the product has IsArchived = false before the update.
 >
 > **AGENT:**
-> Perfect. Here is the generated xUnit test file `UpdateProductCommandTests_HappyPath_ShouldUpdateIsFeatured.cs` using Testcontainers, Bogus, and FluentAssertions...
+> Here is the generated xUnit test file `UpdateProductCommandTests_HappyPath_ShouldUpdateIsFeatured.cs` using Testcontainers, Bogus, and FluentAssertions...
 > (Generates the full code file)
 
 ### 4. The "Backlog Analyst"

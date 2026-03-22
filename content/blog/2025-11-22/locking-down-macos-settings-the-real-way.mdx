@@ -95,15 +95,17 @@ sudo killall "System Settings"
 
 ## What did we just do?
 
-  * ✅ **Wi-Fi / Network:** **UNLOCKED.** They can join school Wi-Fi.
-  * ❌ **Touch ID & Passcode:** **LOCKED.** They can't change their password or add a finger to bypass you.
-  * ❌ **Date & Time:** **LOCKED.** Prevents the "set the clock back 3 hours" trick to bypass downtime.
-  * ❌ **Users & Groups:** **LOCKED.** Prevents creating a new "Standard User" to get a fresh set of screen time limits.
-  * ❌ **Profiles (MDM):** **LOCKED.** This is the secret sauce. They can't remove the NextDNS profile because the "Remove Profile" button lives in this locked pane.
+Here's what the end state looks like:
+
+- **Wi-Fi / Network** is unlocked. They can still join school Wi-Fi without any help from you.
+- **Touch ID & Passcode** is locked. No password changes, no sneaking in a new fingerprint.
+- **Date & Time** is locked. This stops the "set the clock back 3 hours" trick that gets around downtime schedules.
+- **Users & Groups** is locked. They can't create a fresh Standard User account to sidestep Screen Time limits.
+- **Profiles** is locked. This is the one that really matters. The "Remove Profile" button lives here, so NextDNS stays put.
 
 ## How to Revert
 
-If you need to add a fingerprint later or change a setting yourself, you can revert this easily.
+When you need to add a fingerprint or change a setting yourself, just delete the key.
 
 ```bash title="Terminal"
 sudo defaults delete /Library/Preferences/com.apple.systempreferences DisabledSystemSettings

@@ -215,13 +215,7 @@ if [ -n "$image_date" ] && [ "$image_date" -lt "$cutoff_date" ]; then
 fi
 ```
 
-Benefits:
-- **Bandwidth savings**: Keeps the current image, no re-downloading
-- **Time savings**: No unnecessary pulls on every launch
-- **Disk space management**: Still cleans up old images after 7 days
-- **No more errors**: `<none>` images are filtered out
-
-The cleanup runs AFTER pulling the new image, so it can never remove what it just downloaded. Smart, right?
+The cleanup now runs after pulling the new image, so it can never remove what it just downloaded. Old images get pruned after 7 days, `<none>` tags are filtered out, and the redundant re-download on every launch is gone.
 
 ## Lessons Learned
 

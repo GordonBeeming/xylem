@@ -184,9 +184,9 @@ Because of that risk, sometimes the most pragmatic path is to improve your exist
 
 Even if you can't switch to a Result-based approach, you can make your exception handling a lot more predictable with three rules.
 
-### Rule 1: Create Specific, Custom Domain Exceptions
+### Rule 1: Create specific, custom domain exceptions
 
-If a built-in exception doesn't fit, create your own\! It's the best way to be explicit.
+If a built-in exception doesn't fit, create your own. It's the clearest option.
 
 ```csharp title="Custom domain exception"
 public class InsufficientStockException : Exception
@@ -195,7 +195,7 @@ public class InsufficientStockException : Exception
         : base($"Insufficient stock for product {productId}. Required: {quantityRequired}.") { }
 }
 
-// Now your code is crystal clear:
+// Now your code is unambiguous:
 if (product.Stock < order.Quantity)
 {
     throw new InsufficientStockException(order.ProductId, order.Quantity);

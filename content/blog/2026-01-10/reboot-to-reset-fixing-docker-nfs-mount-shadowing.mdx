@@ -88,10 +88,4 @@ services:
 
 ```
 
-With `create_host_path: false`, the container will fail to start if the NAS is missing. It's much easier to fix a mount than it is to wonder where your entire configuration went!
-
-## Wrapping Up
-
-Reboots shouldn't be stressful. By setting these boundaries for Docker, you ensure that your server waits for your NAS to be ready instead of "helping" you into a fresh install loop.
-
-Happy hosting! 🏠🍏
+With `create_host_path: false`, the container will refuse to start if the NAS isn't mounted yet. A failed start is obvious and easy to fix. A silent fallback to local storage is neither.

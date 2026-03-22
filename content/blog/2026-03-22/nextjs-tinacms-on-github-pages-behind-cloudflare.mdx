@@ -78,7 +78,7 @@ For anything the API routes were doing, you need a static alternative. In my cas
 
 The other thing that catches people out: **redirects defined in `next.config.ts` don't work with static export**. If you have URL redirect rules (I had 146 of them for old blog post URLs), they need to move to the Cloudflare Worker.
 
-## Gotcha 2: GitHub Pages Redirect Leaks
+## Gotcha 2: GitHub Pages redirect leaks
 
 This one is subtle and took a while to track down.
 
@@ -113,7 +113,7 @@ if (location && domain === "gordonbeeming.com") {
 
 Now the browser stays on `gordonbeeming.com` and never sees the `github.io` URL.
 
-## Gotcha 3: TinaCMS Admin on a Proxied Domain
+## Gotcha 3: TinaCMS admin on a proxied domain
 
 TinaCMS Cloud needs to know the URL of your site so the login flow works correctly. If the **Site URL** in your [TinaCMS Cloud dashboard](https://app.tina.io) doesn't match the URL in the browser, the login window won't close after authentication — it just hangs.
 

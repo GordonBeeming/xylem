@@ -190,34 +190,23 @@ public class WeatherService : IWeatherService
   - [Microsoft Docs: `IDistributedCache`](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
   - [Pattern: Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)
 
-## The ADR as a Funnel: Progressive Disclosure
+## The ADR as a funnel: progressive disclosure
 
-The structure of a good ADR is not an accident. It's a "funnel" of progressive disclosure, designed to serve different audiences who will stop reading at different levels.
+The structure of a good ADR isn't accidental. It's a funnel, designed to serve different audiences who will stop reading at different levels.
 
-1.  **Level 1: The "What" (Title, Status, Date)**
+1. **Level 1: The "What" (title, status, date)**
+   Anyone scanning the list of ADRs wants to know: "What decisions have been made recently?" They get that and move on.
 
-      * **Audience:** Anyone scanning the list of ADRs.
-      * **Question Answered:** "What decisions have been made recently?"
+2. **Level 2: The "Why" (context, decision outcome, consequences)**
+   Product managers, team leads, architects, new developers. They want to know what the problem was, what was decided, and why. Most people stop here.
 
-2.  **Level 2: The "Why" (Context, Decision Outcome, Consequences)**
+3. **Level 3: The "How" (implementation snapshot/touchpoints)**
+   Developers implementing the feature, or future developers implementing something similar. They want to know: "What is the approved pattern? What does this look like in our code?" This is the section engineers actually care about.
 
-      * **Audience:** Product Managers, Team Leads, Architects, new Developers.
-      * **Question Answered:** "What was the problem, what did we decide, and why?"
-      * *This is where most people stop reading.*
+4. **Level 4: The "Deep Dive" (links)**
+   Future maintainers, debuggers, people doing genuine archaeology. "Where is the exact code? What was the discussion in the PR?" The links section is the escape hatch for anyone who needs the full picture.
 
-3.  **Level 3: The "How" (Implementation Snapshot/Touchpoints)**
-
-      * **Audience:** Developers implementing the feature, or future developers implementing a *similar* feature.
-      * **Question Answered:** "What is the approved pattern? How does this look in our code?"
-      * *This is the a-ha\! section for engineers.*
-
-4.  **Level 4: The "Deep Dive" (Links)**
-
-      * **Audience:** Future Maintainers, Debuggers, "Code Archaeologists."
-      * **Question Answered:** "Where is the *exact* code? What was the discussion in the PR? What other docs relate to this?"
-      * *This is the escape hatch for "I need to know everything."*
-
-By structuring your ADRs this way, you make them efficient. You don't force a Product Manager to read code snippets, and you don't force a developer to hunt for the original PR.
+This structure means a product manager never has to scroll past code snippets, and a developer never has to hunt down the original PR to find out what was actually built.
 
 ## Conclusion
 

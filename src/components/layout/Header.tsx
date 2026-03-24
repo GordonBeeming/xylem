@@ -27,7 +27,7 @@ export function Header() {
     <>
       <SkipLink />
       <header
-        className={`sticky top-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-surface-secondary)] backdrop-blur-md transition-transform duration-300 ease-[var(--ease-default)] ${
+        className={`fixed top-0 right-0 left-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-surface-secondary)] backdrop-blur-md transition-transform duration-300 ease-[var(--ease-default)] ${
           isHidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
+import { getSiteConfig, type SiteConfig } from "@/lib/tina-helpers";
 
 const navigationLinks = [
   { href: "/blog", label: "Blog" },
@@ -10,19 +11,35 @@ const navigationLinks = [
   { href: "/flags", label: "Flags" },
 ];
 
-const supportLinks = [
-  {
-    href: "https://www.buymeacoffee.com/gordonbeeming",
-    label: "Buy Me a Coffee",
-  },
-  { href: "https://www.patreon.com/gordonbeeming", label: "Patreon" },
-  {
-    href: "https://github.com/sponsors/gordonbeeming",
-    label: "GitHub Sponsors",
-  },
+type SocialKind =
+  | "github"
+  | "linkedin"
+  | "bluesky"
+  | "x"
+  | "youtube"
+  | "instagram"
+  | "threads"
+  | "mastodon";
+
+const footerSocialLinks: { key: SocialKind; configKey: keyof SiteConfig }[] = [
+  { key: "github", configKey: "github" },
+  { key: "linkedin", configKey: "linkedin" },
+  { key: "bluesky", configKey: "bluesky" },
+  { key: "x", configKey: "twitter" },
+  { key: "youtube", configKey: "youtube" },
+  { key: "instagram", configKey: "instagram" },
+  { key: "threads", configKey: "threads" },
+  { key: "mastodon", configKey: "mastodon" },
+];
+
+const supportLinks: { configKey: keyof SiteConfig; label: string }[] = [
+  { configKey: "buymeacoffee", label: "Buy Me a Coffee" },
+  { configKey: "patreon", label: "Patreon" },
+  { configKey: "githubsponsors", label: "GitHub Sponsors" },
 ];
 
 export function Footer() {
+  const siteConfig = getSiteConfig();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -66,18 +83,22 @@ export function Footer() {
               Support
             </h3>
             <ul className="flex flex-col gap-2.5">
-              {supportLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-white/55 transition-colors duration-200 hover:text-[var(--color-brand-highlight)]"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {supportLinks.map(({ configKey, label }) => {
+                const href = siteConfig[configKey] as string | undefined;
+                if (!href) return null;
+                return (
+                  <li key={configKey}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white/55 transition-colors duration-200 hover:text-[var(--color-brand-highlight)]"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -88,31 +109,13 @@ export function Footer() {
             &copy; {currentYear} Gordon Beeming. All rights reserved.
           </span>
           <div className="flex gap-3">
-            <SocialIcon
-              kind="github"
-              href="https://github.com/gordonbeeming"
-              size={18}
-            />
-            <SocialIcon
-              kind="linkedin"
-              href="https://www.linkedin.com/in/gordonbeeming"
-              size={18}
-            />
-            <SocialIcon
-              kind="bluesky"
-              href="https://bsky.app/profile/gordonbeeming.com"
-              size={18}
-            />
-            <SocialIcon
-              kind="x"
-              href="https://x.com/GordonBeeming"
-              size={18}
-            />
-            <SocialIcon
-              kind="youtube"
-              href="https://www.youtube.com/@GordonBeeming"
-              size={18}
-            />
+            {footerSocialLinks.map(({ key, configKey }) => {
+              const href = siteConfig[configKey] as string | undefined;
+              if (!href) return null;
+              return (
+                <SocialIcon key={key} kind={key} href={href} size={18} />
+              );
+            })}
           </div>
         </div>
       </div>

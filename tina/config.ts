@@ -102,6 +102,40 @@ const schema = defineSchema({
         { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
         { type: "string", name: "href", label: "URL" },
         { type: "image", name: "imgSrc", label: "Cover Image" },
+        { type: "string", name: "overview", label: "Overview", ui: { component: "textarea" } },
+        {
+          type: "object",
+          name: "authors",
+          label: "Authors",
+          list: true,
+          fields: [
+            { type: "string", name: "name", label: "Name", required: true },
+            { type: "string", name: "url", label: "Profile URL" },
+          ],
+        },
+        {
+          type: "object",
+          name: "reviewers",
+          label: "Reviewers",
+          list: true,
+          fields: [
+            { type: "string", name: "name", label: "Name", required: true },
+            { type: "string", name: "url", label: "Profile URL" },
+          ],
+        },
+        { type: "string", name: "publisher", label: "Publisher" },
+        { type: "string", name: "publishedDate", label: "Published Date" },
+        { type: "string", name: "isbn", label: "ISBN" },
+        {
+          type: "object",
+          name: "tableOfContents",
+          label: "Table of Contents",
+          list: true,
+          fields: [
+            { type: "string", name: "title", label: "Chapter Title", required: true },
+            { type: "string", name: "sections", label: "Sections", list: true },
+          ],
+        },
       ],
     },
     {

@@ -254,14 +254,56 @@ export function getAllProjects(): ProjectData[] {
 
 // ─── Book helpers ────────────────────────────────────────────────────────────
 
+export interface BookPerson {
+  name: string;
+  url?: string;
+}
+
+export interface BookChapter {
+  title: string;
+  sections: string[];
+}
+
 export interface BookData {
+  slug: string;
   title: string;
   description: string;
   href?: string;
   imgSrc?: string;
+  overview?: string;
+  authors?: BookPerson[];
+  reviewers?: BookPerson[];
+  publisher?: string;
+  publishedDate?: string;
+  isbn?: string;
+  tableOfContents?: BookChapter[];
 }
 
 const BOOKS_DIR = path.join(process.cwd(), "content", "books");
+
+function parseBookFile(file: string): BookData | null {
+  try {
+    const raw = fs.readFileSync(path.join(BOOKS_DIR, file), "utf-8");
+    const data = JSON.parse(raw) as Record<string, unknown>;
+    return {
+      slug: file.replace(/\.json$/, ""),
+      title: (data.title as string) ?? "Untitled",
+      description: (data.description as string) ?? "",
+      href: (data.href as string) ?? undefined,
+      imgSrc: (data.imgSrc as string) ?? undefined,
+      overview: (data.overview as string) ?? undefined,
+      authors: (data.authors as BookPerson[]) ?? undefined,
+      reviewers: (data.reviewers as BookPerson[]) ?? undefined,
+      publisher: (data.publisher as string) ?? undefined,
+      publishedDate: (data.publishedDate as string) ?? undefined,
+      isbn: (data.isbn as string) ?? undefined,
+      tableOfContents: (data.tableOfContents as BookChapter[]) ?? undefined,
+    };
+  } catch (error) {
+    console.error(`Error reading book file ${file}:`, error);
+    return null;
+  }
+}
 
 export function getAllBooks(): BookData[] {
   if (!fs.existsSync(BOOKS_DIR)) {
@@ -271,21 +313,22 @@ export function getAllBooks(): BookData[] {
   const books: BookData[] = [];
 
   for (const file of files) {
-    try {
-      const raw = fs.readFileSync(path.join(BOOKS_DIR, file), "utf-8");
-      const data = JSON.parse(raw) as Record<string, unknown>;
-      books.push({
-        title: (data.title as string) ?? "Untitled",
-        description: (data.description as string) ?? "",
-        href: (data.href as string) ?? undefined,
-        imgSrc: (data.imgSrc as string) ?? undefined,
-      });
-    } catch (error) {
-      console.error(`Error reading book file ${file}:`, error);
+    const book = parseBookFile(file);
+    if (book) {
+      books.push(book);
     }
   }
 
   return books;
+}
+
+export function getBook(slug: string): BookData | null {
+  const file = `${slug}.json`;
+  const filePath = path.join(BOOKS_DIR, file);
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+  return parseBookFile(file);
 }
 
 // ─── Site config helpers ─────────────────────────────────────────────────────

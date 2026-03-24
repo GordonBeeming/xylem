@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -19,11 +21,6 @@ interface MainProps {
   siteConfig: SiteConfig;
 }
 
-const bookColors = [
-  "linear-gradient(135deg, var(--color-hero-gradient-start) 0%, var(--color-hero-gradient-mid) 100%)",
-  "linear-gradient(135deg, var(--color-brand-accent) 0%, var(--color-hero-gradient-mid) 100%)",
-  "linear-gradient(135deg, var(--color-hero-gradient-end) 0%, var(--color-hero-gradient-end) 100%)",
-];
 
 type SocialKind =
   | "github"
@@ -257,7 +254,7 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
       </div>
 
       {/* Books Section */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section id="books" className="mx-auto max-w-7xl px-6 py-16">
         <AnimateOnScroll>
           <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
             Books I&apos;ve Written
@@ -268,57 +265,38 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
         </AnimateOnScroll>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {books.map((book, index) => {
-            const bgGradient = bookColors[index % bookColors.length];
-            return (
-              <AnimateOnScroll key={book.title} delay={index * 150}>
+          {books.map((book, index) => (
+            <AnimateOnScroll key={book.title} delay={index * 150}>
               <div className="flex flex-col">
-                {book.href ? (
-                  <a
-                    href={book.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group self-start transition-transform duration-200 hover:scale-[1.02]"
-                  >
-                    <BookCover title={book.title} bgGradient={bgGradient} />
-                  </a>
-                ) : (
-                  <BookCover title={book.title} bgGradient={bgGradient} />
-                )}
+                <Link
+                  href={`/books/${book.slug}`}
+                  className="group self-start transition-transform duration-200 hover:scale-[1.02]"
+                >
+                  {book.imgSrc ? (
+                    <Image
+                      src={book.imgSrc}
+                      alt={book.title}
+                      width={200}
+                      height={280}
+                      className="rounded-r-xl rounded-l-sm shadow-[6px_6px_20px_rgba(0,0,0,0.2)]"
+                    />
+                  ) : (
+                    <div className="flex h-[280px] w-[200px] items-center justify-center rounded-r-xl rounded-l-sm bg-[var(--color-surface)] p-6 shadow-[6px_6px_20px_rgba(0,0,0,0.2)]">
+                      <span className="text-center text-lg font-extrabold text-[var(--color-text-primary)]">
+                        {book.title}
+                      </span>
+                    </div>
+                  )}
+                </Link>
                 <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   {book.description}
                 </p>
               </div>
-              </AnimateOnScroll>
-            );
-          })}
+            </AnimateOnScroll>
+          ))}
         </div>
       </section>
     </>
   );
 }
 
-function BookCover({
-  title,
-  bgGradient,
-}: {
-  title: string;
-  bgGradient: string;
-}) {
-  return (
-    <div
-      className="relative flex h-[280px] w-[200px] flex-col items-center justify-center rounded-r-xl rounded-l-sm p-6 max-md:h-[250px] max-md:w-[180px]"
-      style={{
-        background: bgGradient,
-        boxShadow: "6px 6px 20px rgba(0,0,0,0.2), 2px 0 0 rgba(0,0,0,0.05) inset",
-      }}
-    >
-      {/* Spine effect */}
-      <div className="absolute top-1 bottom-1 left-0 w-1 rounded-r-sm bg-black/10" />
-      <div className="text-center text-lg font-extrabold leading-snug text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
-        {title}
-      </div>
-      <div className="mt-3 text-xs text-white/75">Gordon Beeming</div>
-    </div>
-  );
-}

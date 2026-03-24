@@ -272,20 +272,20 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
             const bgGradient = bookColors[index % bookColors.length];
             return (
               <AnimateOnScroll key={book.title} delay={index * 150}>
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col">
                 {book.href ? (
                   <a
                     href={book.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group transition-transform duration-200 hover:scale-[1.02]"
+                    className="group self-start transition-transform duration-200 hover:scale-[1.02]"
                   >
                     <BookCover title={book.title} bgGradient={bgGradient} />
                   </a>
                 ) : (
                   <BookCover title={book.title} bgGradient={bgGradient} />
                 )}
-                <p className="mt-4 max-w-[240px] text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   {book.description}
                 </p>
               </div>

@@ -27,8 +27,10 @@ export function Header() {
     <>
       <SkipLink />
       <header
-        className={`fixed top-0 right-0 left-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-surface-secondary)] backdrop-blur-md transition-transform duration-300 ease-[var(--ease-default)] ${
-          isHidden ? "-translate-y-full" : "translate-y-0"
+        className={`sticky top-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-surface-secondary)] backdrop-blur-md transition-transform duration-300 ease-[var(--ease-default)] [backface-visibility:hidden] [will-change:transform] ${
+          isHidden
+            ? "[-webkit-transform:translate3d(0,-100%,0)] [transform:translate3d(0,-100%,0)]"
+            : "[-webkit-transform:translate3d(0,0,0)] [transform:translate3d(0,0,0)]"
         }`}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">

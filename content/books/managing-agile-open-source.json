@@ -2,5 +2,104 @@
   "title": "Managing Agile Open-Source Software Projects with Visual Studio Online",
   "description": "ALM Rangers share best practices for managing requirements and shipping solutions in agile open-source projects using Visual Studio Online.",
   "imgSrc": "/static/images/books/managing-agile-open-source.png",
-  "href": "https://www.microsoftpressstore.com/store/managing-agile-open-source-software-projects-with-visual-9781509300648"
+  "href": "https://www.microsoftpressstore.com/store/managing-agile-open-source-software-projects-with-visual-9781509300648",
+  "overview": "This book describes the best practices, principles, and patterns that enable you to create flexible, adaptive code and deliver better business value. Written by the ALM Rangers, it focuses on agile programming and covers the full lifecycle from triaging ideas through getting ready, building working solutions, and raising the quality bar.",
+  "authors": [
+    { "name": "Brian Blackman" },
+    { "name": "Gordon Beeming", "url": "https://www.linkedin.com/in/gordon-beeming/" },
+    { "name": "Michael Fourie" },
+    { "name": "Willy-Peter Schaub" }
+  ],
+  "reviewers": [
+    { "name": "Bijan Javidi" },
+    { "name": "Jeff Beehler" },
+    { "name": "Patricia Wagner" }
+  ],
+  "publisher": "Microsoft Press",
+  "publishedDate": "2015",
+  "isbn": "978-1-5093-0064-8",
+  "tableOfContents": [
+    {
+      "title": "Chapter 1: Triage of ideas",
+      "sections": [
+        "Flights of ideas",
+        "Roles, responsibilities, and ownership",
+        "Idea management",
+        "Planning the kickoff to enable innovative teams",
+        "What about the orphaned ideas?",
+        "Scaling flights... how many are too many?",
+        "Visibility from start to finish",
+        "Dogfooding case study: Venturing into the cloud"
+      ]
+    },
+    {
+      "title": "Chapter 2: Getting ready",
+      "sections": [
+        "Training-research-plan (TRP)",
+        "It all starts with the kickoff!",
+        "Team structure",
+        "Team infrastructure",
+        "Training... learning new things from the SMEs",
+        "Research... investigate and model requirements",
+        "Planning",
+        "Summary of our process and requirement rudiments",
+        "Glimpse of tomorrow... tracking with an informative board",
+        "Dogfooding case study: Where is the fire?"
+      ]
+    },
+    {
+      "title": "Chapter 3: Building the working solutions",
+      "sections": [
+        "Development (DEV) sprints",
+        "Team realizes features with stories",
+        "Running through the sprint",
+        "Dealing with bugs",
+        "Dealing with scope creep",
+        "Dealing with critical chickens",
+        "Dogfooding case study: Triage quadrant"
+      ]
+    },
+    {
+      "title": "Chapter 4: Raising the quality bar",
+      "sections": [
+        "Quality and planning (QP)",
+        "Hardening",
+        "Innovate for next time",
+        "Planning what is next",
+        "Product Owner sign off",
+        "Announcement and noisy release",
+        "Why do we ship on CodePlex and not VSO?",
+        "Dogfooding case study: vsarVersionControl and vsarTreasureMap ship ringing victory bells differently"
+      ]
+    },
+    {
+      "title": "Appendix A: Supporting toolbox",
+      "sections": [
+        "Triage of ideas",
+        "Getting ready",
+        "General templates",
+        "Building the working solutions",
+        "Raising the quality bar",
+        "Eating your own dogfood is key",
+        "Tooling"
+      ]
+    },
+    {
+      "title": "Appendix B: Eating your own dogfood is key",
+      "sections": [
+        "Agility is key",
+        "Using technology wisely",
+        "Adapting to reality"
+      ]
+    },
+    {
+      "title": "Afterword: We are definitely not dysfunctional!",
+      "sections": [
+        "Context: \"Our final sprint is blocked and potentially delayed again.\"",
+        "Influenced by giants",
+        "Ruck == Loose Scrum == Scrum != Dysfunctional",
+        "What's Next?"
+      ]
+    }
+  ]
 }

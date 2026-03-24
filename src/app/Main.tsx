@@ -277,8 +277,8 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
                       src={book.imgSrc}
                       alt={book.title}
                       width={200}
-                      height={280}
-                      className="rounded-r-xl rounded-l-sm shadow-[6px_6px_20px_rgba(0,0,0,0.2)]"
+                      height={258}
+                      className="h-auto w-[200px] rounded-r-xl rounded-l-sm shadow-[6px_6px_20px_rgba(0,0,0,0.2)]"
                     />
                   ) : (
                     <div className="flex h-[280px] w-[200px] items-center justify-center rounded-r-xl rounded-l-sm bg-[var(--color-surface)] p-6 shadow-[6px_6px_20px_rgba(0,0,0,0.2)]">

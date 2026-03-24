@@ -5,12 +5,12 @@
   "href": "https://a.co/d/8Cv5BJH",
   "overview": "Learn how to customize TFS and create useful plugins for your organization. This hands-on guide walks you through customizing process templates, increasing web access usability with JavaScript plugins, enhancing work items with custom controls, creating server plugins, building TFS scheduled jobs, and customizing build processes.",
   "authors": [
-    { "name": "Gordon Beeming", "url": "https://www.linkedin.com/in/interweb/" }
+    { "name": "Gordon Beeming", "url": "https://www.linkedin.com/in/gordon-beeming/" }
   ],
   "reviewers": [
     { "name": "Chandana N. Athauda" },
     { "name": "Logutov Michael" },
-    { "name": "Mathias Olausson" },
+    { "name": "Mathias Olausson", "url": "http://msmvps.com/blogs/molausson" },
     { "name": "Jim Szubryt" }
   ],
   "publisher": "Packt Publishing",

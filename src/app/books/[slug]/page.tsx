@@ -55,43 +55,22 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-function PersonList({
-  people,
-  label,
-}: {
-  people: BookPerson[];
-  label: string;
-}) {
-  return (
-    <div>
-      <span className="text-sm font-semibold text-[var(--color-text-secondary)]">
-        {label}
-      </span>
-      <div className="mt-1 flex flex-wrap gap-2">
-        {people.map((person) =>
-          person.url ? (
-            <a
-              key={person.name}
-              href={person.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[var(--color-brand-primary)] underline decoration-[var(--color-brand-primary)]/30 transition-colors hover:decoration-[var(--color-brand-primary)]"
-            >
-              {person.name}
-            </a>
-          ) : (
-            <span
-              key={person.name}
-              className="text-sm text-[var(--color-text-primary)]"
-            >
-              {person.name}
-            </span>
-          )
-        )}
-      </div>
-    </div>
-  );
+function PersonName({ person }: { person: BookPerson }) {
+  if (person.url) {
+    return (
+      <a
+        href={person.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[var(--color-brand-primary)] underline decoration-[var(--color-brand-primary)]/30 transition-colors hover:decoration-[var(--color-brand-primary)]"
+      >
+        {person.name}
+      </a>
+    );
+  }
+  return <span className="text-[var(--color-text-primary)]">{person.name}</span>;
 }
+
 
 export default async function BookPage(props: PageProps) {
   const { slug } = await props.params;
@@ -131,8 +110,8 @@ export default async function BookPage(props: PageProps) {
               src={book.imgSrc}
               alt={book.title}
               width={280}
-              height={360}
-              className="rounded-lg shadow-lg"
+              height={362}
+              className="h-auto w-[280px] rounded-lg shadow-lg"
               priority
             />
           </div>
@@ -145,20 +124,68 @@ export default async function BookPage(props: PageProps) {
           </h1>
 
           {/* Meta details */}
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+          <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
             {book.authors && book.authors.length > 0 && (
-              <PersonList people={book.authors} label="Authors" />
+              <>
+                <dt className="font-semibold text-[var(--color-text-secondary)]">
+                  {book.authors.length === 1 ? "Author" : "Authors"}
+                </dt>
+                <dd>
+                  {book.authors.map((person, i) => (
+                    <span key={person.name}>
+                      {i > 0 && ", "}
+                      <PersonName person={person} />
+                    </span>
+                  ))}
+                </dd>
+              </>
             )}
             {book.reviewers && book.reviewers.length > 0 && (
-              <PersonList people={book.reviewers} label="Reviewers" />
+              <>
+                <dt className="font-semibold text-[var(--color-text-secondary)]">
+                  Reviewers
+                </dt>
+                <dd>
+                  {book.reviewers.map((person, i) => (
+                    <span key={person.name}>
+                      {i > 0 && ", "}
+                      <PersonName person={person} />
+                    </span>
+                  ))}
+                </dd>
+              </>
             )}
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-[var(--color-text-secondary)]">
-            {book.publisher && <span>{book.publisher}</span>}
-            {book.publishedDate && <span>{book.publishedDate}</span>}
-            {book.isbn && <span>ISBN: {book.isbn}</span>}
-          </div>
+            {book.publisher && (
+              <>
+                <dt className="font-semibold text-[var(--color-text-secondary)]">
+                  Publisher
+                </dt>
+                <dd className="text-[var(--color-text-primary)]">
+                  {book.publisher}
+                </dd>
+              </>
+            )}
+            {book.publishedDate && (
+              <>
+                <dt className="font-semibold text-[var(--color-text-secondary)]">
+                  Published
+                </dt>
+                <dd className="text-[var(--color-text-primary)]">
+                  {book.publishedDate}
+                </dd>
+              </>
+            )}
+            {book.isbn && (
+              <>
+                <dt className="font-semibold text-[var(--color-text-secondary)]">
+                  ISBN
+                </dt>
+                <dd className="text-[var(--color-text-primary)]">
+                  {book.isbn}
+                </dd>
+              </>
+            )}
+          </dl>
 
           {/* Overview */}
           {book.overview && (

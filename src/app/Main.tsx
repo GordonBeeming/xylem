@@ -273,13 +273,13 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
                   className="group self-start transition-transform duration-200 hover:scale-[1.02]"
                 >
                   {book.imgSrc ? (
-                    <div className="flex h-[258px] w-[200px] items-start overflow-hidden rounded-r-xl rounded-l-sm bg-[#1a1a1a] shadow-[6px_6px_20px_rgba(0,0,0,0.2)]">
+                    <div className="flex h-[258px] w-[200px] items-center justify-center overflow-hidden rounded-r-xl rounded-l-sm bg-[#1a1a1a] shadow-[6px_6px_20px_rgba(0,0,0,0.2)]">
                       <Image
                         src={book.imgSrc}
                         alt={book.title}
                         width={200}
                         height={258}
-                        className="h-auto w-[200px] object-contain object-top"
+                        className="h-auto max-h-[258px] w-auto max-w-[200px] object-contain"
                       />
                     </div>
                   ) : (

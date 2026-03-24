@@ -105,13 +105,13 @@ export default async function BookPage(props: PageProps) {
       <div className="flex flex-col gap-10 md:flex-row">
         {/* Book cover */}
         {book.imgSrc && (
-          <div className="shrink-0 self-start">
+          <div className="flex shrink-0 items-center justify-center self-start overflow-hidden rounded-lg bg-[#1a1a1a] shadow-lg" style={{ width: 280, height: 362 }}>
             <Image
               src={book.imgSrc}
               alt={book.title}
               width={280}
               height={362}
-              className="h-auto w-[280px] rounded-lg shadow-lg"
+              className="h-auto max-h-[362px] w-auto max-w-[280px] object-contain"
               priority
             />
           </div>

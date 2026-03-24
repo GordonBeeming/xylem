@@ -5,12 +5,23 @@
   "href": "https://a.co/d/9sjOWsa",
   "overview": "Take your expertise to the next level by uncovering various techniques to customize TFS 2015. This book covers creating dashboards and welcome pages, streamlining team boards, customizing process templates, enhancing work item forms with field custom controls, implementing check-in policies, enforcing standards with server-side plugins, and customizing the TFS build system.",
   "authors": [
-    { "name": "Gordon Beeming", "url": "https://www.linkedin.com/in/gordon-beeming/" }
+    {
+      "name": "Gordon Beeming",
+      "url": "https://www.linkedin.com/in/gordon-beeming/"
+    }
   ],
   "reviewers": [
-    { "name": "N Satheesh Kumar" },
-    { "name": "Mathias Olausson", "url": "http://msmvps.com/blogs/molausson" },
-    { "name": "Jim Szubryt" }
+    {
+      "name": "N Satheesh Kumar"
+    },
+    {
+      "name": "Mathias Olausson",
+      "url": "https://www.linkedin.com/in/mathiasolausson/"
+    },
+    {
+      "name": "Jim Szubryt",
+      "url": "https://www.linkedin.com/in/jimszubryt/"
+    }
   ],
   "publisher": "Packt Publishing",
   "publishedDate": "October 2015",

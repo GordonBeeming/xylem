@@ -45,3 +45,4 @@ next-env.d.ts
 
 # tina
 /tina/__generated__
+.playwright-mcp/

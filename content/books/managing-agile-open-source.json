@@ -5,15 +5,36 @@
   "href": "https://www.microsoftpressstore.com/store/managing-agile-open-source-software-projects-with-visual-9781509300648",
   "overview": "This book describes the best practices, principles, and patterns that enable you to create flexible, adaptive code and deliver better business value. Written by the ALM Rangers, it focuses on agile programming and covers the full lifecycle from triaging ideas through getting ready, building working solutions, and raising the quality bar.",
   "authors": [
-    { "name": "Brian Blackman" },
-    { "name": "Gordon Beeming", "url": "https://www.linkedin.com/in/gordon-beeming/" },
-    { "name": "Michael Fourie" },
-    { "name": "Willy-Peter Schaub" }
+    {
+      "name": "Brian Blackman",
+      "url": "https://www.linkedin.com/in/brian-blackman-8012b612/"
+    },
+    {
+      "name": "Gordon Beeming",
+      "url": "https://www.linkedin.com/in/gordon-beeming/"
+    },
+    {
+      "name": "Michael Fourie",
+      "url": "https://www.linkedin.com/in/mikefourie/"
+    },
+    {
+      "name": "Willy-Peter Schaub",
+      "url": "https://www.linkedin.com/in/wpschaub/"
+    }
   ],
   "reviewers": [
-    { "name": "Bijan Javidi" },
-    { "name": "Jeff Beehler" },
-    { "name": "Patricia Wagner" }
+    {
+      "name": "Bijan Javidi",
+      "url": "https://www.linkedin.com/in/bijanjavidi/"
+    },
+    {
+      "name": "Jeff Beehler",
+      "url": "https://www.linkedin.com/in/jeffbe/"
+    },
+    {
+      "name": "Patricia Wagner",
+      "url": "https://www.linkedin.com/in/patricia-wagner-04a1338/"
+    }
   ],
   "publisher": "Microsoft Press",
   "publishedDate": "2015",

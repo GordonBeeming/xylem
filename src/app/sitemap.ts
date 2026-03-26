@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAllPosts, getSiteConfig } from '@/lib/tina-helpers';
+import { getAllPosts, getAllBooks, getSiteConfig } from '@/lib/tina-helpers';
 import {
   filterPublishedPosts,
   sortPosts,

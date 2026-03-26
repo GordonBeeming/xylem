@@ -54,6 +54,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.5,
     },
+    {
+      url: `${siteUrl}/years`,
+      lastModified: todayStr,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${siteUrl}/color-palette`,
+      lastModified: todayStr,
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
   ];
 
   // Blog posts
@@ -90,5 +102,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  return [...staticPages, ...blogEntries, ...tagEntries, ...yearEntries];
+  // Book pages
+  const books = getAllBooks();
+  const bookEntries: MetadataRoute.Sitemap = books.map((book) => ({
+    url: `${siteUrl}/books/${book.slug}`,
+    lastModified: todayStr,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  return [
+    ...staticPages,
+    ...blogEntries,
+    ...tagEntries,
+    ...yearEntries,
+    ...bookEntries,
+  ];
 }

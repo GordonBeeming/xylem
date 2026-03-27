@@ -12,8 +12,8 @@ export function Figure({ src, alt, width, height, caption }: FigureProps) {
       <img
         src={src}
         alt={alt}
-        width={width ? Number(width) : undefined}
-        height={height ? Number(height) : undefined}
+        width={width && Number(width) ? Number(width) : undefined}
+        height={height && Number(height) ? Number(height) : undefined}
         className="mx-auto max-w-full rounded-lg"
         loading="lazy"
       />

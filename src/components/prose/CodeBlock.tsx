@@ -40,7 +40,7 @@ export function CodeBlock({ code, language, filename, children }: CodeBlockProps
         </div>
         {children ? (
           <pre
-            className="codeblock-highlighted overflow-x-auto p-4 text-sm leading-relaxed"
+            className="codeblock-highlighted codeblock-line-numbers overflow-x-auto p-4 text-sm leading-relaxed"
             style={{ fontFamily: "var(--font-mono)", background: "transparent" }}
           >
             {children}

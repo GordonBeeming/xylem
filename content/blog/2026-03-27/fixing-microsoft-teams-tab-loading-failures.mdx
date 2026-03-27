@@ -20,7 +20,7 @@ The `showLoadingIndicator` flag in `manifest.json` tells Teams to display a nati
 
 The fix is simple. Remove this line from your manifest:
 
-```json
+```json title="manifest.json"
 "showLoadingIndicator": true,
 ```
 
@@ -32,11 +32,11 @@ If you were calling `app.notifyAppLoaded()` and `app.notifySuccess()` in your co
 
 If Teams can embed your app but the iframe content is served from a URL without proper Content Security Policy headers, you'll get the same error.
 
-In our case, the app's infrastructure (Bicep/ARM template) was setting the tab's `contentUrl` to the raw Azure Blob Storage URL instead of the custom domain. The blob storage URL had no CSP headers at all, while the custom domain (behind Cloudflare) had the correct `frame-ancestors` policy.
+In our case, we had recently switched to a custom domain (behind Cloudflare) that had the correct `frame-ancestors` policy. But the infrastructure template (Bicep) hadn't been updated yet and was still setting the tab's `contentUrl` to the old Azure Blob Storage URL, which had no CSP headers.
 
 Make sure your hosting returns this CSP header:
 
-```
+```text title="HTTP response header"
 Content-Security-Policy: frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com https://*.cloud.microsoft https://*.skype.com https://*.microsoft.com;
 ```
 

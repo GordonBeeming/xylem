@@ -79,6 +79,6 @@ Project cards fetch live star counts from GitHub API at build time via `src/lib/
 - Image copy runs automatically with `pnpm dev`/`pnpm build` — no manual step needed
 - Tags in URLs are always lowercase/slugified — never use raw tag text in hrefs
 - URL redirect rules are handled by the Cloudflare Worker in `../cloudflare-xylem-worker`
-- Code blocks should always have a `title="..."` meta string for the header bar
+- Code blocks must always have both a language and a `title="..."` meta string (e.g. ` ```json title="manifest.json" `). The title shows as a filename/description in the header bar. Never leave a code block without a title.
 
 @AGENTS.md

@@ -274,6 +274,31 @@ html.dark .codeblock-highlighted span {
   color: var(--shiki-dark);
 }
 
+/* Code block line numbers and word wrap */
+.codeblock-line-numbers code {
+  counter-reset: line;
+}
+
+.codeblock-line-numbers code .line {
+  counter-increment: line;
+  display: inline-block;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.codeblock-line-numbers code .line::before {
+  content: counter(line);
+  display: inline-block;
+  width: 2.5em;
+  margin-right: 1em;
+  text-align: right;
+  color: var(--color-text-secondary);
+  opacity: 0.4;
+  user-select: none;
+}
+
 /* Article prose styling */
 .prose-article {
   font-size: 18px;

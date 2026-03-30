@@ -122,7 +122,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/8 pt-6 md:flex-row">
           <span className="text-xs text-white/40">
-            &copy; {currentYear} Gordon Beeming. All rights reserved.
+            &copy; {currentYear} Gordon Beeming. All rights reserved. - Opinions are my own and not that of my company or anyone I engage with.
           </span>
           <div className="flex gap-3">
             {footerSocialLinks.map(({ key, configKey }) => {

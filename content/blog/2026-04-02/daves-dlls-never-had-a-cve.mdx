@@ -11,7 +11,7 @@ Remember when the worst thing that could happen to your dependencies was Dave fr
 2006: "Ugh, who checked in 200MB of DLLs to TFS?"  
 2026: "Hey, that npm package you installed last week? It now mines crypto and exfils your `.env`."
 
-We spent 15 years replacing manually managed assemblies with package managers that auto-update dependencies from strangers on the internet. And we called it progress. I [joked about this on LinkedIn](https://www.linkedin.com/posts/gordon-beeming_supplychainsecurity-devhumor-softwaredevelopment-share-7444905335267536896-_IyD) the other day, and it clearly struck a nerve. Because the threat list is long now: typosquatted packages, maintainer account takeovers, "helpful" PRs that slip in backdoors, star-jacking, protestware. At least Dave's DLL didn't phone home.
+We spent 15 years replacing manually managed assemblies with package managers that auto-update dependencies from strangers on the internet. And we called it progress. I [joked about this on LinkedIn](https://www.linkedin.com/posts/gordon-beeming_supplychainsecurity-devhumor-softwaredevelopment-share-7444905335267536896-_IyD) the other day. Because the threat list is long now: typosquatted packages, maintainer account takeovers, "helpful" PRs that slip in backdoors, star-jacking, protestware. At least Dave's DLL didn't phone home.
 
 I'm not saying we should go back to committing a `/lib` folder with 47 mystery DLLs and a README that says "DO NOT DELETE - James knows why." But we do need to be smarter about how we consume packages. Here are two things every team can do today.
 

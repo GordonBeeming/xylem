@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTheme } from "next-themes";
 import mermaid from "mermaid";
 
@@ -12,92 +12,119 @@ interface MermaidDiagramProps {
 // Unique ID counter to avoid collisions when multiple diagrams exist on one page
 let idCounter = 0;
 
+// Track the last theme we initialized mermaid with so we only reinitialize
+// when the theme actually changes, not on every component mount.
+let lastInitializedTheme: string | null = null;
+
+function initMermaidForTheme(isDark: boolean) {
+  const themeKey = isDark ? "dark" : "light";
+  if (lastInitializedTheme === themeKey) return;
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: "base",
+    themeVariables: isDark
+      ? {
+          primaryColor: "#334155",
+          primaryTextColor: "#E0E0E0",
+          primaryBorderColor: "#46CBFF",
+          lineColor: "#46CBFF",
+          secondaryColor: "#2C2C2C",
+          tertiaryColor: "#242424",
+          textColor: "#E0E0E0",
+          mainBkg: "#334155",
+          nodeBorder: "#46CBFF",
+          actorBkg: "#334155",
+          actorBorder: "#46CBFF",
+          actorTextColor: "#E0E0E0",
+          actorLineColor: "#9CA3AF",
+          signalColor: "#E0E0E0",
+          signalTextColor: "#E0E0E0",
+          labelBoxBkgColor: "#2C2C2C",
+          labelBoxBorderColor: "#46CBFF",
+          labelTextColor: "#E0E0E0",
+          loopTextColor: "#E0E0E0",
+          noteBkgColor: "#2C2C2C",
+          noteTextColor: "#E0E0E0",
+          noteBorderColor: "#46CBFF",
+          activationBkgColor: "#334155",
+          activationBorderColor: "#46CBFF",
+          sequenceNumberColor: "#E0E0E0",
+        }
+      : {
+          primaryColor: "#E9ECEF",
+          primaryTextColor: "#1A1A1A",
+          primaryBorderColor: "#0063B2",
+          lineColor: "#0063B2",
+          secondaryColor: "#F8F9FA",
+          tertiaryColor: "#FFFFFF",
+          textColor: "#1A1A1A",
+          mainBkg: "#E9ECEF",
+          nodeBorder: "#0063B2",
+          actorBkg: "#E9ECEF",
+          actorBorder: "#0063B2",
+          actorTextColor: "#1A1A1A",
+          actorLineColor: "#6B7280",
+          signalColor: "#1A1A1A",
+          signalTextColor: "#1A1A1A",
+          labelBoxBkgColor: "#FFFFFF",
+          labelBoxBorderColor: "#0063B2",
+          labelTextColor: "#1A1A1A",
+          loopTextColor: "#1A1A1A",
+          noteBkgColor: "#FFFFFF",
+          noteTextColor: "#1A1A1A",
+          noteBorderColor: "#0063B2",
+          activationBkgColor: "#E9ECEF",
+          activationBorderColor: "#0063B2",
+          sequenceNumberColor: "#FFFFFF",
+        },
+    flowchart: { useMaxWidth: true },
+    sequence: { useMaxWidth: true },
+  });
+
+  lastInitializedTheme = themeKey;
+}
+
 export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
   const [error, setError] = useState<string>("");
+  // Stores bindFunctions so we can call it after the SVG is in the DOM
+  const bindFunctionsRef = useRef<((element: Element) => void) | null>(null);
   const { resolvedTheme } = useTheme();
 
-  useEffect(() => {
+  const renderDiagram = useCallback(async (signal: { cancelled: boolean }) => {
     const id = `mermaid-${++idCounter}`;
     const isDark = resolvedTheme === "dark";
+    initMermaidForTheme(isDark);
 
-    // Use the 'base' theme so we can override variables to match the blog's brand
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: "base",
-      themeVariables: isDark
-        ? {
-            // Dark mode - matches blog's dark palette
-            primaryColor: "#334155",
-            primaryTextColor: "#E0E0E0",
-            primaryBorderColor: "#46CBFF",
-            lineColor: "#46CBFF",
-            secondaryColor: "#2C2C2C",
-            tertiaryColor: "#242424",
-            textColor: "#E0E0E0",
-            mainBkg: "#334155",
-            nodeBorder: "#46CBFF",
-            actorBkg: "#334155",
-            actorBorder: "#46CBFF",
-            actorTextColor: "#E0E0E0",
-            actorLineColor: "#9CA3AF",
-            signalColor: "#E0E0E0",
-            signalTextColor: "#E0E0E0",
-            labelBoxBkgColor: "#2C2C2C",
-            labelBoxBorderColor: "#46CBFF",
-            labelTextColor: "#E0E0E0",
-            loopTextColor: "#E0E0E0",
-            noteBkgColor: "#2C2C2C",
-            noteTextColor: "#E0E0E0",
-            noteBorderColor: "#46CBFF",
-            activationBkgColor: "#334155",
-            activationBorderColor: "#46CBFF",
-            sequenceNumberColor: "#E0E0E0",
-          }
-        : {
-            // Light mode - matches blog's light palette
-            primaryColor: "#E9ECEF",
-            primaryTextColor: "#1A1A1A",
-            primaryBorderColor: "#0063B2",
-            lineColor: "#0063B2",
-            secondaryColor: "#F8F9FA",
-            tertiaryColor: "#FFFFFF",
-            textColor: "#1A1A1A",
-            mainBkg: "#E9ECEF",
-            nodeBorder: "#0063B2",
-            actorBkg: "#E9ECEF",
-            actorBorder: "#0063B2",
-            actorTextColor: "#1A1A1A",
-            actorLineColor: "#6B7280",
-            signalColor: "#1A1A1A",
-            signalTextColor: "#1A1A1A",
-            labelBoxBkgColor: "#FFFFFF",
-            labelBoxBorderColor: "#0063B2",
-            labelTextColor: "#1A1A1A",
-            loopTextColor: "#1A1A1A",
-            noteBkgColor: "#FFFFFF",
-            noteTextColor: "#1A1A1A",
-            noteBorderColor: "#0063B2",
-            activationBkgColor: "#E9ECEF",
-            activationBorderColor: "#0063B2",
-            sequenceNumberColor: "#FFFFFF",
-          },
-      flowchart: { useMaxWidth: true },
-      sequence: { useMaxWidth: true },
-    });
+    try {
+      const result = await mermaid.render(id, chart.trim());
+      if (signal.cancelled) return;
 
-    mermaid
-      .render(id, chart.trim())
-      .then(({ svg: renderedSvg }) => {
-        setSvg(renderedSvg);
-        setError("");
-      })
-      .catch((err: unknown) => {
-        const message = err instanceof Error ? err.message : String(err);
-        setError(message);
-      });
+      bindFunctionsRef.current = result.bindFunctions ?? null;
+      setSvg(result.svg);
+      setError("");
+    } catch (err: unknown) {
+      if (signal.cancelled) return;
+      const message = err instanceof Error ? err.message : String(err);
+      setError(message);
+    }
   }, [chart, resolvedTheme]);
+
+  useEffect(() => {
+    const signal = { cancelled: false };
+    renderDiagram(signal);
+    return () => { signal.cancelled = true; };
+  }, [renderDiagram]);
+
+  // Call bindFunctions after the SVG is injected into the DOM so that
+  // mermaid event handlers (link clicks, tooltips) work correctly.
+  useEffect(() => {
+    if (svg && containerRef.current && bindFunctionsRef.current) {
+      bindFunctionsRef.current(containerRef.current);
+    }
+  }, [svg]);
 
   if (error) {
     return (

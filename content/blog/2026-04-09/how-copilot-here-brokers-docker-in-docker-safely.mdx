@@ -6,7 +6,7 @@ draft: false
 summary: 'Why I built a brokered Docker socket instead of sharing the raw one, how the two-phase request inspection works, and what it honestly cannot protect you from.'
 ---
 
-If you just want the feature overview, [check out the copilot_here site](https://copilot_here.gordonbeeming.com#docker-broker). If you want the setup steps, head to the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here). This post is the longer story: why I built the brokered Docker socket, how the internals work, and where the boundaries are.
+If you just want the feature overview, [check out the copilot_here site](https://gordonbeeming.com/copilot_here/#docker-broker). If you want the setup steps, head to the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here). This post is the longer story: why I built the brokered Docker socket, how the internals work, and where the boundaries are.
 
 ## The problem
 
@@ -191,4 +191,4 @@ For maximum lockdown, combine the broker with Airlock mode. Network isolation me
 
 The broker is marked as beta. Whether body inspection gets extended to other endpoints (like exec or build) depends on feedback from people actually using it. If you hit a case where the current scope doesn't work for you, [open an issue](https://github.com/GordonBeeming/copilot_here/issues).
 
-If you want to set it up, the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here) walks through enabling the broker, configuring image allowlists, and tuning privilege controls per repo. Or check the [copilot_here site](https://copilot_here.gordonbeeming.com#docker-broker) for the quick overview.
+If you want to set it up, the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here) walks through enabling the broker, configuring image allowlists, and tuning privilege controls per repo. Or check the [copilot_here site](https://gordonbeeming.com/copilot_here/#docker-broker) for the quick overview.

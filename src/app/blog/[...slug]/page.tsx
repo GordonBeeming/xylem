@@ -17,6 +17,7 @@ import { Figure } from "@/components/prose/Figure";
 import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
 import { TableWrapper } from "@/components/prose/TableWrapper";
 import { CodeBlock } from "@/components/prose/CodeBlock";
+import { MermaidDiagram } from "@/components/prose/MermaidDiagram";
 // rehype-code-meta no longer needed — shiki transformers handle meta
 import type { Metadata } from "next";
 
@@ -106,6 +107,11 @@ const mdxComponents = {
       return "";
     }
     const code = extractText(child?.props?.children).replace(/\n$/, "");
+
+    // Render mermaid code blocks as interactive diagrams instead of syntax-highlighted code
+    if (language === "mermaid") {
+      return <MermaidDiagram chart={code} title={filename} />;
+    }
 
     return (
       <CodeBlock code={code} language={language} filename={filename}>

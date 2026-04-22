@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/lib/tina-helpers";
+import { getAllPosts } from "@/lib/tina-helpers";
 import { getYearCounts } from "@/lib/content";
 import { YearPill } from "@/components/ui/YearPill";
 import type { Metadata } from "next";
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function YearsPage() {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
   const yearCounts = getYearCounts(published);
 
   const sortedYears = Object.entries(yearCounts).sort(

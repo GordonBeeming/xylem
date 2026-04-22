@@ -1,10 +1,35 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useCommandPalette } from "@/hooks/useCommandPalette";
-import { CommandPalette } from "@/components/ui/CommandPalette";
+import {
+  CommandPalette,
+  type SearchableItem,
+} from "@/components/ui/CommandPalette";
 
 export function SearchButton() {
   const { isOpen, open, close } = useCommandPalette();
+  const [items, setItems] = useState<SearchableItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen || loaded) return;
+    let cancelled = false;
+    fetch("/search-index.json")
+      .then((res) => res.json())
+      .then((data: SearchableItem[]) => {
+        if (!cancelled) {
+          setItems(data);
+          setLoaded(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load search index:", err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, loaded]);
 
   return (
     <>
@@ -27,7 +52,7 @@ export function SearchButton() {
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
       </button>
-      <CommandPalette isOpen={isOpen} onClose={close} posts={[]} />
+      <CommandPalette isOpen={isOpen} onClose={close} items={items} />
     </>
   );
 }

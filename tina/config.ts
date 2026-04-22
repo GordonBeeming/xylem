@@ -17,7 +17,6 @@ const schema = defineSchema({
         { type: "datetime", name: "date", label: "Date", required: true },
         { type: "string", name: "tags", label: "Tags", list: true },
         { type: "datetime", name: "lastmod", label: "Last Modified" },
-        { type: "boolean", name: "draft", label: "Draft" },
         { type: "string", name: "summary", label: "Summary", ui: { component: "textarea" } },
         { type: "string", name: "canonicalUrl", label: "Canonical URL" },
         {

@@ -60,6 +60,9 @@ This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeem
 ### Adding a Blog Post
 Create `content/blog/YYYY-MM-DD/slug.mdx` with frontmatter (title, date, tags, summary). Images go in `content/blog/YYYY-MM-DD/images/` — they are copied to `public/images/` automatically when running `pnpm dev` or `pnpm build`.
 
+### Adding a Nugget
+Drop a standalone HTML explainer into `content/nuggets/<slug>.html`. Before committing, run `/update-nuggets` — the skill reads the HTML, writes the sidecar `content/nuggets/<slug>.yaml` (title, date, summary, tags), and injects the iframe-resize shim if missing. Nuggets render at `/nuggets/<slug>` wrapped in site chrome via an iframe; the raw file stays at `/nuggets/<slug>.html`. They show up in the command palette with a `Nugget` pill, in the sitemap, and are intentionally left out of RSS/Atom/JSON feeds.
+
 ### Code Block Titles
 Use the meta string on code fences: ` ```language title="descriptive title" `. The title shows in a grey header bar above the code.
 

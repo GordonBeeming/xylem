@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getPostsByTag, generateRssXml } from '@/lib/feed-helpers';
-import { getPublishedPosts } from '@/lib/tina-helpers';
+import { getAllPosts } from '@/lib/tina-helpers';
 import { getTagCounts } from '@/lib/content';
 
 export const dynamic = 'force-static';
 
 export function generateStaticParams() {
-  const posts = getPublishedPosts();
+  const posts = getAllPosts();
   const tagCounts = getTagCounts(posts);
   return Object.keys(tagCounts).map((tag) => ({ tag }));
 }

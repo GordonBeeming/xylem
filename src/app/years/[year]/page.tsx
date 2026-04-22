@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPublishedPosts } from "@/lib/tina-helpers";
+import { getAllPosts } from "@/lib/tina-helpers";
 import { getYearCounts } from "@/lib/content";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import type { Metadata } from "next";
@@ -9,7 +9,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
   const yearCounts = getYearCounts(published);
   return Object.keys(yearCounts).map((year) => ({ year }));
 }
@@ -25,7 +25,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function YearFilteredPage(props: PageProps) {
   const { year } = await props.params;
 
-  const published = getPublishedPosts();
+  const published = getAllPosts();
   const filtered = published.filter((post) => post.date.startsWith(year));
 
   if (filtered.length === 0) {

@@ -10,10 +10,11 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { SkipLink } from "@/components/layout/SkipLink";
 
 const navLinks = [
-  { href: "/blog", label: "Blog" },
-  { href: "/projects", label: "Projects" },
-  { href: "/tags", label: "Tags" },
-  { href: "/about", label: "About" },
+  { href: "/blog", label: "blog" },
+  { href: "/nuggets", label: "nuggets" },
+  { href: "/projects", label: "projects" },
+  { href: "/tags", label: "tags" },
+  { href: "/about", label: "about" },
 ];
 
 export function Header() {

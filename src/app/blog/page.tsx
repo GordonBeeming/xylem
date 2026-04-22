@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/lib/tina-helpers";
+import { getAllPosts } from "@/lib/tina-helpers";
 import { getTagCounts, getTagDisplayNames, getYearCounts } from "@/lib/content";
 import BlogListClient from "./BlogListClient";
 import type { Metadata } from "next";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
 
   const postsData = published.map((p) => ({
     title: p.title,

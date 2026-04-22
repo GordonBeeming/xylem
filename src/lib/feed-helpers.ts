@@ -1,5 +1,5 @@
 import { getAllPosts, getSiteConfig, type PostData } from './tina-helpers';
-import { filterPublishedPosts, sortPosts } from './content';
+import { sortPosts } from './content';
 import { slug } from 'github-slugger';
 
 function escapeXml(str: string): string {
@@ -22,9 +22,7 @@ export interface FeedPost {
 
 export function getPublishedPosts(limit: number = 50): FeedPost[] {
   const config = getSiteConfig();
-  const allPosts = getAllPosts();
-  const published = filterPublishedPosts(allPosts);
-  const sorted = sortPosts(published);
+  const sorted = sortPosts(getAllPosts());
 
   return sorted.slice(0, limit).map((post) => ({
     title: post.title,
@@ -38,9 +36,7 @@ export function getPublishedPosts(limit: number = 50): FeedPost[] {
 
 export function getPostsByTag(tag: string, limit: number = 50): FeedPost[] {
   const config = getSiteConfig();
-  const allPosts = getAllPosts();
-  const published = filterPublishedPosts(allPosts);
-  const sorted = sortPosts(published);
+  const sorted = sortPosts(getAllPosts());
 
   const filtered = sorted.filter((post) =>
     post.tags.some(
@@ -60,9 +56,7 @@ export function getPostsByTag(tag: string, limit: number = 50): FeedPost[] {
 
 export function getPostsByYear(year: string, limit: number = 50): FeedPost[] {
   const config = getSiteConfig();
-  const allPosts = getAllPosts();
-  const published = filterPublishedPosts(allPosts);
-  const sorted = sortPosts(published);
+  const sorted = sortPosts(getAllPosts());
 
   const filtered = sorted.filter((post) => {
     const postYear = new Date(post.date).getFullYear().toString();

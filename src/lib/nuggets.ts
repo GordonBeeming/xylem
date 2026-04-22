@@ -12,6 +12,18 @@ export interface NuggetMeta {
 
 const NUGGETS_DIR = path.join(process.cwd(), "content", "nuggets");
 
+// A valid nugget slug is lowercase letters, digits, and hyphens — the same
+// shape we use for blog slugs. Restricting it at the read boundary means the
+// value that flows into URLs (<Link href>, <iframe src>) is provably free of
+// quotes, angle brackets, or URL-control characters, and CodeQL's dataflow
+// analysis can see a concrete sanitizer step rather than a raw filesystem
+// read flowing into JSX.
+const VALID_SLUG = /^[a-z0-9][a-z0-9-]*$/;
+
+function isValidSlug(slug: string): boolean {
+  return VALID_SLUG.test(slug) && slug.length <= 100;
+}
+
 function parseNuggetSidecar(yamlPath: string, slug: string): NuggetMeta | null {
   try {
     const raw = fs.readFileSync(yamlPath, "utf-8");
@@ -69,6 +81,14 @@ export function getAllNuggets(): NuggetMeta[] {
     }
 
     const slug = entry.name.replace(/\.html$/, "");
+
+    if (!isValidSlug(slug)) {
+      console.warn(
+        `Nugget ${entry.name} skipped: slug must match /^[a-z0-9][a-z0-9-]*$/ (lowercase, digits, hyphens; max 100 chars).`
+      );
+      continue;
+    }
+
     const yamlPath = path.join(NUGGETS_DIR, `${slug}.yaml`);
 
     // Nuggets without a sidecar are silently skipped — /update-nuggets is
@@ -93,5 +113,11 @@ export function getAllNuggets(): NuggetMeta[] {
 }
 
 export function getNugget(slug: string): NuggetMeta | null {
+  // Explicit gate so a malformed route param never triggers even an internal
+  // lookup against the cache. The filename read in getAllNuggets() is already
+  // filtered, so this is belt-and-braces.
+  if (!isValidSlug(slug)) {
+    return null;
+  }
   return getAllNuggets().find((n) => n.slug === slug) ?? null;
 }

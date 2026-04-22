@@ -168,7 +168,8 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
 
       {/* Latest Nuggets Section */}
       {nuggets.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 pb-16">
+        <div className="bg-[var(--color-surface-tertiary)]">
+          <section className="mx-auto max-w-7xl px-6 py-16">
           <AnimateOnScroll>
             <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
               Nuggets
@@ -215,12 +216,12 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
           <div className="text-center">
             <Button href="/nuggets">View All Nuggets &rarr;</Button>
           </div>
-        </section>
+          </section>
+        </div>
       )}
 
       {/* Projects Section */}
-      <div className="bg-[var(--color-surface-tertiary)]">
-        <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl px-6 py-16">
           <AnimateOnScroll>
             <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
               Projects
@@ -305,11 +306,11 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
               </AnimateOnScroll>
             ))}
           </div>
-        </section>
-      </div>
+      </section>
 
       {/* Books Section */}
-      <section id="books" className="mx-auto max-w-7xl px-6 py-16">
+      <div className="bg-[var(--color-surface-tertiary)]">
+        <section id="books" className="mx-auto max-w-7xl px-6 py-16">
         <AnimateOnScroll>
           <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
             Books I&apos;ve Written
@@ -352,7 +353,8 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
             </AnimateOnScroll>
           ))}
         </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

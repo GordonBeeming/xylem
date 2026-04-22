@@ -20,9 +20,11 @@ export default function NuggetsPage() {
           Nuggets
         </h1>
         <p className="text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
-          Small, self-contained explainers on narrow topics — the kind of thing
-          I&apos;d otherwise lose in a local folder. Each one renders in its
-          own frame so its design stays intact.
+          Small, self-contained HTML pages I build with AI when I want to
+          understand something specific, like a field guide to an API or a
+          one-page walkthrough of an idea. The good ones end up here. Each
+          nugget renders in its own iframe, so no two have to look alike and
+          the site around it stays out of the way.
         </p>
       </header>
 

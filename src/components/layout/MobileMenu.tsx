@@ -10,11 +10,12 @@ interface MobileMenuProps {
 }
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/projects", label: "Projects" },
-  { href: "/tags", label: "Tags" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "home" },
+  { href: "/blog", label: "blog" },
+  { href: "/nuggets", label: "nuggets" },
+  { href: "/projects", label: "projects" },
+  { href: "/tags", label: "tags" },
+  { href: "/about", label: "about" },
 ];
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {

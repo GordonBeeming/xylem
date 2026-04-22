@@ -13,9 +13,12 @@ import type {
   BookData,
   SiteConfig,
 } from "@/lib/tina-helpers";
+import type { NuggetMeta } from "@/lib/nuggets";
+import { formatDate } from "@/lib/content";
 
 interface MainProps {
   posts: PostMeta[];
+  nuggets: NuggetMeta[];
   projects: ProjectData[];
   books: BookData[];
   siteConfig: SiteConfig;
@@ -43,7 +46,7 @@ const heroSocialLinks: { key: SocialKind; configKey: keyof SiteConfig }[] = [
   { key: "mastodon", configKey: "mastodon" },
 ];
 
-export function Main({ posts, projects, books, siteConfig }: MainProps) {
+export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps) {
   return (
     <>
       {/* Hero Section */}
@@ -162,6 +165,52 @@ export function Main({ posts, projects, books, siteConfig }: MainProps) {
           <Button href="/blog">View All Posts &rarr;</Button>
         </div>
       </section>
+
+      {/* Latest Nuggets Section */}
+      {nuggets.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <AnimateOnScroll>
+            <h2 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)]">
+              Nuggets
+            </h2>
+            <p className="mb-9 pl-[19px] text-[15px] text-[var(--color-text-secondary)]">
+              HTML pages I built with AI to understand something specific.
+              Each one shows up in whatever design it came out with.
+            </p>
+          </AnimateOnScroll>
+
+          <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {nuggets.map((n, index) => (
+              <AnimateOnScroll key={n.slug} delay={index * 100}>
+                <Link
+                  href={`/nuggets/${n.slug}`}
+                  className="block h-full rounded-xl border-l-2 border-l-transparent bg-[var(--color-surface-secondary)] p-6 shadow-[var(--shadow-card)] transition-all duration-200 ease-[var(--ease-default)] hover:-translate-y-0.5 hover:border-l-[var(--color-brand-primary)] hover:shadow-[var(--shadow-card-hover)]"
+                >
+                  <time
+                    dateTime={n.date}
+                    className="mb-2 block text-[13px] uppercase tracking-wide text-[var(--color-text-secondary)]"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {formatDate(n.date)}
+                  </time>
+                  <h3 className="mb-2 line-clamp-2 text-xl font-bold leading-snug text-[var(--color-text-primary)]">
+                    {n.title}
+                  </h3>
+                  {n.summary && (
+                    <p className="line-clamp-3 text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
+                      {n.summary}
+                    </p>
+                  )}
+                </Link>
+              </AnimateOnScroll>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Button href="/nuggets">View All Nuggets &rarr;</Button>
+          </div>
+        </section>
+      )}
 
       {/* Projects Section */}
       <div className="bg-[var(--color-surface-tertiary)]">

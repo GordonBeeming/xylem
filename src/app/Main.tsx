@@ -179,7 +179,13 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
             </p>
           </AnimateOnScroll>
 
-          <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div
+            className={`mb-10 grid gap-6 ${
+              nuggets.length === 1
+                ? "mx-auto max-w-2xl grid-cols-1"
+                : "grid-cols-1 md:grid-cols-2"
+            }`}
+          >
             {nuggets.map((n, index) => (
               <AnimateOnScroll key={n.slug} delay={index * 100}>
                 <Link

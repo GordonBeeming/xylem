@@ -8,7 +8,6 @@ export interface PostMeta {
   date: string;
   tags: string[];
   lastmod?: string;
-  draft?: boolean;
   summary?: string;
   canonicalUrl?: string;
   slug: string;
@@ -63,7 +62,6 @@ function parsePostFile(filePath: string): PostMeta | null {
           ? data.lastmod.toISOString()
           : String(data.lastmod)
         : undefined,
-      draft: data.draft === true,
       summary: data.summary ?? undefined,
       canonicalUrl: typeof data.canonicalUrl === "string" ? data.canonicalUrl : undefined,
       slug,
@@ -98,10 +96,6 @@ export function getAllPosts(): PostMeta[] {
 
   cachedAllPosts = posts;
   return posts;
-}
-
-export function getPublishedPosts(): PostMeta[] {
-  return getAllPosts().filter((post) => !post.draft);
 }
 
 export function getPost(
@@ -147,7 +141,6 @@ function readPostFile(
           ? data.lastmod.toISOString()
           : String(data.lastmod)
         : undefined,
-      draft: data.draft === true,
       summary: data.summary ?? undefined,
       canonicalUrl: typeof data.canonicalUrl === "string" ? data.canonicalUrl : undefined,
       slug,
@@ -166,7 +159,7 @@ export function getRelatedPosts(
   tags: string[],
   count: number = 3
 ): PostMeta[] {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
 
   if (tags.length === 0) {
     return published.filter((p) => p.slug !== currentSlug).slice(0, count);
@@ -191,7 +184,7 @@ export function getRelatedPosts(
 export function getAdjacentPosts(
   currentSlug: string
 ): { prev: PostMeta | null; next: PostMeta | null } {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
   const index = published.findIndex((p) => p.slug === currentSlug);
 
   if (index === -1) {

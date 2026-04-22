@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts, getAllBooks, getSiteConfig } from '@/lib/tina-helpers';
 import {
-  filterPublishedPosts,
   sortPosts,
   getTagCounts,
   getYearCounts,
@@ -13,8 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const config = getSiteConfig();
   const siteUrl = config.siteUrl;
   const allPosts = getAllPosts();
-  const publishedPosts = filterPublishedPosts(allPosts);
-  const sorted = sortPosts(publishedPosts);
+  const sorted = sortPosts(allPosts);
 
   const now = new Date();
   const oneYearAgo = new Date();
@@ -81,7 +79,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   // Tag pages
-  const tagCounts = getTagCounts(publishedPosts);
+  const tagCounts = getTagCounts(allPosts);
   const tagEntries: MetadataRoute.Sitemap = Object.keys(tagCounts).map(
     (tag) => ({
       url: `${siteUrl}/tags/${tag}`,
@@ -92,7 +90,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   // Year pages
-  const yearCounts = getYearCounts(publishedPosts);
+  const yearCounts = getYearCounts(allPosts);
   const yearEntries: MetadataRoute.Sitemap = Object.keys(yearCounts).map(
     (year) => ({
       url: `${siteUrl}/years/${year}`,

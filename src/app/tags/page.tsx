@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/lib/tina-helpers";
+import { getAllPosts } from "@/lib/tina-helpers";
 import { getTagCounts, getTagDisplayNames } from "@/lib/content";
 import { TagPill } from "@/components/ui/TagPill";
 import type { Metadata } from "next";
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function TagsPage() {
-  const published = getPublishedPosts();
+  const published = getAllPosts();
   const tagCounts = getTagCounts(published);
   const tagDisplayNames = getTagDisplayNames(published);
 

@@ -24,12 +24,6 @@ export function sortPosts<T extends { date: string }>(posts: T[]): T[] {
   return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export function filterPublishedPosts<T extends { draft?: boolean | null; date: string }>(
-  posts: T[]
-): T[] {
-  return posts.filter(post => !post.draft);
-}
-
 export function getTagCounts(posts: { tags?: string[] | null }[]): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const post of posts) {

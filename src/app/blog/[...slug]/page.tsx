@@ -7,7 +7,7 @@ import rehypeKatex from "rehype-katex";
 import rehypeShiki from "@shikijs/rehype";
 import { PostLayout } from "@/layouts/PostLayout";
 import {
-  getPublishedPosts,
+  getAllPosts,
   getPost,
   getRelatedPosts,
   getAdjacentPosts,
@@ -147,7 +147,7 @@ const mdxComponents = {
 };
 
 export async function generateStaticParams() {
-  const posts = getPublishedPosts();
+  const posts = getAllPosts();
   return posts.map((post) => ({
     slug: post.slug.split("/"),
   }));

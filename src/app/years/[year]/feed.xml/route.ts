@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getPostsByYear, generateRssXml } from '@/lib/feed-helpers';
-import { getPublishedPosts } from '@/lib/tina-helpers';
+import { getAllPosts } from '@/lib/tina-helpers';
 import { getYearCounts } from '@/lib/content';
 
 export const dynamic = 'force-static';
 
 export function generateStaticParams() {
-  const posts = getPublishedPosts();
+  const posts = getAllPosts();
   const yearCounts = getYearCounts(posts);
   return Object.keys(yearCounts).map((year) => ({ year }));
 }

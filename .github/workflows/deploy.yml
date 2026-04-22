@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Weekly rebuild so anything pulled in at build time (GitHub stars,
+  # OG images, third-party content) stays fresh even during quiet weeks.
+  # 08:00 UTC Sunday ≈ 18:00 AEST — after the weekend's main work hours.
+  schedule:
+    - cron: "0 8 * * 0"
 
 permissions:
   contents: read

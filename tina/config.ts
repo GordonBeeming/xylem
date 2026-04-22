@@ -24,16 +24,19 @@ const schema = defineSchema({
         // removed. Field stays here purely as a placeholder until we can safely
         // drop it via TinaCloud's breaking-change approval flow.
         //
-        // `ui.component: () => null` hides the field from the Tina admin form so
-        // editors can't toggle it by mistake and Tina doesn't write `draft:` back
-        // into post frontmatter on save.
+        // We tried hiding the field with `ui.component: () => null`, but the
+        // inline function doesn't serialize cleanly when Tina pushes the schema
+        // up to the cloud — the indexed remote schema ends up missing the `ui`
+        // block, and `tinacms build`'s local/remote equality check fails on
+        // every run. Keeping the shape as a plain boolean matches whatever Tina
+        // ultimately indexes, so the check stays happy. Editors will see a
+        // "(deprecated)" checkbox in the admin; the label is the only deterrent.
         {
           type: "boolean",
           name: "draft",
-          label: "Draft (deprecated — schema-compat placeholder)",
+          label: "Draft (deprecated — do not toggle)",
           description:
-            "Unused. Kept to avoid a breaking TinaCloud schema change; hidden in the admin so editors don't re-introduce it into frontmatter.",
-          ui: { component: () => null },
+            "Unused. Kept only to avoid a breaking TinaCloud schema change.",
         },
         { type: "string", name: "summary", label: "Summary", ui: { component: "textarea" } },
         { type: "string", name: "canonicalUrl", label: "Canonical URL" },

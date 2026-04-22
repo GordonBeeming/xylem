@@ -17,6 +17,13 @@ const schema = defineSchema({
         { type: "datetime", name: "date", label: "Date", required: true },
         { type: "string", name: "tags", label: "Tags", list: true },
         { type: "datetime", name: "lastmod", label: "Last Modified" },
+        // Kept only to keep the TinaCloud remote schema happy — removing a field
+        // is a breaking change and the `tinacms build` in CI bails before it can
+        // push the new schema. Draft is no longer read anywhere in the codebase;
+        // no blog post has ever had `draft: true`, and the filter helpers were
+        // removed. Field stays here purely as a placeholder until we can safely
+        // drop it via TinaCloud's breaking-change approval flow.
+        { type: "boolean", name: "draft", label: "Draft" },
         { type: "string", name: "summary", label: "Summary", ui: { component: "textarea" } },
         { type: "string", name: "canonicalUrl", label: "Canonical URL" },
         {

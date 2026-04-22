@@ -25,7 +25,14 @@
     if (!body) return;
     const h = Math.ceil(body.getBoundingClientRect().height);
     if (h > 0) {
-      window.parent.postMessage({ source: 'nugget-resize', height: h }, '*');
+      // Nuggets always render same-origin as the parent site, so target the
+      // parent's exact origin rather than '*'. If the iframe ever ended up
+      // under a different origin the message simply won't be delivered,
+      // which is the safer failure mode than broadcasting heights everywhere.
+      window.parent.postMessage(
+        { source: 'nugget-resize', height: h },
+        window.location.origin
+      );
     }
   };
 

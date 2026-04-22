@@ -13,8 +13,12 @@ export function NuggetFrame({ src, title }: NuggetFrameProps) {
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
-      // Accept height posts from our own iframe only.
+      // Accept height posts from our own iframe only, on our own origin.
+      // The source check alone isn't enough — if the iframe ever navigated
+      // cross-origin (or was swapped for one), contentWindow.postMessage
+      // would still appear to come from that window. Require both.
       if (event.source !== ref.current?.contentWindow) return;
+      if (event.origin !== window.location.origin) return;
 
       const data = event.data as { source?: string; height?: number } | null;
       if (!data || data.source !== "nugget-resize") return;

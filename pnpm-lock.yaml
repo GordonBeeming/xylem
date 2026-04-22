@@ -23,9 +23,6 @@ importers:
       '@tinacms/cli':
         specifier: ^2.1.11
         version: 2.1.11(@codemirror/language@6.0.0)(@types/node@20.19.37)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(abstract-level@1.0.4)(immer@10.2.0)(lightningcss@1.32.0)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1(@types/node@20.19.37)(@types/react@19.2.14)(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(rollup@3.30.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.1)(use-sync-external-store@1.6.0(react@19.2.4))(yaml@2.8.2)
-      '@types/js-yaml':
-        specifier: ^4.0.9
-        version: 4.0.9
       giscus:
         specifier: ^1.6.0
         version: 1.6.0
@@ -117,6 +114,9 @@ importers:
       '@types/hast':
         specifier: ^3.0.4
         version: 3.0.4
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^20
         version: 20.19.37

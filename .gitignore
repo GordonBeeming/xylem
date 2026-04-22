@@ -20,6 +20,10 @@
 # production
 /build
 
+# generated at build time by scripts/copy-nuggets.mjs — mirror of
+# content/nuggets/*.html. _resize.js is source so keep it tracked.
+/public/nuggets/*.html
+
 # misc
 .DS_Store
 *.pem

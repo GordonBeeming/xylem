@@ -274,12 +274,28 @@ export interface BookData {
 
 const BOOKS_DIR = path.join(process.cwd(), "content", "books");
 
+// Same shape as nugget/blog slugs — lowercase letters, digits, hyphens. Keeps
+// filesystem-derived slugs out of URL/href attributes without a sanitizer
+// step, which is what CodeQL's js/stored-xss rule complains about.
+const VALID_BOOK_SLUG = /^[a-z0-9][a-z0-9-]*$/;
+
+function isValidBookSlug(slug: string): boolean {
+  return VALID_BOOK_SLUG.test(slug) && slug.length <= 100;
+}
+
 function parseBookFile(file: string): BookData | null {
   try {
+    const slug = file.replace(/\.json$/, "");
+    if (!isValidBookSlug(slug)) {
+      console.warn(
+        `Book ${file} skipped: slug must match /^[a-z0-9][a-z0-9-]*$/ (lowercase, digits, hyphens; max 100 chars).`
+      );
+      return null;
+    }
     const raw = fs.readFileSync(path.join(BOOKS_DIR, file), "utf-8");
     const data = JSON.parse(raw) as Record<string, unknown>;
     return {
-      slug: file.replace(/\.json$/, ""),
+      slug,
       title: (data.title as string) ?? "Untitled",
       description: (data.description as string) ?? "",
       href: (data.href as string) ?? undefined,
@@ -316,6 +332,9 @@ export function getAllBooks(): BookData[] {
 }
 
 export function getBook(slug: string): BookData | null {
+  if (!isValidBookSlug(slug)) {
+    return null;
+  }
   const file = `${slug}.json`;
   const filePath = path.join(BOOKS_DIR, file);
   if (!fs.existsSync(filePath)) {

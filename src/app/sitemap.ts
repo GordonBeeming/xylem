@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts, getAllBooks, getSiteConfig } from '@/lib/tina-helpers';
+import { getAllNuggets } from '@/lib/nuggets';
 import {
   sortPosts,
   getTagCounts,
@@ -109,11 +110,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  // Nugget pages (iframe-wrapped standalone HTML explainers)
+  const nuggets = getAllNuggets();
+  const nuggetEntries: MetadataRoute.Sitemap = nuggets.map((n) => ({
+    url: `${siteUrl}/nuggets/${n.slug}`,
+    lastModified: n.date,
+    changeFrequency: 'yearly' as const,
+    priority: 0.5,
+  }));
+  const nuggetsIndexEntry: MetadataRoute.Sitemap = nuggets.length > 0 ? [{
+    url: `${siteUrl}/nuggets`,
+    lastModified: todayStr,
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }] : [];
+
   return [
     ...staticPages,
     ...blogEntries,
     ...tagEntries,
     ...yearEntries,
     ...bookEntries,
+    ...nuggetsIndexEntry,
+    ...nuggetEntries,
   ];
 }

@@ -12,7 +12,8 @@ import {
   ComboboxOption,
 } from "@headlessui/react";
 
-interface Post {
+export interface SearchableItem {
+  type: "post" | "nugget";
   title: string;
   slug: string;
   summary?: string;
@@ -22,10 +23,10 @@ interface Post {
 interface CommandPaletteProps {
   isOpen: boolean;
   onClose: () => void;
-  posts: Post[];
+  items: SearchableItem[];
 }
 
-export function CommandPalette({ isOpen, onClose, posts }: CommandPaletteProps) {
+export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -45,22 +46,26 @@ export function CommandPalette({ isOpen, onClose, posts }: CommandPaletteProps) 
     };
   }, [query]);
 
-  const filteredPosts =
+  const filteredItems =
     debouncedQuery === ""
-      ? posts.slice(0, 5)
-      : posts.filter((post) => {
+      ? items.slice(0, 5)
+      : items.filter((item) => {
           const q = debouncedQuery.toLowerCase();
           return (
-            post.title.toLowerCase().includes(q) ||
-            (post.summary && post.summary.toLowerCase().includes(q)) ||
-            (post.tags && post.tags.some((tag) => tag.toLowerCase().includes(q)))
+            item.title.toLowerCase().includes(q) ||
+            (item.summary && item.summary.toLowerCase().includes(q)) ||
+            (item.tags && item.tags.some((tag) => tag.toLowerCase().includes(q)))
           );
         });
 
   const handleSelect = useCallback(
-    (post: Post | null) => {
-      if (post) {
-        router.push(`/blog/${post.slug}`);
+    (item: SearchableItem | null) => {
+      if (item) {
+        const href =
+          item.type === "nugget"
+            ? `/nuggets/${item.slug}`
+            : `/blog/${item.slug}`;
+        router.push(href);
         onClose();
         setQuery("");
       }
@@ -95,7 +100,7 @@ export function CommandPalette({ isOpen, onClose, posts }: CommandPaletteProps) 
               </svg>
               <ComboboxInput
                 className="w-full border-0 border-b border-[var(--color-border-default)] bg-transparent py-3 pl-12 pr-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-0"
-                placeholder="Search posts..."
+                placeholder="Search posts and nuggets..."
                 onChange={(event) => setQuery(event.target.value)}
                 autoComplete="off"
               />
@@ -105,45 +110,54 @@ export function CommandPalette({ isOpen, onClose, posts }: CommandPaletteProps) 
               static
               className="max-h-80 overflow-y-auto py-2"
             >
-              {filteredPosts.length === 0 && debouncedQuery !== "" ? (
+              {filteredItems.length === 0 && debouncedQuery !== "" ? (
                 <div className="px-4 py-8 text-center text-sm text-[var(--color-text-tertiary)]">
                   No results found for &quot;{debouncedQuery}&quot;
                 </div>
               ) : (
-                filteredPosts.map((post) => (
+                filteredItems.map((item) => (
                   <ComboboxOption
-                    key={post.slug}
-                    value={post}
+                    key={`${item.type}:${item.slug}`}
+                    value={item}
                     className="cursor-pointer px-4 py-3 transition-colors data-[focus]:bg-[var(--color-surface-tertiary)]"
                   >
-                    <div className="text-sm font-medium text-[var(--color-text-primary)]">
-                      {post.title}
+                    <div className="flex items-start gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium text-[var(--color-text-primary)]">
+                          {item.title}
+                        </div>
+                        {item.summary && (
+                          <div className="mt-1 line-clamp-1 text-xs text-[var(--color-text-tertiary)]">
+                            {item.summary}
+                          </div>
+                        )}
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="mt-1.5 flex flex-wrap gap-1.5">
+                            {item.tags.slice(0, 3).map((tag) => (
+                              <span
+                                key={tag}
+                                className="rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-2 py-0.5 text-[10px] font-medium uppercase text-[var(--color-brand-primary)]"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      {item.type === "nugget" && (
+                        <span className="mt-0.5 shrink-0 rounded-full border border-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--color-brand-primary)]">
+                          Nugget
+                        </span>
+                      )}
                     </div>
-                    {post.summary && (
-                      <div className="mt-1 line-clamp-1 text-xs text-[var(--color-text-tertiary)]">
-                        {post.summary}
-                      </div>
-                    )}
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="mt-1.5 flex gap-1.5">
-                        {post.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-2 py-0.5 text-[10px] font-medium uppercase text-[var(--color-brand-primary)]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </ComboboxOption>
                 ))
               )}
             </ComboboxOptions>
 
-            {debouncedQuery === "" && filteredPosts.length === 0 && (
+            {debouncedQuery === "" && filteredItems.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-[var(--color-text-tertiary)]">
-                Start typing to search posts...
+                Start typing to search posts and nuggets...
               </div>
             )}
 

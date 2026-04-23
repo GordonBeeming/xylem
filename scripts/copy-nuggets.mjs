@@ -2,15 +2,15 @@ import { existsSync, mkdirSync, readdirSync, copyFileSync, rmSync, statSync } fr
 import path from 'path';
 
 const contentDir = './content/nuggets';
-// Raw nugget HTML lives under /_raw/<slug>/index.html so it:
-//  1. Doesn't collide with Next's static-export output for /nuggets/[slug]
-//     (Next writes out/nuggets/<slug>.html for the chromed page; same filename
-//     at the top level would be overwritten and the iframe would embed the
-//     chromed page → infinite iframe nesting).
-//  2. Resolves at /nuggets/_raw/<slug> with no ".html" in the visible URL,
-//     matching the extensionless style used elsewhere on the site (blog,
-//     tags, years). The directory-with-index layout makes this work on any
-//     static host — no reliance on host-specific extension stripping.
+// Raw nugget HTML is exposed at /nuggets/_raw/<slug>, backed by
+// public/nuggets/_raw/<slug>/index.html. This keeps it:
+//  1. Clear of collision with Next's static-export output for /nuggets/[slug]
+//     (Next writes out/nuggets/<slug>.html for the chromed page; if the raw
+//     file were at that same filename it would be overwritten and the iframe
+//     would embed the chromed page → infinite iframe nesting).
+//  2. Extensionless in the visible URL — matching blog, tags, years — with
+//     no reliance on host-specific .html stripping, since the directory +
+//     index.html layout resolves on any static host.
 const publicDir = './public/nuggets/_raw';
 
 if (existsSync(publicDir)) {

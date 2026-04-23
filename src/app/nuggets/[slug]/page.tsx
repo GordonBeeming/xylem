@@ -59,7 +59,12 @@ export default async function NuggetPage(props: PageProps) {
     notFound();
   }
 
-  const rawUrl = `/nuggets/${nugget.slug}.html`;
+  // Raw nugget HTML is exposed at /nuggets/_raw/<slug>, backed by
+  // public/nuggets/_raw/<slug>/index.html, to avoid colliding with Next's
+  // static-export output for this very route (which writes
+  // out/nuggets/<slug>.html for the chromed page). Directory + index.html keeps
+  // the public URL extensionless on static hosts. See scripts/copy-nuggets.mjs.
+  const rawUrl = `/nuggets/_raw/${nugget.slug}`;
 
   return (
     <article className="pb-12">

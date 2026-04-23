@@ -21,7 +21,11 @@
 /build
 
 # generated at build time by scripts/copy-nuggets.mjs — mirror of
-# content/nuggets/*.html. _resize.js is source so keep it tracked.
+# content/nuggets/*.html into /_raw/ (kept out of the Next route path to
+# avoid colliding with out/nuggets/<slug>.html). _resize.js is source so
+# keep it tracked; the legacy /public/nuggets/*.html pattern stays to
+# cover any stray top-level copies from older builds.
+/public/nuggets/_raw/
 /public/nuggets/*.html
 
 # misc

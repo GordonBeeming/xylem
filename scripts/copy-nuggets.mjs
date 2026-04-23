@@ -1,21 +1,22 @@
-import { existsSync, mkdirSync, readdirSync, copyFileSync, unlinkSync, statSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, copyFileSync, rmSync, statSync } from 'fs';
 import path from 'path';
 
 const contentDir = './content/nuggets';
-const publicDir = './public/nuggets';
-
-// Preserve _resize.js (owned by this repo, not by per-nugget content) while
-// clearing out stale nugget HTML from previous builds.
-const PRESERVE = new Set(['_resize.js']);
+// Raw nugget HTML is exposed at /nuggets/_raw/<slug>, backed by
+// public/nuggets/_raw/<slug>/index.html. This keeps it:
+//  1. Clear of collision with Next's static-export output for /nuggets/[slug]
+//     (Next writes out/nuggets/<slug>.html for the chromed page; if the raw
+//     file were at that same filename it would be overwritten and the iframe
+//     would embed the chromed page → infinite iframe nesting).
+//  2. Extensionless in the visible URL — matching blog, tags, years — with
+//     no reliance on host-specific .html stripping, since the directory +
+//     index.html layout resolves on any static host.
+const publicDir = './public/nuggets/_raw';
 
 if (existsSync(publicDir)) {
-  for (const file of readdirSync(publicDir)) {
-    if (PRESERVE.has(file)) continue;
-    try { unlinkSync(path.join(publicDir, file)); } catch (e) { console.error(e); }
-  }
-} else {
-  mkdirSync(publicDir, { recursive: true });
+  rmSync(publicDir, { recursive: true, force: true });
 }
+mkdirSync(publicDir, { recursive: true });
 
 if (!existsSync(contentDir)) {
   console.log(`No ${contentDir} directory found; skipping nugget copy.`);
@@ -27,9 +28,11 @@ for (const entry of readdirSync(contentDir)) {
   const src = path.join(contentDir, entry);
   if (!statSync(src).isFile()) continue;
   if (!entry.endsWith('.html')) continue;
-  const dest = path.join(publicDir, entry);
-  copyFileSync(src, dest);
+  const slug = entry.replace(/\.html$/, '');
+  const destDir = path.join(publicDir, slug);
+  mkdirSync(destDir, { recursive: true });
+  copyFileSync(src, path.join(destDir, 'index.html'));
   copied += 1;
 }
 
-console.log(`Copied ${copied} nugget(s) from ${contentDir} to ${publicDir}`);
+console.log(`Copied ${copied} nugget(s) from ${contentDir} to ${publicDir}/<slug>/index.html`);

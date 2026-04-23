@@ -2,15 +2,15 @@ import { existsSync, mkdirSync, readdirSync, copyFileSync, unlinkSync, statSync 
 import path from 'path';
 
 const contentDir = './content/nuggets';
-const publicDir = './public/nuggets';
-
-// Preserve _resize.js (owned by this repo, not by per-nugget content) while
-// clearing out stale nugget HTML from previous builds.
-const PRESERVE = new Set(['_resize.js']);
+// Raw nugget HTML lives under /_raw/ so it doesn't collide with Next's
+// static-export output for the /nuggets/[slug] route. Next writes
+// out/nuggets/<slug>.html for the chromed page; if the raw file were at the
+// same path, Next's output would overwrite it during build and the iframe
+// would end up embedding the chromed page — infinite iframe nesting.
+const publicDir = './public/nuggets/_raw';
 
 if (existsSync(publicDir)) {
   for (const file of readdirSync(publicDir)) {
-    if (PRESERVE.has(file)) continue;
     try { unlinkSync(path.join(publicDir, file)); } catch (e) { console.error(e); }
   }
 } else {

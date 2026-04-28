@@ -57,7 +57,7 @@ export default function NuggetsPage() {
                 )}
                 {n.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
-                    {n.tags.slice(0, 4).map((tag) => (
+                    {n.tags.map((tag) => (
                       <span
                         key={tag}
                         className="inline-block rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-3 py-1 text-xs font-medium uppercase tracking-wide text-[var(--color-brand-primary)]"

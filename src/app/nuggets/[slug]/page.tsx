@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllNuggets, getNugget } from "@/lib/nuggets";
 import { NuggetFrame } from "@/components/NuggetFrame";
+import { TagPill } from "@/components/ui/TagPill";
 import { formatDate } from "@/lib/content";
 
 interface PageProps {
@@ -59,12 +60,13 @@ export default async function NuggetPage(props: PageProps) {
     notFound();
   }
 
-  // Raw nugget HTML is exposed at /nuggets/_raw/<slug>, backed by
-  // public/nuggets/_raw/<slug>/index.html, to avoid colliding with Next's
-  // static-export output for this very route (which writes
-  // out/nuggets/<slug>.html for the chromed page). Directory + index.html keeps
-  // the public URL extensionless on static hosts. See scripts/copy-nuggets.mjs.
-  const rawUrl = `/nuggets/_raw/${nugget.slug}`;
+  // Raw nugget HTML is at public/nuggets/_raw/<slug>/index.html — the directory
+  // layout keeps it clear of Next's static-export output for /nuggets/<slug>
+  // (out/nuggets/<slug>.html for the chromed page; same filename here would
+  // cause infinite iframe nesting). We point the iframe at the explicit
+  // /index.html path because Next's dev server doesn't auto-resolve a bare
+  // directory URL to index.html — only static hosts do. Same URL works in both.
+  const rawUrl = `/nuggets/_raw/${nugget.slug}/index.html`;
 
   return (
     <article className="pb-12">
@@ -97,6 +99,13 @@ export default async function NuggetPage(props: PageProps) {
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
             {nugget.summary}
           </p>
+        )}
+        {nugget.tags.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {nugget.tags.map((tag) => (
+              <TagPill key={tag} tag={tag} />
+            ))}
+          </div>
         )}
       </header>
       <div className="border-y border-[var(--color-border)]">

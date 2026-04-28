@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI Coding Agents — Developer Experience Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E0E10;
+    --bg-elev: #16161A;
+    --bg-card: #1A1A1F;
+    --line: #26262C;
+    --line-soft: #1F1F25;
+    --text: #E8E8EA;
+    --text-dim: #A0A0A8;
+    --text-mute: #6B6B73;
+    --brand: #46CBFF;
+    --brand-deep: #0063B2;
+    --opencode: #FFB23F;
+    --codex: #C77DFF;
+    --claude: #FF7A59;
+    --good: #7CE2A0;
+    --warn: #FFD166;
+    --bad: #FF6B7A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 15px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    z-index: 100;
+    mix-blend-mode: overlay;
+  }
+
+  .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ============ HEADER ============ */
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 80px 0 60px;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(70,203,255,0.08), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 90% 30%, rgba(199,125,255,0.06), transparent 60%);
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brand), transparent);
+    opacity: 0.4;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--brand);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 6.5vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brand);
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 680px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .meta-row span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .meta-row span::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--brand);
+    border-radius: 50%;
+  }
+
+  /* ============ TOOL CARDS ============ */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tool-card {
+    padding: 48px 40px;
+    border-right: 1px solid var(--line);
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  .tool-card:last-child { border-right: none; }
+
+  .tool-card:hover {
+    background: var(--bg-elev);
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+    opacity: 0.6;
+  }
+
+  .tool-card[data-tool="opencode"] { --accent-color: var(--opencode); }
+  .tool-card[data-tool="codex"] { --accent-color: var(--codex); }
+  .tool-card[data-tool="claude"] { --accent-color: var(--claude); }
+
+  .tool-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+  }
+
+  .tool-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    color: var(--accent-color);
+  }
+
+  .tool-vendor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 24px;
+  }
+
+  .tool-tagline {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    font-style: italic;
+    border-left: 2px solid var(--accent-color);
+    padding-left: 14px;
+    margin-bottom: 24px;
+  }
+
+  .tool-stats {
+    display: grid;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-mute);
+  }
+
+  .stat-val {
+    font-size: 13px;
+    color: var(--text);
+    text-align: right;
+  }
+
+  /* ============ SECTION ============ */
+  section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .section-header {
+    margin-bottom: 56px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--brand);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 720px;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--brand);
+    font-weight: 400;
+  }
+
+  .section-intro {
+    color: var(--text-dim);
+    max-width: 360px;
+    font-size: 15px;
+    text-align: right;
+    line-height: 1.55;
+  }
+
+  /* ============ COMPARISON MATRIX ============ */
+  .matrix {
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+
+  .matrix-header {
+    display: grid;
+    grid-template-columns: 240px repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-card);
+  }
+
+  .matrix-header > div {
+    padding: 20px 24px;
+    border-right: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+
+  .matrix-header > div:last-child { border-right: none; }
+
+  .matrix-header .tool-col {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .matrix-header [data-tool="opencode"] { color: var(--opencode); }
+  .matrix-header [data-tool="codex"] { color: var(--codex); }
+  .matrix-header [data-tool="claude"] { color: var(--claude); }
+
+  .matrix-row {
+    display: grid;
+    grid-template-columns: 240px repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .matrix-row:hover { background: var(--bg-card); }
+  .matrix-row:last-child { border-bottom: none; }
+
+  .matrix-row > div {
+    padding: 18px 24px;
+    border-right: 1px solid var(--line);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .matrix-row > div:last-child { border-right: none; }
+
+  .matrix-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    background: var(--bg-card);
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .pill.good { background: rgba(124,226,160,0.12); color: var(--good); border: 1px solid rgba(124,226,160,0.25); }
+  .pill.warn { background: rgba(255,209,102,0.12); color: var(--warn); border: 1px solid rgba(255,209,102,0.25); }
+  .pill.bad { background: rgba(255,107,122,0.12); color: var(--bad); border: 1px solid rgba(255,107,122,0.25); }
+  .pill.neutral { background: rgba(160,160,168,0.1); color: var(--text-dim); border: 1px solid rgba(160,160,168,0.2); }
+
+  /* ============ DEEP DIVES ============ */
+  .deep-dive {
+    margin-bottom: 80px;
+  }
+
+  .deep-dive:last-child { margin-bottom: 0; }
+
+  .dd-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dd-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-mute);
+  }
+
+  .dd-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 44px;
+    letter-spacing: -0.02em;
+  }
+
+  .dd-name[data-tool="opencode"] { color: var(--opencode); }
+  .dd-name[data-tool="codex"] { color: var(--codex); }
+  .dd-name[data-tool="claude"] { color: var(--claude); }
+
+  .dd-vendor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-left: auto;
+  }
+
+  .dd-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .dd-section h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-mute);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dd-section h4::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--brand);
+    border-radius: 1px;
+    transform: rotate(45deg);
+  }
+
+  .dd-section ul {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+
+  .dd-section li {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    padding-left: 22px;
+    position: relative;
+  }
+
+  .dd-section li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--brand);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .dd-section li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .dd-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--text);
+    padding: 28px 32px;
+    background: var(--bg-elev);
+    border-left: 3px solid var(--accent-color);
+    position: relative;
+  }
+
+  .dd-quote::before {
+    content: '"';
+    position: absolute;
+    top: 0px;
+    left: 16px;
+    font-size: 60px;
+    color: var(--accent-color);
+    opacity: 0.3;
+    font-family: 'Fraunces', serif;
+  }
+
+  .deep-dive[data-tool="opencode"] .dd-quote { --accent-color: var(--opencode); }
+  .deep-dive[data-tool="codex"] .dd-quote { --accent-color: var(--codex); }
+  .deep-dive[data-tool="claude"] .dd-quote { --accent-color: var(--claude); }
+
+  /* ============ SCORECARD ============ */
+  .scorecard {
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    padding: 48px;
+  }
+
+  .score-grid {
+    display: grid;
+    gap: 28px;
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  .score-bars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .score-tool {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    width: 54px;
+    color: var(--bar-color);
+    font-weight: 700;
+  }
+
+  .score-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-card);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: var(--bar-color);
+    border-radius: 100px;
+    width: var(--score);
+    position: relative;
+    box-shadow: 0 0 12px var(--bar-color);
+  }
+
+  .score-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    width: 24px;
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .score-bar[data-tool="opencode"] { --bar-color: var(--opencode); }
+  .score-bar[data-tool="codex"] { --bar-color: var(--codex); }
+  .score-bar[data-tool="claude"] { --bar-color: var(--claude); }
+
+  /* ============ DECISION GUIDE ============ */
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .decision-card {
+    background: var(--bg);
+    padding: 36px 32px;
+    position: relative;
+  }
+
+  .decision-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--accent-color);
+  }
+
+  .decision-card[data-tool="opencode"] { --accent-color: var(--opencode); }
+  .decision-card[data-tool="codex"] { --accent-color: var(--codex); }
+  .decision-card[data-tool="claude"] { --accent-color: var(--claude); }
+
+  .decision-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .decision-card .check {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.55;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .decision-card .check:last-child { border-bottom: none; }
+
+  .decision-card .check::before {
+    content: '✓';
+    color: var(--accent-color);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ============ VERDICT ============ */
+  .verdict {
+    padding: 100px 0 120px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 100%, rgba(70,203,255,0.08), transparent 60%);
+  }
+
+  .verdict-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .verdict h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 auto 32px;
+    max-width: 880px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .verdict-body {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--text-dim);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .verdict-body p { margin-bottom: 20px; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ============ CODE BLOCKS ============ */
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--bg-card);
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: var(--brand);
+    border: 1px solid var(--line-soft);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .tool-card { border-right: none; border-bottom: 1px solid var(--line); }
+    .matrix-header, .matrix-row { grid-template-columns: 140px repeat(3, 1fr); }
+    .matrix-header > div, .matrix-row > div { padding: 14px 12px; font-size: 12px; }
+    .dd-body { grid-template-columns: 1fr; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .section-intro { text-align: left; }
+    .score-row { grid-template-columns: 1fr; gap: 12px; }
+    .score-bars { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="eyebrow">Developer Experience Analysis · April 2026</div>
+    <h1>Three terminals,<br>three <em>philosophies</em>.</h1>
+    <p class="subtitle">A close-read of OpenCode, Codex CLI, and Claude Code — the developer experience, not the model. How each one feels to live with day-to-day, where the friction is, and what kind of workflow each one quietly assumes you have.</p>
+    <div class="meta-row">
+      <span>Model-agnostic comparison</span>
+      <span>Focus on DX, not benchmarks</span>
+      <span>Terminal-first workflows</span>
+    </div>
+  </div>
+</header>
+
+<!-- TOOL CARDS -->
+<div class="container">
+  <div class="tools-grid">
+    <div class="tool-card" data-tool="opencode">
+      <div class="tool-num">01 / Open source</div>
+      <div class="tool-name">OpenCode</div>
+      <div class="tool-vendor">anomalyco/opencode · MIT-licensed</div>
+      <p class="tool-tagline">The community-built TUI that treats model choice as a feature, not a coupling.</p>
+      <div class="tool-stats">
+        <div class="stat-row"><span class="stat-label">Provider</span><span class="stat-val">Any · BYOK · subscriptions</span></div>
+        <div class="stat-row"><span class="stat-label">Interface</span><span class="stat-val">Full TUI</span></div>
+        <div class="stat-row"><span class="stat-label">Config</span><span class="stat-val">JSON · JSONC</span></div>
+        <div class="stat-row"><span class="stat-label">Lock-in</span><span class="stat-val">None</span></div>
+      </div>
+    </div>
+    <div class="tool-card" data-tool="codex">
+      <div class="tool-num">02 / OpenAI</div>
+      <div class="tool-name">Codex CLI</div>
+      <div class="tool-vendor">openai/codex · Apache-2.0</div>
+      <p class="tool-tagline">OpenAI's terminal agent — sandbox-first, opinionated about safety, quiet about everything else.</p>
+      <div class="tool-stats">
+        <div class="stat-row"><span class="stat-label">Provider</span><span class="stat-val">OpenAI-first · custom providers</span></div>
+        <div class="stat-row"><span class="stat-label">Interface</span><span class="stat-val">Hybrid CLI/TUI</span></div>
+        <div class="stat-row"><span class="stat-label">Config</span><span class="stat-val">TOML</span></div>
+        <div class="stat-row"><span class="stat-label">Lock-in</span><span class="stat-val">Light</span></div>
+      </div>
+    </div>
+    <div class="tool-card" data-tool="claude">
+      <div class="tool-num">03 / Anthropic</div>
+      <div class="tool-name">Claude Code</div>
+      <div class="tool-vendor">anthropic/claude-code · Proprietary</div>
+      <p class="tool-tagline">Anthropic's vertically integrated agent — the most polished interaction model, the most rigid stack.</p>
+      <div class="tool-stats">
+        <div class="stat-row"><span class="stat-label">Provider</span><span class="stat-val">Anthropic</span></div>
+        <div class="stat-row"><span class="stat-label">Interface</span><span class="stat-val">Refined TUI</span></div>
+        <div class="stat-row"><span class="stat-label">Config</span><span class="stat-val">JSON · MD</span></div>
+        <div class="stat-row"><span class="stat-label">Lock-in</span><span class="stat-val">Heavy</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALLATION & ONBOARDING -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 01 — First contact</div>
+        <h2>Installation, auth, and the <em>first thirty seconds</em>.</h2>
+      </div>
+      <p class="section-intro">The first command you type tells you a lot about a tool's philosophy. Here's what each one expects of you before you've done any actual work.</p>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-header">
+        <div>Dimension</div>
+        <div class="tool-col" data-tool="opencode">OpenCode</div>
+        <div class="tool-col" data-tool="codex">Codex CLI</div>
+        <div class="tool-col" data-tool="claude">Claude Code</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Install</div>
+        <div><code>npm i -g opencode-ai</code> · curl script · brew · binary releases</div>
+        <div><code>npm i -g @openai/codex</code> · brew · binary</div>
+        <div><code>npm i -g @anthropic-ai/claude-code</code> · native installers</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Runtime</div>
+        <div>TypeScript on Bun (single binary available)</div>
+        <div>Rust binary (recently rewritten from TS)</div>
+        <div>Node.js — native binaries now shipped too</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Auth model</div>
+        <div><span class="pill good">Flexible</span> provider keys, Copilot, ChatGPT, env or config</div>
+        <div><span class="pill warn">OpenAI-first</span> ChatGPT login, API key, Azure, or custom provider</div>
+        <div><span class="pill warn">Anthropic-bound</span> Claude login or API key</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">First-run feel</div>
+        <div>Drops you into a TUI. Pick a model, start typing.</div>
+        <div>Asks for sandbox approval mode upfront.</div>
+        <div>Asks for working directory trust, then conversational.</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Time-to-first-prompt</div>
+        <div><span class="pill warn">~2 min</span> if you have a key already</div>
+        <div><span class="pill good">~30 sec</span> with ChatGPT login</div>
+        <div><span class="pill good">~30 sec</span> with Claude login</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Subscription path</div>
+        <div>None required — BYOK, Copilot, or ChatGPT plans</div>
+        <div>ChatGPT Plus/Pro/Business unlock usage; API keys still work</div>
+        <div>Claude Pro/Max plans unlock usage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTION MODEL -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 02 — The interaction loop</div>
+        <h2>How each tool <em>asks for permission</em> — and how often.</h2>
+      </div>
+      <p class="section-intro">The single biggest DX differentiator isn't features. It's how the tool handles the moment between "I want to do this" and "I did it."</p>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-header">
+        <div>Dimension</div>
+        <div class="tool-col" data-tool="opencode">OpenCode</div>
+        <div class="tool-col" data-tool="codex">Codex CLI</div>
+        <div class="tool-col" data-tool="claude">Claude Code</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Default mode</div>
+        <div>Interactive TUI; approval is configurable, Plan is restricted</div>
+        <div>Suggest mode (read-only) → Auto-edit → Full-auto tiers</div>
+        <div>Plan mode → conversational with per-action prompts</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Permissioning</div>
+        <div>Configurable permissions; Plan asks before edits and bash</div>
+        <div><span class="pill good">Best-in-class</span> sandbox tiers, OS-level isolation</div>
+        <div>Allowlist file + per-session approvals (granular)</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Diff display</div>
+        <div>Inline TUI diffs with syntax highlight</div>
+        <div>Unified diffs in terminal; clear before/after</div>
+        <div>Color-coded inline diffs, very legible</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Undo / rollback</div>
+        <div>Snapshots by default; rollback through the UI</div>
+        <div>Git-based; manual</div>
+        <div><code>/undo</code>-style flows + checkpointing</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Background tasks</div>
+        <div>Sessions can be backgrounded; multi-session UI</div>
+        <div>Cloud delegation via <code>codex cloud</code></div>
+        <div>Backgroundable; remote session ecosystem emerging</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Friction level</div>
+        <div><span class="pill warn">Medium</span> tunable</div>
+        <div><span class="pill good">Low</span> when sandboxed</div>
+        <div><span class="pill warn">Medium-high</span> by design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXTENSIBILITY -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 03 — Extending the tool</div>
+        <h2>Custom commands, MCP, and the <em>long-tail of fit</em>.</h2>
+      </div>
+      <p class="section-intro">Out-of-box experience matters less over months. What matters is whether the tool grows with the way your team actually works.</p>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-header">
+        <div>Dimension</div>
+        <div class="tool-col" data-tool="opencode">OpenCode</div>
+        <div class="tool-col" data-tool="codex">Codex CLI</div>
+        <div class="tool-col" data-tool="claude">Claude Code</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">MCP support</div>
+        <div><span class="pill good">Yes</span> as a client</div>
+        <div><span class="pill good">Yes</span> as client and (recently) server</div>
+        <div><span class="pill good">Yes</span> deepest integration of the three</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Custom commands</div>
+        <div>Markdown-based prompts, project-scoped</div>
+        <div>Prompt files; <code>AGENTS.md</code> convention</div>
+        <div>Slash commands from Markdown · skills · subagents</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Project memory</div>
+        <div><code>AGENTS.md</code> / project rules</div>
+        <div><code>AGENTS.md</code> hierarchy (now widely shared)</div>
+        <div><code>CLAUDE.md</code> hierarchy with explicit precedence</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Hooks / lifecycle</div>
+        <div>Hooks system (pre/post tool calls, etc.)</div>
+        <div>Documented hooks behind a feature flag</div>
+        <div><span class="pill good">Mature hooks</span> across many lifecycle points</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">Subagents / orchestration</div>
+        <div>Multi-agent patterns supported via configuration</div>
+        <div>Subagent workflows plus cloud sessions for parallelism</div>
+        <div>First-class subagents with isolated contexts</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-label">SDK / programmatic use</div>
+        <div>Open source — embed or fork freely</div>
+        <div>Rust crate + IDE extensions</div>
+        <div>TypeScript & Python SDKs · GitHub Actions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP DIVES -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 04 — Living with each tool</div>
+        <h2>What it actually <em>feels like</em> to use them.</h2>
+      </div>
+      <p class="section-intro">The matrices are facts. This section is opinions — informed by what each tool prioritizes, what it sacrifices, and who it's clearly built for.</p>
+    </div>
+
+    <!-- OPENCODE DEEP DIVE -->
+    <div class="deep-dive" data-tool="opencode">
+      <div class="dd-header">
+        <span class="dd-marker">DEEP DIVE / 01</span>
+        <h3 class="dd-name" data-tool="opencode">OpenCode</h3>
+        <span class="dd-vendor">anomalyco/opencode</span>
+      </div>
+      <div class="dd-body">
+        <div class="dd-section">
+          <h4>What it gets right</h4>
+          <ul>
+            <li><strong>Provider freedom is the headline.</strong> Anthropic, OpenAI, Google, Groq, Copilot, ChatGPT plans, local Ollama — switch in config. No tool here treats this as a first-class concern the way OpenCode does.</li>
+            <li><strong>The TUI is genuinely good.</strong> Multi-pane, multi-session, keyboard-driven. You feel like you're using a tool, not chatting with a window.</li>
+            <li><strong>No subscription requirement.</strong> Bring keys if you want pure pay-as-you-go, or use a supported subscription login. The tool does not force one commercial path.</li>
+            <li><strong>Open source ethos.</strong> Forkable, inspectable, hackable. If a behavior bugs you, you can change it.</li>
+          </ul>
+        </div>
+        <div class="dd-section">
+          <h4>Where it bites you</h4>
+          <ul>
+            <li><strong>The setup tax is real.</strong> You pick the provider, the model, the keys or login path, the config. That flexibility costs maybe 15 minutes of decisions you didn't have to make with Codex or Claude.</li>
+            <li><strong>Documentation lags features.</strong> Common with fast-moving OSS — you'll hit moments where the GitHub issues are the docs.</li>
+            <li><strong>Polish is uneven.</strong> The TUI is great, but edges around error messages, recovery, and edge-case UX trail behind the vendor tools.</li>
+            <li><strong>Less tribal knowledge.</strong> When you Google a problem, you'll find ten Claude Code answers for every OpenCode one.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dd-quote">
+        OpenCode is the tool you choose when "I don't want to be coupled to a single AI vendor" matters more than "I want the smoothest possible onboarding."
+      </div>
+    </div>
+
+    <!-- CODEX DEEP DIVE -->
+    <div class="deep-dive" data-tool="codex">
+      <div class="dd-header">
+        <span class="dd-marker">DEEP DIVE / 02</span>
+        <h3 class="dd-name" data-tool="codex">Codex CLI</h3>
+        <span class="dd-vendor">openai/codex</span>
+      </div>
+      <div class="dd-body">
+        <div class="dd-section">
+          <h4>What it gets right</h4>
+          <ul>
+            <li><strong>Sandbox-first design.</strong> The tiered approval modes (suggest / auto-edit / full-auto) plus OS-level sandboxing on macOS and Linux are the cleanest safety story of the three.</li>
+            <li><strong>The Rust rewrite paid off.</strong> Startup is fast, footprint is small, behavior is more predictable than the original TS version.</li>
+            <li><strong>Cloud delegation is genuinely useful.</strong> <code>codex cloud</code> lets you fire off long-running tasks without parking your terminal — a different shape of multitasking than the others offer.</li>
+            <li><strong>Good IDE story.</strong> The VS Code extension and IDE bridges are getting more mature, and the CLI ↔ IDE handoff is smooth.</li>
+          </ul>
+        </div>
+        <div class="dd-section">
+          <h4>Where it bites you</h4>
+          <ul>
+            <li><strong>OpenAI-first, not fully model-agnostic.</strong> You can configure Azure, local providers, and custom OpenAI-compatible endpoints, but the happy path is still clearly the OpenAI stack.</li>
+            <li><strong>The TUI is functional, not loved.</strong> It works. It doesn't feel like a place you want to live in for hours the way Claude Code or OpenCode do.</li>
+            <li><strong>Custom command ergonomics trail Claude Code.</strong> Prompt files, AGENTS.md, skills, and slash commands exist, but the muscle memory is less mature.</li>
+            <li><strong>Hooks are real, but newer.</strong> The lifecycle surface is documented and useful, but it still feels more like an emerging platform than Claude Code's long-running customization layer.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dd-quote">
+        Codex feels like infrastructure built by people who think about safety first and developer delight second. That's a feature if you're shipping in regulated environments. It's a flatter experience if you're not.
+      </div>
+    </div>
+
+    <!-- CLAUDE CODE DEEP DIVE -->
+    <div class="deep-dive" data-tool="claude">
+      <div class="dd-header">
+        <span class="dd-marker">DEEP DIVE / 03</span>
+        <h3 class="dd-name" data-tool="claude">Claude Code</h3>
+        <span class="dd-vendor">anthropic/claude-code</span>
+      </div>
+      <div class="dd-body">
+        <div class="dd-section">
+          <h4>What it gets right</h4>
+          <ul>
+            <li><strong>The most refined interaction loop.</strong> Plan mode, the way edits are previewed, the conversational rhythm — it's the tool that most consistently makes you forget you're talking to a CLI.</li>
+            <li><strong>The extensibility surface is huge.</strong> Slash commands, skills, subagents, hooks, MCP, output styles — the seams are real and well-thought-out.</li>
+            <li><strong>CLAUDE.md hierarchy is genuinely good.</strong> Project memory that respects nesting, with clear precedence rules. Once you've used it, the AGENTS.md convention feels less structured.</li>
+            <li><strong>Ecosystem gravity.</strong> Claude Code Actions, the SDK, GitHub workflows — there's a lot of "you can also..." that compounds the longer you use it.</li>
+          </ul>
+        </div>
+        <div class="dd-section">
+          <h4>Where it bites you</h4>
+          <ul>
+            <li><strong>Anthropic-only.</strong> No multi-vendor story. If your org needs to negotiate model choice, this is the most rigid option.</li>
+            <li><strong>The subscription model is a category mismatch.</strong> Claude Pro/Max usage limits work, but they introduce a "did I just burn through my quota?" anxiety the API-key tools don't have.</li>
+            <li><strong>It encourages context dependency.</strong> The richer the project becomes (skills, subagents, custom commands), the harder it is to walk away from. That's lock-in even if it's pleasant lock-in.</li>
+            <li><strong>The polish creates a baseline expectation.</strong> When something does go wrong — a bad tool call, a weird approval prompt — the contrast with the surrounding smoothness is jarring.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dd-quote">
+        Claude Code is the tool that most rewards investment. Spend a week tuning it for your project and you'll have something the others can't easily match. Spend an afternoon and the others probably feel lighter.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DX SCORECARD -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 05 — Scorecard</div>
+        <h2>The DX dimensions, <em>scored side by side</em>.</h2>
+      </div>
+      <p class="section-intro">Subjective scoring across the dimensions that actually move developer happiness. Out of 10.</p>
+    </div>
+
+    <div class="scorecard">
+      <div class="score-grid">
+
+        <div class="score-row">
+          <div class="score-label">Time to first useful output</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 70%"></div></div><span class="score-num">7</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 90%"></div></div><span class="score-num">9</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 90%"></div></div><span class="score-num">9</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">TUI / interaction polish</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 80%"></div></div><span class="score-num">8</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 70%"></div></div><span class="score-num">7</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 95%"></div></div><span class="score-num">9.5</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Permissioning &amp; safety UX</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 70%"></div></div><span class="score-num">7</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 95%"></div></div><span class="score-num">9.5</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 85%"></div></div><span class="score-num">8.5</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Extensibility ceiling</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 92%"></div></div><span class="score-num">9.2</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 82%"></div></div><span class="score-num">8.2</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 95%"></div></div><span class="score-num">9.5</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Provider / vendor flexibility</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 100%"></div></div><span class="score-num">10</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 65%"></div></div><span class="score-num">6.5</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 20%"></div></div><span class="score-num">2</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Project memory ergonomics</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 75%"></div></div><span class="score-num">7.5</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 80%"></div></div><span class="score-num">8</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 95%"></div></div><span class="score-num">9.5</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">IDE / editor integration</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 70%"></div></div><span class="score-num">7</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 85%"></div></div><span class="score-num">8.5</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 90%"></div></div><span class="score-num">9</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Background / remote sessions</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 75%"></div></div><span class="score-num">7.5</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 90%"></div></div><span class="score-num">9</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 80%"></div></div><span class="score-num">8</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Documentation quality</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 65%"></div></div><span class="score-num">6.5</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 80%"></div></div><span class="score-num">8</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 90%"></div></div><span class="score-num">9</span></div>
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-label">Long-term lock-in cost</div>
+          <div class="score-bars">
+            <div class="score-bar" data-tool="opencode"><span class="score-tool">Open</span><div class="score-track"><div class="score-fill" style="--score: 95%"></div></div><span class="score-num">9.5</span></div>
+            <div class="score-bar" data-tool="codex"><span class="score-tool">Codex</span><div class="score-track"><div class="score-fill" style="--score: 78%"></div></div><span class="score-num">7.8</span></div>
+            <div class="score-bar" data-tool="claude"><span class="score-tool">Claude</span><div class="score-track"><div class="score-fill" style="--score: 50%"></div></div><span class="score-num">5</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-num">§ 06 — Choosing</div>
+        <h2>Pick the one that matches <em>your constraints</em>.</h2>
+      </div>
+      <p class="section-intro">There is no winner. There's only fit. Here's the shape of the developer who'll be happiest with each tool.</p>
+    </div>
+
+    <div class="decision-grid">
+      <div class="decision-card" data-tool="opencode">
+        <h3>Choose OpenCode if…</h3>
+        <p class="check">You want to switch models without switching tools.</p>
+        <p class="check">You're price-sensitive and want pay-as-you-go via API keys, with subscription logins as an option rather than a requirement.</p>
+        <p class="check">You run local models (Ollama, LM Studio) and want a real TUI, not a chat window.</p>
+        <p class="check">You value being able to read, audit, or fork the tool you depend on.</p>
+        <p class="check">Your org has a multi-vendor AI policy or compliance reasons to avoid lock-in.</p>
+      </div>
+      <div class="decision-card" data-tool="codex">
+        <h3>Choose Codex CLI if…</h3>
+        <p class="check">You're already invested in the OpenAI stack, or you want an OpenAI-first tool that can still route through Azure, local providers, or custom endpoints.</p>
+        <p class="check">You need the strongest sandbox and approval-tier story you can get.</p>
+        <p class="check">You like delegating long-running work to the cloud and checking back in.</p>
+        <p class="check">You want a fast Rust binary that doesn't depend on a Node toolchain.</p>
+        <p class="check">You prefer infrastructure-feeling tools to delight-feeling tools.</p>
+      </div>
+      <div class="decision-card" data-tool="claude">
+        <h3>Choose Claude Code if…</h3>
+        <p class="check">You want the most polished moment-to-moment interaction available.</p>
+        <p class="check">You'll invest in custom commands, skills, and subagents to fit your project.</p>
+        <p class="check">You're already on a Claude Pro/Max plan or have Anthropic API access.</p>
+        <p class="check">You value a deep, opinionated extensibility model over a portable one.</p>
+        <p class="check">You're okay with vendor coupling in exchange for ecosystem gravity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<div class="verdict">
+  <div class="container">
+    <div class="verdict-eyebrow">— Closing thought —</div>
+    <h2>The right question isn't <em>"which is best?"</em><br>It's <em>"which is best for me, this quarter?"</em></h2>
+    <div class="verdict-body">
+      <p>OpenCode is the principled choice. Codex is the pragmatic enterprise choice. Claude Code is the maximalist productivity choice. None of them is wrong — they're just optimizing different things, and the fit depends on which of those things you currently care about most.</p>
+      <p>The healthiest move, if you can afford it, is to keep OpenCode installed alongside whichever vendor tool you use day-to-day. The day a model from a different provider wins your benchmark, you'll already have the muscle memory to switch.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Developer experience analysis · Model-agnostic · April 2026
+  </div>
+</footer>
+
+<script src="/nuggets/_resize.js" defer></script>
+</body>
+</html>

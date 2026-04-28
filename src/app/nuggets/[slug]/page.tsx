@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllNuggets, getNugget } from "@/lib/nuggets";
 import { NuggetFrame } from "@/components/NuggetFrame";
-import { TagPill } from "@/components/ui/TagPill";
 import { formatDate } from "@/lib/content";
 
 interface PageProps {
@@ -103,7 +102,12 @@ export default async function NuggetPage(props: PageProps) {
         {nugget.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {nugget.tags.map((tag) => (
-              <TagPill key={tag} tag={tag} />
+              <span
+                key={tag}
+                className="inline-block rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-3 py-1 text-xs font-medium uppercase tracking-wide text-[var(--color-brand-primary)]"
+              >
+                {tag}
+              </span>
             ))}
           </div>
         )}

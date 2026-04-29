@@ -7,7 +7,7 @@ summary: 'AI did not break professional development. It exposed the careful work
 
 *The boerie was always made the same way. Now everyone can see how.*
 
-For most of my career, the way you got ahead was by sharpening the axe. You knew the route, and you knew, walking in, which i's needed dotting and which t's needed crossing for *this* customer, *this* budget, *this* system. You knew what was safe to skip and what would bite you in production six months later, because you had been there before. Tens or hundreds of times.
+For most of my career, the way you got ahead was by sharpening the axe. You knew the route, and you knew, walking in, which i's needed dotting and which t's needed crossing for *this* customer, *this* budget, *this* system. You knew what was safe to skip, and what would bite you in production six months later, because you had been there before. Tens or hundreds of times.
 
 That was the contract. Hit the spec, look right, perform under load, hold up over time, and right-size the effort to what the work called for. The judgement was the product. The output looked like fast delivery; the careful, deliberate work underneath was almost invisible to the buyer.
 
@@ -15,9 +15,9 @@ That invisibility just disappeared.
 
 ## The boerie was always made the same way
 
-Quick aside for non-South-African readers: a *boerie* (boerewors) is a farmer's sausage, and the metaphor I keep coming back to is the butcher's deli. There is a glass counter at the front with a finished string on the tray, and a kitchen at the back where the spice grinding, casing prep, and trimming happen out of sight. Software has always had both halves too.
+Quick aside for non-South-African readers: a *boerie* (boerewors) is a farmer's sausage, and the metaphor I keep coming back to is the butcher's deli. Glass counter at the front, finished string on the tray. Kitchen at the back, where the spice grinding, casing prep, and trimming happen out of sight. Software has always had both halves too.
 
-The split itself is older than most of us. [Tom Cargill at Bell Labs](https://en.wikipedia.org/wiki/Ninety%E2%80%93ninety_rule), popularised by Jon Bentley in CACM in September 1985: "the first 90% of the code accounts for the first 90% of the development time. The remaining 10% accounts for the other 90%." Forty years on, it still holds: eighty percent of the visible work in twenty percent of the time, then the remaining twenty percent (the edges, the load behaviour, the failure modes, the maintainability, the security) in eighty percent of the time.
+The split itself is older than most of us. [Tom Cargill at Bell Labs](https://en.wikipedia.org/wiki/Ninety%E2%80%93ninety_rule), popularised by Jon Bentley in CACM in September 1985: "the first 90% of the code accounts for the first 90% of the development time. The remaining 10% accounts for the other 90%." Forty years on, it still holds: eighty percent of the visible work in twenty percent of the time. The remaining twenty percent is the edges, load behaviour, failure modes, maintainability, and security. That is where the other eighty percent goes.
 
 That ratio is not a flaw. It is where software actually becomes software: the first eighty is shape, and the last twenty is engineering.
 
@@ -27,7 +27,7 @@ That part is gone.
 
 ## Everyone knows someone
 
-Everyone knows someone now: the accountant who built a CRM in a weekend, the marketer with a working SaaS prototype, the PM who shipped an internal tool without filing a ticket. They got eighty percent of the way there in days. No malice, no contempt, no "they don't get it". They shipped a real working-ish thing, and good for them.
+Everyone knows someone now: the accountant who built a CRM in a weekend, the marketer with a working SaaS prototype, the PM who shipped an internal tool without filing a ticket. They got eighty percent of the way there in days. No malice, no contempt, no "they don't get it". They shipped a real, working-ish thing, and good for them.
 
 The data backs the visible part of the story. The original [GitHub Copilot study from Peng et al. (2023)](https://arxiv.org/abs/2302.06590) measured devs writing a JavaScript HTTP server with AI assistance and found 55.8% faster completion than the control group. That is the headline number people quote.
 
@@ -37,7 +37,7 @@ The [DORA 2025 State of AI-assisted Software Development report](https://dora.de
 
 The shift is not that developers got worse; we were never slow. What changed is that the gap between "looks done" and "is done" is now visible to the buyer, and they did not know it existed before.
 
-And upfront, nobody wants to pay for "this is going to take 80% more time." It reads as wasteful. The careful work has to fit into a smaller window now — sometimes 60% of the old time, sometimes 40, sometimes 20. The new skill is knowing, for *this* project, how much we can confidently shave.
+And upfront, nobody wants to pay for "this is going to take 80% more time." It reads as wasteful. The careful work has to fit into a smaller window now: sometimes 60% of the old time, sometimes 40, sometimes 20. The new skill is knowing, for *this* project, how much we can confidently shave.
 
 ## The risk that doesn't show in the demo
 
@@ -55,21 +55,21 @@ Mass-produced biltong (the good version of jerky 😉) does not taste like what 
 
 Craft did not die, and it did not even move; it just stopped being hidden. The careful work developers were always doing under cover of the delivery window is now the *only* work that still needs one. The eighty percent is commodity. The twenty (and the judgement to know *which* twenty matters for this particular system) is the entire product.
 
-The hard part of selling that work is the same hard part every CISO in the world has lived with for thirty years: nobody wants to pay to reduce a risk they cannot see yet. Security teams do not get budget by listing what could go wrong; they get it by helping organisations want to help themselves. Developers in 2026 are walking into the same conversation. The selling job is not "I am faster than the AI." It is "here is what the AI shipped that is going to bite you, and here is what it is worth to you for that not to happen."
+The hard part of selling that work is the same hard part every CISO in the world has lived with for thirty years: nobody wants to pay to reduce a risk they cannot see yet. Security teams do not get budget by listing what could go wrong; they get it by helping organisations want to help themselves. Developers in 2026 are walking into the same conversation. The selling job is not "I am faster than the AI." It is "here is the bet I can confidently take on this delivery: how much of it AI carries, where I still spend deliberate human time, and why the combined approach holds up." The bet itself is the product.
 
-What developers sell now:
+We still need to know the fundamentals deeply. More than ever, really. What we don't have anymore is the luxury of time. We have to talk while we walk. The skill that sells now is moving fast confidently. What that looks like in practice:
 
-- Risk management. Knowing where the bug will live in six months.
-- Taste. Knowing which "working" prototypes will eat themselves under load.
-- Threat modelling. Knowing what the AI client confidently shipped that should not ship.
-- The judgement to throw work away and start over.
+- **Calibration.** Knowing, for *this* project, how much compression it will tolerate before something breaks.
+- **Risk management.** Knowing where the bug will live in six months, and which accelerated path will put it there.
+- **Taste.** Knowing which "working" prototypes ship as-is and which will eat themselves under load.
+- **Judgement.** Knowing when the bet didn't pay off and starting over.
 
-[Andrej Karpathy](https://x.com/karpathy/status/1886192184808149383) coined "vibe coding" in February 2025: "you fully give in to the vibes, embrace exponentials, and forget that the code even exists." Worth knowing: he has [openly admitted](https://thenewstack.io/vibe-coding-is-passe/) that his real projects are still hand-coded. Even the people selling the dream know the dream has limits.
+[Andrej Karpathy](https://x.com/karpathy/status/1886192184808149383) coined "vibe coding" in February 2025: "you fully give in to the vibes, embrace exponentials, and forget that the code even exists." Worth knowing: he has [openly admitted](https://thenewstack.io/vibe-coding-is-passe/) that his real projects are still hand-coded. He picks the bet on every project. So do we.
 
 ## Strap in
 
-The expectation gap is not closing. It is widening.
+The expectation gap is not closing. It is getting wider.
 
-We cannot sell artisanal commercially anymore. Maybe on weekend projects, maybe on prestige work, but not on commercial software. The dev who wins the next decade is not the fastest typer or the best prompter. It is the one who can be trusted with what the AI shipped.
+We cannot sell artisanal commercially anymore. Maybe on weekend projects, maybe on prestige work, but not on commercial software. The dev who wins the next decade is not the fastest typer or the best prompter. It is the one who can move fast confidently, who knows, on each project, how much of the work to lean on AI for and where to still spend deliberate human time.
 
 Things are about to get crazy. Strap in.

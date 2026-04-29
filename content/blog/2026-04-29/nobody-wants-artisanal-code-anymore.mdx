@@ -7,7 +7,7 @@ summary: 'AI did not break professional development. It exposed the careful work
 
 *The boerie was always made the same way. Now everyone can see how.*
 
-For most of my career, the way you got ahead was by sharpening the axe. You knew the route. You knew, walking in, which i's needed dotting and which t's needed crossing for *this* customer, *this* budget, *this* system. You knew what was safe to skip and what would bite you in production six months later. Experienced developers got there fast because they had been there before. Tens or hundreds of times.
+For most of my career, the way you got ahead was by sharpening the axe. You knew the route, and you knew, walking in, which i's needed dotting and which t's needed crossing for *this* customer, *this* budget, *this* system. You knew what was safe to skip and what would bite you in production six months later, because you had been there before. Tens or hundreds of times.
 
 That was the contract. Hit the spec, look right, perform under load, hold up over time, and right-size the effort to what the work called for. The judgement was the product. The output looked like fast delivery; the careful, deliberate work underneath was almost invisible to the buyer.
 
@@ -15,11 +15,11 @@ That invisibility just disappeared.
 
 ## The boerie was always made the same way
 
-Quick aside for non-South-African readers: a *boerie* (boerewors) is a farmer's sausage, and the metaphor I keep coming back to is the butcher's deli. A glass counter at the front with a finished string on the tray. A kitchen at the back where the spice grinding and casing prep and trimming happen out of sight. Software has always had both halves too.
+Quick aside for non-South-African readers: a *boerie* (boerewors) is a farmer's sausage, and the metaphor I keep coming back to is the butcher's deli. There is a glass counter at the front with a finished string on the tray, and a kitchen at the back where the spice grinding, casing prep, and trimming happen out of sight. Software has always had both halves too.
 
-The split itself is older than most of us. [Tom Cargill at Bell Labs](https://en.wikipedia.org/wiki/Ninety%E2%80%93ninety_rule), popularised by Jon Bentley in CACM in September 1985: "the first 90% of the code accounts for the first 90% of the development time. The remaining 10% accounts for the other 90%." Forty years on, still true. Eighty percent of the visible work in twenty percent of the time. The remaining twenty percent (the edges, the load behaviour, the failure modes, the maintainability, the security) in eighty percent of the time.
+The split itself is older than most of us. [Tom Cargill at Bell Labs](https://en.wikipedia.org/wiki/Ninety%E2%80%93ninety_rule), popularised by Jon Bentley in CACM in September 1985: "the first 90% of the code accounts for the first 90% of the development time. The remaining 10% accounts for the other 90%." Forty years on, it still holds: eighty percent of the visible work in twenty percent of the time, then the remaining twenty percent (the edges, the load behaviour, the failure modes, the maintainability, the security) in eighty percent of the time.
 
-That ratio is not a flaw. It is where software actually becomes software. The first eighty is shape. The last twenty is engineering.
+That ratio is not a flaw. It is where software actually becomes software: the first eighty is shape, and the last twenty is engineering.
 
 And here's the bit that broke: customers used to come to the butcher with nothing in hand. Of course we worked with stakeholders the whole way through. Developers do not work in a vacuum. But because the customer came in at the *start* and built the kitchen with us, the shape of the work was a conversation we had together. They saw the time split because they were in it. The fact that the spice mixing took half the morning even though the casing went on in twenty minutes was something they had context for.
 
@@ -27,15 +27,15 @@ That part is gone.
 
 ## Everyone knows someone
 
-Everyone knows someone now. The accountant who built a CRM in a weekend. The marketer with a working SaaS prototype. The PM who shipped an internal tool without filing a ticket. They got eighty percent of the way there in days. No malice, no contempt, no "they don't get it" — they shipped a real working-ish thing, and good for them.
+Everyone knows someone now: the accountant who built a CRM in a weekend, the marketer with a working SaaS prototype, the PM who shipped an internal tool without filing a ticket. They got eighty percent of the way there in days. No malice, no contempt, no "they don't get it". They shipped a real working-ish thing, and good for them.
 
-The data backs the visible part of the story. The original [GitHub Copilot study from Peng et al. (2023)](https://arxiv.org/abs/2302.06590) measured devs writing a JavaScript HTTP server with AI assistance and got 55.8% faster completion than the control group. That is the headline number people quote.
+The data backs the visible part of the story. The original [GitHub Copilot study from Peng et al. (2023)](https://arxiv.org/abs/2302.06590) measured devs writing a JavaScript HTTP server with AI assistance and found 55.8% faster completion than the control group. That is the headline number people quote.
 
-Then [METR ran an experiment in 2025](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) on something much closer to real work: sixteen experienced open-source developers, in their own repositories, on real issues. The devs *expected* a 24% speedup with AI. After the experiment they still believed they had been sped up by 20%. They had been measured 19% slower. METR's [follow-up in February 2026](https://metr.org/blog/2026-02-24-uplift-update/) softened the headline to roughly −4% on a wider sample, but the perception gap survived intact.
+Then [METR ran an experiment in 2025](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) on something much closer to real work: sixteen experienced open-source developers, in their own repositories, on real issues. The devs *expected* a 24% speedup with AI, and after the experiment they still believed they had been sped up by 20%. They had been measured 19% slower. METR's [follow-up in February 2026](https://metr.org/blog/2026-02-24-uplift-update/) softened the headline to roughly −4% on a wider sample, but the perception gap survived intact.
 
-The [DORA 2025 State of AI-assisted Software Development report](https://dora.dev/dora-report-2025/) is the load-bearing one for me. DORA is the closest thing our industry has to an annual physical for software delivery, and this is the first edition where AI is the headline. Ninety percent of devs use it at work. Individual output is up: 21% more tasks completed, 98% more pull requests merged. Team-level delivery throughput is flat. The report's framing is exactly right: AI is an *amplifier* of an organisation's existing strengths and weaknesses, not an accelerator of delivery in its own right.
+The [DORA 2025 State of AI-assisted Software Development report](https://dora.dev/dora-report-2025/) is the load-bearing one for me. DORA is the closest thing our industry has to an annual physical for software delivery, and this is the first edition where AI is the headline. Ninety percent of devs use it at work. Individual output is up: 21% more tasks completed and 98% more pull requests merged, while team-level delivery throughput is flat. The report's framing is exactly right: AI is an *amplifier* of an organisation's existing strengths and weaknesses, not an accelerator of delivery in its own right.
 
-The shift is not that developers got worse. We were never slow. What changed is that the gap between "looks done" and "is done" is now visible to the buyer, and they did not know it existed before.
+The shift is not that developers got worse; we were never slow. What changed is that the gap between "looks done" and "is done" is now visible to the buyer, and they did not know it existed before.
 
 And upfront, nobody wants to pay for "this is going to take 80% more time." It reads as wasteful. The same work that used to be quietly priced into the delivery window now has to be sold, line-itemised, justified, in the same conversation where the buyer just demoed something they made themselves on a Sunday.
 
@@ -43,17 +43,17 @@ And upfront, nobody wants to pay for "this is going to take 80% more time." It r
 
 Here is what the demo hides.
 
-GitClear's [2024 report](https://www.gitclear.com/coding_on_copilot_data_shows_ais_downward_pressure_on_code_quality) and its [2025 follow-up](https://www.gitclear.com/ai_assistant_code_quality_2025_research) tracked 211 million lines of changed code and projected that "code churn" (lines reverted or rewritten within two weeks) would roughly double versus the 2021 pre-AI baseline. Refactor-class changes fell from around 25% of work to under 10%. Code clones grew four-fold by the 2025 update. The eighty percent that "works" sits on patterns that collapse under their own weight.
+GitClear's [2024 report](https://www.gitclear.com/coding_on_copilot_data_shows_ais_downward_pressure_on_code_quality) and its [2025 follow-up](https://www.gitclear.com/ai_assistant_code_quality_2025_research) tracked 211 million lines of changed code and projected that "code churn" (lines reverted or rewritten within two weeks) would roughly double versus the 2021 pre-AI baseline. Refactor-class changes fell from around 25% of work to under 10%, and by the 2025 update, code clones had grown four-fold. The eighty percent that "works" sits on patterns that collapse under their own weight.
 
-Then there is [Perry et al. (2023) from Stanford](https://arxiv.org/abs/2211.03622), published at CCS, a peer-reviewed top-tier security venue. Users with an AI assistant wrote *significantly less secure code* across multiple security-relevant tasks. They were also more likely to *believe* their code was secure than the unaided control group. The confidence gap is the whole story.
+Then there is [Perry et al. (2023) from Stanford](https://arxiv.org/abs/2211.03622), published at CCS, a peer-reviewed top-tier security venue. Users with an AI assistant wrote *significantly less secure code* across multiple security-relevant tasks, and they were also more likely to *believe* their code was secure than the unaided control group. The confidence gap is the whole story.
 
-[The DORA 2024 report](https://dora.dev/research/2024/dora-report/) ties it together. A 25% increase in AI adoption was associated with about a 1.5% drop in delivery throughput and a 7.2% drop in delivery stability. Two reports, two years, same direction.
+[The DORA 2024 report](https://dora.dev/research/2024/dora-report/) ties it together: a 25% increase in AI adoption was associated with about a 1.5% drop in delivery throughput and a 7.2% drop in delivery stability. Two reports, two years, same direction.
 
-Mass-produced biltong (the good version of jerky 😉) does not taste like what your mate down the road makes. Mass-produced infrastructure security has the same problem. The cost is paid later, by someone else, in production.
+Mass-produced biltong (the good version of jerky 😉) does not taste like what your mate down the road makes, and mass-produced infrastructure security has the same problem. The cost is paid later, by someone else, in production.
 
 ## Craft moved
 
-Craft did not die, and it did not even move. It just stopped being hidden. The careful work developers were always doing under cover of the delivery window is now the *only* work that still needs one. The eighty percent is commodity. The twenty (and the judgement to know *which* twenty matters for this particular system) is the entire product.
+Craft did not die, and it did not even move; it just stopped being hidden. The careful work developers were always doing under cover of the delivery window is now the *only* work that still needs one. The eighty percent is commodity. The twenty (and the judgement to know *which* twenty matters for this particular system) is the entire product.
 
 The hard part of selling that work is the same hard part every CISO in the world has lived with for thirty years: nobody wants to pay to reduce a risk they cannot see yet. Security teams do not get budget by listing what could go wrong; they get it by helping organisations want to help themselves. Developers in 2026 are walking into the same conversation. The selling job is not "I am faster than the AI." It is "here is what the AI shipped that is going to bite you, and here is what it is worth to you for that not to happen."
 
@@ -70,6 +70,6 @@ What developers sell now:
 
 The expectation gap is not closing. It is widening.
 
-We cannot sell artisanal commercially anymore. Maybe on weekend projects. Maybe on prestige work. Not on commercial software. The dev who wins the next decade is not the fastest typer or the best prompter. It is the one who can be trusted with what the AI shipped.
+We cannot sell artisanal commercially anymore. Maybe on weekend projects, maybe on prestige work, but not on commercial software. The dev who wins the next decade is not the fastest typer or the best prompter. It is the one who can be trusted with what the AI shipped.
 
 Things are about to get crazy. Strap in.

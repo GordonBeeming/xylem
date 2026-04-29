@@ -1,7 +1,0 @@
-title: "WebCrypto / AES-GCM — a field guide"
-date: 2026-04-23
-summary: "A short explainer on using the browser's WebCrypto API to encrypt and decrypt data with AES-GCM, with the things I actually trip over when I pick it up again."
-tags:
-  - security
-  - web-crypto
-  - javascript

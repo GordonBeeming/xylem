@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /external/
-
-Sitemap: https://gordonbeeming.com/sitemap.xml

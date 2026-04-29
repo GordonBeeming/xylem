@@ -1,0 +1,124 @@
+---
+title: 'What I learnt building (and deleting) a knowledge cache for Claude'
+date: 2026-04-07
+tags: ['Claude Code', 'AI', 'Skills', 'MCP', 'DevEx', 'Productivity']
+summary: 'I built a knowledge cache that auto-researched every technology Claude touched. It worked. Output got noticeably better. Then I deleted it within a week.'
+---
+
+A few times this year I'd been stuck on something for hours. A platform-specific framework that didn't behave like the docs implied. A migration path that quietly changed in a minor version. A library API I was sure I knew that had moved on without me. Each time, I'd drop the same prompt into Claude: *before you do anything, deeply research this technology. Current version, current best practices, breaking changes*. The next attempt would land.
+
+Different problems, same fix. After the third one I stopped calling it a coincidence.
+
+So I tried to make it automatic. Every session, every technology, every time, without me having to remember to ask.
+
+It worked. Output really did get better. I still deleted it within a week.
+
+## What I built
+
+Three layers, all small:
+
+1. **Trigger**: a one-line `@~/.claude/knowledge-cache-instructions.md` import in my global `CLAUDE.md`. It told the agent to identify every technology in a task and check the cache first.
+2. **Orchestrator**: a `tech-research` skill that read an `index.json`, and on a cache miss spawned an isolated subagent to do deep research via [context7](https://github.com/upstash/context7), `WebSearch`, and `WebFetch`. Two outputs came back. A tight summary that entered the main agent's context, and a much longer full-research file that stayed on disk.
+3. **Storage**: a public git repo, [gordonbeeming/learning-agent](https://github.com/GordonBeeming/learning-agent), that auto-committed and pushed every new piece of research. Sync across machines for free.
+
+I added a second skill, `tech-preferences`, for things like "always use TanStack libs for React" or "for .NET projects, prefer minimal APIs". Worth flagging that Claude Code's auto-memory feature now does most of this on its own. The difference is scope: auto-memories are project-local by default, mine were global from day one. Same idea, different default.
+
+The heart of the whole thing was the trigger file. It looked like this:
+
+```markdown title="knowledge-cache-instructions.md"
+# Technology Knowledge Cache
+
+Before working on any task involving a specific technology, framework, or library:
+
+1. Identify ALL technologies/frameworks/libraries the task involves
+2. Read ~/Developer/github/gordonbeeming/learning-agent/index.json ONCE
+3. For each technology with a fresh entry, read its summary.md
+4. For ALL technologies missing or stale, invoke the tech-research skill
+5. Also read preferences/index.json and load matching preference files
+6. NEVER skip this step — cached research dramatically improves code quality
+7. Quality matters: ensure ALL relevant technologies are researched
+```
+
+Every session loaded this. Every task got measured against it.
+
+## The good part
+
+The output really did feel better. Code was more current. Fewer "this API doesn't exist anymore" moments. Within a week the cache had filled up with React 19, Tailwind v4, Microsoft Teams Apps, Dynamics 365, Angular v21, Auth0. All real research used in real projects. The git history of the learning-agent repo is the receipt.
+
+The interesting wins weren't the obvious ones. The interesting wins were the *hard edge cases I didn't know were edge cases*. Patterns I'd been doing the same way for years because I'd always done them that way, suddenly being challenged or replaced because the fresh research surfaced a better approach. You don't notice the rut you're in until something pulls you out of it.
+
+That part is hard to give up.
+
+## The friction
+
+Three things happened during that same week that made the deletion feel less like a failure and more like a correction.
+
+### Anecdote 1: "use a modern CSS framework"
+
+I was building a small games app and asked Claude to make it look nicer with "a modern CSS framework". Claude picked Tailwind and went straight to `npm install tailwindcss`. It did not check the cache. It did not run the research skill.
+
+Why? Because the instructions only told the agent to research technologies *the user mentioned*. They didn't cover technologies *Claude chose itself*. I had to add a "Critical rule" paragraph saying that picking a library counts as introducing a technology, so the sequence is always identify → research → implement.
+
+Every edge case becomes a new clause in the instruction file.
+
+### Anecdote 2: "I prefer doing web apps as React latest"
+
+Mid-session, I told Claude my preference. It used React for that task. It did not save the preference.
+
+Why? Because the instructions told the agent how to *load* preferences, but never how to *detect and save* them. Another clause added: "When the user says 'I prefer / always use / I like to use', invoke the tech-preferences skill."
+
+The instruction file was becoming a catalog of every way I could be misunderstood.
+
+### Anecdote 3: every session paid the tax
+
+The instructions ran on every session. Even prose. Even refactors. Even git work. Yes, the file said "does not apply to refactoring/git/prose", but the agent still had to read it, parse it, decide it didn't apply, then continue.
+
+And when it *did* apply, it had to read the index, the per-tech summary, the preference index, and any matching preference files. That is a noticeable warm-up before any work happens. Sessions slowed down a lot. Output was better, but the *feel* of the tool changed.
+
+## Wait, Claude is doing this on its own
+
+After I disabled the auto-trigger, I noticed Claude was *still* doing research before acting on Azure SQL work in fresh sessions. It was calling `microsoft_docs_search` and `microsoft_docs_fetch` on its own, before writing any code.
+
+<Figure key="/images/microsoft-learn-mcp-auto-research.png" src="/images/microsoft-learn-mcp-auto-research.png" alt="Claude Code session log showing two Microsoft Learn MCP calls: microsoft_docs_search for 'Azure SQL Database copy database between servers' and a follow-up search for 'Azure SQL Database point in time restore cross server'" width="0" height="0" caption="Claude calling microsoft_docs_search twice on its own before answering an Azure SQL question, with no knowledge-cache instructions in sight" />
+
+That's the Microsoft Learn MCP server. It ships with its own usage instructions, and the workflow it gives Claude is literally: *"Use `microsoft_docs_search` first to find relevant documents... ideal for grounding answers in Microsoft knowledge."* The context7 MCP server has the same shape: *"Use even when you think you know the answer. Your training data may not reflect recent changes."*
+
+That was the moment it clicked. Before writing a hard-and-fast workflow that says "always do X before Y", look for something that already does it. Hard-coded workflows slow agents down because everything *has to be done this way*, even when the model would have made a better choice on its own.
+
+I had been writing global meta-instructions that duplicated what MCP authors had already encoded in the tools I'd installed. Of course it felt slow. Every session was paying for instructions the tools were going to provide on demand anyway.
+
+If you find yourself writing a rule that says "before doing X, always call Y", check whether something already does this. Usually it does, or it will soon, and your version is the one that's going to age badly.
+
+## Boris Cherny said this exact thing
+
+This part is what made me stop second-guessing the deletion. [Boris Cherny](https://www.youtube.com/watch?v=We7BZVKbCVw), creator of Claude Code, talked about exactly this on Lenny's Podcast in February. The whole episode is worth watching, but the bit that mattered to me starts at [00:51:06](https://youtu.be/We7BZVKbCVw?t=3066):
+
+> The modern framing that I've been seeing in the last 6 months is a little bit different and it's: look at what the model is trying to do and make that a little bit easier. And so when we first started building Claude Code, I think a lot of the way that people approached designing things with LLMs is they kind of put the model in a box... for Claude Code we inverted that. We said the product is the model. We want to expose it, we want to put the minimal scaffolding around it, give it the minimal set of tools so it can do the things... it can decide which tools to run, it can decide in what order to run them in.
+
+A bit later, at [01:04:18](https://youtu.be/We7BZVKbCVw?t=3858), he calls it "*Ask not what the model can do for you*". Don't try to over-curate or pre-contextualise the model. Give it the tools it needs and let it find its own context.
+
+Then the part that hit hardest, at [01:05:50](https://youtu.be/We7BZVKbCVw?t=3950): build for the model that exists in six months, not the one in front of you. Heavy infrastructure built around the *current* model's limitations becomes a hindrance the moment the next model arrives. He references Rich Sutton's "Bitter Lesson" at [01:04:43](https://youtu.be/We7BZVKbCVw?t=3883). General methods almost always beat hand-coded rules in the long run.
+
+That's what I'd done. I'd built scaffolding around a limitation the model was already growing past.
+
+## What I'd do differently, and what I kept
+
+The fix wasn't to throw the whole thing out. The fix was to stop forcing it on every session.
+
+I could have made this a *user-invoked* skill from the start. No auto-trigger, just `/research React 19` when I actually want it. That's how [Brady Stroud](https://www.linkedin.com/in/bradystroud/) implemented his version, and in hindsight it's clearly the right shape: pay the cost when you want the value, not on every session.
+
+So I deleted the `@~/.claude/knowledge-cache-instructions.md` import, kept the `tech-research` and `tech-preferences` skills as user-invokable, and kept the repo. The cached research is still useful when I pull it on demand. I just don't pay for the lookup on every prompt anymore.
+
+## The bigger picture
+
+It's tempting to build for the model in front of you. Every skill, every hook, every CLAUDE.md rule is a tiny opinion about what the model can't do, and a small bet that the model won't catch up.
+
+The skills that have aged well in my setup are the ones that give Claude *capability*. A custom statusline. [GitButler](https://gitbutler.com/) integration. Brand-guideline assets. Bespoke tools for whatever I'm working on. The ones that aged badly are the ones that tried to tell it *how to think*.
+
+The instructions that work and age well are the ones that live next to the tool they describe. MCP servers shipping their own usage instructions are exactly the right shape: written once, by the person who knows the tool best, loaded only when the tool is in play. That's where "go research first" belongs. Not in my global CLAUDE.md.
+
+The model is the product. Don't over-orchestrate the product. And if you must orchestrate something, push the orchestration as close to the tool as you can.
+
+## Try it
+
+The repo is at [github.com/GordonBeeming/learning-agent](https://github.com/GordonBeeming/learning-agent). The install script and skills still work. Install them as user-invokable rather than adding the global `@path` import, and you'll get the value without the every-session tax.

@@ -1,0 +1,226 @@
+---
+title: 'The Double-Edged Sword of Conveniently Named Exceptions'
+date: 2025-09-03
+tags: ['C#', '.NET', 'Clean Code', 'Error Handling', 'Exceptions']
+summary: 'Choosing a C# exception because its name sounds right is a common anti-pattern. Learn why this leads to confusing logs, unnecessary costs, and better ways to handle errors.'
+---
+
+
+
+Earlier today, I was on a call with my colleague, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), reviewing a section of our codebase. For a few reasons, this particular area needed to stick with exceptions for flow control rather than using a Result-based pattern.
+
+We came across a piece of code throwing a built-in exception, and we ended up in a good back-and-forth about whether the exception's semantic meaning was actually a good fit for the situation. That led me to ask him about what I call **"conveniently named exceptions"** - the anti-pattern of choosing an exception because its name sounds right, not because its purpose is right.
+
+This isn't a theoretical debate. It leads to real, time-wasting consequences. Two scenarios come up again and again.
+
+First: a developer on your team sighs, a little louder than usual, "I keep getting a `NotSupportedException` and I have no idea why!" A teammate overhears and jumps in, immediately suggesting you check framework versions or stream permissions. An hour later, you both discover the exception was thrown because a user on the Free tier tried to access a Premium feature.
+
+Second: your error dashboard shows 400 `NotSupportedException` instances this week. The team dismisses it as "just that business rule noise." Hidden in that noise are 50 legitimate exceptions from a real bug silently breaking a critical feature. The signal is gone.
+
+Same root cause, both times. Here are the specific exceptions that get misused most often, and what to do instead.
+
+## Common examples of misused exceptions
+
+Choosing an exception class because the name *sounds* right ignores its documented purpose. That gap between what an exception *is* and what a developer *thinks* it is - that's where the confusion comes from.
+
+### 1. `NotSupportedException`
+This is the one I see most often misused.
+
+* **Intended use:** A method or capability isn't implemented. Think `stream.Write()` on a read-only stream.
+* **Common misuse:** Signaling that a business rule prevents an action.
+
+```csharp title="NotSupportedException misuse"
+// ❌ Bad Practice
+public void GrantAdminAccess(User user)
+{
+    // Don't do this! The operation IS supported by the code.
+    if (user.SubscriptionTier != "Premium")
+    {
+        throw new NotSupportedException("This feature is only for Premium users.");
+    }
+    // ... logic to grant access
+}
+````
+
+The next developer who hits this will go straight to checking framework versions. They won't look at a business rule for a long time.
+
+### 2. `InvalidOperationException`
+
+This one gets used as a generic "something went wrong" bucket.
+
+  * **Intended use:** An object is in an inappropriate state for a method call. Think reading from a file stream after it has been closed.
+  * **Common misuse:** A catch-all for any business logic failure.
+
+
+```csharp title="InvalidOperationException misuse"
+// ❌ Bad Practice
+public void ProcessOrder(Order order, Product product)
+{
+    if (product.Stock < order.Quantity)
+    {
+        // This isn't about the state of the OrderProcessor.
+        // It's a predictable business validation failure.
+        throw new InvalidOperationException("Not enough stock to fulfill the order.");
+    }
+    // ... logic to process order
+}
+```
+
+### 3. `ArgumentNullException`
+
+This one is subtler.
+
+  * **Intended use:** An argument passed to a method is `null`. That's it.
+  * **Common misuse:** Throwing it when an argument is an empty string (`""`) or whitespace.
+
+
+```csharp title="ArgumentNullException misuse"
+// ❌ Misleading Practice
+public void SetUsername(string newUsername)
+{
+    if (string.IsNullOrWhiteSpace(newUsername))
+    {
+        // This is factually incorrect. The value is not null.
+        throw new ArgumentNullException(nameof(newUsername), "Username cannot be empty.");
+    }
+    // ... logic to set username
+}
+```
+
+This misuse is less common, which is exactly what makes it so disorienting. Developers trust that `ArgumentNullException` means `null`. When it doesn't, they go hunting for a null that isn't there. Use `ArgumentException` instead.
+
+## A better way: the Result pattern
+
+The root of the problem is using exceptions - a mechanism for *unexpected* events - for predictable outcomes like validation failures. Beyond confusing code, there's a practical cost.
+
+Cloud logging and monitoring services like Azure Application Insights or AWS CloudWatch bill based on data ingested. Exceptions with their verbose stack traces generate a lot of it. At scale, logging thousands of predictable business outcomes as exceptions adds up to a real line item on your bill.
+
+The **Result pattern** sidesteps this entirely. You don't have to build it from scratch - there are production-ready libraries available.
+
+A few popular options:
+
+  * **`FluentResults`** by [Michael Altmann](https://github.com/altmann/FluentResults)
+  * **`ErrorOr`** by [Amichai Mantinband](https://github.com/amantinband/error-or)
+  * **`LanguageExt`** by [Paul Louth](https://github.com/louthy/language-ext)
+
+For our example, we'll use `FluentResults`. You *can* just fail with a string like `Result.Fail("An error occurred")`, but that's not great - it forces callers to do string-matching to figure out what went wrong, which is fragile.
+
+**Strongly-typed errors** are the better move. The caller can check for specific failure types and handle them properly.
+
+Here's the `GrantAdminAccess` method refactored with a typed error:
+
+```csharp title="Result pattern with typed errors"
+// ✅ Good Practice using FluentResults with Typed Errors
+using FluentResults;
+
+// 1. Define a specific error type inheriting from FluentResults.Error
+public class LicenseError : Error
+{
+    public LicenseError(string message) : base(message) { }
+}
+
+public class AdminService
+{
+    public Result GrantAdminAccess(User user)
+    {
+        if (user.SubscriptionTier != "Premium")
+        {
+            // 2. Return a specific, typed error
+            return Result.Fail(new LicenseError("A premium license is required to grant admin access."));
+        }
+        // ... logic to grant access
+        return Result.Ok();
+    }
+}
+
+// 3. The caller can now handle the specific error type
+var service = new AdminService();
+var result = service.GrantAdminAccess(myUser);
+
+if (result.IsFailed)
+{
+    // Check for the specific error without matching strings!
+    if (result.HasError<LicenseError>())
+    {
+        Console.WriteLine($"A licensing issue occurred: {result.Errors.First().Message}");
+        // ... logic to prompt user to upgrade
+    }
+}
+```
+
+**Pro-tip:** Write error messages that are safe to show an end user. "A premium license is required to grant admin access." is more useful in a UI than "User must be on the Premium tier."
+
+The tradeoffs here are worth naming honestly:
+
+  * **Battle-tested library:** `FluentResults` gives you logging, typed errors, and a fluent API without maintaining the core logic yourself.
+  * **Honest method signatures:** The `Result` return type tells callers upfront that failure is possible.
+  * **Lower logging costs:** A concise structured warning is a lot cheaper to ingest than a full stack trace.
+  * **No exception overhead:** You skip the cost of throwing and catching exceptions for non-exceptional logic.
+  * **New dependency:** You'll need to add a NuGet package.
+  * **Team adoption:** The pattern only works if the team uses it consistently.
+
+The Result pattern is a solid goal, but introducing it into a codebase that already relies on exceptions for **flow control** is genuinely hard. A partial "hybrid" implementation can introduce its own subtle bugs.
+
+## A word of caution on hybrid systems
+
+In a codebase built on exceptions, developers are conditioned to treat "no exception" as success. When they call a method that returns a Result, muscle memory kicks in and they forget to check its status. Code keeps running after a failure, assuming everything is fine.
+
+```csharp title="Unchecked Result danger"
+// A developer, used to exceptions, might write this:
+var result = _userService.UpdatePreferences(preferences);
+
+// ☠️ DANGER: They forgot to check if 'result.IsFailed'.
+// The code below now runs assuming the preferences were successfully updated,
+// which might not be true, leading to a faulty audit log.
+_auditingService.LogPreferenceChange(preferences);
+```
+
+If you've worked with SQL Server, this will feel familiar. Running batches with **`SET XACT_ABORT OFF`** (the default) means statements can fail without stopping the batch. Unless you explicitly check `IF @@ERROR <> 0`, subsequent statements run against inconsistent state. Forgetting to check a `Result` object in C# is the same trap - errors slip by silently while the program carries on as if nothing happened.
+
+Because of that risk, sometimes the most pragmatic path is to improve your existing exception handling rather than introduce a new pattern. Here's how to do that.
+
+## A practical guide for existing code
+
+Even if you can't switch to a Result-based approach, you can make your exception handling a lot more predictable with three rules.
+
+### Rule 1: Create specific, custom domain exceptions
+
+If a built-in exception doesn't fit, create your own. It's the clearest option.
+
+```csharp title="Custom domain exception"
+public class InsufficientStockException : Exception
+{
+    public InsufficientStockException(int productId, int quantityRequired)
+        : base($"Insufficient stock for product {productId}. Required: {quantityRequired}.") { }
+}
+
+// Now your code is unambiguous:
+if (product.Stock < order.Quantity)
+{
+    throw new InsufficientStockException(order.ProductId, order.Quantity);
+}
+```
+
+### Rule 2: Respect semantic meaning
+
+Before using a built-in exception, take 10 seconds to read its documentation summary. If your scenario doesn't match the intended purpose, don't use it. That one habit prevents most of the confusion described above.
+
+### Rule 3: Use guard clauses for arguments
+
+Check arguments at the top of your methods before any work is done. Fail fast, fail correctly.
+
+```csharp title="Guard clause example"
+public void UpdateUser(User user)
+{
+    // ✅ Guard Clause
+    if (user == null)
+    {
+        throw new ArgumentNullException(nameof(user));
+    }
+    
+    // ... logic to proceed with the work
+}
+```
+
+Next time you reach for `throw`, ask: is this actually *exceptional*, or just a predictable outcome? Getting that right makes your code easier to read and your logs easier to trust.
+

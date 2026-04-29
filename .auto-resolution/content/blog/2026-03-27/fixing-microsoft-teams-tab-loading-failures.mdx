@@ -1,0 +1,54 @@
+---
+title: 'Fixing Microsoft Teams tab loading failures (Ocdi error)'
+date: 2026-03-27
+tags: ['Microsoft Teams', 'Teams SDK', 'CSP', 'Troubleshooting']
+summary: 'How to fix the "There was a problem reaching this app" error and "failed reason: Ocdi" in Microsoft Teams configurable tabs.'
+---
+
+If your Microsoft Teams tab app shows "There was a problem reaching this app" or you see `failed reason: Ocdi` in the browser console, there are two things that are likely wrong. Here's what fixed it for us.
+
+## The error
+
+In the Teams web client, our configurable tab would fail to load. The main area shows "If you're having issues with this app, try the desktop version" (1), and the browser console logs `failed reason: Ocdi` (2):
+
+<Figure key="/images/teams-tab-ocdi-error.png" src="/images/teams-tab-ocdi-error.png" alt="Teams tab showing 'If you're having issues with this app, try the desktop version' error with 'failed reason: Ocdi' in the browser console" width="0" height="0" caption="The Teams tab fails to load, showing an error message (1) and logging 'failed reason: Ocdi' in the console (2)" />
+
+## Fix 1: Remove showLoadingIndicator from the manifest
+
+The `showLoadingIndicator` flag in `manifest.json` tells Teams to display a native loading screen and wait for your app to call `app.notifySuccess()`. If your app doesn't call it fast enough, Teams gives up and shows the error.
+
+The fix is simple. Remove this line from your manifest:
+
+```json title="manifest.json"
+"showLoadingIndicator": true,
+```
+
+Without this flag, Teams loads your app's iframe directly without waiting for a ready signal. No timeout, no Ocdi error.
+
+If you were calling `app.notifyAppLoaded()` and `app.notifySuccess()` in your code, you can remove those calls too. They're only needed when `showLoadingIndicator` is `true`.
+
+## Fix 2: Check your CSP frame-ancestors
+
+If Teams can embed your app but the iframe content is served from a URL without proper Content Security Policy headers, you'll get the same error.
+
+In our case, we had recently switched to a custom domain (behind Cloudflare) that had the correct `frame-ancestors` policy. But the infrastructure template (Bicep) hadn't been updated yet and was still setting the tab's `contentUrl` to the old Azure Blob Storage URL, which had no CSP headers.
+
+Make sure your hosting returns this CSP header:
+
+```text title="HTTP response header"
+Content-Security-Policy: frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com https://*.cloud.microsoft https://*.skype.com https://*.microsoft.com;
+```
+
+And make sure the URL that Teams loads (the `contentUrl` set when the tab is added) is the URL that actually has these headers.
+
+## Quick checklist
+
+If your Teams tab shows "problem reaching this app" or logs `Ocdi`:
+
+1. Remove `showLoadingIndicator` from your `manifest.json`
+2. Remove `app.notifyAppLoaded()` and `app.notifySuccess()` calls (optional, but they're no longer needed)
+3. Check that your `contentUrl` domain returns proper `frame-ancestors` CSP headers
+4. Check that your `contentUrl` domain is listed in `validDomains` in the manifest
+5. Make sure you can actually reach the URL in a browser (SSL cert issues, deployment problems, etc.)
+
+The `showLoadingIndicator` removal was the main fix for us. The CSP issue was a separate problem that only affected our deployed environment because the infrastructure template was using the wrong URL.

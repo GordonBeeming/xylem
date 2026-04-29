@@ -1,0 +1,61 @@
+---
+title: 'My AI-Powered Workflow: Building a Full-Stack App with ChatGPT and GitHub Copilot'
+date: 2025-09-16
+tags: ['AI', 'GitHub Copilot', 'ChatGPT', 'Productivity', 'Development']
+summary: 'What if you could build a complete application without writing most of the code? I put that to the test by building a URL shortener where I acted as the architect, ChatGPT as the project manager, and GitHub Copilot as the developer. This is how it went.'
+---
+
+
+
+I've been using AI tools for a while now, but I kept wondering whether I could take it further — not just autocomplete and chat, but actually delegate whole chunks of a project. So I set myself a challenge: build a complete, full-stack URL shortener from scratch while writing as little code as possible myself.
+
+My role would be the **Architect**. My team? Two AI agents:
+* **ChatGPT** as my Project Manager, responsible for planning.
+* **GitHub Copilot** as my Developer, responsible for implementation.
+
+Here's how it went.
+
+## Step 1: The blueprint from ChatGPT
+
+Instead of spending hours writing user stories myself, I had a conversation with ChatGPT. I gave it a high-level brief: a modern URL shortener with a React frontend, a Rust backend, and features like custom domains and passkey authentication. Then I asked it to break that down into a detailed list of Product Backlog Items (PBIs).
+
+<Figure key="/images/chatgpt-pbis.png" src="/images/chatgpt-pbis.png" alt="A screenshot of a ChatGPT conversation showing a detailed list of Product Backlog Items for a URL shortener project." width="0" height="0" caption="ChatGPT acting as my Project Manager, generating a surprisingly solid project plan." />
+
+The output was solid. I copied the plan straight into the repo, created a GitHub Issue for each PBI, and had a full backlog ready to go without writing a single user story myself.
+
+---
+## Step 2: The AI agent development loop
+
+With the plan in place, my role shifted from coder to director. For each feature, the workflow was the same:
+
+1.  Open the GitHub Issue for the PBI.
+2.  Assign it directly to GitHub Copilot from the assignees section.
+
+<Figure key="/images/assign-to-copilot.png" src="/images/assign-to-copilot.png" alt="A screenshot of a GitHub Issue with a comment assigning the task to the @github-copilot user." width="0" height="0" caption="Assigning the issue directly to the GitHub Copilot agent." />
+
+Then I'd wait. Simple tasks came back in a few minutes; more complex ones took close to an hour. Either way, Copilot would open a Pull Request with a full implementation — Rust backend, React components, database logic, the lot.
+
+## Step 3: The human in the loop
+
+This was not a fire-and-forget process. I'd review each PR exactly as I would with a human developer — reading through the diff and leaving comments.
+
+Some of it was refinement, some of it was bug fixes. Copilot's code was often good, but not always right. Seeing a feature working also had a way of surfacing things I hadn't thought to ask for.
+
+<Figure key="/images/pr-review-loop.png" src="/images/pr-review-loop.png" alt="A screenshot of a GitHub Pull Request showing a conversation between a user and the GitHub Copilot bot, with review comments and subsequent commits." width="0" height="0" caption="The back-and-forth review cycle — this is where most of the real work happened." />
+
+My comments were blunt:
+* "the test url button stopped working... please fix"
+* "Don't leave TODOs... add this to the instructions too... fix it rather"
+* "fetch configuration... no hardcoded urls"
+
+Copilot would pick those up, make the changes, and push new commits to the PR. That back-and-forth loop drove most of the project forward.
+
+## A new way of working
+
+What I got out of this wasn't just a working URL shortener. It was a shift in how I spent my time. Instead of writing Rust structs and React components, I was thinking about architecture, flow, and whether the thing I'd asked for actually made sense once I could see it running.
+
+The full repository for Thalora is public if you want to dig into how it actually played out. Every PBI is there as a GitHub Issue, every Copilot-generated PR is there with my review comments intact.
+
+Find it here: **[github.com/GordonBeeming/Thalora](https://github.com/GordonBeeming/Thalora)**
+
+I think of this as "Level 1" of AI-assisted development — one agent, one task at a time, with a human reviewing each step. It works well. But what happens when you start running multiple agents in parallel? That's the next post.

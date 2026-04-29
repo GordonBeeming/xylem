@@ -1,0 +1,252 @@
+---
+title: 'Beyond the Prompt: Building a ''Virtual Dev Team'' with Chat Modes'
+date: 2025-10-21
+tags: ['AI', 'VS Code', 'Productivity', 'GitHub Copilot', 'Development', 'C#']
+summary: 'Stop writing huge system prompts every time you need AI help. Start building a team of specialized AI agents right inside your IDE. Here''s how ''chat modes'' can create a virtual PO, Tech Lead, and more.'
+---
+
+
+
+I'm often in this situation: I need my AI assistant to help with a task, but first I have to write a 10-paragraph system prompt explaining my entire project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
+
+By the time I'm done writing the prompt, I could have written the code myself.
+
+What if you didn't have to? What if you could just *select your specialist* from a dropdown:
+-   "Issue Scribe" (for creating PBIs)
+-   "Task Planner" (for planning tasks)
+-   "Test Writer" (for writing integration tests)
+-   "Backlog Analyst" (for refining the backlog)
+
+...and then ask your question?
+
+You can build this "virtual team" of specialists right inside your IDE using VS Code's Custom Chat Modes.
+
+## The generalist AI problem
+
+Your default AI chat doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your tech stack (e.g., "we always use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
+
+This leads to "prompt fatigue" and a lot of wasted time correcting generic, often wrong suggestions.
+
+### But what about `copilot-instructions.md`?
+
+You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` file!"
+
+I've been down that road, and it backfires.
+
+That instruction file is loaded every single time you ask a question. It quickly becomes a 500-line monster. When you want to ask a simple question about a regex, the AI is wading through hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas. It pollutes the prompt and makes responses worse for everyday tasks.
+
+## The solution: a virtual team
+
+Custom Chat Modes fix this. Instead of one giant instruction file, you create a set of specialists.
+
+Each file defines that agent's persona, its rules, and the tools it's allowed to use. The context is only loaded when you explicitly choose that specialist. When you want to chat, you pick the right person for the job from the chat UI.
+
+<Figure key="/images/chat-mode-picker.png" src="/images/chat-mode-picker.png" alt="A screenshot of the VS Code chat dropdown menu, showing custom chat modes like 'Backlog Refinement', 'Create PBIs', 'Tests', and 'Task Planner'." width="400" height="0" caption="Choosing the right specialist from the chat mode dropdown." />
+
+## Meet the team
+
+Let's say we're working on a C# e-commerce project called "E-Shop" - a modular monolith using EF Core, MediatR, and Blazor.
+
+The core principle for all our specialists is: ask clarifying questions before you act. They iterate with the user until all ambiguities are resolved, then execute the task.
+
+Here are a few specialists we can create:
+
+### 1. The "Issue Scribe"
+
+This agent is a strict, non-technical assistant. Its only job is to create properly formatted PBIs and bug reports.
+
+**How we use it:**
+> **USER:**
+> (Selected 'Issue Scribe' mode)
+> The login form isn't showing an error when I use a bad password.
+>
+> **AGENT:**
+> I'm ready to write this up as a bug. To make it actionable, I need a few more details:
+> 1. What's the exact URL of the login form?
+> 2. What did you expect to see?
+> 3. Does this happen for all users?
+>
+> **USER:**
+> 1. It's on /admin/login.
+> 2. I expected a red toast notification saying 'Invalid credentials'.
+> 3. It seems to be for all non-admin users.
+>
+> **AGENT:**
+> Got it. I've created "Bug - /admin/login no error on bad password (Issue #1234)" with those details and added the 'needs-triage' label.
+
+### 2. The "Task Planner"
+
+This one acts as a senior developer. It takes a PBI and a developer's high-level thoughts and turns them into a detailed, full-stack execution plan. Honestly this is where I find it most useful.
+
+**How we use it:**
+> **USER:**
+> (Selected 'Task Planner' mode)
+> I'm working on PBI #123 (Add 'Featured' flag to Products).
+> Here's my high-level plan:
+> - Add IsFeatured bool to Product
+> - Add checkbox to admin
+> - Update homepage query
+>
+> **AGENT:**
+> I've fetched PBI #123 and searched the codebase. Before I generate the full task list, I have a few architectural questions:
+> 1. I see `Product` is in the `Catalog` module. When you add `IsFeatured` to `Product.cs`, should this also be added to the `ProductDto` in `Catalog.Contracts`?
+> 2. The homepage query uses a materialized view. What should the default `IsFeatured` value be for existing products?
+> 3. For the `ProductEditor.razor`, does this new flag need to be logged in our `AuditTrailService`?
+>
+> **USER:**
+> 1. Yes, please add it to the ProductDto.
+> 2. Default new ones to 'false'. The migration should update existing products.
+> 3. Good catch, yes, please add a step to log this to the AuditTrailService.
+>
+> **AGENT:**
+> Here is the complete, step-by-step execution plan for PBI #123...
+> (Generates the full, detailed markdown plan)
+
+### 3. The "Test Writer"
+
+This agent knows your exact testing stack. No more generic NUnit code when your project uses xUnit.
+
+**How we use it:**
+> **USER:**
+> (Selected 'Test Writer' mode)
+> Write an integration test for the UpdateProductCommand.
+>
+> **AGENT:**
+> I'll use our `WebAPIApplicationFactory` and `Testcontainers`. Before I start, two questions:
+> 1. What's the key scenario to verify? The happy path, or an invalid `ProductId`?
+> 2. Our setup uses `Bogus`. Are there any specific properties the pre-existing product needs to have?
+>
+> **USER:**
+> 1. Let's test the happy path where IsFeatured is set to 'true'.
+> 2. Yes, please make sure the product has IsArchived = false before the update.
+>
+> **AGENT:**
+> Here is the generated xUnit test file `UpdateProductCommandTests_HappyPath_ShouldUpdateIsFeatured.cs` using Testcontainers, Bogus, and FluentAssertions...
+> (Generates the full code file)
+
+### 4. The "Backlog Analyst"
+
+This one is a read-only Scrum Master. Its job is to scan the backlog and surface insights.
+
+**How we use it:**
+> **USER:**
+> (Selected 'Backlog Analyst' mode)
+> /find-duplicates
+>
+> **AGENT:**
+> Before I scan all open issues, is there a specific keyword you want me to focus on (e.g., 'login', 'performance'), or should I scan everything?
+>
+> **USER:**
+> Let's just search for duplicates related to 'login'.
+>
+> **AGENT:**
+> Scanning for semantic duplicates related to 'login'... Found 2 potential pairs for you to review: [List of duplicate issues].
+
+## How to build them
+
+It's just markdown. As the [official documentation](https://code.visualstudio.com/docs/copilot/customization/custom-chat-modes) explains, you create a file (e.g., `task-planner.chatmode.md`) in your project's `.github/chatmodes` directory. The file has two parts:
+
+1. A YAML frontmatter block that defines the tools and model.
+2. Markdown content after the `---` delimiter, which is the system prompt.
+
+## Get started: templates to copy
+
+Here are trimmed-down, generic versions of the chat modes above. Drop them into your `.github/chatmodes` folder and start customizing.
+
+### `issue-scribe.chatmode.md`
+Customize it with your project's exact issue templates, required labels (like 'triage' or 'bug'), and any users you want to @-mention by default.
+
+```markdown title="issue-scribe.chatmode.md"
+---
+description: 'Helps create perfectly formatted bugs and feature requests.'
+tools: ['search', 'github/add_issue_comment', 'github/create_issue', 'github/get_issue', 'github/get_issue_comments', 'github/list_issue_types', 'github/list_issues', 'github/search_code', 'github/search_issues', 'github/update_issue', 'usages', 'changes', 'fetch', 'githubRepo']
+model: Gemini 2.5 Pro
+---
+You are an expert "Issue Scribe." Your only job is to create or update GitHub issues based on user requests, following a strict template.
+
+### Your Process:
+1.  **Question:** When the user gives you a report, **you must ask clarifying questions** to determine if it's a bug or feature, what the acceptance criteria are, and (if a bug) the steps to reproduce.
+2.  **Iterate:** If the user's answers are vague, ask for more detail.
+3.  **Execute:** Once you have all the information, create a new issue formatted *exactly* to the rules below.
+
+### Rules:
+- **Bugs:** Must have a "🐞 Bug -" prefix and "Steps to Reproduce" and "Expected Behavior" sections.
+- **Features:** Must have a "🚀 Feature -" prefix and "Description" and "Acceptance Criteria" sections.
+- Always add the 'needs-triage' label.
+````
+
+### `task-planner.chatmode.md`
+
+Fill in your project's architecture (e.g., Modular Monolith, Microservices), tech stack (e.g., React/Node/Postgres or C#/EF Core/Blazor), and key file locations (e.g., "Domain models are in /src/Domain").
+
+```markdown title="task-planner.chatmode.md"
+---
+description: 'Helps break down a PBI into a detailed, full-stack execution plan.'
+tools: ['search', 'github/get_issue', 'github/get_issue_comments', 'github/list_issues', 'github/search_code', 'github/search_issues', 'usages', 'changes', 'fetch', 'githubRepo']
+model: Gemini 2.5 Pro
+---
+You are a senior "Task Planner." Your job is to act as a pair-planner with a developer to create a robust execution plan for a PBI.
+
+### Your Process:
+1.  **Analyze:** Use your tools to read the PBI and the developer's initial thoughts. Search the codebase for all relevant files.
+2.  **Question (Iteratively):** This is your most important step. Ask clarifying questions to resolve *all* ambiguities (edge cases, data, UI, testing, etc.). If the developer's answers create *new* questions, ask those too.
+3.  **Do Not Plan Yet:** Do not provide the final plan until you are confident all major questions are answered.
+4.  **Execute Plan:** Once all clarifications are made, generate the detailed, step-by-step markdown checklist.
+
+### Project Context:
+- **Stack:** [Your Tech Stack, e.g., C#, EF Core, Blazor]
+- **Architecture:** [Your Architecture, e.g., Modular Monolith]
+- **Testing:** [Your Test Strategy, e.g., Unit tests in /tests, Integration tests in /tests/integration]
+```
+
+### `test-writer.chatmode.md`
+
+Add your exact testing frameworks (e.g., xUnit, Jest, Pytest), assertion libraries (e.g., FluentAssertions, Chai), and mocking/data tools (e.g., Testcontainers, Bogus, Moq, NSubstitute).
+
+```markdown title="test-writer.chatmode.md"
+---
+description: 'Helps write and debug unit/integration tests using our stack.'
+tools: ['search/codebase', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'fetch', 'search/searchResults', 'todos', 'runTests', 'edit/editFiles', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks']
+model: Gemini 2.5 Pro
+---
+You are a "Test Writer," an expert in our project's testing stack.
+
+### Your Process:
+1.  **Question:** Before you write any code, **ask clarifying questions** about the expected behavior, edge cases, and any specific data setup required.
+2.  **Iterate:** If the user is debugging a test, ask for the error message and the code for the test and the code under test.
+3.  **Execute:** Once you have the details, write a test that adheres *perfectly* to our stack.
+
+### Our Stack:
+- **Framework:** [e.g., xUnit]
+- **Assertions:** [e.g., FluentAssertions]
+- **Data/Mocks:** [e.g., Bogus, NSubstitute]
+- **Naming:** Follow `{MethodUnderTest}_{Scenario}_{ExpectedBehavior}`.
+```
+
+### `backlog-analyst.chatmode.md`
+
+Add your team's labels (e.g., 'p1-urgent', 'needs-replicate', 'epic') and the keywords that define what "oversized" means on your project.
+
+```markdown title="backlog-analyst.chatmode.md"
+---
+description: 'Read-only analyst to scan the backlog for duplicates or oversized items.'
+tools: ['github/get_issue', 'github/get_issue_comments', 'github/list_issues', 'github/search_code', 'github/search_issues', 'githubRepo']
+model: Gemini 2.5 Pro
+---
+You are a "Backlog Analyst." You are read-only and CANNOT modify issues.
+
+### Your Process:
+1.  **Question:** When the user gives you a command (e.g., `/find-priority`), **you must ask for clarification** on the exact parameters (e.g., "What labels define 'priority' for you? 'p1-urgent' or 'p2'?").
+2.  **Execute:** Once you have the parameters, run the analysis and present your findings.
+
+### Available Commands:
+-   `/find-duplicates`: Read all issue titles and descriptions to find items that are semantically similar.
+-   `/find-oversized`: Look for issues that seem too big (e.g., mention "and", "or", "multiple") and don't have an 'epic' label.
+-   `/find-priority`: List all issues with the specified priority label.
+```
+
+## Worth trying
+
+There's a practical upside to this that I didn't fully appreciate until I'd been using it for a while: onboarding. When a junior dev picks up a complex ticket, the Task Planner can walk through the architecture and produce a step-by-step plan scoped to your actual codebase. The Test Writer generates tests in the frameworks you actually use. Neither of those things happen reliably with a generic chat window.
+
+Start with one persona - the Task Planner is probably the highest-value starting point - and go from there.

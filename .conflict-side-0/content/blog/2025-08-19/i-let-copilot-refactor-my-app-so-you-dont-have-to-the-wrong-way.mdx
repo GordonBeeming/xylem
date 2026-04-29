@@ -1,0 +1,99 @@
+---
+title: "I Let Copilot Refactor My App, So You Don't Have To (The Wrong Way)"
+date: 2025-08-19
+tags: ['AI', 'Copilot', 'Refactoring', 'Productivity', 'Development']
+summary: 'I had a seemingly simple refactoring task on a sample project and I thought, "Let''s get GitHub Copilot to do the heavy lifting!". What followed was a spiral into chaos that taught me a crucial lesson about using AI the smart way.'
+---
+
+
+
+We've all been there. Working on a project, you spot something that needs cleaning up and think "20 minutes, easy." What could possibly go wrong?
+
+I was recently working on a sample blog engine -- a side project I use to test out new ideas -- and decided it was time to give it a more professional feel. The task was simple: rename the core concept from `Post` to `Article`. Seemed like a perfect job for an AI assistant. I figured I'd just tell GitHub Copilot what I wanted and let it run.
+
+Yeah, that didn't go well.
+
+
+## The plan
+
+I'd ask Copilot to do the refactor across the entire solution. I figured it would be smarter than a manual find-and-replace -- it would understand the context, update my C# classes, rename files, handle EF Core migrations, and update the docs too (the `README.md`, everything in `docs/`, all of it). Magic.
+
+I gave it a broad prompt along these lines:
+
+> Please refactor the entire solution. The core domain entity 'Post' needs to be renamed to 'Article'. This should include all class names, variable names, file names, database migrations, and documentation.
+
+Then I sat back.
+
+
+## Where it fell apart
+
+Trouble showed up fast. Copilot started making changes, but they were all over the place. It would rename the `Post.cs` file to `Article.cs` but leave the class name inside unchanged.
+
+```csharp title="Article.cs"
+// In a file named Article.cs
+public class Post // <- Oops!
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    // ...
+}
+````
+
+Then it got worse. It would rename `PostService` but leave method parameters typed as `Post`, scattering compilation errors through the codebase. Picture finding code like this across a dozen files:
+
+```csharp title="ArticleService.cs"
+// ArticleService.cs
+public class ArticleService
+{
+    // This method signature is now broken!
+    // It's in the new service but still accepts the old 'Post' type.
+    public async Task<Article> CreateNewArticleAsync(Post postToCreate)
+    {
+        // ... compilation errors everywhere
+    }
+}
+```
+
+Every time I asked it to fix the last thing it broke, it broke something else. What should have been 20 minutes turned into hours of me chasing down the AI's mistakes. Not exactly the productivity win I had in mind.
+
+
+## Why it went wrong
+
+After banging my head against it for too long, I stopped and actually thought about *why* this failed.
+
+The problem comes down to **deterministic** vs **probabilistic** tools.
+
+  * **IDE refactoring tools are deterministic.** When you tell Visual Studio to rename a class, it parses the solution, finds every reference, and updates them all. No guessing.
+
+  * **LLMs are probabilistic.** Copilot makes educated guesses based on patterns. For creative work, that's great. For a refactor where every reference needs to be exactly right, those guesses pile up into a mess.
+
+
+## The approach that actually works
+
+The fix wasn't to stop using AI. It was to use each tool for what it's actually good at.
+
+### Phase 1: Let the IDE do the structural work
+
+First, I used the IDE's built-in refactoring. Worth knowing: `Post` wasn't just a single class in my project. It was an **Aggregate Root**, with `Comment` and `TagLink` living under the same domain folder and namespace. So this wasn't a one-file rename -- it touched folder structures and namespaces throughout that slice of the domain.
+
+The IDE handles this without breaking a sweat.
+
+1.  I reverted all of Copilot's changes.
+2.  I opened `Post.cs` in Solution Explorer and used the built-in rename (`F2` or `Ctrl+R, Ctrl+R`). It updated the class, related files, all dependent code, and the namespaces.
+3.  With everything compiling, I ran the migration: `dotnet ef migrations add RenamePostToArticle`. Clean new migration file, database history intact.
+
+That whole process took a few minutes.
+
+### Phase 2: Then bring Copilot in
+
+With the code correct and compiling, *now* I brought Copilot back -- but with a tighter scope. Instead of "refactor everything," I gave it specific jobs focused on prose:
+
+> Based on the recent refactoring from `Post` to `Article`, please review the project's documentation. This should include all markdown files, like the main `README.md` and any guides in the `/docs` folder, to ensure the terminology is updated.
+
+Once that was done, I followed up with:
+
+> That's great, now can you help with the code comments? Please scan the C# files for any remaining XML documentation or inline comments that still refer to the old 'Post' concept and update them.
+
+IDE for structural changes, Copilot for documentation, comments, and prose. That's the split that actually works.
+
+The failed refactor was on me, not Copilot. I used the wrong tool for the job and paid for it. Know what each tool is good at, and you'll save yourself a few hours of unnecessary pain.

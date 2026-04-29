@@ -1,0 +1,82 @@
+﻿---
+title: 'Using Application Insights with a new Windows Store App'
+date: 2014-02-18
+tags: ['Azure', 'Application Insights', 'Windows Store App']
+summary: 'If you haven''t heard or read about Application Insights you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of VSO. You can also take a look at the Channel 9 series on Application Insights for Visual Studio Online by Charles Sterling.'
+---
+
+
+If you haven't heard or read about [Application Insights](http://msdn.microsoft.com/en-us/library/dn481095.aspx) you should go to MSDN and read up on all the awesomeness that you can get by using this new feature of [VSO](http://www.visualstudio.com/en-us/products/visual-studio-online-overview-vs.aspx). You can also take a look at the [Channel 9](http://channel9.msdn.com/) series on [Application Insights for Visual Studio Online](http://channel9.msdn.com/Series/Application-Insights-for-Visual-Studio-Online) by [Charles Sterling](https://twitter.com/chass).
+ 
+Also see [Using Application Insights with an existing Windows Store App](/blog/2014-05-12/using-application-insights-with-an-existing-windows-store-app) for an example of adding Application Insights to an existing application that could already be in the store.
+ 
+## Create a new Application
+ 
+If you you have the [Application Insights Tools for Visual Studio](http://visualstudiogallery.msdn.microsoft.com/82367b81-3f97-4de1-bbf1-eaf52ddc635a) installed that [Brian Harry](http://blogs.msdn.com/b/bharry/) mention in one of his [latest blog posts](http://blogs.msdn.com/b/bharry/archive/2014/02/06/application-insights-visual-studio-add-in-preview.aspx) and you are creating a new application, this is much similar for you. Click the Add Application Insights to Project drop down, that will make sure you are authenticated to VSO. 
+ 
+<Figure key="/images/4b32f0fe352343fd98274a4d29854ff1.png" src="/images/4b32f0fe352343fd98274a4d29854ff1.png" alt="image_thumb\[1\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+Once done you will be able to choose which VSO account you want to connect to and then you can click **Configure** to choose the application name (if you haven't created an application in Application Insights yet just type the name and one will be created for you automatically).
+ 
+<Figure key="/images/05b5e5b1a3964dd8b05105e239b2e31a.png" src="/images/05b5e5b1a3964dd8b05105e239b2e31a.png" alt="image_thumb\[3\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+At this point the application is opened in your default browser
+ 
+<Figure key="/images/1f36edc8289349138878ba35428943fd.png" src="/images/1f36edc8289349138878ba35428943fd.png" alt="image_thumb\[8\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+and a solution is created like
+ 
+<Figure key="/images/b21a25360c164a81853b755ef8406cab.png" src="/images/b21a25360c164a81853b755ef8406cab.png" alt="image_thumb\[10\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+## Changing App Configuration
+ 
+All applications (at the moment) new or current will get the error below if you haven't already changed the Platform of your store application
+ 
+<Figure key="/images/04f8c819c22047eda665c8d8624f0e6b.png" src="/images/04f8c819c22047eda665c8d8624f0e6b.png" alt="image_thumb\[12\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+To get rid of this message and put Application Insights in a state where you can start logging application usage you will need to change the configuration of your app to not be Any CPU.
+ 
+**Open Configuration Manager**
+ 
+<Figure key="/images/741d33ce9e82485e8c989417c320a32d.png" src="/images/741d33ce9e82485e8c989417c320a32d.png" alt="image\[29\]" width="0" height="0" caption="FILL THIS IN" />
+ 
+**Set the platform to x86, x64, or ARM**
+ 
+<Figure key="/images/f7c1f432bbc14c5591ca252f693cb357.png" src="/images/f7c1f432bbc14c5591ca252f693cb357.png" alt="Visual Studio Configuration Manager: Setting project platform to x86, x64, or ARM." width="0" height="0" caption="Changing project platform in Visual Studio Configuration Manager for Application Insights compatibility." />
+ 
+## Initializing Application Insights
+ 
+Open the **App.xaml.cs** file and at the end of the **App()** method add the following code
+ 
+```csharp title="App.xaml.cs"
+Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsSession.Default.Start("license key from ApplicationInsights.config");
+```
+
+As the snippet mentions you need to grab the license key (aka: instrumentation key) from the ApplicationInsights.config
+
+<Figure key="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" src="/images/04ca2520299e433f8ded2e1fa5d0cd6e.png" alt="Visual Studio: ApplicationInsights.config file showing the InstrumentationKey." width="0" height="0" caption="Copying the Instrumentation Key from ApplicationInsights.config." />
+
+At this point you can run your application and you will get some basic information like the Operating System, Screen Resolution and a view metrics like session time. You'll need to wait about 15 minutes for the information to display on your dashboard but will look something like below.
+
+<Figure key="/static/images/404-image.png" src="/static/images/404-image.png" alt="Original image lost" width="200" height="200" caption="Original image lost..." />
+
+To see the data head over to the Usage Tab on VSO Application Insights
+
+<Figure key="/images/29606a92edae40be8d37a84c8f4c524f.png" src="/images/29606a92edae40be8d37a84c8f4c524f.png" alt="VSO Application Insights: Usage tab displaying session data." width="0" height="0" caption="Viewing basic usage data in Application Insights Usage tab." />
+
+## Logging app feature usage
+
+Because I am using a new application I will just log which of the groups the user clicks into. To do this (if you are using the Split Page Application) navigate to **ItemsPage.xaml.cs** file and change the ItemView\_ItemClick method to be like below
+
+```csharp title="ItemsPage.xaml.cs"
+/// <summary>/// Invoked when an item is clicked./// </summary>/// <param name="sender">The GridView (or ListView when the application is snapped)/// displaying the item clicked.</param>/// <param name="e">Event data that describes the item clicked.</param>void ItemView_ItemClick(object sender, ItemClickEventArgs e){    var properties = new Dictionary<string, object>() {{"Title", ((SampleDataGroup)e.ClickedItem).Title}};    Microsoft.ApplicationInsights.Telemetry.WindowsStore.ClientAnalyticsChannel.Default.LogEvent("Store/ItemView", properties);    // Navigate to the appropriate destination page, configuring the new page    // by passing required information as a navigation parameter    var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;    this.Frame.Navigate(typeof(SplitPage), groupId);}
+```
+
+We are simple logging that the Item Click event was fired and logging the title of the group that was clicked. This when you click around in the sample app will log to Application Insights as you click around and generate some data. To see the features that were logged head over to **Event Insights** under the **Features** tab
+
+<Figure key="/images/208fc0ec6f5247968935566cdcc6c56c.png" src="/images/208fc0ec6f5247968935566cdcc6c56c.png" alt="VSO Application Insights: Event Insights under Features tab showing logged custom events." width="0" height="0" caption="Viewing logged custom events in Application Insights Event Insights." />
+
+## Conclusion
+
+It's really simple to get started with Application Insights and get that feedback from your application when it's out there in the wild.
+

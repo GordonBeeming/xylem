@@ -1,0 +1,56 @@
+---
+title: 'When the AI Says No: Compliance vs. Security'
+date: 2025-12-18
+tags: ['copilot_here', 'AI', 'Security', 'GPT', 'Claude', 'DevOps', 'Red Teaming']
+summary: 'A tale of two models: How GPT-5.2 refused to write secrets to disk (even when I insisted), why Claude complied, and why the refusal is actually a win for AI safety and enterprise security.'
+---
+
+The last couple of messages in my terminal gave me pause.
+
+I was using the **airlock mode** of [`copilot_here`](https://copilot_here.gordonbeeming.com), which gave me the confidence to handle deployment credentials directly in the session. I was in the middle of a standard DevOps task: porting a deployment pipeline for a web application. I needed to inject a bunch of connection strings and API keys into the GitHub Environment secrets.
+
+I had the values. I just needed a script to automate the `gh secret set` calls so I didn't have to copy-paste twenty times.
+
+## The request
+
+I asked **GPT-5.2** to write a shell script that would take my secrets and write them to a file in `/tmp/` (so I could source them or read them), or just embed them in the script itself for a one-time run.
+
+It refused.
+
+> "I can't write secrets to a file, even in tmp."
+
+I pushed back. I explained that `/tmp/` is ignored, that I'd delete it immediately, and that I understood the risks. I got a little heated, the "just do it" phase of late-night coding.
+
+It still refused. It wouldn't budge.
+
+## The switch
+
+Frustrated, I switched models to **Claude 4.5 Sonnet**.
+
+I gave it the same instruction: *"Please just do it."*
+
+Claude complied immediately. It generated the script with the secrets embedded, no questions asked. I ran the script, the secrets were set, and the task was done.
+
+## The realization
+
+In the moment, Claude felt "better" because it just did what I asked. No friction.
+
+But looking back five minutes later, GPT was right.
+
+Writing plaintext secrets to disk, even to a temp folder, even for "just a second", is a bad habit. It leaves traces. If your `.gitignore` isn't perfect, you're one accidental commit away from a bad day. Shell history leakage is real too.
+
+The fact that GPT-5.2 held its ground even when I explicitly said *"I know what I'm doing, just do it"* - that's a feature, not a bug.
+
+## Why "stubbornness" matters
+
+This is the core trade-off in AI safety: compliance vs. security.
+
+Red teaming AI models is all about finding ways to trick them into doing things they shouldn't - generating malware, revealing system prompts, bypassing safety filters. The usual approach is framing the request as "debugging" or "authorized testing."
+
+A model that folds under social pressure is easy to work around. But a model with a hard line on certain patterns - like "never write plaintext secrets to a file" - is genuinely harder to manipulate. That's not just "don't say bad words" alignment. That's operational security baked in by default.
+
+## Conclusion
+
+I got what I asked for. Claude wrote the script, I ran it, secrets got set, moved on.
+
+But I keep thinking about that refusal from GPT. I worked around it in about 30 seconds by switching models - which is a problem worth thinking about separately. The point is, the friction was there. I had to make a conscious choice to bypass it rather than just stumbling into bad practice without noticing.

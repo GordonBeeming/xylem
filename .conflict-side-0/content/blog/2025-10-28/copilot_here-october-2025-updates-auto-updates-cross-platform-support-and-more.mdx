@@ -1,0 +1,239 @@
+---
+title: 'copilot_here: October 2025 Updates - Auto-Updates, Cross-Platform Support, and More'
+date: 2025-10-28
+tags: ['copilot_here', 'DevOps', 'Developer Experience', 'CLI Tools']
+summary: 'The October 2025 updates to copilot_here bring auto-updating scripts, full Windows support, argument pass-through for native Copilot features like --resume, smart image cleanup, and a bunch of quality-of-life improvements that make the Docker-based Copilot CLI experience even better.'
+---
+
+I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that took it from "works on my machine" to "works everywhere, without drama."
+
+## What's New in October 2025
+
+Here's a quick summary of the major updates. Skip to any section that interests you:
+
+1. **[Windows Docker Desktop Support](#1-windows-docker-desktop-support)** - Fixed user creation issues and made Windows a first-class platform
+2. **[Auto-Updating Scripts](#2-auto-updating-scripts)** - One command to update your shell functions without manual copy-paste
+3. **[Quick Install Method](#3-quick-install-method)** - Three commands instead of copying 200+ lines into your shell config
+4. **[Argument Pass-Through](#4-argument-pass-through-unlocking-native-copilot-features)** - All native Copilot CLI features (like `--resume`) just work
+5. **[Script Versioning](#5-script-versioning)** - Know exactly which version you're running
+6. **[YOLO Mode Enhancements](#6-yolo-mode-enhancements)** - Auto-approve everything with `--allow-all-paths`
+7. **[Smart Image Cleanup](#7-smart-image-cleanup)** - Only removes images older than 7 days, saves bandwidth and time
+
+## 1. Windows Docker Desktop Support
+
+### The "It Works On My Machine" Problem
+
+You know that classic developer excuse? Well, it was literally true here. The Docker setup worked perfectly on my Mac... until someone tried it on Windows.
+
+### The Issue
+
+Windows Docker Desktop handles user creation differently than Linux. The container's entrypoint script was trying to create a non-root user (`appuser`) for security, but `useradd` was silently failing on Windows. The script would then try to switch to this non-existent user with `gosu`, and boom 💥
+
+```bash title="Error output"
+error: failed switching to "appuser": unable to find user appuser:
+no matching entries in passwd file
+```
+
+### The Fix
+
+Instead of just assuming user creation works, I added a verification step:
+
+```bash title="entrypoint.sh"
+# Verify the user was created successfully
+if ! id appuser >/dev/null 2>&1; then
+    echo "Warning: Failed to create appuser, running as root" >&2
+    mkdir -p /home/appuser/.copilot
+    exec "$@"
+fi
+```
+
+Running as root in a local dev container isn't ideal. But it beats silently failing, and the warning at least tells users what happened. For a local sandbox tool, I'll take "works on Windows with a caveat" over "crashes on Windows with a cryptic error."
+
+I also restructured the README to show PowerShell instructions alongside bash/zsh rather than buried in a footnote.
+
+## 2. Auto-Updating Scripts
+
+The Docker image can auto-update via `docker pull`, but what about the shell functions users add to their `.bashrc` or `.zshrc`? Those live on the host machine and don't update themselves.
+
+### The Challenge
+
+I wanted users to be able to update their shell functions without:
+- Manually copying code from GitHub
+- Re-running curl commands
+- Editing their shell config files
+- Accidentally breaking their setup
+
+### The Solution
+
+I created standalone script files (`copilot_here.sh` and `copilot_here.ps1`) that users can download once and source in their shell profiles. Then I added an update flag that:
+
+1. Downloads the latest version from GitHub
+2. Shows you the version change
+3. Automatically reloads your current shell session
+
+```bash title="Terminal"
+copilot_here --update
+```
+
+Output:
+```text title="Output"
+Updating scripts from GitHub repository...
+ Updated bash/zsh script
+Current version: 2025-10-28
+Reloading shell function...
+ Scripts updated successfully!
+```
+
+It updates the file and reloads the function in your current session, so you don't need to restart your terminal.
+
+**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file, so your dotfiles stay in sync.
+
+## 3. Quick Install Method
+
+The old setup required users to copy shell function code from the README and paste it into their config files. It worked, but it was awkward. Why not just let them download and source a script file?
+
+### Before (Manual Mode):
+```bash title="Terminal"
+# User copies 200+ lines of bash from README
+# Pastes into ~/.zshrc
+# Hopes they got it all
+# Maybe accidentally pastes twice
+# Now has duplicate functions 😬
+```
+
+### After (Quick Install):
+```bash title="Terminal"
+curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
+```
+
+One command. And because the script lives in its own file now, updating is just `copilot_here --update`.
+
+I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
+
+```bash title="Duplicate detection"
+if ! grep -q "source ~/.copilot_here.sh" ~/.zshrc 2>/dev/null; then
+  echo 'source ~/.copilot_here.sh' >> ~/.zshrc
+fi
+```
+
+## 4. Argument Pass-Through: Unlocking Native Copilot Features
+
+I had built-in support for specific flags like `--help` and `--no-cleanup`, but that meant I was re-implementing argument parsing for flags the underlying CLI already handled. So I added automatic pass-through instead:
+
+```bash title="Argument pass-through logic"
+# Built-in wrapper args
+WRAPPER_ARGS=("--help" "-h" "--no-cleanup" "--no-pull" "-d" "--dotnet" 
+              "-dp" "--dotnet-playwright" "--update" "--upgrade")
+
+# Check if arg is wrapper-specific or should pass through
+for arg in "$@"; do
+  if [[ ! " ${WRAPPER_ARGS[@]} " =~ " ${arg} " ]]; then
+    # Not a wrapper arg, pass it to the container
+    passthrough_args+=("$arg")
+  fi
+done
+```
+
+Now any Copilot CLI argument just works, whether I've explicitly accounted for it or not:
+
+```bash title="Terminal"
+copilot_here --model gpt-4 "explain this code"
+copilot_here -v  # Show version
+copilot_here --whatever-future-flag-gets-added
+```
+
+### The --resume flag
+
+One feature this unlocks is `--resume`. When Copilot is mid-task and something interrupts it (network hiccup, timeout, whatever), you can pick up right where it left off:
+
+```bash title="Terminal"
+copilot_here --resume
+```
+
+<Figure key="copilot-resume-example" src="/images/copilot-resume-example.png" alt="Screenshot showing the --resume flag allowing continuation of a previous Copilot session" width="0" height="0" caption="The --resume flag picks up right where you left off" />
+
+For long-running tasks, not having to start over is a real time-saver. And since it goes through the pass-through logic, there's nothing special I had to do to support it.
+
+When you run `copilot_here --help`, it shows both the wrapper's help AND the underlying Copilot CLI help, so you can discover features like `--resume` naturally.
+
+## 5. Script Versioning
+
+When someone reports an issue, the first question is always "which version are you on?" So every script now has a version header:
+
+```bash title="Script version header"
+# Version: 2025-10-28
+```
+
+The format is `YYYY-MM-DD` for the primary version, and if I make multiple updates in one day, it becomes `YYYY-MM-DD.1`, `YYYY-MM-DD.2`, etc.
+
+This already came up while testing changes. Instead of the vague "are you on the latest?", I can say "you need 2025-10-28 or later for that."
+
+## 6. YOLO Mode Enhancements
+
+`copilot_yolo` mode lets you skip confirmation prompts entirely. Where `copilot_here` asks before executing commands, YOLO mode just runs:
+
+```bash title="Terminal"
+copilot_yolo "fix all the linting errors in this project"
+# Auto-approves all tool usage, including file modifications
+```
+
+I added a `--allow-all-paths` flag specifically for this, which pairs with auto-approval for a fully hands-off run. Useful for workflows you trust. I'd leave it off for anything touching production.
+
+## 7. Smart Image Cleanup
+
+Every run was cleaning up all unused images and then immediately pulling the latest one back down. Even if the image it just removed was the current latest. A full download, every single run.
+
+### The Problem
+
+The cleanup logic had two issues:
+
+1. It was trying to remove intermediate images with `<none>` tags, which would fail and spam your console
+2. It removed ALL unused images, including the current latest one, forcing an unnecessary re-download
+
+```bash title="Output"
+  Failed to remove: ghcr.io/gordonbeeming/copilot_here:<none>
+Pulling latest image...
+# Downloads the same image it just removed 🤦
+```
+
+### The Fix
+
+Now the cleanup is smart:
+
+```bash title="Smart image cleanup"
+# Get cutoff timestamp (7 days ago)
+local cutoff_date=$(date -d '7 days ago' +%s 2>/dev/null || date -v-7d +%s 2>/dev/null)
+
+# Get all copilot_here images, excluding <none> tags
+local all_images=$(docker images --filter "label=project=copilot_here" \
+  --format "{{.Repository}}:{{.Tag}}|{{.CreatedAt}}" | grep -v ":<none>" || true)
+
+# Only remove if older than 7 days
+if [ -n "$image_date" ] && [ "$image_date" -lt "$cutoff_date" ]; then
+  docker rmi "$image" >/dev/null 2>&1
+fi
+```
+
+The cleanup now runs after pulling the new image, so it can never remove what it just downloaded. Old images get pruned after 7 days, `<none>` tags are filtered out, and the redundant re-download on every launch is gone.
+
+## Lessons learned
+
+Cross-platform is genuinely hard. What works on macOS can fail on Windows in ways you won't predict. Test early, or at least make failure modes graceful rather than silent.
+
+Auto-update everything you can. Manual update processes are where scripts go to die, because nobody runs them.
+
+Pass-through beats re-implementation. Don't rebuild what the underlying tool already does - wrap it and get out of the way. That's how `--resume` and every other future Copilot flag just works without any extra effort on my part.
+
+Version your scripts. Future you will thank present you the first time someone files a bug report.
+
+The README is part of the product. A tool that works but confuses people on install might as well not work.
+
+## What's next
+
+A few things I'm still poking at:
+
+- Better error messages when GitHub token scopes are wrong (currently the error is cryptic)
+- Support for custom Docker registries for enterprise setups
+- A configurable cleanup period, though honestly 7 days hasn't caused complaints yet
+
+The project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here). Install takes three commands and you get Copilot CLI running in a sandboxed container that keeps itself up to date. Give it a try and open an issue if something breaks.

@@ -1,0 +1,100 @@
+---
+title: 'A Guide to Mastering GitHub Copilot on github.com'
+date: 2025-08-13
+tags: ['GitHub', 'Copilot', 'AI', 'Productivity', 'DevOps']
+summary: 'Unlock a new level of productivity by moving beyond the IDE and mastering GitHub Copilot directly on github.com. This guide covers the essential techniques for setting up, creating effective requests, parallelizing your work, and mastering the feedback loop.'
+---
+
+
+
+Most of us have used GitHub Copilot in the IDE for real-time coding suggestions. But there's a different way to use it that a lot of developers skip past: assigning it entire tasks, from issue to pull request, directly on github.com.
+
+Working with Copilot on the GitHub platform is a different skill set. It's less about autocompleting single lines and more about managing whole units of work. Get this right and you can offload the tedious stuff, stay focused on harder problems, and move faster overall.
+
+## The foundation: your `copilot:instructions`
+
+Before you can use Copilot for entire tasks, you need to set the ground rules. The most important step is creating a `.github/copilot/instructions` file. This file tells Copilot the conventions, patterns, and quirks of your project.
+
+Here's the part I like: you don't have to write it from scratch. The first time you ask `@copilot` to follow instructions it doesn't have, it will ask you to create the file first. It gives you a link that pre-populates an issue, which you can then assign back to `@copilot` to write the initial draft for you.
+
+<Figure 
+    key="/images/copilot-suggests-instructions.png" 
+    src="/images/copilot-suggests-instructions.png" 
+    alt="GitHub Copilot in an issue comment offering a link to create a copilot:instructions file." 
+    width="0" height="0" 
+    caption="Let Copilot help you help itself. It's a win-win." />
+
+[Comment](https://github.com/GordonBeeming/xylem/pull/101#issuecomment-3172915893) | [Issue Created](https://github.com/GordonBeeming/xylem/issues/102) | [PR Created](https://github.com/GordonBeeming/xylem/pull/103)
+
+Once you have a base, you can make it self-improving. Add something like this to your instructions:
+
+> If I ever say "we do something like this", "don't do that", or "do this instead", please update these instructions to reflect that feedback for future work.
+
+Every piece of feedback you give then fixes the current PR and carries forward to the next one.
+
+## Writing good PBIs
+
+To get useful results from Copilot, you need to give it clear instructions. A vague request leads to a vague PR, and then you're stuck going back and forth instead of making progress.
+
+Here's an example of a "bad" PBI that is likely to fail (or at least require more feedback and refinement):
+
+<Figure 
+    key="/images/bad-pbi.png" 
+    src="/images/bad-pbi.png" 
+    alt="A screenshot of a vague PBI titled 'Add social images' with minimal details." 
+    width="0" height="0" 
+    caption="❌ This vague request forces the AI to guess, leading to incorrect results." />
+That fails because it forces Copilot to guess at file paths, image sizes, branding, and specific logic. You will not like what it guesses.
+
+Here's what the same feature looks like as a well-written PBI:
+
+A quick tip: use whatever AI chatbot you prefer to help you write these. You can hammer out requirements in plain text long before any code gets written, which is much cheaper than fixing things later. GitHub Copilot also has local prompt files if you want to go further, but that's a separate topic.
+
+<Figure 
+    key="/images/good-pbi.png" 
+    src="/images/good-pbi.png" 
+    alt="A screenshot of a detailed PBI with a user story, acceptance criteria, and a technical plan." 
+    width="0" height="0" 
+    caption="✅ This detailed blueprint gives Copilot everything it needs to succeed." />
+
+The more context and constraints you provide upfront, the better the result. This matters most for new features where Copilot has no existing code to learn from.
+
+## Parallelizing your work
+
+Some tasks are just tedious. They're necessary, but not exactly where you want to be spending your afternoon. Adding a `readonly` flag to an entity is a good example. That change has to go through every layer of the application: the domain, the API, the UI, and all the tests that go with it.
+
+Copilot handles this kind of work well. It's good at wide-reaching but repetitive changes, and it's solid at updating existing tests to match. It can adjust unit tests for a changed method signature, update integration tests to assert on the new API response, and fix UI test selectors for a newly disabled input.
+
+While Copilot is threading that `readonly` flag through the codebase, you can be in your IDE working on actual hard problems. Even if Copilot gets the UI 80% right, you've still come out ahead. Pull down the branch, spend five minutes fixing up a couple of things, and merge. That's a good trade.
+
+
+## Giving feedback that actually works
+
+Once Copilot submits a PR, how you give feedback makes a real difference. The most common mistake is drip-feeding comments one at a time.
+
+Here's why that's a problem: as soon as you mention `@github-copilot` in a comment, it starts working on that single piece of feedback. Once it's done, it picks up your next comment as a separate job. That first change was made without the context of everything else you wanted, so now you're fixing the fix. It adds up.
+
+Batch your feedback instead. Take an extra minute to gather all your thoughts into one numbered comment:
+
+<Figure 
+    key="/images/good-feedback-example.png" 
+    src="/images/good-feedback-example.png" 
+    alt="A GitHub comment showing good, batched feedback for Copilot in a numbered list." 
+    width="0" height="0" 
+    caption="✅ A single, clear comment with numbered points gives Copilot a complete to-do list." />
+
+You can also add screenshots to your comments, and Copilot can see them. Drawing a red box around the specific element you're talking about is often faster and clearer than trying to describe it in words.
+
+<Figure 
+    key="/images/marked-up-screenshot-feedback.png" 
+    src="/images/marked-up-screenshot-feedback.png" 
+    alt="A GitHub comment with a marked-up screenshot showing a red box around a UI element that needs to be changed." 
+    width="0" height="0" 
+    caption="A picture is worth a thousand words, especially when you mark it up for clarity." />
+Giving Copilot the full picture before it starts saves you multiple review rounds.
+
+## Wrapping up
+
+Using Copilot on github.com is genuinely a different skill than using it in the IDE. It takes a bit of setup and a change in how you think about work, but once it clicks it's hard to go back.
+
+Good instructions, specific PBIs, and batched feedback are really all it takes. Get those three things right and Copilot stops being a coding assistant and starts being a teammate that handles the boring parts while you work on the interesting ones.

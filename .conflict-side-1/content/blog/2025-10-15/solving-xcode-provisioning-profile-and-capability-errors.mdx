@@ -1,0 +1,79 @@
+---
+title: 'Solving Xcode Provisioning Profile and Capability Errors'
+date: 2025-10-14
+tags: ['Xcode', 'iOS', 'macOS', 'Apple Development', 'Code Signing']
+summary: "A step-by-step guide to fixing common and stubborn Xcode code signing errors, from 'Personal Team' limits to clearing the Derived Data cache."
+---
+
+
+
+Full disclosure: I'm still finding my way around the Apple development ecosystem, so consider this a field report from a fellow learner, not an expert's guide.
+
+Code signing errors are one of those things that can derail a whole afternoon. I hit a run of provisioning profile and capability errors recently, and it took a few rounds of troubleshooting to get through them. Here's what I found.
+
+## Problem 1: "Personal Team" capability limits
+
+When I first added the iCloud and Push Notification capabilities to a new project, I immediately hit an error.
+
+**The error:**
+`Personal development teams ... do not support the Push Notifications and iCloud capabilities.`
+
+**The cause:**
+A free Apple Developer account (a "Personal Team") can't be used for projects that need advanced capabilities like iCloud or Push Notifications.
+
+**The fix:**
+Two options: remove the capabilities if you don't actually need them, or upgrade to a paid Apple Developer Program membership. I went with the upgrade.
+
+## Problem 2: Profile errors after upgrading
+
+After upgrading to a paid account and adding it to Xcode, I expected the errors to disappear. Instead, they changed.
+
+**The error:**
+`The capability associated with 'PUSH_NOTIFICATIONS' could not be determined.`
+
+**The cause:**
+A new paid developer account often has pending license agreements to accept before the permissions kick in. Xcode can't verify capabilities until that's done.
+
+**The fix:**
+1.  Log in to the [Apple Developer website](https://developer.apple.com/) and accept any new terms.
+2.  In Xcode, go to `Xcode` -> `Settings...` -> `Accounts`.
+3.  Remove your Apple ID by clicking the `-` button, then add it back with the `+` button to force a full refresh.
+
+## Problem 3: The stubborn one
+
+Even after fixing the account issues, one error persisted. Xcode insisted the provisioning profile was missing the required capabilities, even though the App ID was configured correctly on the developer portal.
+
+<Figure
+  key="/images/missing-capabilities-error.png"
+  src="/images/missing-capabilities-error.png"
+  alt="Xcode dialog showing a provisioning profile with 2 missing capabilities: iCloud and Push Notifications."
+  caption="The error: The profile was missing capabilities that were enabled online."
+/>
+
+### Attempted fixes that didn't work
+
+I tried the usual suggestions first:
+
+* Deleting cached profiles from `~/Library/MobileDevice/Provisioning Profiles/` - but this folder didn't even exist on my machine since no profile had ever been successfully created.
+* Manually creating a new provisioning profile on the developer portal, downloading it, and assigning it in Xcode. Still broken.
+
+## What actually worked: clearing Derived Data
+
+Xcode's cache was corrupted and wouldn't pick up the new valid profiles. The fix was deleting the project's Derived Data.
+
+**Steps:**
+1.  Close Xcode completely.
+2.  Go to `Xcode` -> `Settings...` -> `Locations`.
+3.  Click the small grey arrow next to the Derived Data path to open the folder in Finder.
+
+<Figure
+  key="/images/derived-data-location.png"
+  src="/images/derived-data-location.png"
+  alt="Xcode's Locations settings panel showing the path for Derived Data."
+  caption="Finding the Derived Data path in Xcode's settings."
+/>
+
+4.  Delete the entire `DerivedData` folder, or just the subfolder for your project.
+5.  Re-open Xcode. It'll re-index your project and the signing errors should be gone.
+
+Clearing Derived Data is one of those fixes that sounds too simple, but it works for a surprising range of weird Xcode behaviour. Worth trying before you go too deep down the rabbit hole.

@@ -1,0 +1,259 @@
+---
+title: 'Upgrading Angular from 13 to 21 (Without the Pain)'
+date: 2025-12-17
+tags: ['GitHub Copilot', 'CLI Tools', 'Angular', 'AI', 'Developer Experience']
+summary: 'A practical, repeatable playbook for upgrading Angular major-by-major using GitHub Copilot CLI as your co-pilot: keep the app building at every step, fix the common breakpoints fast, and avoid the "big bang" upgrade trap.'
+---
+
+Upgrading Angular across **many major versions** used to be one of those tasks that quietly ruined a week.
+
+Not because any single change is hard, but because it's death-by-a-thousand-cuts:
+
+- installs break (peer deps, deprecated packages)
+- build flag changes (`--prod` → configurations)
+- compiler strictness increases
+- build pipeline migrations (webpack → esbuild → application builder)
+- deprecations finally becoming removals
+
+This post is a practical playbook for doing it the *boring* way (in a good way): **major-by-major, build verified each step**. The twist is using **GitHub Copilot CLI** to do the work you'd normally grind through yourself.
+
+I'll show a workflow you can apply to your own codebase, plus the kinds of fixes you'll hit along the way.
+
+## The non-painful approach
+
+One rule:
+
+> **Make a change → get back to green → repeat.**
+
+When you upgrade from 13 → 21, you're not doing *one* upgrade. You're doing **eight** upgrades.
+
+Treat it like a loop.
+
+## What you need before you start
+
+1. **A clean branch**
+
+Create a dedicated branch, and ideally tag/commit at each major version.
+
+2. **A single build command you trust**
+
+For example:
+
+```bash title="Terminal"
+npm run build
+```
+
+If you have tests, even better:
+
+```bash title="Terminal"
+npm test
+```
+
+3. **A known-good Node toolchain**
+
+Use `nvm` and pick a Node version that Angular supports.
+
+## The workflow
+
+Here's the loop I follow (and what I had Copilot CLI do for me).
+
+### Step 0: Tell the AI what "done" means
+
+You want the AI acting like a careful engineer, not an eager one. Incremental, conservative, build-first.
+
+Paste a prompt like this into Copilot CLI (I tested this with the GPT-5.2 model, but the structure matters more than the model):
+
+```text title="Copilot CLI prompt"
+I need help upgrading an Angular app from v13 to v21.
+
+Rules:
+- Do upgrades one major version at a time.
+- After each upgrade, run `npm run build` and fix whatever breaks.
+- Make the smallest possible changes.
+- If you need clarification, ask one question at a time.
+
+Start by checking the current Angular version and identifying the Angular workspace.
+```
+
+A good agent does exactly what you'd do:
+
+- identify the workspace (`angular.json`)
+- confirm versions
+- plan the upgrade path version by version
+
+### Step 1: Upgrade one major version
+
+I like this pattern because it makes the CLI version explicit:
+
+```bash title="Terminal"
+# Example: upgrade to Angular 14
+npx -y -p @angular/cli@14 ng update @angular/core@14 @angular/cli@14 --force
+npm install
+npm run build
+```
+
+Repeat for 15, 16, 17… until you reach 21.
+
+### Step 2: Fix what breaks (keep it scoped)
+
+This is the part that normally burns an afternoon.
+
+You read the error, search the codebase, apply the fix, rebuild, repeat. With Copilot CLI, the loop is the same — you're just not the one doing the typing and trial-and-error.
+
+## The "upgrade breakpoints" you will hit
+
+You won't hit all of these, but most Angular 13→21 upgrades hit a handful.
+
+### 1) Deprecated/removed build flags
+
+Example symptom:
+
+```text title="Error output"
+Unknown argument: prod
+```
+
+Fix:
+
+```json title="package.json"
+// package.json
+{
+  "scripts": {
+    "build": "ng build --configuration production"
+  }
+}
+```
+
+### 2) Old dependencies that don't like modern Node
+
+Common symptom:
+
+- `node-sass` install failures
+
+Fix:
+
+```json title="package.json"
+// package.json
+{
+  "devDependencies": {
+    // remove node-sass
+    // prefer sass
+    "sass": "^1.x"
+  }
+}
+```
+
+### 3) The end of `entryComponents`
+
+If you're coming from older Angular patterns, you might have modules like:
+
+```ts title="app.module.ts"
+// app.module.ts
+@NgModule({
+  declarations: [...],
+  entryComponents: [SomeDialogComponent]
+})
+export class AppModule {}
+```
+
+In modern Angular, `entryComponents` is gone.
+
+Fix: delete the property.
+
+### 4) Zone.js import changes
+
+If your project still has old polyfill imports, you might hit errors like:
+
+```text title="Error output"
+"./dist/zone" is not exported from zone.js
+```
+
+Fix:
+
+```ts title="polyfills.ts"
+// polyfills.ts
+import 'zone.js';
+```
+
+### 5) TypeScript/ESM import strictness
+
+Modern Angular toolchains are pickier about import styles.
+
+A common example is libraries that used to work with namespace imports:
+
+```ts title="Namespace import (before)"
+import * as dayjs from 'dayjs';
+
+const d = dayjs();
+```
+
+…and then suddenly don't.
+
+Fix (default import):
+
+```ts title="Default import (after)"
+import dayjs from 'dayjs';
+
+const d = dayjs();
+```
+
+Same idea for plugin imports:
+
+```ts title="Plugin import"
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+```
+
+### 6) CSS import resolution changes (tilde `~`)
+
+If you have older Sass imports like:
+
+```scss title="Tilde import (before)"
+@import "~some-package/styles.css";
+```
+
+Modern tooling may not support the `~` resolver the same way.
+
+Fix: remove the `~` and use package exports (or the documented import path).
+
+### 7) New builder migrations and optional migrations
+
+At some point, the CLI will offer migrations like:
+
+- new build system / application builder
+- template control flow syntax
+
+My rule of thumb:
+
+- **If you just want to finish the upgrade, accept the migration**.
+- If you want minimal diffs, **skip optional migrations** and do them later.
+
+## Why AI helps here (without "vibe coding" your app)
+
+You're not asking the AI to rewrite your app. You're using it for error triage, targeted edits, and the search-and-fix loops that chew through time. The stuff that's not hard, just slow.
+
+### The framing that worked best
+
+The best results came when I made the constraints explicit upfront: one version at a time, build after every step, minimum change set.
+
+If you don't say that, the AI will often try to fix everything at once. That's the fastest way to end up with a broken build and no idea what caused it.
+
+## A repeatable checklist
+
+Here's the copy/paste checklist I use:
+
+1. `git checkout -b upgrade/angular-13-to-21`
+2. For each major version:
+   1. `npx -y -p @angular/cli@X ng update @angular/core@X @angular/cli@X --force`
+   2. `npm install`
+   3. `npm run build`
+   4. Fix errors (minimal)
+   5. Commit: `git commit -am "Upgrade Angular to X"`
+3. Final pass:
+   - `npx ng version`
+   - run the build/test pipeline you rely on
+
+## Closing thoughts
+
+Angular upgrades are still work. That part doesn't change.
+
+But the grind part — searching for what broke, figuring out the minimal fix, running the build again — that's where Copilot CLI actually pulls its weight. Keep the scope tight, version by version, and you'll get through it without losing a week to one big messy upgrade.

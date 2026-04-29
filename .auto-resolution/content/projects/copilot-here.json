@@ -1,0 +1,9 @@
+{
+  "title": "copilot_here",
+  "description": "Secure, portable CLI wrapper for GitHub Copilot CLI that runs inside a sandboxed Docker container. Keeps your credentials and environment isolated while giving you the full power of Copilot suggestions right in your terminal.",
+  "href": "https://copilot_here.gordonbeeming.com",
+  "imgSrc": "/static/images/projects/copilot-here.png",
+  "techStack": ["C#", ".NET", "Rust", "Docker"],
+  "github": "https://github.com/GordonBeeming/copilot_here",
+  "featured": true
+}

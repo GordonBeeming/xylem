@@ -1,0 +1,52 @@
+---
+title: 'Video: How I Became a 10x Dev Using AI Agents, GitHub Copilot & Gemini'
+date: 2025-11-21
+tags: ['Video', 'AI', 'GitHub Copilot', 'Gemini', 'Developer Productivity']
+summary: 'I recently spoke at the SSW Brisbane User Group about shifting from writing code to orchestrating AI agents. Here is the recording and a breakdown of the specific tools, workflows, and security sandboxes I use to ship faster.'
+---
+
+Asking a chatbot to write a function is table stakes now. What I've been focused on lately is orchestration — shifting from writing code to managing a team of AI agents that do the heavy lifting for me.
+
+Below is the recording of my talk at the [SSW Brisbane User Group](https://www.meetup.com/en-AU/brisbane-full-stack-user-group/events/311865539/) where I walk through the tools I use (including a custom Dockerized CLI) and why I think the "10x developer" idea is less about typing speed and more about knowing which agent to point at a problem.
+
+<YouTubeEmbed height="315" src="//www.youtube.com/embed/4DrWJybHl54" frameborder="0" width="560" allowfullscreen title="How I Became a 10x Dev Using AI Agents, GitHub Copilot & Gemini | Gordon Beeming | User Group" duration={5146} />
+
+## Key concepts
+
+If you don't have time to watch the full session, here are the core ideas I cover:
+
+The goal is to fail fast and ship faster by managing agents rather than writing boilerplate yourself. That means the actual coding is often the last thing you touch.
+
+Gemini's context window is huge, and I use that deliberately. Instead of crafting a precise prompt, I brain-dump my entire messy thought process and let the model clean it up and push back on my assumptions. It's a genuinely different way of working.
+
+One side effect: the "documentation tax" mostly disappears. ADRs and specs come out of your brainstorming sessions almost automatically when you're already having that conversation with an AI.
+
+## The tooling ecosystem
+
+I don't use one tool for everything — each one has a job, and mixing them up is where things go wrong.
+
+The IDE (Visual Studio / VS Code) is for deterministic tasks: renaming, refactoring, moving files. These need to be guaranteed correct, so I keep AI agents away from them.
+
+Gemini handles creative work and planning. If I'm generating a new service from scratch or working through architecture decisions, that's where I start.
+
+GitHub Spark is for prototyping. I used it to spin up a React app for my wife's portfolio — the goal there is just getting a visual base quickly, not production code.
+
+Tina CMS handles content. It decouples content management from the codebase so I can use a visual editor while keeping everything in Git.
+
+## The "fix": securing the Copilot CLI
+
+The GitHub Copilot CLI is where things get interesting — and where things can go badly wrong. Giving an AI agent full read/write access to your file system and terminal is a real risk. It can nuke files, hallucinate commands, and generally make a mess if you're not careful.
+
+To deal with that, I built a sandboxed environment for it.
+
+<Figure key="/images/docker-copilot-cli-sandbox.png" src="/images/docker-copilot-cli-sandbox.png" alt="Terminal showing the Docker container startup for the Copilot CLI sandbox." width="0" height="0" caption="My secure Docker sandbox for the Copilot CLI" />
+
+### How it works
+
+The CLI runs inside a Docker container, not on my host machine. Critical paths — like `.git` folders or core domain logic — are mounted read-only, so the AI can use them for context but can't touch them.
+
+The real benefit: because the environment is sandboxed, I can turn off the constant "Are you sure?" confirmation prompts. That's what I call YOLO Mode. The agent runs in the background on its own while I'm working on something else, without interrupting me every 30 seconds.
+
+## Summary
+
+The "10x developer" thing isn't about writing code faster. It's about knowing which tool to use for what, setting up agents that can work without babysitting, and sharing those workflows with your team — including the `copilot-instructions.md` files that make the agents actually useful.

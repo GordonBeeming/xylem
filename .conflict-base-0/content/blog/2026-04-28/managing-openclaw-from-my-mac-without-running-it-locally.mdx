@@ -1,0 +1,241 @@
+---
+title: 'Managing OpenClaw From My Mac Without Running It Locally'
+date: 2026-04-28
+tags: ['OpenClaw', 'SSH', 'Automation', 'Home Server', 'DevOps', 'AI']
+summary: 'I want OpenClaw to keep running on the homebox server, but I still want to manage it from my Mac. The approach is a small control-plane repo, SSH as the execution boundary, git as the sync contract, and a local-build-then-server-dry-run workflow for adding new capabilities.'
+---
+
+I have been moving more of my personal automation into OpenClaw. It runs on my homebox server, where it can see the real network, use the real Docker setup, talk to the real services, and read automation secrets from a dedicated 1Password vault called `openclaw-secrets`. The server gets access through a 1Password service account, so OpenClaw can read the secrets it needs without those values being pasted into chat, copied onto my Mac, or committed to git.
+
+That is exactly why I do not want a second full copy running on my Mac.
+
+A fake local homebox would drift. It would have different network access, different long-running services, different secrets, different state, and probably a different failure mode. I do want to work on OpenClaw from my Mac. I just do not want the Mac pretending to be the server.
+
+So the model I am settling on is simpler:
+
+```text title="Operating model"
+Mac:
+  edit
+  inspect
+  dry-run
+  commit
+  trigger remote commands
+
+Server:
+  run OpenClaw
+  hold runtime state
+  read secrets from 1Password
+  talk to local services
+  execute side effects
+  push signed backup commits
+```
+
+The Mac is the control plane. The server is the runtime.
+
+## The server stays real
+
+The homebox workspace lives on the server at:
+
+```text
+/home/oak/.openclaw/workspace
+```
+
+That workspace is where OpenClaw wakes up, writes memory, talks to local services, and uses the server's identity. It has Docker. It has the 1Password CLI. It has the service account token that lets automation read from the `openclaw-secrets` vault.
+
+My local clone is for changing the portable parts:
+
+- scripts
+- docs
+- routine definitions
+- reverse proxy config
+- test fixtures
+- operational wrappers
+
+It is not where runtime state should live.
+
+That distinction matters. Runtime state is local to the machine doing the running. Portable behavior belongs in git.
+
+## The network boundary matters
+
+The server is also part of my UniFi network, and I have been tightening the firewall around what it is allowed to do. That matters as much as the code layout.
+
+If I turn the server into a general dev box, I start opening up paths that do not need to exist in production. If I turn my Mac into a staging server, I drag real-ish automation risk back onto the machine I use for everything else. Both options mix boundaries that are easier to keep separate.
+
+This workflow lets the server stay the server. It can keep the tighter firewall profile that matches its job: run OpenClaw, talk to the local services it needs, and read the secrets it is allowed to read. My Mac can stay a development machine: edit, test, review, and ask the server to do specific things over SSH.
+
+That is the part I like about this shape. I am not weakening both sides to make development convenient. I am giving myself a small control channel between them.
+
+## SSH is the bridge
+
+The obvious bridge is SSH:
+
+```bash title="Raw remote command"
+ssh pokedex 'cd /home/oak/.openclaw/workspace && git status --short'
+```
+
+That works, but I do not want to remember the exact path or rebuild the same command every time. So I added a small wrapper to the `OpenClaw-homebox` repo I cloned down:
+
+```bash title="OpenClaw control commands"
+openclaw-box doctor
+openclaw-box status
+openclaw-box remote 'git status --short'
+openclaw-box deploy-caddy
+openclaw-box caddy-logs
+```
+
+`box` is not magic. It is just the repeatable command surface for "do this against the real homebox workspace." It defaults to the `pokedex` SSH alias and `/home/oak/.openclaw/workspace`, but it can be overridden locally in `.openclaw/box.env`.
+
+Because `bin/box` lives inside that repo, the easiest way to check in from anywhere is to create a shell alias in my `.zshrc`:
+
+```bash title="~/.zshrc"
+alias openclaw-box="$HOME/Developer/github/gordonbeeming/OpenClaw-homebox/bin/box"
+```
+
+Then this works from any directory:
+
+```bash title="From anywhere"
+openclaw-box doctor
+```
+
+The most useful command is the boring one:
+
+```bash title="Health check"
+openclaw-box doctor
+```
+
+That proves the Mac can reach the server, the remote workspace exists, Docker is installed, and the 1Password CLI is available. If that passes, my Mac can manage the server without running OpenClaw locally.
+
+## Git is the sync contract
+
+Git is the line between portable work and machine-local state.
+
+These stay ignored:
+
+```gitignore title=".gitignore"
+.openclaw/
+state/
+```
+
+That keeps local runtime state, logs, and setup markers out of the repo. The server can still use them. They just do not become part of the portable workspace.
+
+The repo should contain things another machine can use:
+
+- `AGENTS.md`, `SOUL.md`, `USER.md`, and other identity/workspace docs
+- memory files that are intentionally backed up
+- infrastructure config, like Caddy
+- routines and tools
+- operational scripts like `bin/box`
+
+The server also has its own git identity. When it performs nightly backups, those commits are signed by the key available on the server. That is the right ownership boundary. The Mac does not need the server's signing key, and the server does not need my local editor state.
+
+## How I am adding new capabilities
+
+This is the part I am still figuring out. It is the workflow I am using now, but I am not pretending it is fully settled. I will post again once I know which parts hold up and which parts need changing.
+
+Say I want OpenClaw to summarize important Gmail messages. I do not want to start by giving the server a half-built script with live mailbox access. The shape I am using is:
+
+1. Build the routine locally.
+2. Test the parsing and decision logic against fixtures.
+3. Store real credentials in 1Password, not in the repo.
+4. Confirm the OpenClaw service account can read those secrets on the server.
+5. Commit and push the portable code/config.
+6. Pull the latest code on the server.
+7. Run a server-side dry-run where the real environment exists.
+8. Restart or reload the relevant OpenClaw service only after the dry-run works.
+9. Check status and logs from the Mac.
+
+In commands, it looks roughly like this:
+
+```bash title="Local development"
+openclaw-box dry-run ./routines/gmail-summary --fixture fixtures/gmail/sample.json
+```
+
+That command runs locally with a standard dry-run environment:
+
+```text
+OPENCLAW_DRY_RUN=1
+OPENCLAW_TARGET=local
+OPENCLAW_WORKSPACE=<this repo>
+```
+
+Once the local path looks right, the code goes through git:
+
+```bash title="Publish portable changes"
+git push
+```
+
+Then the server gets the update:
+
+```bash title="Update the server workspace"
+openclaw-box pull
+```
+
+And the first server run should still be a dry-run:
+
+```bash title="Server-side dry-run"
+openclaw-box remote './routines/gmail-summary --dry-run'
+```
+
+That is the point where the server can read from 1Password and use the real host environment, but the routine still should not send email, mutate state, archive messages, or post anywhere.
+
+Only after that should I reload the relevant runtime service. One piece I still want to make cleaner is a named command for restarting the OpenClaw runtime:
+
+```bash title="Future wrapper"
+openclaw-box restart-gateway
+```
+
+That wrapper should hide the actual implementation, whether it ends up being `systemctl --user restart ...`, a Docker Compose restart, or something else. I do not want to keep raw service-manager commands in my head. The wrapper should own that detail.
+
+For services we already know about, the pattern is concrete. Caddy deploys through:
+
+```bash title="Existing remote deploy"
+openclaw-box deploy-caddy
+```
+
+That command pulls the latest repo state on the server, runs the Caddy deploy script there, and prints the container status afterwards.
+
+## Why this feels safer
+
+The safety comes from making side effects boring and explicit.
+
+Reading remote state is cheap:
+
+```bash
+openclaw-box status
+openclaw-box remote 'git status --short'
+```
+
+Dry-runs are the default shape for new work:
+
+```bash
+openclaw-box dry-run ./routines/example --fixture fixtures/example.json
+openclaw-box remote './routines/example --dry-run'
+```
+
+Real changes get named commands:
+
+```bash
+openclaw-box deploy-caddy
+openclaw-box restart-gateway
+```
+
+That last command does not exist yet, but naming it matters. I want "restart the OpenClaw gateway" to become a reviewed operation in the repo, not a random SSH command I half remember at midnight.
+
+## The rule I want to keep
+
+The Mac controls the server. It does not become the server.
+
+That gives me a clean way to work:
+
+- Build locally when the work is portable.
+- Use fixtures before using real APIs.
+- Put secrets in 1Password.
+- Let the server read those secrets with its service account.
+- Commit and push portable changes.
+- Pull and dry-run on the server.
+- Reload the runtime explicitly.
+- Check logs before calling it done.
+
+It is a small distinction, but it changes how I think about personal automation. I am not trying to clone my homebox onto every machine I use. I am building a control surface for the one that already exists.
+
+I am still figuring out the best way to work with this setup. This is just where I am after a bit of poking around and trying to understand the moving parts. I am sure I will post more as the shape gets clearer.

@@ -1,0 +1,149 @@
+---
+title: 'Fail Fast, Save Big: A Smarter CI Testing Strategy'
+date: 2025-08-25
+tags: ['DevOps', 'CI/CD', 'GitHub Actions', '.NET', 'Testing']
+summary: 'Our CI pipeline was burning through our budget and slowing developers down. The fix wasn''t about chasing raw speed, but about finding a better balance by handling failures more intelligently. Here''s how we did it.'
+---
+
+
+
+We've all been there. You get the notification: "You've nearly exhausted your GitHub Actions minutes for the month." For us, that was the final straw. Our CI pipeline felt slow, but the real problem was that it was expensive and inefficient, especially when builds failed.
+
+The instinct in DevOps is to chase raw speed. But when we dug in, we realized the bottleneck wasn't the happy path (a successful run) -- it was how badly we handled the much more common sad path (a failed run). We needed a better balance.
+
+That shift in thinking led us to a new strategy where our developers now get feedback in **under 3 minutes**, and we stop our slow, expensive tests from ever running if a simple check fails first.
+
+## Context
+
+Our system is a **modular monolith**, which has been great for development. But as the team added new modules, we kept adding new test projects. Over time, without any deliberate decision, we ended up with **over 25 different test projects**.
+
+Our old CI process for Pull Requests hadn't kept pace with that growth. It ran everything at once. When a developer pushed a commit, it kicked off a matrix of build jobs and another matrix of all 25+ test projects -- unit and integration tests alike -- in parallel.
+
+On paper, running in parallel sounds fast. In practice, our quick unit tests and our long-running integration tests all started at the same time. That created a few serious problems.
+
+## The Problem: The High Cost of an Unbalanced Pipeline
+
+This approach was costing us in three ways:
+
+1.  **Slow failure feedback:** A developer had to wait over **7.5 minutes** (the runtime of our longest integration test) just to find out they'd broken a 30-second unit test. That's a long time to wait for what should be a quick answer.
+2.  **Wasted spend on failed builds:** When a quick unit test failed, our pipeline would still run all the slow, expensive integration tests. We were paying for tests that couldn't possibly mean anything because the build was already broken.
+3.  **No caching:** Our Docker builds and NuGet dependency downloads ran from scratch every single time, which made every job slower and more expensive than it needed to be.
+
+## The Solution: A Strategy for Smarter Feedback
+
+We stopped thinking about this as a speed problem and started thinking about it as a feedback problem. Get the right information to developers faster, and stop paying for work that doesn't matter.
+
+### 1. Tiered testing
+
+The core change was splitting our monolithic test job into two dependent stages.
+
+First, we run a `test-unit` job with only our fast unit tests.
+
+```yaml title=".github/workflows/cicd.yml"
+# .github/workflows/cicd.yml
+jobs:
+  test-unit:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        testProject:
+          - 'Tests/MyProject.UnitTests'
+          - 'Tests/MyProject.Core.UnitTests'
+    steps:
+      # ... checkout, setup, etc.
+      - name: Run ${{ matrix.testProject }}
+        run: dotnet test ${{ matrix.testProject }}
+````
+
+Only if all unit tests pass do we proceed to the `test-integration` job.
+
+```yaml title=".github/workflows/cicd.yml"
+# .github/workflows/cicd.yml
+  test-integration:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    needs: test-unit # This is the magic line!
+    strategy:
+      matrix:
+        testProject:
+          - 'Tests/MyProject.Api.IntegrationTests'
+          - 'Tests/MyProject.Database.IntegrationTests'
+    steps:
+      # ... checkout, setup, etc.
+      - name: Run ${{ matrix.testProject }}
+        run: dotnet test ${{ matrix.testProject }}
+```
+
+That `needs: test-unit` line is what makes this work. If any unit test fails, the entire integration test stage is skipped -- saving time and money. It also makes the intent clear in the workflow file itself without needing a diagram.
+
+### 2. Caching dependencies
+
+We also added caching for NuGet packages.
+
+```yaml title=".github/workflows/cicd.yml"
+# .github/workflows/cicd.yml
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+    - name: Cache .NET packages
+      uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('Directory.Packages.props') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    # ... other steps
+```
+
+### 3. Docker layer ordering
+
+We also restructured our Dockerfiles to make better use of Docker's build cache. When you're not caching, the order of commands doesn't matter much. Once you turn caching on, it matters a lot.
+
+The rule is simple: put the things that change least often first. This one change dropped our cached image build time from **9 minutes 33 seconds** down to **7 minutes 8 seconds**.
+
+**Before:** We copied all our code before restoring dependencies, so any code change invalidated the cache and triggered a slow `dotnet restore`.
+
+```dockerfile title="Dockerfile (before)"
+# Old Dockerfile (inefficient)
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY . . # Copies everything at once
+RUN dotnet restore "MyProject/MyProject.csproj" # Runs on every code change
+# ...
+```
+
+**After:** We copy only the `.csproj` files first, restore dependencies to create a stable cache layer, then copy the rest of the source code.
+
+```dockerfile title="Dockerfile (after)"
+# New Dockerfile (efficient)
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copy only project files first
+COPY ["MyProject/MyProject.csproj", "MyProject/"]
+COPY ["MyProject.Core/MyProject.Core.csproj", "MyProject.Core/"]
+
+# This layer is now cached unless a dependency changes
+RUN dotnet restore "MyProject/MyProject.csproj"
+
+# Copy the frequently changing source code last
+COPY . .
+# ...
+```
+
+## The Payoff: A Smarter, Cheaper Feedback Loop
+
+The results were good, though one number looks worse on paper before you understand what happened.
+
+  * **Feedback in under 3 minutes:** Developers now know within three minutes if they've broken a unit test. That's the number that matters most day-to-day.
+  * **Real cost savings on failures:** If a PR fails the unit test stage, we skip running roughly 15 long-running integration tests. GitHub Actions bills by the minute, so even a test that would have run for 5 seconds costs a full billable minute. For 15 tests, that's a minimum of 15 saved minutes of compute on every failed run -- and failed runs are common.
+  * **The trade-off that isn't really a trade-off:** Wall-clock time for a successful run went up slightly, from ~7.5 minutes to ~10.5 minutes. But the billable compute minutes for a successful run are the same, because we're running the same jobs in a different order. That extra ~3 minutes is time a developer is writing their PR description or reviewing code anyway. In practice, nobody noticed.
+
+## Final thoughts
+
+Making a CI pipeline faster usually means shaving time off the happy path. That's fine, but it's not where we were losing. We were losing on every failed run -- paying full price for work that was already pointless.
+
+If your pipeline treats a failed build the same as a successful one, you're probably paying a failure tax. Worth looking at.

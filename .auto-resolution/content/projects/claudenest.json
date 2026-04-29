@@ -1,0 +1,9 @@
+{
+  "title": "ClaudeNest",
+  "description": "Remote session launcher for Claude Code — browse dev folders and launch remote-control sessions from anywhere via a web dashboard. Perfect for managing Claude Code across multiple machines.",
+  "href": "https://claudenest.app",
+  "imgSrc": "/static/images/projects/claudenest.png",
+  "techStack": [".NET", "React", "SignalR", "Azure"],
+  "github": "https://github.com/GordonBeeming/ClaudeNest",
+  "featured": true
+}

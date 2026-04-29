@@ -1,0 +1,90 @@
+---
+title: 'Fixing Kiota: When int becomes UntypedNode (ASP.NET Core OpenAPI 3.1 Bug)'
+date: 2026-01-07
+tags: ['Kiota', 'OpenAPI', 'ASP.NET Core', 'C#', 'Bug Fix']
+summary: 'If your Kiota client is generating UntypedNode properties instead of int, you might be hitting an ASP.NET Core OpenAPI bug. Here is the one-line fix.'
+---
+
+I ran into a confusing issue recently where my generated Kiota client stopped using `int` for integer properties and started using `UntypedNode` instead.
+
+It happened after upgrading from .NET 9 to .NET 10 and regenerating the client. The build was fine, but the generated code was full of `UntypedNode` where I expected `int` or `int?`.
+
+Here's the warning I was seeing during generation:
+
+```text title="Kiota warning output"
+warn: Kiota.Builder.KiotaBuilder[0]
+OpenAPI warning: #/components/schemas/OrderSummary/properties/totalItems - 
+The format int32 is not supported by Kiota for the type Integer, String and the string type will be used.
+```
+
+## The root cause
+
+ASP.NET Core's `System.Text.Json` is lenient about number handling by default. It accepts both:
+- `42` (an actual number)
+- `"42"` (the same value as a string)
+
+Because of that, the ASP.NET Core OpenAPI generator produces a schema that looks like this:
+
+```json title="OpenAPI schema (before fix)"
+"totalItems": {
+  "type": ["integer", "string"],
+  "format": "int32"
+}
+```
+
+It's saying "this can be an integer OR a string".
+
+Kiota sees that union type with a format specifier and gives up, falling back to `UntypedNode` (or `string` in some versions).
+
+## Attempt 1: the transformer approach (too complex)
+
+My first thought was to fix the schema manually using an `IOpenApiDocumentTransformer`. I wrote a transformer that walked through the schema, found properties with `format: int32` and `type: [integer, string]`, and forced them to just `type: integer`.
+
+It looked something like this:
+
+```csharp title="IntegerSchemaTransformer.cs"
+public sealed class IntegerSchemaTransformer : IOpenApiDocumentTransformer
+{
+    public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
+    {
+        // Recursively walk the schema and fix types...
+        // ... (lots of code to handle nested properties, arrays, allOf, etc.)
+    }
+}
+```
+
+It *sort of* worked, but it was fragile. I was patching the symptom rather than the cause, and the transformer kept growing as I found more edge cases (nested objects, arrays, and so on). Custom schema manipulation code is not something you want to maintain long-term.
+
+## Attempt 2: the real fix (JsonNumberHandling)
+
+After more digging I found [this GitHub issue](https://github.com/microsoft/kiota/issues/6541) that pointed to the actual cause. The "union type" schema wasn't a bug in the generator, it was accurately reflecting the default behavior of `System.Text.Json`.
+
+The fix is one line: tell `System.Text.Json` to use strict number handling.
+
+In your `Program.cs` or `AppServices.cs` (wherever you configure your services), add this:
+
+```csharp title="Program.cs"
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    // Use strict number handling to prevent ASP.NET Core from generating union types ["integer", "string"]
+    // for integer properties in OpenAPI schemas. This ensures Kiota generates proper int types.
+    options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.Strict;
+});
+```
+
+With that in place, the OpenAPI generator produces a clean integer schema:
+
+```json title="OpenAPI schema (after fix)"
+"totalItems": {
+  "type": "integer",
+  "format": "int32"
+}
+```
+
+Once you've made that change, restart your API and regenerate your Kiota client. Your `int` properties will be back.
+
+## Worth noting
+
+Lenient number parsing is a convenience, but it tends to leak into your API contract in ways you don't expect (as this whole mess shows). Strict mode is more predictable and keeps your generated clients clean.
+
+One thing to be aware of: if any existing clients send numbers as strings (e.g. `"id": "123"`), they'll start getting errors after this change. They'll need to send actual numbers (`"id": 123`).

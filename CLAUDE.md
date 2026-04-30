@@ -72,6 +72,9 @@ Tags are slugified for URLs using `github-slugger`. The `TagPill` component hand
 ### TinaCMS Visual Editing
 Blog posts use `useTina` hook (in `client-post.tsx`) for sidebar form editing in the admin. The server component fetches from both filesystem (for rendering) and TinaCMS client (for editing data). TinaCMS local mode runs a GraphQL server at localhost:4001.
 
+### TinaCMS Schema Changes
+Any edit to `tina/config.ts` (adding fields, changing types, renaming collections) **must regenerate `tina/tina-lock.json` in the same commit**. TinaCloud CI loop-fails when the lock and config drift apart. Regenerate with `pnpm build:tina` (runs `tinacms build`) or `pnpm dev:tina` (runs `tinacms dev`) — either rewrites the lock. Stage and commit `tina/tina-lock.json` alongside the schema edit.
+
 ### Dark Mode
 Uses `next-themes` with `attribute="class"`. The `html` element gets class `dark`. Tailwind's `dark:` variant is configured via `@custom-variant`. Use `dark:` prefix for dark mode styles. Logo/image swapping uses `dark:hidden` / `hidden dark:block` pattern.
 

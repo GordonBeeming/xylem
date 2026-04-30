@@ -109,6 +109,7 @@ const schema = defineSchema({
         { type: "image", name: "imgSrc", label: "Image" },
         { type: "string", name: "techStack", label: "Tech Stack", list: true },
         { type: "string", name: "github", label: "GitHub URL" },
+        { type: "string", name: "video", label: "Video URL" },
         { type: "boolean", name: "featured", label: "Featured" },
       ],
     },

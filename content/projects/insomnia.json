@@ -1,0 +1,9 @@
+{
+  "title": "Insomnia",
+  "description": "macOS caffeinate utility that keeps your Mac awake. Menu bar app plus a full CLI, built on IOKit power assertions. Stay up indefinitely, until a deadline, while a specific app runs, or on a recurring schedule.",
+  "href": "https://gordonbeeming.com/insomnia",
+  "imgSrc": "/static/images/projects/insomnia.png",
+  "techStack": ["Swift", "SwiftUI", "macOS"],
+  "github": "https://github.com/GordonBeeming/insomnia",
+  "featured": false
+}

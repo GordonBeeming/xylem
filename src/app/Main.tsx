@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
 import { ProjectStarsBadge } from "@/components/ui/ProjectStarsBadge";
+import { ProjectVideo } from "@/components/ui/ProjectVideo";
 import Avatar from "@/components/Avatar";
 import type {
   PostMeta,
@@ -232,7 +233,7 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
           </AnimateOnScroll>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project, index) => (
+            {projects.filter((p) => p.featured).map((project, index) => (
               <AnimateOnScroll key={project.title} delay={index * 100}>
               <Card className="flex flex-col p-6">
                 <div className="mb-3 flex items-start justify-between">
@@ -246,6 +247,9 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
                 <p className="mb-4 grow text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
                   {project.description}
                 </p>
+                {project.video && (
+                  <ProjectVideo url={project.video} title={project.title} />
+                )}
                 {project.techStack && project.techStack.length > 0 && (
                   <div className="mb-4 flex flex-wrap gap-1.5">
                     {project.techStack.map((tech) => (
@@ -277,7 +281,7 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
                       GitHub
                     </a>
                   )}
-                  {project.href && (
+                  {project.href && project.href !== project.github && (
                     <a
                       href={project.href}
                       target="_blank"

@@ -3,6 +3,7 @@ import { getAllProjects } from "@/lib/tina-helpers";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
 import { Card } from "@/components/ui/Card";
 import { ProjectStarsBadge } from "@/components/ui/ProjectStarsBadge";
+import { ProjectVideo } from "@/components/ui/ProjectVideo";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -15,7 +16,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await enrichProjectsWithStars(getAllProjects());
+  const projects = (await enrichProjectsWithStars(getAllProjects())).sort(
+    (a, b) => {
+      const stars = (b.githubStars ?? 0) - (a.githubStars ?? 0);
+      if (stars !== 0) return stars;
+      return a.title.localeCompare(b.title);
+    },
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
@@ -44,6 +51,10 @@ export default async function ProjectsPage() {
             <p className="mb-4 grow text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
               {project.description}
             </p>
+
+            {project.video && (
+              <ProjectVideo url={project.video} title={project.title} />
+            )}
 
             {/* Tech stack pills */}
             {project.techStack && project.techStack.length > 0 && (
@@ -79,7 +90,7 @@ export default async function ProjectsPage() {
                   GitHub
                 </a>
               )}
-              {project.href && (
+              {project.href && project.href !== project.github && (
                 <a
                   href={project.href}
                   target="_blank"

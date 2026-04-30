@@ -27,6 +27,7 @@ export function ProjectVideo({ url, title }: ProjectVideoProps) {
   const vimeoId = !youTubeId ? getVimeoId(url) : null;
 
   if (!youTubeId && !vimeoId) {
+    if (!/^https?:\/\//i.test(url)) return null;
     return (
       <a
         href={url}

@@ -1,0 +1,9 @@
+{
+  "title": "Stub",
+  "description": "Short links and burn-after-reading notes, single-tenant on Cloudflare's free tier. Passkey auth, browser-side encryption (the server never sees your key), and your own domain.",
+  "href": "https://stub.gordonbeeming.com",
+  "imgSrc": "/static/images/projects/stub.png",
+  "techStack": ["TypeScript", "Next.js", "Cloudflare Workers", "D1"],
+  "github": "https://github.com/GordonBeeming/stub",
+  "featured": false
+}

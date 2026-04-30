@@ -1,0 +1,9 @@
+{
+  "title": "Vista",
+  "description": "Standalone macOS replacement for Raycast's Search Screenshots. OCRs every screenshot with Apple's Vision framework so you can find them by name, text, or date. Global hotkey, floating panel, all on-device.",
+  "href": "https://github.com/GordonBeeming/vista",
+  "imgSrc": "/static/images/projects/vista.png",
+  "techStack": ["Swift", "SwiftUI", "Vision", "macOS"],
+  "github": "https://github.com/GordonBeeming/vista",
+  "featured": true
+}

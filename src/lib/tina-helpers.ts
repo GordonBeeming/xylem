@@ -206,6 +206,7 @@ export interface ProjectData {
   imgSrc?: string;
   techStack?: string[];
   github?: string;
+  video?: string;
   featured?: boolean;
   githubStars?: number;
 }
@@ -234,6 +235,7 @@ export function getAllProjects(): ProjectData[] {
           ? (data.techStack as string[])
           : [],
         github: (data.github as string) ?? undefined,
+        video: typeof data.video === "string" ? data.video : undefined,
         featured: (data.featured as boolean) ?? false,
         githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
       });

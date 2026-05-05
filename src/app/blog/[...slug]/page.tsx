@@ -15,6 +15,7 @@ import {
 import { AnchorHeading } from "@/components/prose/AnchorHeading";
 import { Figure } from "@/components/prose/Figure";
 import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
+import { Walkthrough, Step } from "@/components/prose/Walkthrough";
 import { TableWrapper } from "@/components/prose/TableWrapper";
 import { CodeBlock } from "@/components/prose/CodeBlock";
 import { MermaidDiagram } from "@/components/prose/MermaidDiagram";
@@ -43,6 +44,8 @@ const mdxComponents = {
   ),
   Figure,
   YouTubeEmbed,
+  Walkthrough,
+  Step,
   img: (props: React.ComponentProps<"img">) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img

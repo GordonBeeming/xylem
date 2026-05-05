@@ -137,13 +137,14 @@ GoHighLevel sends through shared transactional infrastructure. Each outbound mes
 - Reverse DNS varies the same way. `RDNS_DYNAMIC` is another -0.363 when it fires.
 - Reputation is inherited from whoever else recently sent through that IP.
 
-I sent the same test message three times in a row, no DNS changes between sends:
+I sent the same test message four times in a row, no DNS changes between sends:
 
-- Test 1: **5/10**, IP `159.135.x.x` (dirty HELO)
+- Test 1: **5/10**, IP `159.135.x.x` (dirty HELO, `HELO_DYNAMIC_IPADDR` -3.243)
 - Test 2: **8.6/10**, IP `159.112.x.x` (clean HELO, "Very Good" reputation)
 - Test 3: **5/10** again, back on `159.135.x.x`
+- Test 4: **9.5/10**, another clean pool, "SpamAssassin likes you"
 
-Same DNS, same auth, same body. Score swings 3+ points on which IP the load balancer happens to pick. If you see one bad score, run it twice more before reading anything into it.
+Same DNS, same auth, same body. Score swung 4.5 points across the four runs purely on which IP the load balancer happened to pick. If you see one bad score, run it a few more times before reading anything into it.
 
 ### Pick a vowel-friendly mailbox name
 

@@ -1,0 +1,178 @@
+---
+title: 'How to fix GoHighLevel (GHL) emails going to spam'
+date: 2026-05-05
+tags: ['GoHighLevel', 'Email Deliverability', 'DMARC', 'DKIM', 'SPF', 'DNS', 'Cloudflare']
+summary: 'If your GoHighLevel appointment confirmations are landing in spam, the cause is usually a single missing DNS record. Gmail has been showing the symptom in the sender line the whole time.'
+---
+
+If your GoHighLevel appointment confirmations are landing in spam, the cause is usually one missing DNS record. Gmail has been showing the symptom in the sender line the whole time, you just have to know where to look.
+
+This post walks the path: spot the symptom, recover the missing record, verify the fix, and understand why the mail-tester score still bounces around afterwards.
+
+## The clue is in the sender line
+
+Open one of the spam-bound confirmations in Gmail and click the sender to expand it. You're looking for something like this:
+
+> Cool Stuff &lt;ghl@yourdomain.com&gt; **via** cloudflare-email.net
+
+<Figure
+  src="/images/spam-via-tag.png"
+  alt="Gmail email expanded sender showing 'via cloudflare-email.net' next to the From address"
+  width="0"
+  height="0"
+  caption="The 'via' tag tells you the From: domain and the actual signing domain do not match."
+/>
+
+That `via` is Gmail flagging a mismatch. The `From:` header says the message is from your domain, but the relay that actually signed and sent it lives on a different domain. DMARC requires those to be aligned. When they're not, your `p=quarantine` policy does its job and the message gets shunted to spam.
+
+## Confirm it with dig
+
+Before changing anything, see what your domain currently publishes. Three records matter for GoHighLevel:
+
+```bash title="Terminal: what your DNS says today"
+dig +short TXT yourdomain.com
+dig +short TXT _dmarc.yourdomain.com
+dig +short TXT mailo._domainkey.yourdomain.com
+```
+
+A healthy setup returns three populated values: an SPF record that includes `mailgun.org` and `spf.leadconnectorhq.com`, a DMARC record (often `p=none` or `p=quarantine`), and a `mailo._domainkey` TXT containing a long `k=rsa; p=...` public key.
+
+If `mailo._domainkey` comes back empty, that is the broken record. GoHighLevel signs your outbound mail with a key it expects to find at that selector. Without the public key in DNS, no receiver can verify the signature, DKIM alignment fails, and DMARC quarantines the message.
+
+```text title="Broken state: DKIM record missing"
+$ dig +short TXT mailo._domainkey.yourdomain.com
+(no record)
+
+$ dig +short TXT _dmarc.yourdomain.com
+"v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:..."
+```
+
+That combination, strict DMARC plus missing DKIM, is the fingerprint behind the `via` tag.
+
+## Run mail-tester for an outside view
+
+Send a fresh confirmation through GoHighLevel to a [mail-tester.com](https://www.mail-tester.com/) address. With the DKIM record missing, the report calls it out directly:
+
+<Figure
+  src="/images/mail-tester-broken.png"
+  alt="mail-tester report showing 'Your DKIM signature is not valid' with a -3 penalty and a 6.3/10 score"
+  width="0"
+  height="0"
+  caption="Independent confirmation: DKIM signature is not valid. The score sits at 6.3/10 with the headline 'Some inboxes might still refuse you'."
+/>
+
+The score is a vibe. The line that matters is **"Your DKIM signature is not valid"**. That is what Gmail is reacting to as well.
+
+## Recovering the DKIM record value
+
+GoHighLevel's UI does not surface the records on the dedicated-domain page. It hides them behind a small `(...)` menu on the domain card. The path is:
+
+<Walkthrough title="Finding your DKIM record value in GoHighLevel">
+  <Step
+    src="/images/dkim-recovery-1.png"
+    alt="Settings sidebar with Email Services highlighted"
+    caption="Open Email Services from the sidebar."
+  />
+  <Step
+    src="/images/dkim-recovery-2.png"
+    alt="Email Services page with Dedicated Domain And IP button highlighted"
+    caption="Click Dedicated Domain And IP in the top right."
+  />
+  <Step
+    src="/images/dkim-recovery-3.png"
+    alt="Domain detail page with the (...) menu open and Verify domain highlighted"
+    caption="On the domain card, click the (...) menu, then Verify domain."
+  />
+  <Step
+    src="/images/dkim-recovery-4.png"
+    alt="Records table showing all values including the highlighted mailo._domainkey row"
+    caption="Every record value is shown, including the mailo._domainkey DKIM key, with a Copy button on each row."
+  />
+</Walkthrough>
+
+In step 4 you have what you need. The DKIM record at `mailo._domainkey` is the one that's most often missing or out of date, and it's the usual cause of the `via` tag, but check the status column for every row. The page lists SPF, the tracking CNAME, two MX records, and DMARC alongside DKIM, and any of them flagged as `Not Verified` is a record that needs to be republished. Copy each value into your DNS provider as the matching record type, then come back and hit Verify Domain.
+
+## Republish, propagate, verify
+
+Add the TXT record at `mailo._domainkey.yourdomain.com`. Wait roughly two minutes for caches to clear, then check:
+
+```text title="Fixed state: DKIM record present"
+$ dig +short TXT mailo._domainkey.yourdomain.com
+"k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC91X7..."
+
+$ dig +short TXT _dmarc.yourdomain.com
+"v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:..."
+```
+
+Send another test email. The `via` tag should be gone, the message should land in the inbox, and "Show original" in Gmail should now read:
+
+```text title="Authentication-Results, fixed state"
+Authentication-Results: mx.google.com;
+       dkim=pass header.d=yourdomain.com
+       spf=pass smtp.mailfrom=...mailgun.org
+       dmarc=pass (p=QUARANTINE) header.from=yourdomain.com
+```
+
+`dkim=pass header.d=yourdomain.com` is the bit that does the work. The signing domain matches the From: domain, so DMARC alignment is satisfied.
+
+mail-tester now shows the green rows it could not give you before:
+
+<Figure
+  src="/images/mail-tester-fixed-auth.png"
+  alt="mail-tester showing DKIM_VALID +0.1 and DKIM_VALID_AU +0.1 in green"
+  width="0"
+  height="0"
+  caption="DKIM_VALID_AU is the row to watch: your signature is valid and coming from your domain. That's alignment."
+/>
+
+## Why your mail-tester score may still look modest
+
+Once auth is green, the DNS-side work is done. The total score, on the other hand, will keep moving. There are three reasons why, and only one of them is something you can address.
+
+### IP pool roulette
+
+GoHighLevel sends through shared transactional infrastructure. Each outbound message is routed through one of many sending IPs, and those IPs are not equal:
+
+- Some have proper static HELO hostnames; others look dynamic and trip SpamAssassin's `HELO_DYNAMIC_IPADDR` rule for a -3.243 penalty.
+- Reverse DNS varies the same way. `RDNS_DYNAMIC` is another -0.363 when it fires.
+- Reputation is inherited from whoever else recently sent through that IP.
+
+I sent the same test message four times in a row, no DNS changes between sends:
+
+- Test 1: **5/10**, IP `159.135.x.x` (dirty HELO, `HELO_DYNAMIC_IPADDR` -3.243)
+- Test 2: **8.6/10**, IP `159.112.x.x` (clean HELO, "Very Good" reputation)
+- Test 3: **5/10** again, back on `159.135.x.x`
+- Test 4: **9.5/10**, another clean pool, "SpamAssassin likes you"
+
+Same DNS, same auth, same body. Score swung 4.5 points across the four runs purely on which IP the load balancer happened to pick. If you see one bad score, run it a few more times before reading anything into it.
+
+### Pick a vowel-friendly mailbox name
+
+`FROM_DOMAIN_NOVOWEL` is a -0.5 penalty for consonant runs in the From: address. Acronym mailboxes like `ghl@`, `crm@`, or `mkt@` can trigger it. Switch to something with vowels:
+
+- `hello@yourdomain.com`
+- `bookings@yourdomain.com`
+- `appointments@yourdomain.com`
+- `noreply@yourdomain.com`
+
+You won't always see the score move (the IP roulette dominates the swing), but the penalty stops firing when it lands on you, and the address reads more like a real person to whoever sees it in their inbox.
+
+### Check your tracking links
+
+`URI_NOVOWEL` fires when SpamAssassin sees vowel-less hostnames in the URLs inside your message body. Tracking and unsubscribe links are the usual culprits, and there are two places in GoHighLevel that affect them.
+
+The first is the tracking CNAME. GoHighLevel's auto-configure adds an `email.yourdomain.com` CNAME pointing at the click-tracking infrastructure, which replaces the worst offender in tracking links with a hostname your customers recognise. If you ran auto-configure, it's already in place. Confirm with `dig +short CNAME email.yourdomain.com`, you should see the tracking host return.
+
+The second is the tracking toggle itself. On the dedicated-domain page, the `(...)` menu has a **Domain Settings** option that opens an Email Tracking Control dialog with toggles for Click Tracking and Open Tracking. If you don't need open or click stats, turning both off stops URL rewriting entirely and removes the rewritten links from the body. Note that changes can take up to 15 minutes to propagate.
+
+If `URI_NOVOWEL` is still firing after both of those are sorted, the remaining vowel-less hostname is likely an unsubscribe link or a shared infrastructure domain that GoHighLevel injects regardless of your tracking settings. Outside your control on the standard plans.
+
+### What stays out of reach
+
+`HELO_DYNAMIC_IPADDR` and `RDNS_DYNAMIC` are properties of the relay infrastructure. Without a dedicated IP (usually a paid upgrade), those penalties come and go with whichever IP the load balancer picks. Bake that into your expectations: a clean auth report is what you control, and that's the gate that matters at Gmail and most other receivers.
+
+## The takeaway
+
+The `via` tag in Gmail is one record short of a working DKIM setup. Recovering the value from GoHighLevel is a four-click path through a `(...)` menu most people miss. Republishing the TXT record is one entry in your DNS provider. After that, alignment passes, the message inboxes, and the score becomes a secondary indicator rather than a daily worry.
+
+If you find yourself debugging this on a domain that is supposed to be working, run the three `dig` commands first. The empty result on `mailo._domainkey` is usually the whole story.

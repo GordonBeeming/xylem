@@ -5,8 +5,11 @@ import {
   isValidElement,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
+  type KeyboardEvent,
+  type PointerEvent,
   type ReactNode,
 } from "react";
 
@@ -35,29 +38,37 @@ export function Step(_props: StepProps) {
 Step.displayName = "WalkthroughStep";
 
 function extractSteps(children: ReactNode): StepProps[] {
-  return Children.toArray(children)
-    .filter(isValidElement)
-    .map((child) => {
-      const props = (child as { props?: Partial<StepProps> }).props ?? {};
-      if (typeof props.src === "string" && typeof props.alt === "string") {
-        return {
-          src: props.src,
-          alt: props.alt,
-          caption: props.caption,
-        } satisfies StepProps;
-      }
-      return null;
-    })
-    .filter((step): step is StepProps => step !== null);
+  const steps: StepProps[] = [];
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return;
+    if (child.type !== Step) return;
+    const props = child.props as StepProps;
+    if (typeof props.src !== "string" || typeof props.alt !== "string") return;
+    steps.push({
+      src: props.src,
+      alt: props.alt,
+      caption: props.caption,
+    });
+  });
+  return steps;
 }
 
 export function Walkthrough({ title, children }: WalkthroughProps) {
-  const steps = extractSteps(children);
+  const steps = useMemo(() => extractSteps(children), [children]);
   const [index, setIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const pointerStartX = useRef<number | null>(null);
 
   const total = steps.length;
+
+  // Clamp the index when steps change (e.g. MDX hot-reload removes a step)
+  // so we don't end up rendering null on a valid Walkthrough.
+  useEffect(() => {
+    if (total > 0 && index >= total) {
+      setIndex(total - 1);
+    }
+  }, [index, total]);
+
   const current = steps[index];
 
   const goPrev = useCallback(() => {
@@ -68,7 +79,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
   }, [total]);
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "ArrowLeft") {
         e.preventDefault();
         goPrev();
@@ -80,16 +91,29 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
     [goPrev, goNext],
   );
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    // Capture the pointer so we still get pointerup/pointercancel even if the
+    // user drags outside the image wrapper before releasing.
+    e.currentTarget.setPointerCapture(e.pointerId);
     pointerStartX.current = e.clientX;
   };
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+  const releaseCapture = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
+  const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    releaseCapture(e);
     if (pointerStartX.current === null) return;
     const delta = e.clientX - pointerStartX.current;
     pointerStartX.current = null;
     if (Math.abs(delta) < SWIPE_THRESHOLD_PX) return;
     if (delta < 0) goNext();
     else goPrev();
+  };
+  const handlePointerCancel = (e: PointerEvent<HTMLDivElement>) => {
+    releaseCapture(e);
+    pointerStartX.current = null;
   };
 
   // Preload neighbouring frames so next-click is instant.
@@ -167,9 +191,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
         <div
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
-          onPointerCancel={() => {
-            pointerStartX.current = null;
-          }}
+          onPointerCancel={handlePointerCancel}
           className="touch-pan-y select-none"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

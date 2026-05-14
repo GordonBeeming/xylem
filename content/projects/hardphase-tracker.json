@@ -5,5 +5,6 @@
   "imgSrc": "/static/images/projects/hardphase-tracker.png",
   "techStack": ["Swift", "SwiftUI", "SwiftData"],
   "github": "https://github.com/GordonBeeming/HardPhaseTracker",
+  "appStore": "https://apps.apple.com/app/hardphase-tracker/id6757358747",
   "featured": false
 }

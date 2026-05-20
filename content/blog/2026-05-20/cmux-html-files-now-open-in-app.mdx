@@ -1,0 +1,57 @@
+---
+title: 'Getting cmux to hand HTML files back to my real browser'
+date: 2026-05-20
+tags: ['cmux', 'Terminal', 'macOS', 'Productivity']
+summary: 'cmux 0.64.5 flipped the default for opening local HTML files: they now preview inside cmux instead of launching your system browser. One settings key flips it back.'
+---
+
+I asked an agent to build me an HTML artifact this morning, hit the link in the terminal, and got the file rendered into a cmux pane next to me instead of opening in Safari where it had landed for the last few weeks. The artifact looked fine, but the in-app preview pane is not what I want for an HTML page I'm about to QA at 1920×1080 with devtools open.
+
+So: what changed, and how to flip it back.
+
+## What changed
+
+The behaviour switched in [cmux 0.64.5](https://github.com/manaflow-ai/cmux/blob/main/CHANGELOG.md), released on 13 May 2026. Buried in that release is [PR #4041 — "Open supported files in cmux on cmd-click"](https://github.com/manaflow-ai/cmux/pull/4041). It added a new setting that defaults to `true`:
+
+```text title="setting"
+app.openSupportedFilesInCmux
+```
+
+When it's on, cmd-clicking a readable local file (text, code, PDFs, images, audio, video, HTML) opens the cmux preview pane instead of handing the path to whatever macOS has registered as the default opener for that extension.
+
+For most file types that's actually nice. I don't need a fresh Preview.app window for every PNG. For HTML it's the wrong default for me, because the whole reason I open the HTML file is to drive it in a real browser with devtools and ad-blockers and all my session state.
+
+## The fix
+
+There are three ways in:
+
+1. Settings UI → toggle **Open Supported Files in cmux** off.
+2. Command palette → run the disable action.
+3. `~/.config/cmux/settings.json` → set the key directly.
+
+I went for option 3 because I keep my cmux config in `~/.config/cmux/` alongside the rest of my dotfiles:
+
+```jsonc title="~/.config/cmux/settings.json"
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux-settings.schema.json",
+  "schemaVersion": 1,
+
+  "app": {
+    "openSupportedFilesInCmux": false
+  }
+}
+```
+
+cmux picks the change up live, no restart needed in my case. If the pane keeps catching files after the edit, give it a relaunch.
+
+## Worth noting
+
+The toggle is global across every file type the new feature covers. There is no per-extension carve-out today, so turning it off also sends your markdown previews and image previews back to the OS default. If you only want to push HTML out and keep the markdown preview, leave it on and just right-click → **Open With** → your browser when you need to.
+
+HTTPS links are a separate story. Those still respect the **Browser → Host Whitelist** setting, which is the one I use to keep GitHub PRs and a handful of internal dashboards opening in cmux instead of bouncing to Safari. That's working exactly as I want it to. The only thing PR #4041 touches is local file cmd-clicks.
+
+## Why I noticed
+
+I had been bouncing artifacts out to Safari for weeks without thinking about it, because that's where I want to QA them. [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) actually flagged the new behaviour a couple of weeks back, but my own workflow hadn't tripped on it yet so I let it slide. When it finally bit me this morning I pinged him about it, and that nerd-sniped him into going and digging out the `app.openSupportedFilesInCmux` toggle on his side while I was working it out on mine.
+
+The new default is sensible for plenty of workflows, just not mine. If your last few HTML artifacts from an agent opened in a cmux pane and you wondered when that started, this is when.

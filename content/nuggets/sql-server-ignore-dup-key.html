@@ -103,6 +103,7 @@
   .callout.warn .tag{color:var(--warn)}
 
   /* Facts table */
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
   th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--ui);vertical-align:top}
   th{font-weight:600;color:var(--primary);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase}
@@ -116,6 +117,7 @@
   @media (max-width:560px){
     .timeline::before{left:62px}
     .timeline li{grid-template-columns:62px 1fr;gap:16px}
+    .timeline .body::before{left:-21px}
     .bar-row{grid-template-columns:1fr;gap:6px}
   }
 </style>
@@ -257,6 +259,7 @@
   </div>
 
   <h3>Why the gap exists</h3>
+  <div class="table-scroll">
   <table>
     <tr><th>Aspect</th><th>Nonclustered (fast)</th><th>Clustered (slow)</th></tr>
     <tr>
@@ -275,6 +278,7 @@
       <td>An exception raised &amp; caught per duplicate — the dominant cost</td>
     </tr>
   </table>
+  </div>
   <p class="muted">The asymmetry is architectural: the clustered index is the table, and it's updated before the nonclustered indexes. By the time a nonclustered uniqueness check would fire, the base row already exists — so SQL Server moves that dedup work to the query processor for nonclustered, but the clustered path is stuck doing it the expensive way.</p>
 </section>
 

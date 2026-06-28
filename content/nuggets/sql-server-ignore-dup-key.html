@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>IGNORE_DUP_KEY — what it is, since when, and the performance trap</title>
+<style>
+  :root{
+    --primary:#0063B2;
+    --accent:#0075A3;
+    --bg:#F8F9FA;
+    --bg-soft:#eef1f4;
+    --text:#1A1A1A;
+    --text-2:#374151;
+    --ui:#E9ECEF;
+    --good:#117a3d;
+    --bad:#b3261e;
+    --warn:#8a5a00;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--sans);
+    background:var(--bg);color:var(--text);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--primary);text-decoration:underline;text-underline-offset:2px}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header.hero{background:var(--primary);color:#fff;padding:36px 0 46px}
+  .hero .wrap{display:flex;flex-direction:column;gap:22px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.02em;font-size:.95rem;color:#fff}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:#fff;display:inline-block;box-shadow:0 0 0 3px rgba(255,255,255,.28)}
+  .eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#cfe6f7;margin:0}
+  h1{font-size:clamp(1.75rem,4.2vw,2.85rem);line-height:1.14;font-weight:700;margin:.2em 0 .15em}
+  h1 code{font-family:var(--mono)}
+  .hero p.lede{font-size:1.1rem;max-width:62ch;margin:0;color:#eaf4fb;font-weight:400}
+  header.hero code{background:rgba(255,255,255,.18);color:#fff;padding:.05em .4em;border-radius:5px;font-family:var(--mono);font-size:.9em}
+
+  /* Verdict cards */
+  .verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:-30px auto 0;position:relative;z-index:2}
+  .vcard{background:#fff;border:1px solid var(--ui);border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,40,80,.08);min-width:0}
+  .vcard .k{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--primary);margin:0 0 6px}
+  .vcard .v{font-size:1.18rem;font-weight:700;margin:0 0 4px;line-height:1.25}
+  .vcard .s{font-size:.92rem;color:var(--text-2);margin:0}
+
+  section{padding:40px 0 8px}
+  h2{font-size:clamp(1.4rem,2.8vw,1.9rem);font-weight:700;margin:.2em 0 .5em;line-height:1.2}
+  h2 .num{color:var(--primary);font-weight:700;margin-right:.35em}
+  h3{font-size:1.12rem;font-weight:600;margin:1.4em 0 .4em}
+  p{margin:.55em 0}
+  .muted{color:var(--text-2)}
+
+  /* Code blocks */
+  pre{background:#0f1830;color:#eaf1ff;border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.86rem;line-height:1.55;margin:1em 0;border:1px solid #243152}
+  pre .c{color:#8ea0c9}
+  pre .kw{color:#9db4ff;font-weight:600}
+  pre .hl{color:#ffd479;font-weight:600}
+  code{font-family:var(--mono);font-size:.9em;background:var(--bg-soft);color:var(--accent);padding:.06em .38em;border-radius:5px;overflow-wrap:anywhere;word-break:break-word}
+
+  /* Timeline */
+  .timeline{list-style:none;margin:1.4em 0;padding:0;position:relative}
+  .timeline::before{content:"";position:absolute;left:88px;top:6px;bottom:6px;width:2px;background:var(--ui)}
+  .timeline li{position:relative;display:grid;grid-template-columns:88px 1fr;gap:22px;padding:0 0 22px}
+  .timeline .yr{font-weight:700;color:var(--primary);text-align:right;font-size:.95rem;padding-top:1px}
+  .timeline .body{position:relative;padding-left:6px}
+  .timeline .body::before{content:"";position:absolute;left:-26px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--ui)}
+  .timeline .body strong{display:block;font-weight:600}
+  .timeline .body span{font-size:.93rem;color:var(--text-2)}
+
+  /* Do / Don't lists */
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:1.2em 0}
+  .panel{border:1px solid var(--ui);border-radius:12px;padding:6px 20px 16px;background:#fff;min-width:0}
+  .panel h3{display:flex;align-items:center;gap:8px}
+  .panel.good h3{color:var(--good)}
+  .panel.bad h3{color:var(--bad)}
+  .panel ul{margin:.4em 0;padding-left:1.2em}
+  .panel li{margin:.45em 0}
+
+  /* Perf chart */
+  .chart{margin:1.4em 0;border:1px solid var(--ui);border-radius:14px;padding:22px 22px 14px;background:#fff}
+  .bar-row{display:grid;grid-template-columns:210px 1fr 84px;gap:14px;align-items:center;margin:14px 0}
+  .bar-label{font-size:.9rem;font-weight:500;min-width:0}
+  .bar-label small{display:block;color:var(--text-2);font-weight:400;font-size:.8rem}
+  .bar-track{background:var(--bg-soft);border-radius:7px;height:30px;position:relative;overflow:hidden}
+  .bar-fill{height:100%;border-radius:7px;min-width:4px}
+  .bar-val{font-family:var(--mono);font-weight:600;font-size:.84rem;text-align:right;white-space:nowrap}
+  .bar-val.slow{color:var(--bad)}.bar-val.mid{color:var(--primary)}.bar-val.fast{color:var(--good)}
+  .bar-fill.slow{background:var(--bad)}
+  .bar-fill.mid{background:var(--primary)}
+  .bar-fill.fast{background:var(--good)}
+  .chart .cap{font-size:.82rem;color:var(--text-2);margin:14px 0 2px}
+
+  /* Callouts */
+  .callout{border-left:4px solid var(--primary);background:var(--bg-soft);border-radius:0 10px 10px 0;padding:14px 18px;margin:1.2em 0}
+  .callout.warn{border-left-color:var(--warn);background:#fff7e6}
+  .callout .tag{font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:2px}
+  .callout.warn .tag{color:var(--warn)}
+
+  /* Facts table */
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--ui);vertical-align:top}
+  th{font-weight:600;color:var(--primary);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase}
+  tr:last-child td{border-bottom:none}
+
+  /* Sources */
+  footer{border-top:1px solid var(--ui);margin-top:40px;padding:28px 0 50px}
+  footer ol{margin:.6em 0;padding-left:1.3em}
+  footer li{margin:.4em 0;font-size:.92rem}
+  .tip{font-size:.82rem;color:var(--text-2);margin-top:22px}
+  @media (max-width:560px){
+    .timeline::before{left:62px}
+    .timeline li{grid-template-columns:62px 1fr;gap:16px}
+    .timeline .body::before{left:-21px}
+    .bar-row{grid-template-columns:1fr;gap:6px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="dot" aria-hidden="true"></span>Gordon Beeming</div>
+    <div>
+      <p class="eyebrow">SQL Server &middot; Index options</p>
+      <h1><code>WITH (IGNORE_DUP_KEY = ON)</code></h1>
+      <p class="lede">It's not new syntax. It's an old index option that quietly drops duplicate rows on insert instead of failing the whole statement — handy for idempotency, but with one sharp performance edge worth knowing about.</p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="verdict">
+    <div class="vcard">
+      <p class="k">Is it new?</p>
+      <p class="v">No — it's ancient</p>
+      <p class="s">The option predates SQL Server 2005. Only the <code>WITH (&hellip;)</code> wrapper around it is "2005-new".</p>
+    </div>
+    <div class="vcard">
+      <p class="k">What is it?</p>
+      <p class="v">An index option</p>
+      <p class="s">A property of a <strong>UNIQUE</strong> index — not a query hint, not a table feature you toggle per insert.</p>
+    </div>
+    <div class="vcard">
+      <p class="k">The catch</p>
+      <p class="v">~18&times; slower on a<br>clustered index</p>
+      <p class="s">On a clustered unique index with many duplicates it can be brutally slow. Nonclustered is fine.</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="num">1</span>What it actually is</h2>
+  <p><code>IGNORE_DUP_KEY</code> is an <strong>option on a UNIQUE index</strong> (or the unique index behind a PRIMARY KEY / UNIQUE constraint). It changes one thing: how the engine reacts when an <strong>INSERT</strong> would create a duplicate key.</p>
+  <ul>
+    <li><strong>OFF (the default)</strong> — the first duplicate raises an error and the <em>entire</em> statement rolls back. None of the rows land, even if only one was a dupe.</li>
+    <li><strong>ON</strong> — the duplicate rows are silently <em>discarded</em> with a warning, and every non-duplicate row in the same statement still inserts successfully.</li>
+  </ul>
+  <p>You set it when you create the index, not at insert time:</p>
+  <pre><span class="c">-- modern form (SQL Server 2005+)</span>
+<span class="kw">CREATE UNIQUE INDEX</span> IX_Order_NaturalKey
+  <span class="kw">ON</span> dbo.[Order] (CustomerId, ExternalRef)
+  <span class="kw">WITH</span> (<span class="hl">IGNORE_DUP_KEY = ON</span>);
+
+<span class="c">-- on a constraint, same idea</span>
+<span class="kw">ALTER TABLE</span> dbo.[Order]
+  <span class="kw">ADD CONSTRAINT</span> UQ_Order <span class="kw">UNIQUE</span> (CustomerId, ExternalRef)
+  <span class="kw">WITH</span> (<span class="hl">IGNORE_DUP_KEY = ON</span>);</pre>
+  <div class="callout">
+    <span class="tag">The idempotency angle</span>
+    With it ON, re-running an insert of rows that already exist becomes a no-op for the dupes instead of an error — so a retried/replayed batch converges to "one row per key" without you writing <code>WHERE NOT EXISTS</code> or catching error 2627. That's the genuinely useful part. The sharp edge is below.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">2</span>Since when? (the "is this new" answer)</h2>
+  <p>The behaviour itself is one of the oldest knobs in the product — it shipped in the early SQL Server / Sybase lineage and was already standard by SQL Server 2000. What changed over the years is only the <em>syntax</em> and a 2017 performance escape hatch.</p>
+  <ol class="timeline">
+    <li>
+      <span class="yr">&le; 2000</span>
+      <div class="body">
+        <strong>The option already exists</strong>
+        <span>Inherited from the Sybase-era engine. In SQL Server 2000 you wrote the bare form <code>WITH IGNORE_DUP_KEY</code>, and it couldn't be applied to a primary key.</span>
+      </div>
+    </li>
+    <li>
+      <span class="yr">2005</span>
+      <div class="body">
+        <strong>The <code>WITH (option = ON|OFF)</code> syntax arrives</strong>
+        <span>SQL Server 2005 introduced the parenthesised index-options grammar — this is where <code>WITH (IGNORE_DUP_KEY = ON)</code> comes from. The old bare <code>WITH IGNORE_DUP_KEY</code> still works and means the same as <code>= ON</code>.</span>
+      </div>
+    </li>
+    <li>
+      <span class="yr">2017</span>
+      <div class="body">
+        <strong><code>SUPPRESS_MESSAGES = ON</code> added</strong>
+        <span>SQL Server 2017 added a sub-option that also fixes the clustered-index performance trap (see &sect;4). Lets you skip the per-dupe warning chatter and force the fast plan.</span>
+      </div>
+    </li>
+  </ol>
+  <p class="muted">So if a plan or teammate is presenting <code>WITH (IGNORE_DUP_KEY = ON)</code> as a modern trick, the honest framing is: old feature, two-decade-old syntax. Nothing to wait for or worry about on version grounds.</p>
+</section>
+
+<section>
+  <h2><span class="num">3</span>What it does — and doesn't — cover</h2>
+  <div class="cols">
+    <div class="panel good">
+      <h3>✓ It applies to</h3>
+      <ul>
+        <li><strong>INSERT</strong> operations after the index is created/rebuilt — the only thing it affects.</li>
+        <li>UNIQUE indexes, clustered or nonclustered (and the index behind a PK/unique constraint).</li>
+        <li>Multi-row inserts: good rows in, dupes dropped, with a warning per discarded set.</li>
+      </ul>
+    </div>
+    <div class="panel bad">
+      <h3>✗ It does nothing for</h3>
+      <ul>
+        <li><strong>UPDATE</strong> — an update that would create a duplicate still errors, always. Same for the create/rebuild of the index itself.</li>
+        <li><strong>Non-unique</strong> indexes, indexed <strong>views</strong>, <strong>XML</strong>, <strong>spatial</strong>, and <strong>filtered</strong> indexes — can't be set to ON.</li>
+        <li>Letting you <em>build</em> a unique index over data that already has dupes — that's rejected regardless.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout warn">
+    <span class="tag">Silent by design</span>
+    Discarded rows vanish with only a warning (not an error). Your "inserted 1000 rows" intent can quietly become 970 actually stored, and well-behaved apps won't notice. If "every row must land or I want to know why" matters, that's an argument for explicit dedup logic instead. Check the setting any time via the <code>ignore_dup_key</code> column in <code>sys.indexes</code>.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">4</span>The performance trap: clustered vs nonclustered</h2>
+  <p>This is the one genuinely surprising thing about the option. <strong>Where</strong> the unique index lives changes performance by more than an order of magnitude when duplicates are common. Paul White's benchmark — 1,000,000 rows, only 1,000 distinct values (so ~999k dupes) — makes it vivid:</p>
+
+  <div class="chart">
+    <div class="bar-row">
+      <div class="bar-label">Nonclustered + IGNORE_DUP_KEY<small>query processor strips dupes first</small></div>
+      <div class="bar-track"><div class="bar-fill fast" style="width:4.4%"></div></div>
+      <div class="bar-val fast">700 ms</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Baseline (non-unique clustered)<small>no dedup work at all</small></div>
+      <div class="bar-track"><div class="bar-fill mid" style="width:5.7%"></div></div>
+      <div class="bar-val mid">900 ms</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Clustered + IGNORE_DUP_KEY<small>storage engine, exception per dupe</small></div>
+      <div class="bar-track"><div class="bar-fill slow" style="width:100%"></div></div>
+      <div class="bar-val slow">15,900 ms</div>
+    </div>
+    <p class="cap">Lower is faster. The clustered case is ~18&times; the nonclustered case here — and <strong>~92% of its runtime is raising and catching internal exceptions</strong>, one per discarded duplicate.</p>
+  </div>
+
+  <h3>Why the gap exists</h3>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Aspect</th><th>Nonclustered (fast)</th><th>Clustered (slow)</th></tr>
+    <tr>
+      <td>Who handles it</td>
+      <td>The <strong>query processor</strong>, up front in the plan</td>
+      <td>The <strong>storage engine</strong>, row by row</td>
+    </tr>
+    <tr>
+      <td>How dupes are removed</td>
+      <td>A merge semi-join + Assert + Segment/Top eliminate dupes <em>before</em> any insert is attempted</td>
+      <td>Each row navigates the b-tree, takes latches/locks, builds the row &amp; log record, <em>then</em> hits the dupe and throws</td>
+    </tr>
+    <tr>
+      <td>Cost driver</td>
+      <td>One set-based pass; no exceptions</td>
+      <td>An exception raised &amp; caught per duplicate — the dominant cost</td>
+    </tr>
+  </table>
+  </div>
+  <p class="muted">The asymmetry is architectural: the clustered index is the table, and it's updated before the nonclustered indexes. By the time a nonclustered uniqueness check would fire, the base row already exists — so SQL Server moves that dedup work to the query processor for nonclustered, but the clustered path is stuck doing it the expensive way.</p>
+</section>
+
+<section>
+  <h2><span class="num">5</span>The 2017 escape hatch &amp; the alternatives</h2>
+  <p>If you're on SQL Server 2017 or later and you do want it on a clustered index, add <code>SUPPRESS_MESSAGES = ON</code>. It silences the per-dupe warnings <em>and</em> makes the optimizer use the fast query-processor plan even for the clustered case:</p>
+  <pre><span class="kw">CREATE UNIQUE CLUSTERED INDEX</span> CIX_Order
+  <span class="kw">ON</span> dbo.[Order] (CustomerId, ExternalRef)
+  <span class="kw">WITH</span> (<span class="hl">IGNORE_DUP_KEY = ON (SUPPRESS_MESSAGES = ON)</span>);</pre>
+  <p>And the honest comparison — when duplicates are the norm, plain set-based dedup often beats <code>IGNORE_DUP_KEY</code> on a clustered index anyway. In the same benchmark, a <code>SELECT DISTINCT</code> before the insert ran in ~400&nbsp;ms vs the 15,900&nbsp;ms clustered case.</p>
+  <div class="cols">
+    <div class="panel good">
+      <h3>✓ Reach for IGNORE_DUP_KEY when</h3>
+      <ul>
+        <li>The natural key is a <strong>nonclustered</strong> unique index.</li>
+        <li>Duplicates are <strong>rare</strong> (a few collisions in a batch), and you want idempotent "insert what's new".</li>
+        <li>You're on 2017+ and can add <code>SUPPRESS_MESSAGES = ON</code> for a clustered key.</li>
+      </ul>
+    </div>
+    <div class="panel bad">
+      <h3>✗ Prefer explicit dedup when</h3>
+      <ul>
+        <li>The unique key is the <strong>clustered</strong> index on pre-2017 and dupes are common — use <code>INSERT &hellip; SELECT DISTINCT</code> or <code>WHERE NOT EXISTS</code> / <code>MERGE</code>.</li>
+        <li>You need to <em>know</em> how many rows were rejected, not have them disappear silently.</li>
+        <li>Rejections should trigger app logic (log, alert, dead-letter) rather than a swallowed warning.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">6</span>Other interesting bits</h2>
+  <ul>
+    <li><strong>It's a documented, supported optimizer trick</strong> for "insert only the new rows" — Paul White even has a piece on using it creatively for set-difference style inserts.</li>
+    <li><strong>Transactional nuance:</strong> the discarded duplicates don't roll back the surrounding transaction — the statement succeeds with the survivors, which is exactly why it reads as "idempotent insert".</li>
+    <li><strong>It's per-index, not per-table:</strong> a table can have one unique index with it ON and another with it OFF; the OFF one will still hard-error a dupe even if the first would've ignored it.</li>
+    <li><strong>Warning, not error:</strong> client libraries surface it as an informational message (it won't trip a normal try/catch), which is the trap for code that assumes "no exception = all rows inserted".</li>
+  </ul>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <h2 style="margin-top:0">Sources</h2>
+    <ol>
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-index-transact-sql">CREATE INDEX (Transact-SQL)</a> — Microsoft Learn. Canonical reference for the option, defaults, applies-only-to-insert rule, excluded index types, backward-compatible syntax, and <code>sys.indexes.ignore_dup_key</code>.</li>
+      <li><a href="https://sqlperformance.com/2019/04/sql-performance/ignore_dup_key-slower-clustered-indexes">IGNORE_DUP_KEY slower on clustered indexes</a> — Paul White, SQLPerformance.com. The 700 / 900 / 15,900&nbsp;ms benchmark, the 92%-in-exceptions finding, the query-processor vs storage-engine explanation, and <code>SUPPRESS_MESSAGES</code>.</li>
+      <li><a href="https://www.sql.kiwi/2019/04/ignore_dup_key-slower-clustered-indexes/">Same article on Paul White's sql.kiwi</a> (original).</li>
+      <li><a href="https://www.sql.kiwi/2013/02/a-creative-use-of-ignore-dup-key/">A creative use of IGNORE_DUP_KEY</a> — Paul White.</li>
+    </ol>
+    <p class="tip">Benchmark figures are from Paul White's published test (1M rows, 1K distinct values) and will vary with your data &amp; hardware.</p>
+  </div>
+</footer>
+
+<script src="/nuggets/_resize.js" defer></script>
+</body>
+</html>

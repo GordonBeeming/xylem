@@ -287,7 +287,7 @@
   <p>If you're on SQL Server 2017 or later and you do want it on a clustered index, add <code>SUPPRESS_MESSAGES = ON</code>. It silences the per-dupe warnings <em>and</em> makes the optimizer use the fast query-processor plan even for the clustered case:</p>
   <pre><span class="kw">CREATE UNIQUE CLUSTERED INDEX</span> CIX_Order
   <span class="kw">ON</span> dbo.[Order] (CustomerId, ExternalRef)
-  <span class="kw">WITH</span> (<span class="hl">IGNORE_DUP_KEY = ON, SUPPRESS_MESSAGES = ON</span>);</pre>
+  <span class="kw">WITH</span> (<span class="hl">IGNORE_DUP_KEY = ON (SUPPRESS_MESSAGES = ON)</span>);</pre>
   <p>And the honest comparison — when duplicates are the norm, plain set-based dedup often beats <code>IGNORE_DUP_KEY</code> on a clustered index anyway. In the same benchmark, a <code>SELECT DISTINCT</code> before the insert ran in ~400&nbsp;ms vs the 15,900&nbsp;ms clustered case.</p>
   <div class="cols">
     <div class="panel good">

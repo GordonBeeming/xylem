@@ -1,0 +1,8 @@
+title: "IGNORE_DUP_KEY — what it is, since when, and the performance trap"
+date: 2026-06-28
+summary: "An old SQL Server index option that drops duplicate rows on insert instead of failing the whole statement, handy for idempotency but ~18x slower on a clustered index."
+tags:
+  - sql-server
+  - t-sql
+  - index
+  - performance

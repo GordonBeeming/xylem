@@ -16,9 +16,20 @@ export const metadata: Metadata = {
   },
 };
 
+// Group projects by lifecycle before ordering by popularity: live projects
+// first, then private previews, then deprecated ones at the bottom.
+function statusTier(status?: string): number {
+  const normalized = status?.trim().toLowerCase();
+  if (!normalized) return 0;
+  // Any other status (currently "Private preview") sits between live and deprecated.
+  return normalized === "deprecated" ? 2 : 1;
+}
+
 export default async function ProjectsPage() {
   const projects = (await enrichProjectsWithStars(getAllProjects())).sort(
     (a, b) => {
+      const tier = statusTier(a.status) - statusTier(b.status);
+      if (tier !== 0) return tier;
       const stars = (b.githubStars ?? 0) - (a.githubStars ?? 0);
       if (stars !== 0) return stars;
       return a.title.localeCompare(b.title);

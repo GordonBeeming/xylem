@@ -239,7 +239,7 @@ export function getAllProjects(): ProjectData[] {
         github: (data.github as string) ?? undefined,
         appStore: typeof data.appStore === "string" ? data.appStore : undefined,
         video: typeof data.video === "string" ? data.video : undefined,
-        status: typeof data.status === "string" ? data.status : undefined,
+        status: typeof data.status === "string" && data.status.trim() !== "" ? data.status.trim() : undefined,
         featured: (data.featured as boolean) ?? false,
         githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
       });

@@ -1,0 +1,7 @@
+{
+  "title": "ClaudeBar",
+  "description": "Your Claude usage limits in the macOS menu bar, in your timezone. The bar shows the highest percentage across your limits; the dropdown breaks each one out (session, weekly, and any model-scoped limits) with a progress bar and reset time. No cost tracking, no charts, just the numbers from Claude's usage page at a glance.",
+  "techStack": ["Swift", "SwiftUI", "macOS"],
+  "github": "https://github.com/GordonBeeming/claude-bar",
+  "featured": false
+}

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
 import { ProjectStarsBadge } from "@/components/ui/ProjectStarsBadge";
+import { ProjectStatusBadge } from "@/components/ui/ProjectStatusBadge";
 import { ProjectVideo } from "@/components/ui/ProjectVideo";
 import Avatar from "@/components/Avatar";
 import type {
@@ -240,9 +241,12 @@ export function Main({ posts, nuggets, projects, books, siteConfig }: MainProps)
                   <h3 className="text-xl font-bold text-[var(--color-text-primary)]">
                     {project.title}
                   </h3>
-                  {typeof project.githubStars === "number" && (
-                    <ProjectStarsBadge stars={project.githubStars} />
-                  )}
+                  <div className="flex shrink-0 items-center gap-2">
+                    {project.status && <ProjectStatusBadge status={project.status} />}
+                    {typeof project.githubStars === "number" && (
+                      <ProjectStarsBadge stars={project.githubStars} />
+                    )}
+                  </div>
                 </div>
                 <p className="mb-4 grow text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
                   {project.description}

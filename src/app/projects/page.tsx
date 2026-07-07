@@ -19,16 +19,10 @@ export const metadata: Metadata = {
 // Group projects by lifecycle before ordering by popularity: live projects
 // first, then private previews, then deprecated ones at the bottom.
 function statusTier(status?: string): number {
-  switch (status?.trim().toLowerCase()) {
-    case "deprecated":
-      return 2;
-    case undefined:
-    case "":
-      return 0;
-    default:
-      // Any other status (currently "Private preview") sits between the two.
-      return 1;
-  }
+  const normalized = status?.trim().toLowerCase();
+  if (!normalized) return 0;
+  // Any other status (currently "Private preview") sits between live and deprecated.
+  return normalized === "deprecated" ? 2 : 1;
 }
 
 export default async function ProjectsPage() {

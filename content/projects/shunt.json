@@ -1,0 +1,7 @@
+{
+  "title": "shunt",
+  "description": "Never lose your train of thought. Run parallel experiments as isolated Apple container guests (a lightweight VM each) and switch which one is live onto stable local ports without disturbing the others. Built for Apple silicon.",
+  "techStack": ["Go", "Apple containers", "macOS"],
+  "status": "Private preview",
+  "featured": false
+}

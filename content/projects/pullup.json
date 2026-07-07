@@ -1,0 +1,7 @@
+{
+  "title": "PullUp",
+  "description": "Pull up a chair and review the pull request. A local, AI-assisted PR reviewer for macOS: import a PR as a bundle, walk the diffs file by file, and leave review comments before syncing them back. Everything stays on your machine.",
+  "techStack": ["Tauri", "React", "Rust", "macOS"],
+  "status": "Private preview",
+  "featured": false
+}

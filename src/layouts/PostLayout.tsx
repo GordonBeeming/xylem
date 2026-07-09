@@ -9,6 +9,7 @@ import { MobileToc } from "@/components/blog/MobileToc";
 import { Tag } from "@/components/ds/Tag";
 import { Card } from "@/components/ds/Card";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
+import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { formatDateShort, type HeadingEntry } from "@/lib/content";
 import { EditInTinaButton } from "@/components/blog/EditInTinaButton";
 import type { PostMeta, SiteConfig } from "@/lib/tina-helpers";
@@ -26,15 +27,6 @@ interface PostLayoutProps {
 
 const mono = { fontFamily: "var(--font-mono)" };
 
-type SocialKind = "github" | "linkedin" | "bluesky" | "x" | "youtube";
-const authorSocials: { key: SocialKind; configKey: keyof SiteConfig }[] = [
-  { key: "github", configKey: "github" },
-  { key: "linkedin", configKey: "linkedin" },
-  { key: "bluesky", configKey: "bluesky" },
-  { key: "x", configKey: "twitter" },
-  { key: "youtube", configKey: "youtube" },
-];
-
 function AuthorBio({ siteConfig }: { siteConfig: SiteConfig }) {
   const bio = siteConfig.description.replace(/^.*?-\s*/, "");
   return (
@@ -48,10 +40,10 @@ function AuthorBio({ siteConfig }: { siteConfig: SiteConfig }) {
           {bio}
         </p>
         <div className="-ml-2 mt-[var(--space-3)] flex gap-0.5">
-          {authorSocials.map(({ key, configKey }) => {
+          {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
             const href = siteConfig[configKey] as string | undefined;
             if (!href) return null;
-            return <SocialIcon key={key} kind={key} href={href} size={16} variant="muted" />;
+            return <SocialIcon key={kind} kind={kind} href={href} size={16} variant="muted" />;
           })}
         </div>
       </div>

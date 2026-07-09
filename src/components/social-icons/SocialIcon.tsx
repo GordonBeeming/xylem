@@ -1,4 +1,4 @@
-type SocialIconKind =
+export type SocialIconKind =
   | "github"
   | "linkedin"
   | "bluesky"

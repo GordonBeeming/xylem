@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getAuthor, getSiteConfig } from "@/lib/tina-helpers";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
+import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import Avatar from "@/components/Avatar";
 import { Card } from "@/components/ds/Card";
 import { Button } from "@/components/ds/Button";
@@ -16,21 +17,6 @@ export const metadata: Metadata = {
       "About Gordon Beeming - Solution Architect at SSW, Microsoft MVP, and triathlete.",
   },
 };
-
-type SocialKind = "github" | "linkedin" | "x" | "bluesky" | "youtube" | "mail";
-
-interface SocialLinkConfig {
-  kind: SocialKind;
-  authorKey: string;
-}
-
-const socialLinks: SocialLinkConfig[] = [
-  { kind: "github", authorKey: "github" },
-  { kind: "linkedin", authorKey: "linkedin" },
-  { kind: "x", authorKey: "twitter" },
-  { kind: "bluesky", authorKey: "bluesky" },
-  { kind: "mail", authorKey: "email" },
-];
 
 const mono = { fontFamily: "var(--font-mono)" };
 
@@ -128,12 +114,11 @@ export default function AboutPage() {
 
           <div className="h-px w-full" style={{ background: "var(--border)" }} />
           <div className="mt-[var(--space-4)] flex flex-wrap justify-center gap-0.5">
-            {socialLinks.map(({ kind, authorKey }) => {
-              const href = author[authorKey as keyof typeof author] as string | undefined;
+            {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
+              const href = siteConfig[configKey] as string | undefined;
               if (!href) return null;
-              return <SocialIcon key={kind} kind={kind} href={kind === "mail" ? `mailto:${href}` : href} size={17} variant="muted" />;
+              return <SocialIcon key={kind} kind={kind} href={href} size={17} variant="muted" />;
             })}
-            {siteConfig.youtube && <SocialIcon kind="youtube" href={siteConfig.youtube} size={17} variant="muted" />}
           </div>
         </Card>
       </aside>

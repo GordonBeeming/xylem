@@ -10,6 +10,7 @@ import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { useCommandPalette } from "@/hooks/useCommandPalette";
 import { CommandPalette, type SearchableItem } from "@/components/ui/CommandPalette";
 import type { SiteConfig } from "@/lib/tina-helpers";
+import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { groupFeedByYear, type FeedItem, type FeedItemType } from "@/lib/home-feed";
 import styles from "./VesselHome.module.css";
 
@@ -34,27 +35,6 @@ const TYPE_META: Record<FeedItemType, { label: string; dot: string }> = {
   project: { label: "project", dot: "var(--text-subtle)" },
   book: { label: "book", dot: "var(--text-subtle)" },
 };
-
-type SocialKind =
-  | "github"
-  | "linkedin"
-  | "bluesky"
-  | "x"
-  | "youtube"
-  | "instagram"
-  | "threads"
-  | "mastodon";
-
-const SOCIAL_LINKS: { key: SocialKind; configKey: keyof SiteConfig }[] = [
-  { key: "github", configKey: "github" },
-  { key: "linkedin", configKey: "linkedin" },
-  { key: "bluesky", configKey: "bluesky" },
-  { key: "x", configKey: "twitter" },
-  { key: "youtube", configKey: "youtube" },
-  { key: "instagram", configKey: "instagram" },
-  { key: "threads", configKey: "threads" },
-  { key: "mastodon", configKey: "mastodon" },
-];
 
 const mono = { fontFamily: "var(--font-mono)" };
 
@@ -354,13 +334,13 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
 
         <footer className={styles.vfoot}>
           <span style={mono} className="text-[11px] tracking-[0.03em] text-[color:var(--text-subtle)]">
-            © {new Date().getUTCFullYear() >= 2026 ? new Date().getUTCFullYear() : 2026} Gordon Beeming · Opinions are my own.
+            © 2013-{new Date().getUTCFullYear() >= 2026 ? new Date().getUTCFullYear() : 2026} Gordon Beeming · Opinions are my own and not that of my company or anyone I engage with.
           </span>
           <div className="flex items-center gap-[var(--space-4)]">
-            {SOCIAL_LINKS.map(({ key, configKey }) => {
+            {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
               const href = siteConfig[configKey] as string | undefined;
               if (!href) return null;
-              return <SocialIcon key={key} kind={key} href={href} size={17} variant="muted" />;
+              return <SocialIcon key={kind} kind={kind} href={href} size={17} variant="muted" />;
             })}
           </div>
         </footer>

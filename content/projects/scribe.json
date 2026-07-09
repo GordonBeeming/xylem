@@ -3,8 +3,15 @@
   "description": "Family budget app for iOS, iPadOS, and watchOS. Tracks recurring income and expenses across multiple currencies, shares budgets with family via CloudKit, and has a watchOS companion for checking totals on the go.",
   "href": "https://gordonbeeming.com/scribe",
   "imgSrc": "/static/images/projects/scribe.png",
-  "techStack": ["Swift", "SwiftUI", "CloudKit", "iOS", "watchOS"],
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "CloudKit",
+    "iOS",
+    "watchOS"
+  ],
   "github": "https://github.com/GordonBeeming/Scribe",
   "appStore": "https://apps.apple.com/app/scribe-finance/id6760255015",
+  "date": "2026-03-08",
   "featured": false
 }

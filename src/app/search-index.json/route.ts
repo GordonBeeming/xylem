@@ -1,12 +1,13 @@
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getAllPosts, getAllProjects, getAllBooks } from "@/lib/tina-helpers";
 import { getAllNuggets } from "@/lib/nuggets";
 
 export const dynamic = "force-static";
 
 export interface SearchItem {
-  type: "post" | "nugget";
+  type: "post" | "nugget" | "project" | "book";
   title: string;
-  slug: string;
+  href: string;
+  external?: boolean;
   summary?: string;
   tags: string[];
   date: string;
@@ -16,7 +17,7 @@ export function GET() {
   const posts: SearchItem[] = getAllPosts().map((p) => ({
     type: "post",
     title: p.title,
-    slug: p.slug,
+    href: `/blog/${p.slug}`,
     summary: p.summary,
     tags: p.tags,
     date: p.date,
@@ -25,13 +26,32 @@ export function GET() {
   const nuggets: SearchItem[] = getAllNuggets().map((n) => ({
     type: "nugget",
     title: n.title,
-    slug: n.slug,
+    href: `/nuggets/${n.slug}`,
     summary: n.summary,
     tags: n.tags,
     date: n.date,
   }));
 
-  const all = [...posts, ...nuggets].sort(
+  const projects: SearchItem[] = getAllProjects().map((p) => ({
+    type: "project",
+    title: p.title,
+    href: p.href ?? p.github ?? "/projects",
+    external: Boolean(p.href ?? p.github),
+    summary: p.description,
+    tags: p.techStack ?? [],
+    date: p.date ?? "1970-01-01",
+  }));
+
+  const books: SearchItem[] = getAllBooks().map((b) => ({
+    type: "book",
+    title: b.title,
+    href: `/books/${b.slug}`,
+    summary: b.description,
+    tags: [],
+    date: b.publishedDate ?? "1970-01-01",
+  }));
+
+  const all = [...posts, ...nuggets, ...projects, ...books].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 

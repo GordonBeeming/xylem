@@ -119,6 +119,12 @@ const schema = defineSchema({
           options: ["Deprecated", "Private preview"],
         },
         { type: "boolean", name: "featured", label: "Featured" },
+        {
+          type: "datetime",
+          name: "date",
+          label: "Date",
+          description: "When the project started (repo creation date, or first commit for private repos). Places it on the home timeline.",
+        },
       ],
     },
     {

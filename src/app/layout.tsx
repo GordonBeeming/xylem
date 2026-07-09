@@ -1,25 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
 import { FeatureFlagScript } from "@/components/FeatureFlagScript";
 import { FeatureFlagProvider } from "@/components/FeatureFlagProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ChromeGate } from "@/components/layout/ChromeGate";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import "@/css/tailwind.css";
 
 const GA_MEASUREMENT_ID = "G-W0FD111Z7V";
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-space-grotesk",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-jetbrains",
+  variable: "--font-ibm-plex-mono",
 });
 
 export const metadata: Metadata = {
@@ -78,7 +81,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-surface-primary text-text-primary antialiased">
@@ -86,9 +89,13 @@ export default function RootLayout({
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
           <FeatureFlagProvider>
-            <Header />
+            <ChromeGate>
+              <Header />
+            </ChromeGate>
             <main id="main-content">{children}</main>
-            <Footer />
+            <ChromeGate>
+              <Footer />
+            </ChromeGate>
           </FeatureFlagProvider>
         </ThemeProviders>
       </body>

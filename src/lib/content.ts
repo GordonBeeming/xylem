@@ -20,6 +20,15 @@ export function formatDate(date: string, locale: string = 'en-US'): string {
   }).format(new Date(date));
 }
 
+/** Compact "Jun 18, 2026" form for mono metadata (e.g. the home timeline). */
+export function formatDateShort(date: string, locale: string = 'en-US'): string {
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  }).format(new Date(date));
+}
+
 export function sortPosts<T extends { date: string }>(posts: T[]): T[] {
   return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }

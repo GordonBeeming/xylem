@@ -1,9 +1,15 @@
 {
   "title": "ClaudeNest",
-  "description": "Remote session launcher for Claude Code — browse dev folders and launch remote-control sessions from anywhere via a web dashboard. Perfect for managing Claude Code across multiple machines.",
+  "description": "Remote session launcher for Claude Code \u2014 browse dev folders and launch remote-control sessions from anywhere via a web dashboard. Perfect for managing Claude Code across multiple machines.",
   "imgSrc": "/static/images/projects/claudenest.png",
-  "techStack": [".NET", "React", "SignalR", "Azure"],
+  "techStack": [
+    ".NET",
+    "React",
+    "SignalR",
+    "Azure"
+  ],
   "github": "https://github.com/GordonBeeming/ClaudeNest",
   "status": "Deprecated",
+  "date": "2026-03-02",
   "featured": false
 }

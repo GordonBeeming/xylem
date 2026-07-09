@@ -211,6 +211,7 @@ export interface ProjectData {
   status?: string;
   featured?: boolean;
   githubStars?: number;
+  date?: string;
 }
 
 const PROJECTS_DIR = path.join(process.cwd(), "content", "projects");
@@ -242,6 +243,7 @@ export function getAllProjects(): ProjectData[] {
         status: typeof data.status === "string" && data.status.trim() !== "" ? data.status.trim() : undefined,
         featured: (data.featured as boolean) ?? false,
         githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
+        date: typeof data.date === "string" ? data.date : undefined,
       });
     } catch (error) {
       console.error(`Error reading project file ${file}:`, error);

@@ -1,5 +1,6 @@
 import { getAllPosts, getAllProjects, getAllBooks } from "@/lib/tina-helpers";
 import { getAllNuggets } from "@/lib/nuggets";
+import { sortPosts } from "@/lib/content";
 
 export const dynamic = "force-static";
 
@@ -51,9 +52,7 @@ export function GET() {
     date: b.publishedDate ?? "1970-01-01",
   }));
 
-  const all = [...posts, ...nuggets, ...projects, ...books].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const all = sortPosts([...posts, ...nuggets, ...projects, ...books]);
 
   return Response.json(all);
 }

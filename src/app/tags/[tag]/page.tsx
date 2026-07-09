@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/tina-helpers";
-import { getTagCounts, getTagDisplayNames, formatDateShort } from "@/lib/content";
+import { getTagCounts, getTagDisplayNames, formatDateShort, postHref } from "@/lib/content";
 import { PostListItem } from "@/components/ds/PostListItem";
 import { slug } from "github-slugger";
 import type { Metadata } from "next";
@@ -73,7 +73,7 @@ export default async function TagFilteredPage(props: PageProps) {
         {filtered.map((post) => (
           <PostListItem
             key={post.slug}
-            href={`/blog/${post.slug}`}
+            href={postHref(post.slug)}
             date={formatDateShort(post.date)}
             readingTime={post.readingTime.text}
             title={post.title}

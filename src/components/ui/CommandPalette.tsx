@@ -125,7 +125,7 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
               ) : (
                 filteredItems.map((item) => (
                   <ComboboxOption
-                    key={`${item.type}:${item.title}`}
+                    key={`${item.type}:${item.href}`}
                     value={item}
                     className="cursor-pointer px-4 py-3 transition-colors data-[focus]:bg-[var(--color-surface-tertiary)]"
                   >

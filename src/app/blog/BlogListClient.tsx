@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { PostListItem } from "@/components/ds/PostListItem";
 import Link from "next/link";
 import { slug } from "github-slugger";
-import { formatDateShort } from "@/lib/content";
+import { formatDateShort, postHref } from "@/lib/content";
 
 interface PostData {
   title: string;
@@ -290,7 +290,7 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
             {posts.map((post) => (
               <PostListItem
                 key={post.slug}
-                href={`/blog/${post.slug}`}
+                href={postHref(post.slug)}
                 date={formatDateShort(post.date)}
                 readingTime={post.readingTime.text}
                 title={post.title}

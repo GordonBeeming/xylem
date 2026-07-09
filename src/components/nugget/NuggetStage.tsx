@@ -22,7 +22,7 @@ function StageButton({ onClick, children, title, href }: { onClick?: () => void;
     );
   }
   return (
-    <button onClick={onClick} title={title} style={mono} className={className}>
+    <button type="button" onClick={onClick} title={title} style={mono} className={className}>
       {children}
     </button>
   );

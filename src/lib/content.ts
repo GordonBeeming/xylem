@@ -12,6 +12,12 @@ export function computeSlug(relativePath: string): string {
     .replace(/^content\/blog\//, '');
 }
 
+/** Builds a safe `/blog/<slug>` href, percent-encoding each path segment
+ *  individually so the real `/`-separated route structure survives. */
+export function postHref(slug: string): string {
+  return `/blog/${slug.split('/').map(encodeURIComponent).join('/')}`;
+}
+
 export function formatDate(date: string, locale: string = 'en-US'): string {
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
@@ -30,7 +36,11 @@ export function formatDateShort(date: string, locale: string = 'en-US'): string 
 }
 
 export function sortPosts<T extends { date: string }>(posts: T[]): T[] {
-  return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return [...posts].sort((a, b) => {
+    const timeA = Date.parse(a.date);
+    const timeB = Date.parse(b.date);
+    return (Number.isNaN(timeB) ? 0 : timeB) - (Number.isNaN(timeA) ? 0 : timeA);
+  });
 }
 
 export function getTagCounts(posts: { tags?: string[] | null }[]): Record<string, number> {

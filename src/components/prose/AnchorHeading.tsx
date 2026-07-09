@@ -8,7 +8,7 @@ export function AnchorHeading({ level, id, children }: AnchorHeadingProps) {
   const Tag = `h${level}` as const;
   return (
     <Tag id={id}>
-      <a href={`#${id}`} className="anchor" aria-hidden="true">
+      <a href={`#${id}`} className="anchor" aria-label="Link to this heading">
         #
       </a>
       {children}

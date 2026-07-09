@@ -89,7 +89,12 @@ export function MobileMenu({ isOpen, onClose, siteConfig }: MobileMenuProps) {
     <div
       ref={menuRef}
       className="fixed inset-0 z-[200]"
-      style={{ pointerEvents: isOpen ? "auto" : "none" }}
+      style={{
+        pointerEvents: isOpen ? "auto" : "none",
+        visibility: isOpen ? "visible" : "hidden",
+        transitionProperty: "visibility",
+        transitionDuration: "0.24s",
+      }}
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation menu"
@@ -159,7 +164,10 @@ export function MobileMenu({ isOpen, onClose, siteConfig }: MobileMenuProps) {
                 borderColor: "var(--border)",
               }}
             >
-              {isActive && <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent)" }} />}
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ background: "var(--accent)", visibility: isActive ? "visible" : "hidden" }}
+              />
               {link.label}
             </Link>
           );

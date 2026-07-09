@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { postHref } from "@/lib/content";
 
 interface NavPost {
   title: string;
@@ -19,7 +20,7 @@ export function PostNavigation({ prevPost, nextPost }: PostNavigationProps) {
   return (
     <nav className="prevnext">
       {prevPost ? (
-        <Link href={`/blog/${prevPost.slug}`} className="pn-card">
+        <Link href={postHref(prevPost.slug)} className="pn-card">
           <span style={eyebrow}>← Previous</span>
           <span className="mt-1.5" style={{ fontSize: "var(--text-sm)", fontWeight: "var(--fw-medium)", color: "var(--text)" }}>
             {prevPost.title}
@@ -30,7 +31,7 @@ export function PostNavigation({ prevPost, nextPost }: PostNavigationProps) {
       )}
 
       {nextPost ? (
-        <Link href={`/blog/${nextPost.slug}`} className="pn-card text-right">
+        <Link href={postHref(nextPost.slug)} className="pn-card text-right">
           <span style={eyebrow}>Next →</span>
           <span className="mt-1.5" style={{ fontSize: "var(--text-sm)", fontWeight: "var(--fw-medium)", color: "var(--text)" }}>
             {nextPost.title}

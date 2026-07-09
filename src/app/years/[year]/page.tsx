@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getAllPosts } from "@/lib/tina-helpers";
-import { getYearCounts } from "@/lib/content";
-import { BlogPostCard } from "@/components/blog/BlogPostCard";
+import { getYearCounts, formatDateShort, postHref } from "@/lib/content";
+import { PostListItem } from "@/components/ds/PostListItem";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -33,32 +34,46 @@ export default async function YearFilteredPage(props: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
+    <div className="page-narrow">
+      <Link
+        href="/years"
+        className="no-underline"
+        style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+      >
+        ← all years
+      </Link>
+      <div className="mt-[18px] flex flex-wrap items-center gap-[var(--space-4)]">
+        <h1
+          className="tabular-nums"
+          style={{ margin: 0, fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        >
           Posts from {year}
         </h1>
-        <p className="text-lg text-[var(--color-text-secondary)]">
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", color: "var(--text-subtle)" }}>
           {filtered.length} post{filtered.length !== 1 ? "s" : ""}
-        </p>
+        </span>
+        <a
+          href={`/years/${year}/feed.xml`}
+          className="no-underline"
+          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: "var(--radius-xs)", padding: "3px 9px" }}
+        >
+          RSS ↗
+        </a>
       </div>
-
-      <section aria-label="Blog posts">
-        <div className="grid gap-6 md:grid-cols-2">
-          {filtered.map((post) => (
-            <BlogPostCard
-              key={post.slug}
-              post={{
-                title: post.title,
-                date: post.date,
-                summary: post.summary ?? "",
-                tags: post.tags,
-                slug: post.slug,
-              }}
-            />
-          ))}
-        </div>
-      </section>
+      <div className="mt-[var(--space-8)]">
+        {filtered.map((post) => (
+          <PostListItem
+            key={post.slug}
+            href={postHref(post.slug)}
+            date={formatDateShort(post.date)}
+            readingTime={post.readingTime.text}
+            title={post.title}
+            summary={post.summary ?? ""}
+            tags={post.tags.slice(0, 3)}
+            extraTags={Math.max(0, post.tags.length - 3)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

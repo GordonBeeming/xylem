@@ -13,12 +13,20 @@ import {
 } from "@headlessui/react";
 
 export interface SearchableItem {
-  type: "post" | "nugget";
+  type: "post" | "nugget" | "project" | "book";
   title: string;
-  slug: string;
+  href: string;
+  external?: boolean;
   summary?: string;
   tags?: string[];
 }
+
+const typeLabels: Record<SearchableItem["type"], string> = {
+  post: "Post",
+  nugget: "Nugget",
+  project: "Project",
+  book: "Book",
+};
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -61,11 +69,11 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
   const handleSelect = useCallback(
     (item: SearchableItem | null) => {
       if (item) {
-        const href =
-          item.type === "nugget"
-            ? `/nuggets/${item.slug}`
-            : `/blog/${item.slug}`;
-        router.push(href);
+        if (item.external) {
+          window.open(item.href, "_blank", "noopener,noreferrer");
+        } else {
+          router.push(item.href);
+        }
         onClose();
         setQuery("");
       }
@@ -100,7 +108,7 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
               </svg>
               <ComboboxInput
                 className="w-full border-0 border-b border-[var(--color-border-default)] bg-transparent py-3 pl-12 pr-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-0"
-                placeholder="Search posts and nuggets..."
+                placeholder="Search posts, nuggets, projects & books..."
                 onChange={(event) => setQuery(event.target.value)}
                 autoComplete="off"
               />
@@ -117,7 +125,7 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
               ) : (
                 filteredItems.map((item) => (
                   <ComboboxOption
-                    key={`${item.type}:${item.slug}`}
+                    key={`${item.type}:${item.href}`}
                     value={item}
                     className="cursor-pointer px-4 py-3 transition-colors data-[focus]:bg-[var(--color-surface-tertiary)]"
                   >
@@ -144,11 +152,9 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
                           </div>
                         )}
                       </div>
-                      {item.type === "nugget" && (
-                        <span className="mt-0.5 shrink-0 rounded-full border border-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--color-brand-primary)]">
-                          Nugget
-                        </span>
-                      )}
+                      <span className="mt-0.5 shrink-0 rounded-full border border-[var(--color-brand-primary)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--color-brand-primary)]">
+                        {typeLabels[item.type]}
+                      </span>
                     </div>
                   </ComboboxOption>
                 ))
@@ -157,7 +163,7 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
 
             {debouncedQuery === "" && filteredItems.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-[var(--color-text-tertiary)]">
-                Start typing to search posts and nuggets...
+                Start typing to search posts, nuggets, projects & books...
               </div>
             )}
 

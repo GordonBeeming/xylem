@@ -1,4 +1,5 @@
-import { Main } from "./Main";
+import { VesselHome } from "@/components/home/VesselHome";
+import { buildHomeFeed } from "@/lib/home-feed";
 import {
   getAllPosts,
   getAllProjects,
@@ -9,19 +10,13 @@ import { getAllNuggets } from "@/lib/nuggets";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
 
 export default async function Home() {
-  const posts = getAllPosts().slice(0, 10);
-  const nuggets = getAllNuggets().slice(0, 4);
+  const posts = getAllPosts();
+  const nuggets = getAllNuggets();
   const projects = await enrichProjectsWithStars(getAllProjects());
   const books = getAllBooks();
   const siteConfig = getSiteConfig();
 
-  return (
-    <Main
-      posts={posts}
-      nuggets={nuggets}
-      projects={projects}
-      books={books}
-      siteConfig={siteConfig}
-    />
-  );
+  const items = buildHomeFeed(posts, nuggets, projects, books);
+
+  return <VesselHome items={items} siteConfig={siteConfig} />;
 }

@@ -11,7 +11,9 @@ import {
   getPost,
   getRelatedPosts,
   getAdjacentPosts,
+  getSiteConfig,
 } from "@/lib/tina-helpers";
+import { extractHeadings } from "@/lib/content";
 import { AnchorHeading } from "@/components/prose/AnchorHeading";
 import { Figure } from "@/components/prose/Figure";
 import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
@@ -19,6 +21,7 @@ import { Walkthrough, Step } from "@/components/prose/Walkthrough";
 import { TableWrapper } from "@/components/prose/TableWrapper";
 import { CodeBlock } from "@/components/prose/CodeBlock";
 import { MermaidDiagram } from "@/components/prose/MermaidDiagram";
+import { Callout } from "@/components/prose/Callout";
 // rehype-code-meta no longer needed — shiki transformers handle meta
 import type { Metadata } from "next";
 
@@ -62,16 +65,11 @@ const mdxComponents = {
     return (
       <a
         {...props}
-        className="text-[var(--color-brand-primary)] no-underline transition-colors hover:underline"
         {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       />
     );
   },
-  blockquote: (props: React.ComponentProps<"blockquote">) => (
-    <blockquote className="my-6 rounded-r-lg border-l-4 border-l-[var(--color-brand-primary)] bg-[color-mix(in_srgb,var(--color-brand-primary)_3%,transparent)] px-6 py-5 [&_p]:mb-0 [&_p]:italic [&_p]:text-[var(--color-text-secondary)]">
-      {props.children}
-    </blockquote>
-  ),
+  Callout,
   pre: (props: Record<string, unknown>) => {
     // Shiki + our rehype plugins set dataMeta and dataLanguage on <pre>
     const child = props.children as React.ReactElement<{
@@ -122,31 +120,6 @@ const mdxComponents = {
       </CodeBlock>
     );
   },
-  code: (props: React.ComponentProps<"code">) => {
-    // Inline code only (code inside <pre> is handled by the pre component above)
-    const className = props.className ?? "";
-    if (className.startsWith("language-")) {
-      return <code className={className}>{props.children}</code>;
-    }
-    return (
-      <code
-        className="rounded border border-[var(--color-border-strong)] bg-[var(--color-surface-secondary)] px-1.5 py-0.5 text-[15px] text-[var(--color-brand-primary)]"
-        style={{ fontFamily: "var(--font-mono)" }}
-      >
-        {props.children}
-      </code>
-    );
-  },
-  ul: (props: React.ComponentProps<"ul">) => (
-    <ul className="my-4 list-none space-y-1 pl-0 [&_li]:relative [&_li]:pl-6 [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[0.6em] [&_li]:before:h-2 [&_li]:before:w-2 [&_li]:before:rounded-full [&_li]:before:bg-[var(--color-brand-primary)] [&_li]:before:content-['']">
-      {props.children}
-    </ul>
-  ),
-  ol: (props: React.ComponentProps<"ol">) => (
-    <ol className="my-4 list-decimal space-y-1 pl-6 marker:text-[var(--color-brand-primary)] marker:font-semibold">
-      {props.children}
-    </ol>
-  ),
 };
 
 export async function generateStaticParams() {
@@ -228,6 +201,8 @@ export default async function BlogPostPage(props: PageProps) {
 
   const relatedPosts = getRelatedPosts(meta.slug, meta.tags, 3);
   const { prev, next } = getAdjacentPosts(meta.slug);
+  const headings = extractHeadings(content);
+  const siteConfig = getSiteConfig();
 
   const wordCount = content.split(/\s+/).length;
 
@@ -267,6 +242,8 @@ export default async function BlogPostPage(props: PageProps) {
         prevPost={prev}
         nextPost={next}
         relatedPosts={relatedPosts}
+        headings={headings}
+        siteConfig={siteConfig}
       >
         <MDXRemote
           source={content}

@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllNuggets, getNugget } from "@/lib/nuggets";
-import { NuggetFrame } from "@/components/NuggetFrame";
-import { formatDate } from "@/lib/content";
+import { formatDateShort } from "@/lib/content";
+import { Tag } from "@/components/ds/Tag";
+import { NuggetStage } from "@/components/nugget/NuggetStage";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -51,6 +52,8 @@ export async function generateMetadata(
   };
 }
 
+const mono = { fontFamily: "var(--font-mono)" };
+
 export default async function NuggetPage(props: PageProps) {
   const { slug } = await props.params;
   const nugget = getNugget(slug);
@@ -68,53 +71,49 @@ export default async function NuggetPage(props: PageProps) {
   const rawUrl = `/nuggets/_raw/${nugget.slug}/index.html`;
 
   return (
-    <article className="pb-12">
-      <header className="mx-auto max-w-3xl px-4 pb-6 pt-10 sm:px-6">
-        <div className="mb-3 flex flex-wrap items-center gap-3 text-[13px] uppercase tracking-wide text-[var(--color-text-secondary)]">
-          <Link
-            href="/nuggets"
-            className="text-[var(--color-brand-primary)] no-underline hover:underline"
-          >
-            ← All nuggets
-          </Link>
-          <span aria-hidden="true">·</span>
-          <time dateTime={nugget.date} style={{ fontFamily: "var(--font-mono)" }}>
-            {formatDate(nugget.date)}
-          </time>
-          <span aria-hidden="true">·</span>
-          <a
-            href={rawUrl}
-            className="text-[var(--color-brand-primary)] no-underline hover:underline"
-            target="_blank"
-            rel="noopener"
-          >
-            Open raw ↗
-          </a>
+    <div>
+      <div className="page-narrow">
+        <Link
+          href="/nuggets"
+          className="no-underline"
+          style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        >
+          ← all nuggets
+        </Link>
+        <div className="mt-[18px] flex items-center gap-[var(--space-3)]">
+          <span className="eyebrow" style={{ color: "var(--secondary)" }}>
+            Nugget
+          </span>
+          <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
+            {formatDateShort(nugget.date)}
+          </span>
         </div>
-        <h1 className="text-3xl font-bold leading-tight tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+        <h1
+          className="mt-2.5"
+          style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.08, color: "var(--text)" }}
+        >
           {nugget.title}
         </h1>
         {nugget.summary && (
-          <p className="mt-3 text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
+          <p
+            className="mt-3 max-w-[var(--width-prose)]"
+            style={{ fontSize: "var(--text-md)", lineHeight: "var(--lh-relaxed)", color: "var(--text-muted)" }}
+          >
             {nugget.summary}
           </p>
         )}
         {nugget.tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div className="mt-[var(--space-4)] flex flex-wrap gap-1.5">
             {nugget.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-block rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-3 py-1 text-xs font-medium uppercase tracking-wide text-[var(--color-brand-primary)]"
-              >
+              <Tag key={tag} size="sm">
                 {tag}
-              </span>
+              </Tag>
             ))}
           </div>
         )}
-      </header>
-      <div className="border-y border-[var(--color-border)]">
-        <NuggetFrame src={rawUrl} title={nugget.title} />
       </div>
-    </article>
+
+      <NuggetStage rawUrl={rawUrl} title={nugget.title} filename={`${nugget.slug}.html`} />
+    </div>
   );
 }

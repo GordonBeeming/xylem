@@ -33,7 +33,7 @@ export function ProjectVideo({ url, title }: ProjectVideoProps) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="mb-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[var(--color-brand-primary)] hover:underline"
+        className="mb-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[color:var(--accent)] hover:underline"
       >
         Watch video ↗
       </a>
@@ -45,7 +45,7 @@ export function ProjectVideo({ url, title }: ProjectVideoProps) {
     : `https://player.vimeo.com/video/${vimeoId}`;
 
   return (
-    <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-[var(--color-border-default)] bg-black">
+    <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--border)] bg-black">
       <iframe
         src={src}
         title={title ?? "Project video"}

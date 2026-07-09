@@ -9,6 +9,8 @@ interface AvatarProps {
   alt?: string;
   size?: number;
   className?: string;
+  /** Teal accent ring (design-system Avatar). Off by default. */
+  ring?: boolean;
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -18,6 +20,7 @@ const Avatar: React.FC<AvatarProps> = ({
   alt = "Gordon Beeming",
   size = 150,
   className = "",
+  ring = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -167,7 +170,13 @@ const Avatar: React.FC<AvatarProps> = ({
     <div
       ref={containerRef}
       className={`relative overflow-hidden rounded-full ${className}`}
-      style={{ width: size, height: size }}
+      style={{
+        width: size,
+        height: size,
+        boxShadow: ring
+          ? "0 0 0 2px var(--surface, #fff), 0 0 0 4px var(--accent, #0e7490)"
+          : undefined,
+      }}
       aria-label={alt}
     >
       {content}

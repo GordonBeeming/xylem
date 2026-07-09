@@ -16,6 +16,9 @@ interface SocialIconProps {
   kind: SocialIconKind;
   href: string;
   size?: number;
+  /** "footer" (default) = the dark-footer-tuned white/35 style. "muted" = design-system
+   *  text-muted → accent, for use on light or dark surfaces alike (e.g. the vessel Home). */
+  variant?: "footer" | "muted";
 }
 
 const iconPaths: Record<SocialIconKind, React.ReactNode> = {
@@ -75,8 +78,13 @@ const platformLabels: Record<SocialIconKind, string> = {
   githubsponsors: "GitHub Sponsors",
 };
 
-export function SocialIcon({ kind, href, size = 20 }: SocialIconProps) {
+export function SocialIcon({ kind, href, size = 20, variant = "footer" }: SocialIconProps) {
   const isMailFill = kind === "mail";
+  const className =
+    variant === "muted"
+      ? "inline-flex items-center justify-center rounded-[var(--radius-md)] text-[color:var(--text-muted)] transition-[var(--transition-colors)] hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)]"
+      : "inline-flex items-center justify-center text-white/35 transition-all duration-200 hover:text-[var(--color-brand-highlight)] hover:-translate-y-px";
+  const hit = variant === "muted" ? Math.max(size + 16, 36) : size;
 
   return (
     <a
@@ -84,7 +92,8 @@ export function SocialIcon({ kind, href, size = 20 }: SocialIconProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={platformLabels[kind]}
-      className="inline-flex items-center justify-center text-white/35 transition-all duration-200 hover:text-[var(--color-brand-highlight)] hover:-translate-y-px"
+      className={className}
+      style={variant === "muted" ? { width: hit, height: hit } : undefined}
     >
       <svg
         viewBox="0 0 24 24"

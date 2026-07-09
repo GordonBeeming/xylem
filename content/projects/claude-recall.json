@@ -3,7 +3,12 @@
   "description": "Search and explore your Claude Code session history from the terminal. Uses Claude itself to generate search terms and validate matches; pass `--no-ai` for a pure-text mode.",
   "href": "https://github.com/GordonBeeming/claude-recall",
   "imgSrc": "/static/images/projects/claude-recall.png",
-  "techStack": ["C#", ".NET", "TUI"],
+  "techStack": [
+    "C#",
+    ".NET",
+    "TUI"
+  ],
   "github": "https://github.com/GordonBeeming/claude-recall",
+  "date": "2026-03-29",
   "featured": false
 }

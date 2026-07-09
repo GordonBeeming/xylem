@@ -3,8 +3,13 @@
   "description": "Notifies you whenever admin privileges are granted or revoked on your Mac. Wraps SAP's Privileges app and forwards every toggle (reason, user, timestamp) to ntfy.sh, so you can keep tabs on your own machine or family devices.",
   "href": "https://github.com/GordonBeeming/privileges-monitor",
   "imgSrc": "/static/images/projects/privileges-monitor.png",
-  "techStack": ["Shell", "macOS", "ntfy.sh"],
+  "techStack": [
+    "Shell",
+    "macOS",
+    "ntfy.sh"
+  ],
   "github": "https://github.com/GordonBeeming/privileges-monitor",
   "video": "https://youtu.be/C7yL0w-CHw4",
+  "date": "2026-01-28",
   "featured": false
 }

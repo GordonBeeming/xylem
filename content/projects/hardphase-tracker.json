@@ -3,8 +3,13 @@
   "description": "Minimalist iOS fasting tracker app with meal logging, fasting templates, and Apple Health integration. Track your fasting windows with a clean, intuitive interface.",
   "href": "https://hardphasetracker.gordonbeeming.com",
   "imgSrc": "/static/images/projects/hardphase-tracker.png",
-  "techStack": ["Swift", "SwiftUI", "SwiftData"],
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "SwiftData"
+  ],
   "github": "https://github.com/GordonBeeming/HardPhaseTracker",
   "appStore": "https://apps.apple.com/app/hardphase-tracker/id6757358747",
+  "date": "2026-01-02",
   "featured": false
 }

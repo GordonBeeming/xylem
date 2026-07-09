@@ -35,8 +35,9 @@ export function SearchButton() {
     <>
       <button
         onClick={open}
-        className="flex h-10 w-10 items-center justify-center rounded-lg text-[var(--color-text-secondary)] transition-colors duration-200 hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-brand-primary)]"
         aria-label="Search (⌘K)"
+        className="nav-search flex items-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-[11px] py-[7px] text-[length:var(--text-sm)] text-[color:var(--text-muted)] transition-[var(--transition-colors)]"
+        style={{ fontFamily: "var(--font-mono)" }}
       >
         <svg
           viewBox="0 0 24 24"
@@ -45,12 +46,18 @@ export function SearchButton() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="h-5 w-5"
+          width={15}
+          height={15}
           aria-hidden="true"
         >
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
+        <span className="nav-search-kbd">
+          <kbd className="rounded-[var(--radius-xs)] border border-[var(--border-strong)] px-[6px] py-[1px] text-[length:var(--text-2xs)]">
+            ⌘K
+          </kbd>
+        </span>
       </button>
       <CommandPalette isOpen={isOpen} onClose={close} items={items} />
     </>

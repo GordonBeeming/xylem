@@ -1,0 +1,121 @@
+.page {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+.wrap {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 40px 40px;
+  --year-col: 128px;
+  --sticky-top: 116px;
+}
+
+.vhead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 0;
+  margin-bottom: 4px;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.searchBtn:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.vfilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 24px 0 34px;
+}
+
+.vessel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yearNum {
+  position: sticky;
+  top: var(--sticky-top);
+  align-self: start;
+}
+
+.node .nodeTitle {
+  transition: var(--transition-colors);
+}
+.node:hover .nodeTitle {
+  color: var(--link);
+}
+.node:hover .nodeDot {
+  transform: scale(1.35);
+}
+
+.pulseDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: xyPulse 1s ease-in-out infinite;
+}
+@keyframes xyPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.vfoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    padding: 0 22px 32px;
+    --year-col: 52px;
+    --sticky-top: 96px;
+  }
+  .yearNum {
+    font-size: var(--text-xl) !important;
+  }
+  .searchBtnLabel {
+    display: none;
+  }
+  .vhead {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .vhead {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulseDot {
+    animation: none;
+  }
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { getSiteConfig, type SiteConfig } from "@/lib/tina-helpers";
+import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 
 const navigationLinks = [
   { href: "/blog", label: "Blog" },
@@ -10,27 +11,6 @@ const navigationLinks = [
   { href: "/about", label: "About" },
   { href: "/color-palette", label: "Color Palette" },
   { href: "/flags", label: "Flags" },
-];
-
-type SocialKind =
-  | "github"
-  | "linkedin"
-  | "bluesky"
-  | "x"
-  | "youtube"
-  | "instagram"
-  | "threads"
-  | "mastodon";
-
-const footerSocialLinks: { key: SocialKind; configKey: keyof SiteConfig }[] = [
-  { key: "github", configKey: "github" },
-  { key: "linkedin", configKey: "linkedin" },
-  { key: "bluesky", configKey: "bluesky" },
-  { key: "x", configKey: "twitter" },
-  { key: "youtube", configKey: "youtube" },
-  { key: "instagram", configKey: "instagram" },
-  { key: "threads", configKey: "threads" },
-  { key: "mastodon", configKey: "mastodon" },
 ];
 
 const supportLinks: { configKey: keyof SiteConfig; label: string }[] = [
@@ -133,13 +113,13 @@ export function Footer() {
 
         <div className="site-foot-bottom">
           <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", letterSpacing: "0.02em" }}>
-            © {currentYear} Gordon Beeming · Opinions are my own and not that of my company or anyone I engage with.
+            © 2013-{currentYear} Gordon Beeming · Opinions are my own and not that of my company or anyone I engage with.
           </span>
           <div className="flex gap-[2px]">
-            {footerSocialLinks.map(({ key, configKey }) => {
+            {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
               const href = siteConfig[configKey] as string | undefined;
               if (!href) return null;
-              return <SocialIcon key={key} kind={key} href={href} size={16} variant="muted" />;
+              return <SocialIcon key={kind} kind={kind} href={href} size={17} variant="muted" />;
             })}
           </div>
         </div>

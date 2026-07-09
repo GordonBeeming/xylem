@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useCallback } from "react";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import type { SiteConfig } from "@/lib/tina-helpers";
+import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,16 +20,6 @@ const navLinks = [
   { href: "/projects", label: "projects" },
   { href: "/tags", label: "tags" },
   { href: "/about", label: "about" },
-];
-
-type SocialKind = "github" | "linkedin" | "bluesky" | "x" | "youtube";
-
-const socialLinks: { key: SocialKind; configKey: keyof SiteConfig }[] = [
-  { key: "github", configKey: "github" },
-  { key: "linkedin", configKey: "linkedin" },
-  { key: "bluesky", configKey: "bluesky" },
-  { key: "x", configKey: "twitter" },
-  { key: "youtube", configKey: "youtube" },
 ];
 
 const mono = { fontFamily: "var(--font-mono)" };
@@ -174,10 +165,10 @@ export function MobileMenu({ isOpen, onClose, siteConfig }: MobileMenuProps) {
         })}
 
         <div className="mt-[var(--space-6)] flex gap-0.5">
-          {socialLinks.map(({ key, configKey }) => {
+          {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
             const href = siteConfig[configKey] as string | undefined;
             if (!href) return null;
-            return <SocialIcon key={key} kind={key} href={href} size={17} variant="muted" />;
+            return <SocialIcon key={kind} kind={kind} href={href} size={17} variant="muted" />;
           })}
         </div>
       </nav>

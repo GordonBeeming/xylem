@@ -1,5 +1,5 @@
 import readingTime from 'reading-time';
-import { slug } from 'github-slugger';
+import GithubSlugger, { slug } from 'github-slugger';
 
 export function computeReadingTime(text: string) {
   return readingTime(text);
@@ -70,4 +70,47 @@ export function getYearCounts(posts: { date: string }[]): Record<string, number>
     }
   }
   return counts;
+}
+
+export interface HeadingEntry {
+  id: string;
+  text: string;
+}
+
+/**
+ * Extracts `## ` (h2) headings from raw MDX for the reading TOC. Strips basic
+ * inline markdown/JSX so link/emphasis syntax doesn't leak into the label, then
+ * slugs each heading with the same algorithm rehype-slug uses at render time
+ * (github-slugger, run through a single stateful Slugger instance in document
+ * order) so the generated ids match the real heading anchors exactly.
+ */
+export function extractHeadings(markdown: string): HeadingEntry[] {
+  const slugger = new GithubSlugger();
+  const headings: HeadingEntry[] = [];
+  const lines = markdown.split('\n');
+  let inCodeFence = false;
+
+  for (const line of lines) {
+    if (/^```/.test(line.trim())) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+    if (inCodeFence) continue;
+
+    const match = line.match(/^##\s+(.+?)\s*$/);
+    if (!match) continue;
+
+    const text = match[1]
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .trim();
+
+    if (text) {
+      headings.push({ id: slugger.slug(text), text });
+    }
+  }
+
+  return headings;
 }

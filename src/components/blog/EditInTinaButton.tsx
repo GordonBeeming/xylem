@@ -18,7 +18,7 @@ export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
     <a
       href={editUrl}
       title="Edit in Tina"
-      className="inline-flex items-center justify-center text-[var(--color-text-tertiary)] transition-colors hover:text-[var(--color-brand-primary)]"
+      className="inline-flex items-center justify-center text-[color:var(--text-subtle)] transition-[var(--transition-colors)] hover:text-[color:var(--accent)]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

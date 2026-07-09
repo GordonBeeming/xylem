@@ -1,8 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllNuggets } from "@/lib/nuggets";
-import { SectionContainer } from "@/components/layout/SectionContainer";
-import { formatDate } from "@/lib/content";
+import { formatDateShort } from "@/lib/content";
+import { Card } from "@/components/ds/Card";
+import { Tag } from "@/components/ds/Tag";
 
 export const metadata: Metadata = {
   title: "Nuggets",
@@ -10,68 +10,83 @@ export const metadata: Metadata = {
     "Small, self-contained explainers by Gordon Beeming — mini knowledge drops on narrow technical topics.",
 };
 
+const mono = { fontFamily: "var(--font-mono)" };
+
 export default function NuggetsPage() {
   const nuggets = getAllNuggets();
 
   return (
-    <SectionContainer variant="narrow" className="py-12">
-      <header className="mb-10">
-        <h1 className="mb-3 text-3xl font-bold tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
-          Nuggets
-        </h1>
-        <p className="text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
-          Small, self-contained HTML pages I build with AI when I want to
-          understand something specific, like a field guide to an API or a
-          one-page walkthrough of an idea. The good ones end up here. Each
-          nugget renders in its own iframe, so no two have to look alike and
-          the site around it stays out of the way.
-        </p>
-      </header>
+    <div className="page">
+      <div className="eyebrow" style={{ color: "var(--secondary)" }}>
+        Nuggets
+      </div>
+      <h1
+        className="mt-3"
+        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+      >
+        Interactive demos
+      </h1>
+      <p
+        className="mt-2.5 max-w-[var(--width-prose)]"
+        style={{ fontSize: "var(--text-md)", color: "var(--text-muted)", lineHeight: "var(--lh-relaxed)" }}
+      >
+        Small, standalone HTML explainers — each one a self-contained demo you can poke
+        at. Built to make one idea click.
+      </p>
 
       {nuggets.length === 0 ? (
-        <p className="text-[var(--color-text-tertiary)]">
+        <p className="mt-10" style={{ color: "var(--text-subtle)" }}>
           No nuggets yet — check back soon.
         </p>
       ) : (
-        <ul className="space-y-4">
+        <div
+          className="mt-[var(--space-10)] grid gap-[var(--space-5)]"
+          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}
+        >
           {nuggets.map((n) => (
-            <li key={n.slug}>
-              <Link
-                href={`/nuggets/${n.slug}`}
-                className="block rounded-xl border-l-2 border-l-transparent bg-[var(--color-surface-secondary)] p-6 shadow-[var(--shadow-card)] transition-all duration-200 ease-[var(--ease-default)] hover:-translate-y-0.5 hover:border-l-[var(--color-brand-primary)] hover:shadow-[var(--shadow-card-hover)]"
+            <Card key={n.slug} interactive href={`/nuggets/${n.slug}`} className="flex flex-col">
+              <div
+                className="mb-[var(--space-5)] flex items-center gap-[var(--space-3)] rounded-[var(--radius-sm)] border border-[var(--border)] px-3 py-2"
+                style={{ background: "var(--surface-2)" }}
               >
-                <time
-                  dateTime={n.date}
-                  className="mb-2 block text-[13px] uppercase tracking-wide text-[var(--color-text-secondary)]"
-                  style={{ fontFamily: "var(--font-mono)" }}
+                <span className="flex gap-[5px]">
+                  <span className="h-2 w-2 rounded-full" style={{ background: "var(--border-strong)" }} />
+                  <span className="h-2 w-2 rounded-full" style={{ background: "var(--border-strong)" }} />
+                  <span className="h-2 w-2 rounded-full" style={{ background: "var(--secondary)" }} />
+                </span>
+                <span
+                  className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--text-2xs)] text-[color:var(--text-muted)]"
+                  style={mono}
                 >
-                  {formatDate(n.date)}
-                </time>
-                <h2 className="mb-2 text-xl font-bold leading-snug text-[var(--color-text-primary)]">
-                  {n.title}
-                </h2>
-                {n.summary && (
-                  <p className="mb-3.5 line-clamp-3 text-[15px] leading-relaxed text-[var(--color-text-secondary)]">
-                    {n.summary}
-                  </p>
-                )}
-                {n.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {n.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-block rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-3 py-1 text-xs font-medium uppercase tracking-wide text-[var(--color-brand-primary)]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </Link>
-            </li>
+                  {n.slug}.html
+                </span>
+              </div>
+              <h3
+                style={{ margin: 0, fontSize: "var(--text-base)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-tight)", lineHeight: "var(--lh-snug)", color: "var(--text)" }}
+              >
+                {n.title}
+              </h3>
+              {n.summary && (
+                <p className="mt-2 flex-1" style={{ fontSize: "var(--text-sm)", lineHeight: "var(--lh-normal)", color: "var(--text-muted)" }}>
+                  {n.summary}
+                </p>
+              )}
+              <div className="mt-[var(--space-4)] flex items-center justify-between">
+                <div className="flex gap-1.5">
+                  {n.tags.slice(0, 2).map((t) => (
+                    <Tag key={t} size="sm">
+                      {t}
+                    </Tag>
+                  ))}
+                </div>
+                <span className="text-[length:var(--text-2xs)] uppercase text-[color:var(--text-subtle)]" style={mono}>
+                  {formatDateShort(n.date)}
+                </span>
+              </div>
+            </Card>
           ))}
-        </ul>
+        </div>
       )}
-    </SectionContainer>
+    </div>
   );
 }

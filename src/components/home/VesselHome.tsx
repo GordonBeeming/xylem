@@ -6,7 +6,6 @@ import Avatar from "@/components/Avatar";
 import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
-import { ThemeToggle } from "@/components/ds/ThemeToggle";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { useCommandPalette } from "@/hooks/useCommandPalette";
 import { CommandPalette, type SearchableItem } from "@/components/ui/CommandPalette";
@@ -63,7 +62,7 @@ function TypePill({ type }: { type: FeedItemType }) {
   return (
     <span
       style={mono}
-      className="rounded-[var(--radius-xs)] border border-[var(--border)] bg-[var(--surface-2)] px-[7px] py-[2px] text-[var(--text-2xs)] uppercase tracking-[var(--ls-wider)] text-[var(--text-muted)]"
+      className="rounded-[var(--radius-xs)] border border-[var(--border)] bg-[var(--surface-2)] px-[7px] py-[2px] text-[length:var(--text-2xs)] uppercase tracking-[var(--ls-wider)] text-[color:var(--text-muted)]"
     >
       {TYPE_META[type].label}
     </span>
@@ -74,7 +73,7 @@ function Meta({ children }: { children: React.ReactNode }) {
   return (
     <span
       style={mono}
-      className="text-[var(--text-xs)] uppercase tracking-[var(--ls-wide)] text-[var(--text-subtle)]"
+      className="text-[length:var(--text-xs)] uppercase tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]"
     >
       {children}
     </span>
@@ -89,7 +88,7 @@ function Node({ item }: { item: FeedItem }) {
         <Meta>{item.dateDisplay}</Meta>
         {item.readingTime && (
           <>
-            <span className="text-[var(--text-subtle)] opacity-50">·</span>
+            <span className="text-[color:var(--text-subtle)] opacity-50">·</span>
             <Meta>{item.readingTime}</Meta>
           </>
         )}
@@ -97,12 +96,12 @@ function Node({ item }: { item: FeedItem }) {
         {item.status && <Badge tone="accent">{item.status}</Badge>}
       </div>
       <h3
-        className={`${styles.nodeTitle} mt-[10px] text-[var(--text-xl)] font-[var(--fw-semibold)] tracking-[var(--ls-tight)] leading-[var(--lh-snug)] text-[var(--text)]`}
+        className={`${styles.nodeTitle} mt-[10px] text-[length:var(--text-xl)] font-[var(--fw-semibold)] tracking-[var(--ls-tight)] leading-[var(--lh-snug)] text-[color:var(--text)]`}
       >
         {item.title}
       </h3>
       {item.summary && (
-        <p className="mt-2 max-w-[var(--width-prose)] text-[var(--text-base)] leading-[var(--lh-relaxed)] text-[var(--text-muted)]">
+        <p className="mt-2 max-w-[var(--width-prose)] text-[length:var(--text-base)] leading-[var(--lh-relaxed)] text-[color:var(--text-muted)]">
           {item.summary}
         </p>
       )}
@@ -207,7 +206,7 @@ function VesselSearchButton() {
       <button
         onClick={open}
         style={mono}
-        className={`${styles.searchBtn} flex items-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-[var(--text-sm)] text-[var(--text-muted)] transition-[var(--transition-colors)]`}
+        className={`${styles.searchBtn} flex items-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-[length:var(--text-sm)] text-[color:var(--text-muted)] transition-[var(--transition-colors)]`}
       >
         <svg
           viewBox="0 0 24 24"
@@ -224,7 +223,7 @@ function VesselSearchButton() {
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <span className={styles.searchBtnLabel}>Search everything</span>
-        <kbd className="rounded-[var(--radius-xs)] border border-[var(--border-strong)] px-[6px] py-[1px] text-[var(--text-2xs)]">
+        <kbd className="rounded-[var(--radius-xs)] border border-[var(--border-strong)] px-[6px] py-[1px] text-[length:var(--text-2xs)]">
           ⌘K
         </kbd>
       </button>
@@ -277,7 +276,7 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
     <div className={styles.page}>
       <div className={styles.wrap}>
         <header className={styles.vhead}>
-          <div className="flex items-center gap-[var(--space-5)]">
+          <Link href="/about" className="flex items-center gap-[var(--space-5)] no-underline">
             <Avatar
               videoSrc="/static/videos/avatar.mp4"
               fallbackAnimatedWebP="/static/videos/avatar.webp"
@@ -287,19 +286,18 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
               ring
             />
             <div>
-              <div className="flex items-center gap-[var(--space-3)] text-[var(--text-lg)] font-[var(--fw-bold)] tracking-[var(--ls-tight)] text-[var(--text)]">
+              <div className="flex items-center gap-[var(--space-3)] text-[length:var(--text-lg)] font-[var(--fw-bold)] tracking-[var(--ls-tight)] text-[color:var(--text)]">
                 <span style={{ color: "var(--accent)" }}>xylem</span>
                 <span className="h-3.5 w-[1.5px] bg-[var(--border-strong)]" />
                 <span className="font-[var(--fw-semibold)]">Gordon Beeming</span>
               </div>
-              <div style={mono} className="mt-1 text-[var(--text-xs)] text-[var(--text-muted)]">
+              <div style={mono} className="mt-1 text-[length:var(--text-xs)] text-[color:var(--text-muted)]">
                 {bio}
               </div>
             </div>
-          </div>
+          </Link>
           <div className="flex items-center gap-[var(--space-3)]">
             <VesselSearchButton />
-            <ThemeToggle size={18} />
           </div>
         </header>
 
@@ -316,7 +314,7 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
                   color: active ? "var(--text-on-accent)" : "var(--text-muted)",
                   border: active ? "1px solid var(--accent)" : "1px solid var(--border)",
                 }}
-                className="cursor-pointer rounded-[var(--radius-md)] px-[13px] py-[6px] text-[var(--text-xs)] tracking-[var(--ls-wide)] transition-[var(--transition-colors)]"
+                className="cursor-pointer rounded-[var(--radius-md)] px-[13px] py-[6px] text-[length:var(--text-xs)] tracking-[var(--ls-wide)] transition-[var(--transition-colors)]"
               >
                 {f.label}{" "}
                 <span style={{ opacity: active ? 0.8 : 0.55, marginLeft: 2 }}>{counts[f.key]}</span>
@@ -338,14 +336,14 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
             {more ? (
               <div
                 style={mono}
-                className="py-2 pb-[var(--space-10)] text-[var(--text-xs)] tracking-[var(--ls-wide)] text-[var(--text-subtle)]"
+                className="py-2 pb-[var(--space-10)] text-[length:var(--text-xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]"
               >
                 <span className={styles.pulseDot} /> loading earlier years…
               </div>
             ) : (
               <div
                 style={mono}
-                className="flex items-center gap-[var(--space-4)] py-2 pb-[var(--space-10)] text-[var(--text-xs)] tracking-[var(--ls-wide)] text-[var(--text-subtle)]"
+                className="flex items-center gap-[var(--space-4)] py-2 pb-[var(--space-10)] text-[length:var(--text-xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]"
               >
                 <span className="h-2.5 w-2.5 rounded-full border-2 border-[var(--border-strong)]" />
                 {earliestYear ? `that's where it began — ${earliestYear}.` : "nothing here yet."}
@@ -355,7 +353,7 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
         </div>
 
         <footer className={styles.vfoot}>
-          <span style={mono} className="text-[11px] tracking-[0.03em] text-[var(--text-subtle)]">
+          <span style={mono} className="text-[11px] tracking-[0.03em] text-[color:var(--text-subtle)]">
             © {new Date().getUTCFullYear() >= 2026 ? new Date().getUTCFullYear() : 2026} Gordon Beeming · Opinions are my own.
           </span>
           <div className="flex items-center gap-[var(--space-4)]">

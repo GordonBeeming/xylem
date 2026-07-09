@@ -82,7 +82,7 @@ export function SocialIcon({ kind, href, size = 20, variant = "footer" }: Social
   const isMailFill = kind === "mail";
   const className =
     variant === "muted"
-      ? "inline-flex items-center justify-center rounded-[var(--radius-md)] text-[var(--text-muted)] transition-[var(--transition-colors)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)]"
+      ? "inline-flex items-center justify-center rounded-[var(--radius-md)] text-[color:var(--text-muted)] transition-[var(--transition-colors)] hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)]"
       : "inline-flex items-center justify-center text-white/35 transition-all duration-200 hover:text-[var(--color-brand-highlight)] hover:-translate-y-px";
   const hit = variant === "muted" ? Math.max(size + 16, 36) : size;
 

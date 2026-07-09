@@ -14,11 +14,11 @@ export function Figure({ src, alt, width, height, caption }: FigureProps) {
         alt={alt}
         width={width && Number(width) ? Number(width) : undefined}
         height={height && Number(height) ? Number(height) : undefined}
-        className="mx-auto max-w-full rounded-lg"
+        className="mx-auto block max-w-full rounded-[var(--radius-md)] border border-[var(--border)]"
         loading="lazy"
       />
       {caption && (
-        <figcaption className="mt-3 text-center text-sm italic text-[var(--color-text-secondary)]">
+        <figcaption className="mt-[var(--space-3)] text-center text-[length:var(--text-sm)] leading-[var(--lh-normal)] italic text-[color:var(--text-muted)]">
           {caption}
         </figcaption>
       )}

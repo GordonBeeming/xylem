@@ -23,60 +23,61 @@ function initMermaidForTheme(isDark: boolean) {
   mermaid.initialize({
     startOnLoad: false,
     theme: "base",
+    fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
     themeVariables: isDark
       ? {
-          primaryColor: "#334155",
-          primaryTextColor: "#E0E0E0",
-          primaryBorderColor: "#46CBFF",
-          lineColor: "#46CBFF",
-          secondaryColor: "#2C2C2C",
-          tertiaryColor: "#242424",
-          textColor: "#E0E0E0",
-          mainBkg: "#334155",
-          nodeBorder: "#46CBFF",
-          actorBkg: "#334155",
-          actorBorder: "#46CBFF",
-          actorTextColor: "#E0E0E0",
-          actorLineColor: "#9CA3AF",
-          signalColor: "#E0E0E0",
-          signalTextColor: "#E0E0E0",
-          labelBoxBkgColor: "#2C2C2C",
-          labelBoxBorderColor: "#46CBFF",
-          labelTextColor: "#E0E0E0",
-          loopTextColor: "#E0E0E0",
-          noteBkgColor: "#2C2C2C",
-          noteTextColor: "#E0E0E0",
-          noteBorderColor: "#46CBFF",
-          activationBkgColor: "#334155",
-          activationBorderColor: "#46CBFF",
-          sequenceNumberColor: "#E0E0E0",
+          primaryColor: "#132e34",
+          primaryTextColor: "#e8eef6",
+          primaryBorderColor: "#22d3ee",
+          lineColor: "#22d3ee",
+          secondaryColor: "#111a2e",
+          tertiaryColor: "#0b1120",
+          textColor: "#e8eef6",
+          mainBkg: "#132e34",
+          nodeBorder: "#22d3ee",
+          actorBkg: "#132e34",
+          actorBorder: "#22d3ee",
+          actorTextColor: "#e8eef6",
+          actorLineColor: "#64748b",
+          signalColor: "#e8eef6",
+          signalTextColor: "#e8eef6",
+          labelBoxBkgColor: "#111a2e",
+          labelBoxBorderColor: "#22d3ee",
+          labelTextColor: "#e8eef6",
+          loopTextColor: "#e8eef6",
+          noteBkgColor: "#111a2e",
+          noteTextColor: "#e8eef6",
+          noteBorderColor: "#22d3ee",
+          activationBkgColor: "#132e34",
+          activationBorderColor: "#22d3ee",
+          sequenceNumberColor: "#04252e",
         }
       : {
-          primaryColor: "#E9ECEF",
-          primaryTextColor: "#1A1A1A",
-          primaryBorderColor: "#0063B2",
-          lineColor: "#0063B2",
-          secondaryColor: "#F8F9FA",
-          tertiaryColor: "#FFFFFF",
-          textColor: "#1A1A1A",
-          mainBkg: "#E9ECEF",
-          nodeBorder: "#0063B2",
-          actorBkg: "#E9ECEF",
-          actorBorder: "#0063B2",
-          actorTextColor: "#1A1A1A",
-          actorLineColor: "#6B7280",
-          signalColor: "#1A1A1A",
-          signalTextColor: "#1A1A1A",
-          labelBoxBkgColor: "#FFFFFF",
-          labelBoxBorderColor: "#0063B2",
-          labelTextColor: "#1A1A1A",
-          loopTextColor: "#1A1A1A",
-          noteBkgColor: "#FFFFFF",
-          noteTextColor: "#1A1A1A",
-          noteBorderColor: "#0063B2",
-          activationBkgColor: "#E9ECEF",
-          activationBorderColor: "#0063B2",
-          sequenceNumberColor: "#FFFFFF",
+          primaryColor: "#e7f6f8",
+          primaryTextColor: "#0f172a",
+          primaryBorderColor: "#0e7490",
+          lineColor: "#0e7490",
+          secondaryColor: "#f1f5f9",
+          tertiaryColor: "#ffffff",
+          textColor: "#0f172a",
+          mainBkg: "#e7f6f8",
+          nodeBorder: "#0e7490",
+          actorBkg: "#e7f6f8",
+          actorBorder: "#0e7490",
+          actorTextColor: "#0f172a",
+          actorLineColor: "#64748b",
+          signalColor: "#0f172a",
+          signalTextColor: "#0f172a",
+          labelBoxBkgColor: "#ffffff",
+          labelBoxBorderColor: "#0e7490",
+          labelTextColor: "#0f172a",
+          loopTextColor: "#0f172a",
+          noteBkgColor: "#ffffff",
+          noteTextColor: "#0f172a",
+          noteBorderColor: "#0e7490",
+          activationBkgColor: "#e7f6f8",
+          activationBorderColor: "#0e7490",
+          sequenceNumberColor: "#ffffff",
         },
     flowchart: { useMaxWidth: true },
     sequence: { useMaxWidth: true },
@@ -128,17 +129,17 @@ export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
 
   if (error) {
     return (
-      <div className="my-6 rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-700 dark:border-red-700 dark:bg-red-950 dark:text-red-300">
-        <p className="font-medium">Mermaid diagram error</p>
-        <pre className="mt-2 whitespace-pre-wrap text-xs">{error}</pre>
+      <div className="my-6 rounded-[var(--radius-lg)] border border-[var(--danger)] bg-[var(--code-bg)] p-4 text-[length:var(--text-sm)] text-[color:var(--danger)]">
+        <p className="font-[var(--fw-medium)]">Mermaid diagram error</p>
+        <pre className="mt-2 whitespace-pre-wrap text-[length:var(--text-xs)]">{error}</pre>
       </div>
     );
   }
 
   if (!svg) {
     return (
-      <div className="my-6 flex h-32 items-center justify-center rounded-xl border border-[var(--color-border-default)] bg-[var(--color-surface-secondary)]">
-        <span className="text-sm text-[var(--color-text-secondary)]">
+      <div className="my-6 flex h-32 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--code-border)] bg-[var(--code-bg)]">
+        <span className="text-[length:var(--text-sm)] text-[color:var(--text-muted)]">
           Loading diagram...
         </span>
       </div>
@@ -146,11 +147,11 @@ export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
   }
 
   return (
-    <div className="my-6 overflow-hidden rounded-xl border border-[var(--color-border-default)]">
+    <div className="my-6 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--code-border)] bg-[var(--code-bg)]">
       {title && (
-        <div className="border-b border-[var(--color-border-default)] bg-[var(--color-surface-tertiary)] px-4 py-2">
+        <div className="border-b border-[var(--code-border)] bg-[var(--surface-2)] px-3.5 py-2">
           <span
-            className="text-[13px] font-medium text-[var(--color-text-secondary)]"
+            className="text-[length:var(--text-2xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)] uppercase"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             {title}
@@ -159,7 +160,7 @@ export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
       )}
       <div
         ref={containerRef}
-        className="overflow-x-auto bg-[var(--color-surface-secondary)] p-4 [&_svg]:mx-auto"
+        className="overflow-x-auto p-[var(--space-5)] [&_svg]:mx-auto"
         dangerouslySetInnerHTML={{ __html: svg }}
       />
     </div>

@@ -1,0 +1,219 @@
+/* ============================================================
+   XYLEM — Site chrome + prose (Signal design system)
+   Ported from the Xylem design system's ui_kits/blog/site.css.
+   Skips global resets/body/selection/reduced-motion already
+   covered by tailwind.css (Tailwind preflight + lane-1 tokens).
+
+   Theming deviation (same as tailwind.css): the source scopes the
+   about-page logo swap under [data-theme="dark"]; this app uses
+   next-themes with attribute="class", so it's scoped under .dark.
+   ============================================================ */
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+/* ---------------- nav ---------------- */
+.site-nav {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.site-nav-inner {
+  max-width: 1160px; margin: 0 auto; padding: 15px 40px;
+  display: flex; align-items: center; gap: 28px;
+}
+.site-nav-links { display: flex; gap: 22px; margin-left: 8px; margin-right: auto; }
+.site-nav-links a:hover { color: var(--accent); }
+.wordmark:hover { opacity: 0.85; }
+.nav-search:hover { color: var(--text); border-color: var(--border-strong); }
+
+@media (max-width: 720px) {
+  .site-nav-inner { padding: 13px 22px; gap: 14px; }
+  .site-nav-links { display: none; }
+  .nav-search-kbd { display: none; }
+  .nav-hamburger { display: inline-flex !important; }
+}
+
+/* ---------------- generic page shell ---------------- */
+.page { max-width: 1160px; margin: 0 auto; padding: 56px 40px 40px; }
+.page-narrow { max-width: 760px; margin: 0 auto; padding: 56px 40px 40px; }
+@media (max-width: 720px) {
+  .page, .page-narrow { padding: 36px 22px 32px; }
+}
+
+/* eyebrow / section label */
+.eyebrow {
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  letter-spacing: var(--ls-wider); text-transform: uppercase; color: var(--accent);
+}
+
+/* ---------------- prose (article body) ---------------- */
+.prose { font-size: var(--text-md); line-height: var(--lh-relaxed); color: var(--text); }
+.prose > * + * { margin-top: 1.35em; }
+.prose p { color: var(--text); }
+.prose a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.prose strong { font-weight: var(--fw-semibold); color: var(--text); }
+.prose em { font-style: italic; }
+.prose h2 {
+  font-size: var(--text-xl); font-weight: var(--fw-bold); letter-spacing: var(--ls-tight);
+  line-height: var(--lh-snug); color: var(--text);
+  margin-top: 2.2em; scroll-margin-top: 90px;
+}
+.prose h3 {
+  font-size: var(--text-lg); font-weight: var(--fw-semibold); letter-spacing: var(--ls-tight);
+  color: var(--text); margin-top: 1.8em; scroll-margin-top: 90px;
+}
+/* anchored heading marker */
+.prose h2 .anchor, .prose h3 .anchor {
+  color: var(--text-subtle); text-decoration: none; margin-right: 0.4em;
+  font-family: var(--font-mono); font-weight: var(--fw-regular); opacity: 0;
+  transition: var(--transition-colors);
+}
+.prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
+.prose ul { list-style: disc; padding-left: 1.4em; }
+.prose ol { list-style: decimal; padding-left: 1.4em; }
+.prose li { margin-top: 0.5em; }
+.prose li::marker { color: var(--text-subtle); }
+.prose blockquote {
+  border-left: 3px solid var(--accent); padding: 2px 0 2px 20px; margin-left: 0;
+  color: var(--text-muted); font-style: italic;
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono); font-size: 0.88em;
+  background: var(--code-bg); color: var(--code-text);
+  border: 1px solid var(--code-border); border-radius: var(--radius-xs);
+  padding: 0.12em 0.4em;
+}
+.prose hr { border: none; border-top: 1px solid var(--border); margin: 2.4em 0; }
+.prose img { max-width: 100%; border-radius: var(--radius-md); }
+/* markdown tables */
+.prose table {
+  width: 100%; border-collapse: collapse; margin: 1.6em 0;
+  font-size: var(--text-sm); line-height: var(--lh-normal);
+  border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden;
+}
+.prose thead { background: var(--surface-2); }
+.prose th {
+  text-align: left; font-family: var(--font-mono); font-weight: var(--fw-medium);
+  font-size: var(--text-2xs); letter-spacing: var(--ls-wide); text-transform: uppercase;
+  color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.prose td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+.prose tbody tr:last-child td { border-bottom: none; }
+.prose tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
+
+/* ---------------- footer ---------------- */
+.site-foot { border-top: 1px solid var(--border); margin-top: 80px; background: var(--surface-sunken); }
+.site-foot-inner { max-width: 1160px; margin: 0 auto; padding: 48px 40px 32px; }
+.site-foot-top { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
+.site-foot-cols { display: flex; gap: 72px; }
+.site-foot-cols a:hover { color: var(--accent); }
+.site-foot-bottom {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+}
+@media (max-width: 720px) {
+  .site-foot-inner { padding: 40px 22px 28px; }
+  .site-foot-cols { gap: 40px; }
+}
+
+/* ---------------- post page ---------------- */
+.post-wrap {
+  max-width: 1080px; margin: 0 auto; padding: 48px 40px 0;
+  display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 56px;
+  justify-content: center;
+}
+.post-main { min-width: 0; }
+.post-aside { position: relative; }
+.toc a:hover { color: var(--text) !important; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.prevnext {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);
+  margin-top: var(--space-10); padding-top: var(--space-8); border-top: 1px solid var(--border);
+}
+.pn-card {
+  display: flex; flex-direction: column; text-decoration: none;
+  padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); transition: var(--transition-colors);
+}
+.pn-card:hover { border-color: var(--accent); }
+
+.toc-mobile { display: none; }
+.toc-mobile summary::-webkit-details-marker { display: none; }
+@media (max-width: 1000px) {
+  .post-wrap { grid-template-columns: minmax(0, 720px); }
+  .post-aside { display: none; }
+  .toc-mobile { display: block; margin-bottom: var(--space-8); }
+}
+@media (max-width: 720px) {
+  .post-wrap { padding: 32px 22px 0; }
+  .related-grid { grid-template-columns: 1fr; }
+  .prevnext { grid-template-columns: 1fr; }
+}
+
+/* ---------------- nugget chrome ---------------- */
+.nugget-stage { max-width: 920px; margin: 40px auto 0; padding: 0 40px; }
+.nugget-frame {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--surface); box-shadow: var(--shadow-md);
+}
+.nugget-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.nugget-bar button:hover { color: var(--text); border-color: var(--border-strong); }
+/* iOS-safe embed scroll: the wrapper scrolls; the iframe is sized to its
+   content height (measured via the resize shim) so touch-scroll works on mobile too. */
+.nugget-scroll { height: 460px; overflow-y: scroll; overflow-x: hidden; -webkit-overflow-scrolling: touch; background: #fff; }
+.nugget-iframe { display: block; width: 100%; border: none; background: #fff; }
+.nugget-stage.full {
+  position: fixed; inset: 0; z-index: 60; max-width: none; margin: 0;
+  padding: 24px; background: var(--overlay); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  display: flex; flex-direction: column; justify-content: center;
+}
+/* Grid (not flex) for the fullscreen frame: a flex-basis:0% row combined with
+   a percentage-height iframe child hits a known Safari circular-sizing bug
+   that collapses the scroll row to the iframe's UA-default 150px. Grid's
+   1fr track resolves before child percentage heights, avoiding it. Safari
+   also needs the grid item's height set explicitly — it doesn't reliably
+   stretch a `height: auto` item to fill its track the way Chrome does. */
+.nugget-stage.full .nugget-frame { width: 100%; height: 88vh; max-height: 88vh; display: grid; grid-template-rows: auto 1fr; }
+.nugget-stage.full .nugget-scroll { height: 100%; min-height: 0; }
+@media (max-width: 720px) {
+  .nugget-stage { padding: 0 22px; }
+  .nugget-scroll { height: 380px; }
+}
+
+/* ---------------- book detail ---------------- */
+.book-hero { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
+.book-meta { display: grid; grid-template-columns: repeat(2, auto); gap: 18px 48px; margin: 24px 0 0; justify-content: start; }
+.book-meta dt { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--text-subtle); }
+.book-meta dd { margin: 4px 0 0; font-size: var(--text-sm); color: var(--text); }
+.book-body { display: grid; grid-template-columns: 1fr 300px; gap: 56px; margin-top: 56px; }
+.book-body .toc-num::before { counter-increment: ch; content: counter(ch, decimal-leading-zero); }
+@media (max-width: 860px) {
+  .book-body { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ---------------- projects ---------------- */
+@media (max-width: 720px) {
+  .projects-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ---------------- years index ---------------- */
+.year-row:hover span:first-child { color: var(--accent); }
+
+/* ---------------- about ---------------- */
+.about-wrap {
+  max-width: 1000px; margin: 0 auto; padding: 56px 40px 0;
+  display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: start;
+}
+.about-card { position: sticky; top: 88px; }
+@media (max-width: 820px) {
+  .about-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .about-card { position: static; max-width: 360px; }
+}
+@media (max-width: 720px) {
+  .about-wrap { padding: 36px 22px 0; }
+}

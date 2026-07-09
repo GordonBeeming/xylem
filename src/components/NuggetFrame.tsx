@@ -5,9 +5,11 @@ import { useEffect, useRef, useState } from "react";
 interface NuggetFrameProps {
   src: string;
   title: string;
+  /** Fill the flex parent instead of using the measured postMessage height (fullscreen mode). */
+  fillHeight?: boolean;
 }
 
-export function NuggetFrame({ src, title }: NuggetFrameProps) {
+export function NuggetFrame({ src, title, fillHeight = false }: NuggetFrameProps) {
   const ref = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number | null>(null);
 
@@ -36,16 +38,17 @@ export function NuggetFrame({ src, title }: NuggetFrameProps) {
   }, []);
 
   return (
-    <iframe
-      ref={ref}
-      src={src}
-      title={title}
-      loading="eager"
-      scrolling="no"
-      className="block w-full border-0"
-      style={{
-        height: height ? `${height}px` : "100vh",
-      }}
-    />
+    <div className="nugget-scroll">
+      <iframe
+        ref={ref}
+        src={src}
+        title={title}
+        loading="eager"
+        className="nugget-iframe block w-full border-0"
+        style={{
+          height: fillHeight ? "100%" : height ? `${height}px` : "100%",
+        }}
+      />
+    </div>
   );
 }

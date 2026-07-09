@@ -15,13 +15,23 @@ export function Comments() {
     return null;
   }
 
-  const giscusTheme = resolvedTheme === "dark" ? "dark_dimmed" : "light";
+  const giscusTheme = resolvedTheme === "dark" ? "dark_tritanopia" : "light_tritanopia";
 
   return (
-    <section className="mx-auto max-w-3xl px-6 pb-16 pt-8">
-      <h2 className="mb-6 text-2xl font-extrabold text-[var(--color-text-primary)]">
-        Comments
-      </h2>
+    <section className="mt-[var(--space-12)]">
+      <div className="mb-[var(--space-5)] flex items-center gap-[var(--space-3)]">
+        <h2
+          style={{ margin: 0, fontSize: "var(--text-lg)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}
+        >
+          Comments
+        </h2>
+        <span
+          className="rounded-[var(--radius-xs)] border px-[7px] py-0.5"
+          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--text-subtle)", borderColor: "var(--border)" }}
+        >
+          via giscus
+        </span>
+      </div>
       <div
         className="giscus-frame"
         ref={(el) => {

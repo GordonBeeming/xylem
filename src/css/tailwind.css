@@ -1,4 +1,11 @@
 @import "tailwindcss";
+/* layer(components): sits below Tailwind's utilities layer in the cascade, so
+   any Tailwind utility class (e.g. a Button's text-[var(--text-on-accent)])
+   correctly overrides prose.css's plain-element rules like `a { color: ... }`.
+   Un-layered CSS always beats layered CSS regardless of specificity, so this
+   import MUST stay layered or every Tailwind text-color utility on an <a>
+   silently loses to prose.css's global link color. */
+@import "./prose.css" layer(components);
 
 @custom-variant dark (&:where(.dark, .dark *));
 

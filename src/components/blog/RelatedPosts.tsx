@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Card } from "@/components/ds/Card";
+import { formatDateShort } from "@/lib/content";
 
 interface RelatedPost {
   title: string;
@@ -10,40 +11,28 @@ interface RelatedPostsProps {
   posts: RelatedPost[];
 }
 
+const mono = { fontFamily: "var(--font-mono)" };
+
 export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-3xl border-t border-[var(--color-border-default)] px-6 py-12">
-      <h2 className="mb-6 text-2xl font-extrabold text-[var(--color-text-primary)]">
-        Related Posts
-      </h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {posts.map((post) => {
-          const formattedDate = new Date(post.date).toLocaleDateString(
-            "en-US",
-            {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            }
-          );
-
-          return (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block rounded-xl border border-[var(--color-border-default)] bg-[var(--color-surface-secondary)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-brand-accent)] hover:shadow-[var(--shadow-card-hover)]"
+    <section className="mt-[var(--space-12)]">
+      <div className="eyebrow mb-[var(--space-5)]">Related posts</div>
+      <div className="related-grid">
+        {posts.map((post) => (
+          <Card key={post.slug} interactive href={`/blog/${post.slug}`}>
+            <div style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-subtle)" }}>
+              {formatDateShort(post.date)}
+            </div>
+            <h3
+              className="mt-2"
+              style={{ margin: "8px 0 0", fontSize: "var(--text-base)", fontWeight: "var(--fw-semibold)", lineHeight: "var(--lh-snug)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}
             >
-              <div className="mb-2 text-[15px] font-medium leading-snug text-[var(--color-text-primary)]">
-                {post.title}
-              </div>
-              <div className="text-[13px] text-[var(--color-text-secondary)]">
-                {formattedDate}
-              </div>
-            </Link>
-          );
-        })}
+              {post.title}
+            </h3>
+          </Card>
+        ))}
       </div>
     </section>
   );

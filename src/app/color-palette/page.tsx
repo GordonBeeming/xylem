@@ -1,190 +1,114 @@
 import type { Metadata } from "next";
-import { ColorSwatch } from "./ColorSwatch";
+import { ColorSwatch } from "@/components/ds/ColorSwatch";
 
 export const metadata: Metadata = {
   title: "Color Palette",
-  description:
-    "The official brand colors for Gordon Beeming's blog, available in both light and dark mode variants.",
+  description: "The Signal palette used across Gordon Beeming's blog — click any swatch to copy its hex.",
   openGraph: {
     title: "Color Palette | Gordon Beeming",
-    description:
-      "The official brand colors for Gordon Beeming's blog.",
+    description: "The Signal palette used across Gordon Beeming's blog.",
   },
 };
 
-const lightModeColors = [
+interface Ramp {
+  name: string;
+  note: string;
+  steps: string[];
+}
+
+const RAMPS: Ramp[] = [
   {
-    name: "Background",
-    hex: "#F8F9FA",
-    colorVar: "--color-surface-primary",
-    description: "Main page background color",
+    name: "Current — teal-cyan accent",
+    note: "The one accent. Sparingly: links, primary actions, emphasis.",
+    steps: ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"].map((s) => `--current-${s}`),
   },
   {
-    name: "Text",
-    hex: "#1A1A1A",
-    colorVar: "--color-text-primary",
-    description: "Primary text color",
+    name: "Slate — cool neutrals",
+    note: "Carries ~90% of the interface.",
+    steps: ["0", "50", "100", "150", "200", "300", "400", "500", "600", "700", "800", "850", "900", "950", "990"].map(
+      (s) => `--slate-${s}`
+    ),
   },
   {
-    name: "Secondary Text",
-    hex: "#374151",
-    colorVar: "--color-text-secondary",
-    description:
-      "Secondary text color for better contrast (WCAG AA compliant)",
+    name: "Sap — growth / success",
+    note: "Very sparing — success, the xylem nod.",
+    steps: ["300", "400", "500", "600", "700"].map((s) => `--sap-${s}`),
   },
   {
-    name: "Primary",
-    hex: "#0063B2",
-    colorVar: "--color-brand-primary",
-    description: "Primary brand color for links and accents",
-  },
-  {
-    name: "Accent",
-    hex: "#0075A3",
-    colorVar: "--color-brand-accent",
-    description: "Blue accent color (WCAG AA compliant)",
-  },
-  {
-    name: "Highlight",
-    hex: "#46CBFF",
-    colorVar: "--color-brand-highlight",
-    description: "Bright highlight color for emphasis elements",
-  },
-  {
-    name: "UI Accents",
-    hex: "#E9ECEF",
-    colorVar: "--color-surface-tertiary",
-    description: "Borders, subtle backgrounds",
+    name: "Status",
+    note: "Warning & danger. Rare.",
+    steps: ["--amber-500", "--amber-600", "--rose-500", "--rose-600", "--star"],
   },
 ];
 
-const darkModeColors = [
-  {
-    name: "Background",
-    hex: "#1A1A1A",
-    colorVar: "--color-surface-primary",
-    description: "Main page background color",
-  },
-  {
-    name: "Text",
-    hex: "#E0E0E0",
-    colorVar: "--color-text-primary",
-    description: "Primary text color",
-  },
-  {
-    name: "Secondary Text",
-    hex: "#D1D5DB",
-    colorVar: "--color-text-secondary",
-    description:
-      "Secondary text color for better contrast (WCAG AA compliant)",
-  },
-  {
-    name: "Primary",
-    hex: "#46CBFF",
-    colorVar: "--color-brand-primary",
-    description: "Primary brand color for links and accents",
-  },
-  {
-    name: "Accent",
-    hex: "#0063B2",
-    colorVar: "--color-brand-accent",
-    description: "Dark blue accent color",
-  },
-  {
-    name: "UI Accents",
-    hex: "#2C2C2C",
-    colorVar: "--color-surface-tertiary",
-    description: "Borders, subtle backgrounds",
-  },
+const SEMANTIC = [
+  "--bg",
+  "--surface",
+  "--surface-2",
+  "--border",
+  "--border-strong",
+  "--text",
+  "--text-muted",
+  "--text-subtle",
+  "--accent",
+  "--accent-hover",
+  "--accent-soft",
+  "--link",
+  "--secondary",
+  "--success",
+  "--warning",
+  "--danger",
+  "--code-bg",
+  "--code-text",
 ];
 
 export default function ColorPalettePage() {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
-      <div className="flex flex-col gap-10">
-        {/* Header */}
-        <div>
-          <h1 className="mb-2 border-l-[3px] border-l-[var(--color-brand-primary)] pl-4 text-[30px] font-extrabold leading-tight text-[var(--color-text-primary)] md:text-4xl">
-            My Color Palette
-          </h1>
-          <p className="mt-4 pl-[19px] text-lg text-[var(--color-text-secondary)]">
-            The official brand colors for my blog, available in both light and
-            dark mode variants. Click any swatch to copy its hex code.
+    <div className="page">
+      <div className="eyebrow">Foundations</div>
+      <h1
+        className="mt-3"
+        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+      >
+        Color palette
+      </h1>
+      <p
+        className="mt-2.5"
+        style={{ maxWidth: "var(--width-prose)", fontSize: "var(--text-md)", lineHeight: "var(--lh-relaxed)", color: "var(--text-muted)" }}
+      >
+        The Signal palette — cool slate neutrals with a teal-cyan accent. Click any swatch to copy
+        its hex. Semantic tokens resolve per theme, so flip light/dark to see them shift.
+      </p>
+
+      {RAMPS.map((ramp) => (
+        <section key={ramp.name} className="mt-[var(--space-10)]">
+          <h2 style={{ fontSize: "var(--text-lg)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}>
+            {ramp.name}
+          </h2>
+          <p className="mb-[var(--space-4)] mt-1" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+            {ramp.note}
           </p>
+          <div className="grid gap-[var(--space-3)]" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(112px, 1fr))" }}>
+            {ramp.steps.map((token) => (
+              <ColorSwatch key={token} token={token} big />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section className="mt-[var(--space-12)]">
+        <h2 style={{ fontSize: "var(--text-lg)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}>
+          Semantic tokens
+        </h2>
+        <p className="mb-[var(--space-4)] mt-1" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+          Consume these in product code — not the raw ramps. They re-resolve per theme.
+        </p>
+        <div className="grid gap-[var(--space-3)]" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))" }}>
+          {SEMANTIC.map((token) => (
+            <ColorSwatch key={token} token={token} />
+          ))}
         </div>
-
-        {/* Light Mode Section */}
-        <section>
-          <h2 className="mb-6 text-2xl font-bold text-[var(--color-text-primary)]">
-            Light Mode
-          </h2>
-          <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-            {lightModeColors.map((color) => (
-              <ColorSwatch
-                key={`light-${color.name}`}
-                name={color.name}
-                hex={color.hex}
-                colorVar={color.colorVar}
-                description={color.description}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Dark Mode Section */}
-        <section>
-          <h2 className="mb-6 text-2xl font-bold text-[var(--color-text-primary)]">
-            Dark Mode
-          </h2>
-          <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-            {darkModeColors.map((color) => (
-              <ColorSwatch
-                key={`dark-${color.name}`}
-                name={color.name}
-                hex={color.hex}
-                colorVar={color.colorVar}
-                description={color.description}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Usage Notes */}
-        <section className="rounded-xl bg-[var(--color-surface-secondary)] p-6 shadow-[var(--shadow-card)]">
-          <h3 className="mb-3 text-lg font-semibold text-[var(--color-text-primary)]">
-            Usage Notes
-          </h3>
-          <ul className="space-y-2 text-[var(--color-text-secondary)]">
-            <li>
-              These colors are defined as CSS custom properties in the site's
-              stylesheet
-            </li>
-            <li>
-              The theme automatically switches between light and dark variants
-              based on user preference
-            </li>
-            <li>
-              All colors meet WCAG 2.1 AA accessibility standards for contrast
-              (4.5:1 minimum ratio)
-            </li>
-            <li>
-              Secondary Text colors have been optimized for enhanced readability
-              and accessibility
-            </li>
-            <li>
-              Use Primary colors for interactive elements and branding
-            </li>
-            <li>
-              Use Accent colors sparingly for highlights and call-to-action
-              elements
-            </li>
-            <li>
-              Secondary Text colors are ideal for metadata, captions, and
-              supplementary information
-            </li>
-          </ul>
-        </section>
-      </div>
+      </section>
     </div>
   );
 }

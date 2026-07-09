@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ChromeGate } from "@/components/layout/ChromeGate";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { getSiteConfig } from "@/lib/tina-helpers";
 import "@/css/tailwind.css";
 
 const GA_MEASUREMENT_ID = "G-W0FD111Z7V";
@@ -78,6 +79,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteConfig = getSiteConfig();
+
   return (
     <html
       lang="en"
@@ -90,7 +93,7 @@ export default function RootLayout({
         <ThemeProviders>
           <FeatureFlagProvider>
             <ChromeGate>
-              <Header />
+              <Header siteConfig={siteConfig} />
             </ChromeGate>
             <main id="main-content">{children}</main>
             <ChromeGate>

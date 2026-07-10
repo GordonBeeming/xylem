@@ -91,26 +91,54 @@
 
 @media (max-width: 720px) {
   .wrap {
-    padding: 0 22px 32px;
+    padding: 0 18px 32px;
     --year-col: 52px;
-    --sticky-top: 96px;
+    --sticky-top: 88px;
   }
-  .yearNum {
-    font-size: var(--text-xl) !important;
+  .vhead {
+    gap: 10px;
+    padding: 12px 0;
+  }
+  /* let the identity block shrink instead of pushing the search button off-screen */
+  .vhead > a:first-child {
+    gap: 12px;
+    min-width: 0;
+  }
+  .vheadId {
+    min-width: 0;
+  }
+  .vheadId > div:first-child {
+    font-size: var(--text-base) !important;
+  }
+  .vheadId > div:last-child {
+    font-size: var(--text-2xs) !important;
   }
   .searchBtnLabel {
     display: none;
   }
-  .vhead {
-    flex-wrap: wrap;
-    row-gap: 12px;
+  .searchBtn kbd {
+    display: none;
   }
-}
 
-@media (max-width: 480px) {
-  .vhead {
-    padding-top: 16px;
-    padding-bottom: 16px;
+  /* stack the years: the number becomes a full-width sticky row above its
+     posts instead of a side column eating horizontal space */
+  .year {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .yearNum {
+    font-size: var(--text-lg) !important;
+    width: 100%;
+    padding: 8px 0;
+    margin-bottom: 6px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 5;
+  }
+  .nodeTitle {
+    font-size: var(--text-lg) !important;
   }
 }
 

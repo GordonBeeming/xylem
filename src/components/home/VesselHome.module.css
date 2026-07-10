@@ -47,6 +47,10 @@
   gap: 6px;
 }
 
+.year {
+  grid-template-columns: var(--year-col) 1fr;
+}
+
 .yearNum {
   position: sticky;
   top: var(--sticky-top);
@@ -123,7 +127,7 @@
   /* stack the years: the number becomes a full-width sticky row above its
      posts instead of a side column eating horizontal space */
   .year {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
     gap: 0 !important;
   }
   .yearNum {

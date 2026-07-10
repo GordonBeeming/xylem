@@ -130,10 +130,7 @@ function Node({ item }: { item: FeedItem }) {
 function YearBlock({ year, items, idx }: { year: number; items: FeedItem[]; idx: number }) {
   const fade = Math.max(0.32, 1 - Math.min(idx, 5) * ((1 - 0.32) / 5));
   return (
-    <div
-      className={`${styles.year} grid gap-[var(--space-8)]`}
-      style={{ gridTemplateColumns: "var(--year-col) 1fr" }}
-    >
+    <div className={`${styles.year} grid gap-[var(--space-8)]`}>
       <div
         className={styles.yearNum}
         style={{
@@ -185,6 +182,7 @@ function VesselSearchButton() {
     <>
       <button
         onClick={open}
+        aria-label="Search everything"
         style={mono}
         className={`${styles.searchBtn} flex items-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-[length:var(--text-sm)] text-[color:var(--text-muted)] transition-[var(--transition-colors)]`}
       >
@@ -310,7 +308,7 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
         </div>
 
         <div ref={sentinelRef} className="h-px" />
-        <div className={`${styles.year} grid gap-[var(--space-8)]`} style={{ gridTemplateColumns: "var(--year-col) 1fr" }}>
+        <div className={`${styles.year} grid gap-[var(--space-8)]`}>
           <div />
           <div className="border-l-2 border-transparent pl-[var(--space-6)]">
             {more ? (

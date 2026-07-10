@@ -171,8 +171,8 @@ a:hover { color: var(--link-hover); }
   overflow: hidden; background: var(--surface); box-shadow: var(--shadow-md);
 }
 .nugget-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px 16px;
-  flex-wrap: wrap; row-gap: 8px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px 16px;
+  flex-wrap: wrap;
   padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border);
 }
 .nugget-bar button:hover { color: var(--text); border-color: var(--border-strong); }

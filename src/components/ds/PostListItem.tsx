@@ -38,11 +38,11 @@ export function PostListItem({
           </>
         )}
       </div>
-      <h3 className="mt-2 text-[length:var(--text-lg)] font-[var(--fw-semibold)] leading-[var(--lh-snug)] tracking-[var(--ls-tight)] text-[color:var(--text)] transition-[var(--transition-colors)] group-hover:text-[color:var(--link)]">
+      <h3 className="mt-2 break-words text-[length:var(--text-lg)] font-[var(--fw-semibold)] leading-[var(--lh-snug)] tracking-[var(--ls-tight)] text-[color:var(--text)] transition-[var(--transition-colors)] group-hover:text-[color:var(--link)]">
         {title}
       </h3>
       {summary && (
-        <p className="mt-2 max-w-[var(--width-prose)] text-[length:var(--text-base)] leading-[var(--lh-relaxed)] text-[color:var(--text-muted)]">
+        <p className="mt-2 max-w-[var(--width-prose)] break-words text-[length:var(--text-base)] leading-[var(--lh-relaxed)] text-[color:var(--text-muted)]">
           {summary}
         </p>
       )}

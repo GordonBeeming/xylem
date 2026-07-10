@@ -34,6 +34,10 @@ export function Header({ siteConfig }: HeaderProps) {
             className="wordmark flex items-center gap-[var(--space-3)] no-underline"
             style={{ fontWeight: "var(--fw-bold)", fontSize: "var(--text-md)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG mark, theme-swapped via CSS */}
+            <img className="logo-light" src="/xylem-gb-light.svg" alt="" width={24} height={24} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG mark, theme-swapped via CSS */}
+            <img className="logo-dark" src="/xylem-gb-dark.svg" alt="" width={24} height={24} />
             <span style={{ color: "var(--accent)" }}>xylem</span>
             <span className="h-[15px] w-[1.5px]" style={{ background: "var(--border-strong)" }} />
             <span style={{ fontWeight: "var(--fw-semibold)" }}>Gordon Beeming</span>

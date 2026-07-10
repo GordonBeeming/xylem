@@ -23,10 +23,20 @@ a:hover { color: var(--link-hover); }
   max-width: 1160px; margin: 0 auto; padding: 15px 40px;
   display: flex; align-items: center; gap: 28px;
 }
-.site-nav-links { display: flex; gap: 22px; margin-left: 8px; margin-right: auto; }
+.site-nav-links { display: flex; gap: 22px; margin-left: 8px; }
+/* actions (search / hamburger) always pin right, even when the links are hidden on mobile */
+.site-nav-inner > div:last-child { margin-left: auto; }
 .site-nav-links a:hover { color: var(--accent); }
 .wordmark:hover { opacity: 0.85; }
 .nav-search:hover { color: var(--text); border-color: var(--border-strong); }
+
+/* theme-aware logo mark: light variant on light bg, dark on dark.
+   Site uses next-themes attribute="class", so the dark scope is .dark
+   (the source design system scopes it under [data-theme="dark"]). */
+.logo-light { display: block; }
+.logo-dark { display: none; }
+.dark .logo-light { display: none; }
+.dark .logo-dark { display: block; }
 
 @media (max-width: 720px) {
   .site-nav-inner { padding: 13px 22px; gap: 14px; }
@@ -148,8 +158,10 @@ a:hover { color: var(--link-hover); }
 }
 @media (max-width: 720px) {
   .post-wrap { padding: 32px 22px 0; }
+  .post-main h1 { font-size: var(--text-2xl) !important; }
   .related-grid { grid-template-columns: 1fr; }
   .prevnext { grid-template-columns: 1fr; }
+  .pn-card.text-right { text-align: left !important; }
 }
 
 /* ---------------- nugget chrome ---------------- */
@@ -159,7 +171,8 @@ a:hover { color: var(--link-hover); }
   overflow: hidden; background: var(--surface); box-shadow: var(--shadow-md);
 }
 .nugget-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px 16px;
+  flex-wrap: wrap;
   padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border);
 }
 .nugget-bar button:hover { color: var(--text); border-color: var(--border-strong); }
@@ -195,14 +208,19 @@ a:hover { color: var(--link-hover); }
 @media (max-width: 860px) {
   .book-body { grid-template-columns: 1fr; gap: 40px; }
 }
-
-/* ---------------- projects ---------------- */
 @media (max-width: 720px) {
-  .projects-grid { grid-template-columns: 1fr !important; }
+  .book-hero { gap: 28px; justify-content: center; }
+  .book-hero > div:last-child { min-width: 100% !important; }
+  .book-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 20px; width: 100%; }
+  .book-meta dd { overflow-wrap: anywhere; }
 }
 
 /* ---------------- years index ---------------- */
 .year-row:hover span:first-child { color: var(--accent); }
+@media (max-width: 720px) {
+  .year-row { grid-template-columns: 64px 1fr auto !important; gap: 14px !important; }
+  .year-row span:first-child { font-size: var(--text-md) !important; }
+}
 
 /* ---------------- about ---------------- */
 .about-wrap {
@@ -212,7 +230,7 @@ a:hover { color: var(--link-hover); }
 .about-card { position: sticky; top: 88px; }
 @media (max-width: 820px) {
   .about-wrap { grid-template-columns: 1fr; gap: 32px; }
-  .about-card { position: static; max-width: 360px; }
+  .about-card { position: static; max-width: 360px; margin: 0 auto; width: 100%; }
 }
 @media (max-width: 720px) {
   .about-wrap { padding: 36px 22px 0; }

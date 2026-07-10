@@ -1,0 +1,12 @@
+{
+  "title": "CodexBar",
+  "description": "Your Codex usage limits in the macOS menu bar, in your timezone. Shows session and weekly usage, reset times, pace indicators, and model-specific limits straight from Codex. No cost tracking, no charts, just the numbers you need at a glance.",
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "macOS"
+  ],
+  "github": "https://github.com/GordonBeeming/codex-bar",
+  "date": "2026-07-09",
+  "featured": false
+}

@@ -1,12 +1,11 @@
 {
-  "title": "Claude / Codex Statusline",
-  "description": "Multi-line status line for Claude Code, with a sibling build for Codex. Shows repo, GitButler/git branch, model + effort, session and daily cost, rate-limit progress, and context/token usage across four lines.",
+  "title": "Claude Statusline",
+  "description": "Multi-line status line for Claude Code. Shows repo, GitButler/git branch, model, session and daily cost, rate-limit progress, and context/token usage across four lines.",
   "href": "https://github.com/GordonBeeming/claude-statusline",
   "imgSrc": "/static/images/projects/claude-statusline.png",
   "techStack": [
     "Shell",
-    "Claude Code",
-    "Codex"
+    "Claude Code"
   ],
   "github": "https://github.com/GordonBeeming/claude-statusline",
   "date": "2026-03-22",

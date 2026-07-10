@@ -1,6 +1,6 @@
 {
   "title": "Claude Statusline",
-  "description": "Multi-line status line for Claude Code. Shows repo, GitButler/git branch, model, session and daily cost, rate-limit progress, and context/token usage across four lines.",
+  "description": "Multi-line status line for Claude Code. Shows repo, GitButler/git branch, model + effort, session and daily cost, rate-limit progress, and context/token usage across four lines.",
   "href": "https://github.com/GordonBeeming/claude-statusline",
   "imgSrc": "/static/images/projects/claude-statusline.png",
   "techStack": [

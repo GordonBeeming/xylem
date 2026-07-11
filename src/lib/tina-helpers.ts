@@ -200,6 +200,7 @@ export function getAdjacentPosts(
 // ─── Project helpers ─────────────────────────────────────────────────────────
 
 export interface ProjectData {
+  slug: string;
   title: string;
   description: string;
   href?: string;
@@ -216,6 +217,42 @@ export interface ProjectData {
 
 const PROJECTS_DIR = path.join(process.cwd(), "content", "projects");
 
+// Same allowlist as book slugs — filesystem-derived, but getProjectBySlug/
+// getProjectReadme also take it from a dynamic route param, so it doubles
+// as the path-traversal guard for those (no `/`, `\`, or `.` can match).
+const VALID_PROJECT_SLUG = /^[a-z0-9][a-z0-9-]*$/;
+
+function isValidProjectSlug(slug: string): boolean {
+  return VALID_PROJECT_SLUG.test(slug) && slug.length <= 100;
+}
+
+function parseProjectFile(file: string): ProjectData | null {
+  try {
+    const raw = fs.readFileSync(path.join(PROJECTS_DIR, file), "utf-8");
+    const data = JSON.parse(raw) as Record<string, unknown>;
+    return {
+      slug: file.replace(/\.json$/, ""),
+      title: (data.title as string) ?? "Untitled",
+      description: (data.description as string) ?? "",
+      href: (data.href as string) ?? undefined,
+      imgSrc: (data.imgSrc as string) ?? undefined,
+      techStack: Array.isArray(data.techStack)
+        ? (data.techStack as string[])
+        : [],
+      github: (data.github as string) ?? undefined,
+      appStore: typeof data.appStore === "string" ? data.appStore : undefined,
+      video: typeof data.video === "string" ? data.video : undefined,
+      status: typeof data.status === "string" && data.status.trim() !== "" ? data.status.trim() : undefined,
+      featured: (data.featured as boolean) ?? false,
+      githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
+      date: typeof data.date === "string" ? data.date : undefined,
+    };
+  } catch (error) {
+    console.error(`Error reading project file ${file}:`, error);
+    return null;
+  }
+}
+
 export function getAllProjects(): ProjectData[] {
   if (!fs.existsSync(PROJECTS_DIR)) {
     return [];
@@ -226,31 +263,79 @@ export function getAllProjects(): ProjectData[] {
   const projects: ProjectData[] = [];
 
   for (const file of files) {
-    try {
-      const raw = fs.readFileSync(path.join(PROJECTS_DIR, file), "utf-8");
-      const data = JSON.parse(raw) as Record<string, unknown>;
-      projects.push({
-        title: (data.title as string) ?? "Untitled",
-        description: (data.description as string) ?? "",
-        href: (data.href as string) ?? undefined,
-        imgSrc: (data.imgSrc as string) ?? undefined,
-        techStack: Array.isArray(data.techStack)
-          ? (data.techStack as string[])
-          : [],
-        github: (data.github as string) ?? undefined,
-        appStore: typeof data.appStore === "string" ? data.appStore : undefined,
-        video: typeof data.video === "string" ? data.video : undefined,
-        status: typeof data.status === "string" && data.status.trim() !== "" ? data.status.trim() : undefined,
-        featured: (data.featured as boolean) ?? false,
-        githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
-        date: typeof data.date === "string" ? data.date : undefined,
-      });
-    } catch (error) {
-      console.error(`Error reading project file ${file}:`, error);
+    const project = parseProjectFile(file);
+    if (project !== null) {
+      projects.push(project);
     }
   }
 
   return projects;
+}
+
+export function getProjectBySlug(slug: string): ProjectData | undefined {
+  if (!isValidProjectSlug(slug)) {
+    return undefined;
+  }
+  const file = `${slug}.json`;
+  if (!fs.existsSync(path.join(PROJECTS_DIR, file))) {
+    return undefined;
+  }
+  return parseProjectFile(file) ?? undefined;
+}
+
+// ─── Project README helpers ──────────────────────────────────────────────────
+
+export interface ProjectReadme {
+  content: string;
+  fetchedAt: string;
+  sourceRepo: string;
+  sourceBranch: string;
+}
+
+const PROJECT_README_DIR = path.join(process.cwd(), "content", "project-readmes");
+
+export function getProjectReadme(slug: string): ProjectReadme | null {
+  if (!isValidProjectSlug(slug)) {
+    return null;
+  }
+  const filePath = path.join(PROJECT_README_DIR, `${slug}.md`);
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
+  try {
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const { data, content } = matter(raw);
+
+    // YAML frontmatter dates like `fetchedAt: 2026-07-11` parse as JS Date
+    // objects, not strings — same quirk `date`/`lastmod` handle elsewhere
+    // in this file.
+    const fetchedAtValid =
+      data.fetchedAt instanceof Date ||
+      (typeof data.fetchedAt === "string" && data.fetchedAt.trim() !== "");
+
+    if (
+      !fetchedAtValid ||
+      typeof data.sourceRepo !== "string" ||
+      typeof data.sourceBranch !== "string" ||
+      content.trim() === ""
+    ) {
+      return null;
+    }
+
+    return {
+      content,
+      fetchedAt:
+        data.fetchedAt instanceof Date
+          ? data.fetchedAt.toISOString().slice(0, 10)
+          : String(data.fetchedAt),
+      sourceRepo: data.sourceRepo,
+      sourceBranch: data.sourceBranch,
+    };
+  } catch (error) {
+    console.error(`Error reading project readme ${filePath}:`, error);
+    return null;
+  }
 }
 
 // ─── Book helpers ────────────────────────────────────────────────────────────

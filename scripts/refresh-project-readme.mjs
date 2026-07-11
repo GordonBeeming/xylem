@@ -1,0 +1,255 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from "fs";
+import path from "path";
+import { createHash } from "crypto";
+
+const PROJECTS_DIR = "content/projects";
+const README_DIR = "content/project-readmes";
+const ASSETS_DIR = "public/assets/projects";
+const FRESH_MS = 7 * 24 * 60 * 60 * 1000;
+const IMAGE_EXT_RE = /\.(png|jpe?g|gif|svg|webp|bmp|ico)$/i;
+
+// Mirrors parseGitHubRepo in src/lib/github-stars.ts — duplicated here because
+// this script runs as plain Node ESM and can't import a TS module directly.
+function parseGitHubRepo(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname !== "github.com") return null;
+    const parts = parsed.pathname.split("/").filter(Boolean);
+    if (parts.length < 2) return null;
+    return `${parts[0]}/${parts[1]}`;
+  } catch {
+    return null;
+  }
+}
+
+function isFresh(mdPath) {
+  if (!existsSync(mdPath)) return false;
+  const raw = readFileSync(mdPath, "utf8");
+  const match = raw.match(/^fetchedAt:\s*(\S+)/m);
+  if (!match) return false;
+  const fetchedAt = new Date(match[1]);
+  if (Number.isNaN(fetchedAt.getTime())) return false;
+  return Date.now() - fetchedAt.getTime() < FRESH_MS;
+}
+
+function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch }) {
+  const quoted = `"${title.replace(/"/g, '\\"')}"`;
+  return `---\ntitle: ${quoted}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${sourceRepo}\nsourceBranch: ${sourceBranch}\n---\n\n`;
+}
+
+function isAbsoluteOrSkippable(url) {
+  return (
+    /^https?:\/\//i.test(url) ||
+    url.startsWith("//") ||
+    url.startsWith("#") ||
+    url.startsWith("mailto:")
+  );
+}
+
+function splitFragment(url) {
+  const idx = url.search(/[?#]/);
+  if (idx === -1) return { path: url, suffix: "" };
+  return { path: url.slice(0, idx), suffix: url.slice(idx) };
+}
+
+function resolveRepoPath(baseDir, relPath) {
+  const joined = relPath.startsWith("/") ? relPath : path.posix.join(baseDir, relPath);
+  return path.posix.normalize(joined).replace(/^\/+/, "");
+}
+
+function dedupeBasename(usedBasenames, resolvedPath) {
+  const base = path.posix.basename(resolvedPath);
+  const existing = usedBasenames.get(base);
+  if (existing === undefined || existing === resolvedPath) {
+    usedBasenames.set(base, resolvedPath);
+    return base;
+  }
+  // Two different source paths want the same filename — disambiguate deterministically.
+  const hash = createHash("sha1").update(resolvedPath).digest("hex").slice(0, 8);
+  const disambiguated = `${hash}-${base}`;
+  usedBasenames.set(disambiguated, resolvedPath);
+  return disambiguated;
+}
+
+async function downloadAsset(rawUrl, headers) {
+  try {
+    const res = await fetch(rawUrl, { headers });
+    if (!res.ok) return null;
+    return Buffer.from(await res.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
+// Applies asyncFn to every regex match and stitches the results back in, since
+// String.replace can't take an async callback.
+async function replaceAsync(str, regex, asyncFn) {
+  const matches = [...str.matchAll(regex)];
+  const results = await Promise.all(matches.map((m) => asyncFn(...m)));
+  let i = 0;
+  return str.replace(regex, () => results[i++]);
+}
+
+// Fenced code blocks must survive untouched — a relative link/image ref inside
+// a code sample is example text, not something to rewrite or fetch.
+function splitCodeFences(markdown) {
+  return markdown.split(/(```[\s\S]*?```)/g);
+}
+
+async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, headers }) {
+  const assetOutDir = path.join(ASSETS_DIR, slug);
+  const usedBasenames = new Map();
+  const notes = [];
+
+  async function resolveUrl(url, isImageContext) {
+    if (isAbsoluteOrSkippable(url)) return url;
+    const { path: rawPath, suffix } = splitFragment(url);
+    if (!rawPath) return url;
+    const resolvedPath = resolveRepoPath(baseDir, rawPath);
+
+    if (isImageContext || IMAGE_EXT_RE.test(rawPath)) {
+      const rawDownloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${resolvedPath}`;
+      const buf = await downloadAsset(rawDownloadUrl, headers);
+      if (!buf) {
+        notes.push(`image not downloaded: ${resolvedPath}`);
+        return url;
+      }
+      const basename = dedupeBasename(usedBasenames, resolvedPath);
+      mkdirSync(assetOutDir, { recursive: true });
+      writeFileSync(path.join(assetOutDir, basename), buf);
+      return `/assets/projects/${slug}/${basename}`;
+    }
+
+    return `https://github.com/${owner}/${repo}/blob/${branch}/${resolvedPath}${suffix}`;
+  }
+
+  async function processSegment(segment) {
+    segment = await replaceAsync(
+      segment,
+      /<img\b([^>]*?)\bsrc=(["'])([^"']+)\2([^>]*)>/gi,
+      async (_match, pre, quote, src, post) => {
+        const newSrc = await resolveUrl(src, true);
+        return `<img${pre}src=${quote}${newSrc}${quote}${post}>`;
+      }
+    );
+
+    segment = await replaceAsync(
+      segment,
+      /(!?)\[([^\]]*)\]\(([^)]+)\)/g,
+      async (_match, bang, text, inner) => {
+        const spaceIdx = inner.search(/\s/);
+        const url = spaceIdx === -1 ? inner : inner.slice(0, spaceIdx);
+        const titlePart = spaceIdx === -1 ? "" : inner.slice(spaceIdx);
+        const newUrl = await resolveUrl(url, bang === "!");
+        return `${bang}[${text}](${newUrl}${titlePart})`;
+      }
+    );
+
+    return segment;
+  }
+
+  const segments = splitCodeFences(raw);
+  const processed = await Promise.all(
+    segments.map((segment, i) => (i % 2 === 1 ? segment : processSegment(segment)))
+  );
+
+  return { body: processed.join(""), notes };
+}
+
+async function processProject(file, slug, force) {
+  try {
+    const project = JSON.parse(readFileSync(file, "utf8"));
+    if (!project.github) return "no github";
+
+    const repo = parseGitHubRepo(project.github);
+    if (!repo) return "error: malformed github URL";
+    const [owner, repoName] = repo.split("/");
+
+    const mdPath = path.join(README_DIR, `${slug}.md`);
+    if (!force && isFresh(mdPath)) return "skipped (fresh)";
+
+    const token = process.env.GITHUB_TOKEN;
+    const headers = {
+      Accept: "application/vnd.github.v3+json",
+      "User-Agent": "xylem-refresh-projects",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, { headers });
+    if (res.status === 404) return "no readme";
+    if (!res.ok) return `error: GitHub API ${res.status}`;
+
+    const data = await res.json();
+    const raw = Buffer.from(data.content, "base64").toString("utf8");
+
+    const downloadUrl = new URL(data.download_url);
+    const parts = downloadUrl.pathname.split("/").filter(Boolean);
+    // pathname is /<owner>/<repo>/<branch>/<...dir>/<file>
+    const branch = parts[2];
+    const baseDir = parts.slice(3, -1).join("/");
+
+    const { body, notes } = await rewriteMarkdown(raw, {
+      owner,
+      repo: repoName,
+      branch,
+      baseDir,
+      slug,
+      headers,
+    });
+
+    mkdirSync(README_DIR, { recursive: true });
+    const frontmatter = buildFrontmatter({
+      title: project.title ?? slug,
+      fetchedAt: new Date().toISOString().slice(0, 10),
+      sourceRepo: repo,
+      sourceBranch: branch,
+    });
+    writeFileSync(mdPath, frontmatter + body);
+
+    for (const note of notes) console.warn(`  [${slug}] ${note}`);
+    return "refreshed";
+  } catch (err) {
+    return `error: ${err instanceof Error ? err.message : String(err)}`;
+  }
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const force = args.includes("--force");
+  const slugArg = args.find((a) => a !== "--force");
+
+  let files;
+  if (slugArg) {
+    const file = path.join(PROJECTS_DIR, `${slugArg}.json`);
+    if (!existsSync(file)) {
+      console.error(`Unknown project slug: ${slugArg}`);
+      process.exit(1);
+    }
+    files = [file];
+  } else {
+    files = readdirSync(PROJECTS_DIR)
+      .filter((f) => f.endsWith(".json"))
+      .map((f) => path.join(PROJECTS_DIR, f));
+  }
+
+  const tally = { refreshed: 0, "skipped (fresh)": 0, "no readme": 0, "no github": 0, error: 0 };
+
+  for (const file of files) {
+    const slug = path.basename(file, ".json");
+    const status = await processProject(file, slug, force);
+    const key = status.startsWith("error:") ? "error" : status;
+    tally[key] = (tally[key] ?? 0) + 1;
+    console.log(`${slug}: ${status}`);
+  }
+
+  console.log(
+    `\nTotal: ${tally.refreshed} refreshed, ${tally["skipped (fresh)"]} fresh, ${tally["no readme"]} no readme, ${tally["no github"]} no github, ${tally.error} errors`
+  );
+
+  if (tally.refreshed === 0 && tally["skipped (fresh)"] > 0) {
+    console.log("RESULT: nothing-to-refresh");
+    process.exit(3);
+  }
+}
+
+main();

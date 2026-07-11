@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getAllProjects, type ProjectData } from "@/lib/tina-helpers";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
 import { Card } from "@/components/ds/Card";
@@ -47,11 +48,14 @@ function ProjectCard({ project }: { project: ProjectData }) {
     <Card padding="lg" className={`flex flex-col ${featured ? "lg:col-span-3" : "lg:col-span-2"}`}>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-[var(--space-3)]">
-          <span
+          {/* Title is the card's primary link; IconLinks below stay as sibling anchors (no nesting). */}
+          <Link
+            href={`/projects/${project.slug}`}
+            className="hover:underline"
             style={{ ...mono, fontSize: featured ? "var(--text-lg)" : "var(--text-base)", fontWeight: "var(--fw-semibold)", color: "var(--text)" }}
           >
             {project.title}
-          </span>
+          </Link>
           {featured && <Badge tone="accent">Featured</Badge>}
         </div>
         {typeof project.githubStars === "number" && <StarCount n={project.githubStars} />}
@@ -148,7 +152,7 @@ export default async function ProjectsPage() {
       ) : (
         <div className="projects-grid mt-[var(--space-10)] grid grid-cols-1 gap-[var(--space-5)] sm:grid-cols-2 lg:grid-cols-6">
           {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+            <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
       )}

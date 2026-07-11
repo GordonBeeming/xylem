@@ -36,8 +36,7 @@ export function GET() {
   const projects: SearchItem[] = getAllProjects().map((p) => ({
     type: "project",
     title: p.title,
-    href: p.href ?? p.github ?? "/projects",
-    external: Boolean(p.href ?? p.github),
+    href: `/projects/${p.slug}`,
     summary: p.description,
     tags: p.techStack ?? [],
     date: p.date ?? "1970-01-01",

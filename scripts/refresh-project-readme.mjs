@@ -33,7 +33,7 @@ function isFresh(mdPath) {
 }
 
 function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch }) {
-  const quoted = `"${title.replace(/"/g, '\\"')}"`;
+  const quoted = `"${title.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
   return `---\ntitle: ${quoted}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${sourceRepo}\nsourceBranch: ${sourceBranch}\n---\n\n`;
 }
 

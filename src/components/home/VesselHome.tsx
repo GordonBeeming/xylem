@@ -14,9 +14,20 @@ import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { groupFeedByYear, type FeedItem, type FeedItemType } from "@/lib/home-feed";
 import styles from "./VesselHome.module.css";
 
+/** `data-tina-field` values for the siteConfig fields rendered here. Only
+ *  present when the live Tina client wrapper (`client-home.tsx`) is
+ *  rendering — the plain filesystem render passes none and gets no attrs. */
+interface VesselHomeTinaFields {
+  description?: string;
+  github?: string;
+  linkedin?: string;
+  youtube?: string;
+}
+
 interface VesselHomeProps {
   items: FeedItem[];
   siteConfig: SiteConfig;
+  tinaFields?: VesselHomeTinaFields;
 }
 
 type FilterKey = "all" | FeedItemType;
@@ -210,7 +221,7 @@ function VesselSearchButton() {
   );
 }
 
-export function VesselHome({ items, siteConfig }: VesselHomeProps) {
+export function VesselHome({ items, siteConfig, tinaFields }: VesselHomeProps) {
   const [filter, setFilter] = useState<FilterKey>("all");
   const [visibleYears, setVisibleYears] = useState(2);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -269,7 +280,11 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
                 <span className="h-3.5 w-[1.5px] bg-[var(--border-strong)]" />
                 <span className="font-[var(--fw-semibold)]">Gordon Beeming</span>
               </div>
-              <div style={mono} className="mt-1 text-[length:var(--text-xs)] text-[color:var(--text-muted)]">
+              <div
+                style={mono}
+                className="mt-1 text-[length:var(--text-xs)] text-[color:var(--text-muted)]"
+                data-tina-field={tinaFields?.description}
+              >
                 {bio}
               </div>
             </div>
@@ -338,7 +353,12 @@ export function VesselHome({ items, siteConfig }: VesselHomeProps) {
             {SITE_SOCIAL_LINKS.map(({ kind, configKey }) => {
               const href = siteConfig[configKey] as string | undefined;
               if (!href) return null;
-              return <SocialIcon key={kind} kind={kind} href={href} size={17} variant="muted" />;
+              const field = tinaFields?.[configKey as keyof VesselHomeTinaFields];
+              return (
+                <span key={kind} data-tina-field={field}>
+                  <SocialIcon kind={kind} href={href} size={17} variant="muted" />
+                </span>
+              );
             })}
           </div>
         </footer>

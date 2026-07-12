@@ -172,9 +172,13 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     // in one pass — matching the plain-link branch alone leaves the badge's
     // `![alt](img)` consumed but the wrapping `](href)` dangling unmatched,
     // since the wrapping `[` was already spent on the inner image match.
+    // One level of balanced parens in the URL (e.g. Wikipedia's
+    // Template_(C%2B%2B)) without the nested-quantifier backtracking blowup
+    // CodeQL flagged in `(?:[^()]+|\(...\))+` — this shape can't produce
+    // ambiguous partitions of the input, so it can't backtrack exponentially.
     segment = await replaceAsync(
       segment,
-      /\[!\[([^\]]*)\]\(((?:[^()]+|\([^()]*\))+)\)\]\(((?:[^()]+|\([^()]*\))+)\)|(!?)\[([^\]]*)\]\(((?:[^()]+|\([^()]*\))+)\)/g,
+      /\[!\[([^\]]*)\]\(([^()]*(?:\([^()]*\)[^()]*)*)\)\]\(([^()]*(?:\([^()]*\)[^()]*)*)\)|(!?)\[([^\]]*)\]\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g,
       async (_match, nestedAlt, nestedImg, nestedHref, bang, text, inner) => {
         if (nestedHref !== undefined) {
           const newImg = await resolveUrl(nestedImg, true);

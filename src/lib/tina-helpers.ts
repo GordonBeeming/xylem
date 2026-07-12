@@ -314,7 +314,9 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
     // in this file.
     const fetchedAtValid =
       (data.fetchedAt instanceof Date && !Number.isNaN(data.fetchedAt.getTime())) ||
-      (typeof data.fetchedAt === "string" && data.fetchedAt.trim() !== "");
+      // fetchedAt feeds sitemap.ts's <lastmod> — an unparseable string would
+      // ship straight into that tag instead of getting caught here.
+      (typeof data.fetchedAt === "string" && !Number.isNaN(Date.parse(data.fetchedAt)));
 
     if (
       !fetchedAtValid ||
@@ -327,12 +329,11 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
       return null;
     }
 
+    const fetchedAtDate = data.fetchedAt instanceof Date ? data.fetchedAt : new Date(data.fetchedAt);
+
     return {
       content,
-      fetchedAt:
-        data.fetchedAt instanceof Date
-          ? data.fetchedAt.toISOString().slice(0, 10)
-          : String(data.fetchedAt).trim(),
+      fetchedAt: fetchedAtDate.toISOString().slice(0, 10),
       sourceRepo: data.sourceRepo.trim(),
       sourceBranch: data.sourceBranch.trim(),
     };

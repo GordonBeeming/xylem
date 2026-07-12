@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, unlinkSync, rmSync } from "fs";
 import path from "path";
 import { createHash } from "crypto";
 
@@ -270,6 +270,12 @@ async function processProject(file, slug, force) {
     const pathSegmentCount = data.path.split("/").filter(Boolean).length;
     const branch = htmlUrlParts.slice(3, htmlUrlParts.length - pathSegmentCount).join("/");
 
+    // Wipe any previously mirrored assets before re-downloading — otherwise an
+    // image removed or renamed in the upstream README leaves its old copy
+    // behind here forever, since rewriteMarkdown only ever adds files.
+    const assetOutDir = path.join(ASSETS_DIR, slug);
+    if (existsSync(assetOutDir)) rmSync(assetOutDir, { recursive: true, force: true });
+
     const { body, notes } = await rewriteMarkdown(raw, {
       owner,
       repo: repoName,
@@ -280,8 +286,12 @@ async function processProject(file, slug, force) {
     });
 
     mkdirSync(README_DIR, { recursive: true });
+    // project.title is unvalidated JSON — a non-string or blank value would
+    // reach buildFrontmatter's title.replace() and throw, aborting this
+    // project's refresh with a confusing error.
+    const title = typeof project.title === "string" && project.title.trim() !== "" ? project.title : slug;
     const frontmatter = buildFrontmatter({
-      title: project.title ?? slug,
+      title,
       fetchedAt: new Date().toISOString().slice(0, 10),
       sourceRepo: repo,
       sourceBranch: branch,
@@ -322,6 +332,15 @@ async function main() {
 
   for (const file of files) {
     const slug = path.basename(file, ".json");
+    // Bulk mode derives slug from the filename, bypassing the CLI-arg check
+    // above — validate it the same way so we never mirror a README/assets
+    // under a slug the site's routes (and tina-helpers' own allowlist) will
+    // never serve.
+    if (!VALID_SLUG_RE.test(slug) || slug.length > MAX_SLUG_LENGTH) {
+      console.log(`${slug}: error: invalid project slug`);
+      tally.error += 1;
+      continue;
+    }
     const status = await processProject(file, slug, force);
     const key = status.startsWith("error:") ? "error" : status;
     tally[key] = (tally[key] ?? 0) + 1;

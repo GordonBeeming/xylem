@@ -214,8 +214,8 @@ export function ClientBook({ query, variables, data }: ClientBookProps) {
                         >
                           {chapter.sections
                             .filter((s): s is string => typeof s === "string")
-                            .map((section) => (
-                              <li key={section} style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+                            .map((section, index) => (
+                              <li key={`${section}-${index}`} style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
                                 {section}
                               </li>
                             ))}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTina, tinaField } from "tinacms/dist/react";
+import { normalizeTinaImages } from "@/components/tina/normalize-images";
 import { Button } from "@/components/ds/Button";
 import { Card } from "@/components/ds/Card";
 import type { BookQuery } from "../../../../tina/__generated__/types";
@@ -46,7 +47,11 @@ interface ClientBookProps {
  * from live data here.
  */
 export function ClientBook({ query, variables, data }: ClientBookProps) {
-  const { data: live } = useTina({ query, variables, data });
+  // Re-normalize the live data: edit-mode `useTina` refetches from TinaCloud and
+  // bypasses `fetchTina`, which would otherwise reintroduce the dead
+  // assets.tina.io cover-image URLs in the admin preview.
+  const { data: liveRaw } = useTina({ query, variables, data });
+  const live = normalizeTinaImages(liveRaw);
   const book = live.book;
   const authors = (book.authors ?? []).filter((a): a is NonNullable<typeof a> => a !== null);
   const reviewers = (book.reviewers ?? []).filter((r): r is NonNullable<typeof r> => r !== null);

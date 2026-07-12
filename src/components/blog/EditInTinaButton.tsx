@@ -14,8 +14,10 @@ export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
   return (
     <a
       href={editUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       title="Edit in Tina"
-      className="fixed right-4 bottom-4 z-40 hidden h-8 w-8 items-center justify-center rounded-[var(--radius-md)] text-[color:var(--text-subtle)] opacity-40 transition-[var(--transition-colors)] hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)] hover:opacity-100 md:inline-flex"
+      className="fixed right-4 bottom-4 z-40 hidden h-8 w-8 items-center justify-center rounded-[var(--radius-md)] text-[color:var(--text-subtle)] opacity-40 transition hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)] hover:opacity-100 md:inline-flex"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

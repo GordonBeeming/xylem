@@ -152,7 +152,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
   async function processSegment(segment) {
     segment = await replaceAsync(
       segment,
-      /<img\b([^>]*?)\bsrc=(["'])([^"']+)\2([^>]*)>/gi,
+      /<img\b([^>]*?)\bsrc\s*=\s*(["'])([^"']+)\2([^>]*)>/gi,
       async (_match, pre, quote, src, post) => {
         const newSrc = await resolveUrl(src, true);
         return `<img${pre}src=${quote}${newSrc}${quote}${post}>`;
@@ -161,7 +161,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
 
     segment = await replaceAsync(
       segment,
-      /<a\b([^>]*?)\bhref=(["'])([^"']+)\2([^>]*)>/gi,
+      /<a\b([^>]*?)\bhref\s*=\s*(["'])([^"']+)\2([^>]*)>/gi,
       async (_match, pre, quote, href, post) => {
         const newHref = await resolveUrl(href, false);
         return `<a${pre}href=${quote}${newHref}${quote}${post}>`;

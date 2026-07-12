@@ -319,7 +319,9 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
     if (
       !fetchedAtValid ||
       typeof data.sourceRepo !== "string" ||
+      data.sourceRepo.trim() === "" ||
       typeof data.sourceBranch !== "string" ||
+      data.sourceBranch.trim() === "" ||
       content.trim() === ""
     ) {
       return null;

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
-import { FeatureFlagScript } from "@/components/FeatureFlagScript";
-import { FeatureFlagProvider } from "@/components/FeatureFlagProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ChromeGate } from "@/components/layout/ChromeGate";
@@ -88,18 +86,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-surface-primary text-text-primary antialiased">
-        <FeatureFlagScript />
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
-          <FeatureFlagProvider>
-            <ChromeGate>
-              <Header siteConfig={siteConfig} />
-            </ChromeGate>
-            <main id="main-content">{children}</main>
-            <ChromeGate>
-              <Footer />
-            </ChromeGate>
-          </FeatureFlagProvider>
+          <ChromeGate>
+            <Header siteConfig={siteConfig} />
+          </ChromeGate>
+          <main id="main-content">{children}</main>
+          <ChromeGate>
+            <Footer />
+          </ChromeGate>
         </ThemeProviders>
       </body>
     </html>

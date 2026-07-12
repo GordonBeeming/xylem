@@ -1,24 +1,23 @@
-"use client";
-
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-
 interface EditInTinaButtonProps {
   relativePath: string;
 }
 
+// A faint, desktop-only "edit this post in Tina" affordance stuck to the
+// bottom-right corner. It's just for Gordon — visible to anyone, but kept
+// low-attention (muted until hover) so it doesn't compete with the content.
+// Renders on Tina-driven blog posts; the deep link opens that post in the
+// Tina admin. No auth gate here — /admin handles that.
 export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
-  const enabled = useFeatureFlag("edit-in-tina");
-
-  if (!enabled) return null;
-
-  const slug = relativePath.replace(/\.mdx$/, "");
+  const slug = relativePath.replace(/\.mdx?$/, "");
   const editUrl = `/admin/index.html#/~/blog/${slug}`;
 
   return (
     <a
       href={editUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       title="Edit in Tina"
-      className="inline-flex items-center justify-center text-[color:var(--text-subtle)] transition-[var(--transition-colors)] hover:text-[color:var(--accent)]"
+      className="fixed right-4 bottom-4 z-40 hidden h-8 w-8 items-center justify-center rounded-[var(--radius-md)] text-[color:var(--text-subtle)] opacity-40 transition hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)] hover:opacity-100 md:inline-flex"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

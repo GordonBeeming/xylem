@@ -100,9 +100,23 @@ async function replaceAsync(str, regex, asyncFn) {
 }
 
 // Fenced code blocks must survive untouched — a relative link/image ref inside
-// a code sample is example text, not something to rewrite or fetch.
+// a code sample is example text, not something to rewrite or fetch. GFM fences
+// can also be tilde (~~~) or longer than 3 chars (used to nest backticks in the
+// sample), so match either fence char, 3+ long, with a same-length close.
+// Manual matchAll (not String.split) because split() splices every capturing
+// group into the result array — the \1 backreference group would otherwise
+// break the caller's even-index-is-fence alternation.
 function splitCodeFences(markdown) {
-  return markdown.split(/(```[\s\S]*?```)/g);
+  const fenceRe = /^[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^[ \t]{0,3}\1[^\n]*$/gm;
+  const segments = [];
+  let lastIndex = 0;
+  for (const m of markdown.matchAll(fenceRe)) {
+    segments.push(markdown.slice(lastIndex, m.index));
+    segments.push(m[0]);
+    lastIndex = m.index + m[0].length;
+  }
+  segments.push(markdown.slice(lastIndex));
+  return segments;
 }
 
 async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, headers }) {
@@ -135,8 +149,12 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
       const rawDownloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodedPath}`;
       const buf = await downloadAsset(rawDownloadUrl, headers);
       if (!buf) {
-        notes.push(`image not downloaded: ${resolvedPath}`);
-        return url;
+        // Falling back to the original relative URL would resolve against the
+        // site route (/projects/<slug>/...) instead of the source repo and
+        // render as a broken image. The raw GitHub URL is absolute, so it
+        // still renders even though it isn't self-hosted.
+        notes.push(`image not downloaded, linked to raw GitHub URL instead: ${resolvedPath}`);
+        return rawDownloadUrl;
       }
       const basename = dedupeBasename(usedBasenames, resolvedPath);
       mkdirSync(assetOutDir, { recursive: true });

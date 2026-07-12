@@ -106,6 +106,22 @@ For each affected slug, in both light and dark mode:
 - Confirm every image actually loads (no broken-image icon).
 - Check for text overlap, clipped content, or contrast issues, same bar as
   any other artifact QA.
+- **Every in-page anchor resolves.** Click (or inspect) each
+  `.prose a[href^="#"]` (README TOC links and cross-references are common)
+  and confirm it lands on a real heading, not a dead jump. A broken one
+  almost always means GitHub's own slugger diverged from the render
+  pipeline's (`github-slugger`, via `rehype-slug`) on a punctuation-heavy
+  heading. `copilot-here.md` hit this: the heading "🐳 Brokered Docker Socket
+  (DinD) (Beta)" gets a double dash before "beta" in GitHub's TOC link but a
+  single dash in the id `rehype-slug` assigns. Fix the mismatch in
+  `rehypeFixAnchorHashes` (`src/lib/render-markdown.ts`) so it resolves
+  against the real heading ids — don't leave the link dead or just note it.
+- **Spot-check the rest of GitHub-flavored markdown** while a page is open:
+  GitHub alerts (`> [!NOTE]`, `> [!WARNING]`, etc.), task lists, tables, and
+  nested or tilde (`~~~`) code fences. If something renders differently than
+  it does on GitHub, that's a gap in `render-markdown.ts` or
+  `prose-components.tsx` — fix the pipeline, don't work around it in the
+  README.
 
 Delete screenshots after you're done with them — don't leave them lying
 around in the working directory.

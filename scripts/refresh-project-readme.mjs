@@ -115,7 +115,16 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     if (isAbsoluteOrSkippable(url)) return url;
     const { path: rawPath, suffix } = splitFragment(url);
     if (!rawPath) return url;
-    const resolvedPath = resolveRepoPath(baseDir, rawPath);
+    // README authors sometimes pre-encode spaces/specials (e.g. "My%20File.png")
+    // — decode before resolving so the encode step below doesn't double-encode
+    // the already-escaped path (%20 -> %2520).
+    let decodedPath;
+    try {
+      decodedPath = decodeURIComponent(rawPath);
+    } catch {
+      decodedPath = rawPath;
+    }
+    const resolvedPath = resolveRepoPath(baseDir, decodedPath);
     if (!resolvedPath) return url;
     // resolvedPath is also used as a local path (dedupeBasename/writeFileSync)
     // and in notes — only the URL-bound copy needs escaping.
@@ -132,7 +141,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
       const basename = dedupeBasename(usedBasenames, resolvedPath);
       mkdirSync(assetOutDir, { recursive: true });
       writeFileSync(path.join(assetOutDir, basename), buf);
-      const resolvedUrl = `/assets/projects/${slug}/${basename}`;
+      const resolvedUrl = `/assets/projects/${slug}/${encodeURIComponent(basename)}`;
       imageCache.set(resolvedPath, resolvedUrl);
       return resolvedUrl;
     }

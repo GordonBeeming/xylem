@@ -81,7 +81,11 @@ export const proseComponents = {
       }
       return "";
     }
-    const code = extractText(child?.props?.children).replace(/\n$/, "");
+    // extractText already unwraps a nested <code> (or <span class="line">)
+    // when present, and returns raw text unchanged when it isn't (e.g. a
+    // hand-written <pre> with no <code> child) — no need to narrow to
+    // child.props.children first.
+    const code = extractText(props.children as React.ReactNode).replace(/\n$/, "");
 
     // Render mermaid code blocks as interactive diagrams instead of syntax-highlighted code
     if (language === "mermaid") {

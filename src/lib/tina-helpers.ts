@@ -330,9 +330,9 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
       fetchedAt:
         data.fetchedAt instanceof Date
           ? data.fetchedAt.toISOString().slice(0, 10)
-          : String(data.fetchedAt),
-      sourceRepo: data.sourceRepo,
-      sourceBranch: data.sourceBranch,
+          : String(data.fetchedAt).trim(),
+      sourceRepo: data.sourceRepo.trim(),
+      sourceBranch: data.sourceBranch.trim(),
     };
   } catch (error) {
     console.error(`Error reading project readme ${filePath}:`, error);

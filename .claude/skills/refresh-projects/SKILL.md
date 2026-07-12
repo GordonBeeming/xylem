@@ -97,6 +97,12 @@ For each affected slug, in both light and dark mode:
 
 - Full-page screenshot, then zoom into the README body: code blocks, inline
   images, badges.
+- Code blocks render through the site's `CodeBlock` component, same as blog
+  posts: a title bar showing the fence's language (or `text` if the fence
+  didn't name one) and a copy button. Confirm the bar shows the right
+  language and the copy button works, not a bare `<pre>`.
+- Any ` ```mermaid ` fence renders as a live diagram via `MermaidDiagram`,
+  not as a code listing — check it actually drew a diagram, in both themes.
 - Confirm every image actually loads (no broken-image icon).
 - Check for text overlap, clipped content, or contrast issues, same bar as
   any other artifact QA.
@@ -123,3 +129,19 @@ skill.
   those — don't try to force a README onto them.
 - **A project whose repo has no README** reports `no readme` and is skipped;
   its detail page simply renders without a README section.
+
+## Self-improvement (mandatory, end of every run)
+
+Before handing back, review the run for friction: rewrites that needed a
+manual fix, script edge cases the guardrails didn't anticipate, QA surprises
+(a mermaid diagram that didn't render, a code block that came through
+unstyled), or wording here that misled you. Apply minor fixes to this skill
+or `scripts/refresh-project-readme.mjs` immediately, per the global
+skills-self-improve rule. Propose bigger reshapes — a new rewrite rule, a
+changed freshness window, anything that changes what the script does rather
+than how it's worded — to Gordon instead of applying them.
+
+**End every run by telling Gordon a short plan of what would make the skill
+better next time**, even a one-liner if nothing came up ("no friction this
+run"). This is a standing ask, not optional when something interesting
+happened.

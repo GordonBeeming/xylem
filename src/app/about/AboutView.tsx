@@ -43,12 +43,12 @@ function LogoSlot({
   const inner = (
     <div className="w-full" style={{ aspectRatio: ratio }}>
       {lightSrc && (
-        <div className="relative h-full w-full dark:hidden" data-tina-field={lightTinaField}>
+        <div className={`relative h-full w-full ${darkSrc ? "dark:hidden" : ""}`} data-tina-field={lightTinaField}>
           <Image src={lightSrc} alt={label} fill className="object-contain" />
         </div>
       )}
       {darkSrc && (
-        <div className="relative hidden h-full w-full dark:block" data-tina-field={darkTinaField}>
+        <div className={`relative h-full w-full ${lightSrc ? "hidden dark:block" : ""}`} data-tina-field={darkTinaField}>
           <Image src={darkSrc} alt={label} fill className="object-contain" />
         </div>
       )}

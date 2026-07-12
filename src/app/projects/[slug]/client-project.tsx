@@ -45,7 +45,7 @@ interface ClientProjectProps {
 export function ClientProject({ query, variables, data, githubStars }: ClientProjectProps) {
   const { data: live } = useTina({ query, variables, data });
   const project = live.project;
-  const techStack = (project.techStack ?? []).filter((t): t is string => t !== null);
+  const techStack = (project.techStack ?? []).filter((t): t is string => typeof t === "string");
 
   return (
     <>

@@ -15,9 +15,12 @@ let warnedServerUnreachable = false;
 /** A failed `fetch` to :4001 — the "Tina server isn't running" case, expected
  *  outside `pnpm dev:tina`, as opposed to a query/schema error worth surfacing. */
 function isServerUnreachable(error: unknown): boolean {
-  const code = (error as { cause?: { code?: string }; code?: string }).cause?.code
-    ?? (error as { code?: string }).code;
-  return code === "ECONNREFUSED" || (error instanceof TypeError && error.message === "fetch failed");
+  if (error && typeof error === "object") {
+    const code = (error as { cause?: { code?: string }; code?: string }).cause?.code
+      ?? (error as { code?: string }).code;
+    if (code === "ECONNREFUSED") return true;
+  }
+  return error instanceof TypeError && error.message === "fetch failed";
 }
 
 /**

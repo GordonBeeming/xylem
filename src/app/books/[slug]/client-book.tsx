@@ -170,7 +170,7 @@ export function ClientBook({ query, variables, data }: ClientBookProps) {
                       className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full"
                       style={{ ...mono, fontSize: "10px", fontWeight: "var(--fw-bold)", background: "var(--accent)", color: "var(--text-on-accent)" }}
                     >
-                      {r.name
+                      {(r.name || "")
                         .split(" ")
                         .map((w) => w[0])
                         .join("")
@@ -213,7 +213,7 @@ export function ClientBook({ query, variables, data }: ClientBookProps) {
                           style={{ borderColor: "var(--border)" }}
                         >
                           {chapter.sections
-                            .filter((s): s is string => s !== null)
+                            .filter((s): s is string => typeof s === "string")
                             .map((section) => (
                               <li key={section} style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
                                 {section}

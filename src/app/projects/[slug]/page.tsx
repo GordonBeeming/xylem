@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getAllProjects, getProjectBySlug, getProjectReadme } from "@/lib/tina-helpers";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
 import { renderMarkdown } from "@/lib/render-markdown";
+import { fetchTina, tinaClient } from "@/components/tina/fetch";
+import { ClientProject } from "./client-project";
 import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
@@ -90,16 +92,15 @@ export default async function ProjectPage(props: PageProps) {
   const readme = getProjectReadme(slug);
   const readmeElement = readme ? await renderMarkdown(readme.content) : null;
 
-  return (
-    <div className="page">
-      <Link
-        href="/projects"
-        className="inline-flex items-center gap-1.5 no-underline"
-        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
-      >
-        ← back to projects
-      </Link>
+  // Live editing data from the Tina client. Null on the static build and on a
+  // plain `pnpm dev` (no Tina server on :4001) — the page then renders the
+  // header straight from the filesystem with no client JS.
+  const tinaData = await fetchTina(() =>
+    tinaClient.queries.project({ relativePath: `${slug}.json` }),
+  );
 
+  const header = (
+    <>
       <div className="mt-[var(--space-6)] flex items-start justify-between gap-4">
         <div>
           <div className="eyebrow">Project</div>
@@ -165,6 +166,29 @@ export default async function ProjectPage(props: PageProps) {
           )}
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <div className="page">
+      <Link
+        href="/projects"
+        className="inline-flex items-center gap-1.5 no-underline"
+        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+      >
+        ← back to projects
+      </Link>
+
+      {tinaData ? (
+        <ClientProject
+          query={tinaData.query}
+          variables={tinaData.variables}
+          data={tinaData.data}
+          githubStars={githubStars}
+        />
+      ) : (
+        header
+      )}
 
       {readme && readmeElement && (
         <>

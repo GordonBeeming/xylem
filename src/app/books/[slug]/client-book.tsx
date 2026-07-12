@@ -1,67 +1,18 @@
-import { notFound } from "next/navigation";
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import { getAllBooks, getBook } from "@/lib/tina-helpers";
-import type { BookPerson } from "@/lib/tina-helpers";
-import type { Metadata } from "next";
-import { fetchTina, tinaClient } from "@/components/tina/fetch";
-import { ClientBook } from "./client-book";
+import { useTina, tinaField } from "tinacms/dist/react";
 import { Button } from "@/components/ds/Button";
 import { Card } from "@/components/ds/Card";
-
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const books = getAllBooks();
-  return books.map((book) => ({
-    slug: book.slug,
-  }));
-}
-
-export async function generateMetadata(props: PageProps): Promise<Metadata> {
-  const { slug } = await props.params;
-  const book = getBook(slug);
-
-  if (!book) {
-    return { title: "Book Not Found" };
-  }
-
-  const url = `https://gordonbeeming.com/books/${slug}`;
-
-  return {
-    title: `${book.title} - Gordon Beeming`,
-    description: book.overview ?? book.description,
-    openGraph: {
-      title: book.title,
-      description: book.overview ?? book.description,
-      url,
-      type: "website",
-      images: book.imgSrc
-        ? [
-            {
-              url: `https://gordonbeeming.com${book.imgSrc}`,
-              alt: book.title,
-            },
-          ]
-        : undefined,
-    },
-    twitter: {
-      card: "summary",
-      title: book.title,
-      description: book.overview ?? book.description,
-      creator: "@GordonBeeming",
-    },
-    alternates: {
-      canonical: url,
-    },
-  };
-}
+import type { BookQuery } from "../../../../tina/__generated__/types";
 
 const mono = { fontFamily: "var(--font-mono)" };
 
-function PersonName({ person }: { person: BookPerson }) {
+type LivePerson = { name: string; url?: string | null };
+
+// Same helpers as the server-rendered fallback in page.tsx — duplicated
+// rather than shared, matching the existing book-detail convention.
+function PersonName({ person }: { person: LivePerson }) {
   if (person.url) {
     return (
       <a href={person.url} target="_blank" rel="noopener noreferrer">
@@ -81,28 +32,34 @@ function MetaRow({ label, children }: { label: string; children: React.ReactNode
   );
 }
 
-export default async function BookPage(props: PageProps) {
-  const { slug } = await props.params;
-  const book = getBook(slug);
+interface ClientBookProps {
+  query: string;
+  variables: Record<string, unknown>;
+  data: BookQuery;
+}
 
-  if (!book) {
-    notFound();
-  }
+/**
+ * Client wrapper that drives the book detail page from TinaCMS's live
+ * `useTina` data so the preview updates as fields are edited in the admin,
+ * and tags each editable element with `data-tina-field` for click-to-edit.
+ * Unlike the blog post, this page has no RSC-only body — everything renders
+ * from live data here.
+ */
+export function ClientBook({ query, variables, data }: ClientBookProps) {
+  const { data: live } = useTina({ query, variables, data });
+  const book = live.book;
+  const authors = (book.authors ?? []).filter((a): a is NonNullable<typeof a> => a !== null);
+  const reviewers = (book.reviewers ?? []).filter((r): r is NonNullable<typeof r> => r !== null);
+  const tableOfContents = (book.tableOfContents ?? []).filter((c): c is NonNullable<typeof c> => c !== null);
 
-  // Live editing data from the Tina client. Null on the static build and on a
-  // plain `pnpm dev` (no Tina server on :4001) — the page then renders
-  // straight from the filesystem with no client JS.
-  const tinaData = await fetchTina(() =>
-    tinaClient.queries.book({ relativePath: `${slug}.json` }),
-  );
-
-  const body = (
+  return (
     <>
       <div className="book-hero mt-[var(--space-6)]">
         {book.imgSrc ? (
           <div
             className="flex shrink-0 items-center justify-center self-start overflow-hidden rounded-[var(--radius-md)] shadow-[var(--shadow-lg)]"
             style={{ width: 220, height: 300, background: "#1a1a1a" }}
+            data-tina-field={tinaField(book, "imgSrc")}
           >
             <Image
               src={book.imgSrc}
@@ -135,29 +92,44 @@ export default async function BookPage(props: PageProps) {
           <h1
             className="mt-3"
             style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.1, color: "var(--text)" }}
+            data-tina-field={tinaField(book, "title")}
           >
             {book.title}
           </h1>
 
           <dl className="book-meta">
-            {book.authors && book.authors.length > 0 && (
-              <MetaRow label={book.authors.length === 1 ? "Author" : "Authors"}>
-                {book.authors.map((person, i) => (
-                  <span key={person.name}>
-                    {i > 0 && ", "}
-                    <PersonName person={person} />
-                  </span>
-                ))}
+            {authors.length > 0 && (
+              <MetaRow label={authors.length === 1 ? "Author" : "Authors"}>
+                <span data-tina-field={tinaField(book, "authors")}>
+                  {authors.map((person, i) => (
+                    <span key={person.name}>
+                      {i > 0 && ", "}
+                      <PersonName person={person} />
+                    </span>
+                  ))}
+                </span>
               </MetaRow>
             )}
-            {book.publisher && <MetaRow label="Publisher">{book.publisher}</MetaRow>}
-            {book.publishedDate && <MetaRow label="Published">{book.publishedDate}</MetaRow>}
-            {book.isbn && <MetaRow label="ISBN">{book.isbn}</MetaRow>}
+            {book.publisher && (
+              <MetaRow label="Publisher">
+                <span data-tina-field={tinaField(book, "publisher")}>{book.publisher}</span>
+              </MetaRow>
+            )}
+            {book.publishedDate && (
+              <MetaRow label="Published">
+                <span data-tina-field={tinaField(book, "publishedDate")}>{book.publishedDate}</span>
+              </MetaRow>
+            )}
+            {book.isbn && (
+              <MetaRow label="ISBN">
+                <span data-tina-field={tinaField(book, "isbn")}>{book.isbn}</span>
+              </MetaRow>
+            )}
           </dl>
 
           {book.href && (
             <div className="mt-[var(--space-6)]">
-              <Button variant="primary" as="a" href={book.href}>
+              <Button variant="primary" as="a" href={book.href} data-tina-field={tinaField(book, "href")}>
                 Get this book
               </Button>
             </div>
@@ -173,18 +145,21 @@ export default async function BookPage(props: PageProps) {
                 Overview
               </h2>
               <div className="prose mt-[var(--space-4)]">
-                <p>{book.overview}</p>
+                <p data-tina-field={tinaField(book, "overview")}>{book.overview}</p>
               </div>
             </>
           )}
 
-          {book.reviewers && book.reviewers.length > 0 && (
+          {reviewers.length > 0 && (
             <>
               <h2 className="mt-10" style={{ margin: "40px 0 0", fontSize: "var(--text-xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tight)", color: "var(--text)" }}>
                 Reviewed by
               </h2>
-              <div className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-3)]">
-                {book.reviewers.map((r) => (
+              <div
+                className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-3)]"
+                data-tina-field={tinaField(book, "reviewers")}
+              >
+                {reviewers.map((r) => (
                   <span
                     key={r.name}
                     className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--border)] py-1.5 pl-2 pr-3"
@@ -211,7 +186,7 @@ export default async function BookPage(props: PageProps) {
           )}
         </div>
 
-        {book.tableOfContents && book.tableOfContents.length > 0 && (
+        {tableOfContents.length > 0 && (
           <aside>
             <Card padding="lg">
               <div
@@ -220,24 +195,30 @@ export default async function BookPage(props: PageProps) {
               >
                 Table of contents
               </div>
-              <ol className="m-0 flex list-none flex-col gap-[var(--space-3)] p-0" style={{ counterReset: "ch" }}>
-                {book.tableOfContents.map((chapter) => (
+              <ol
+                className="m-0 flex list-none flex-col gap-[var(--space-3)] p-0"
+                style={{ counterReset: "ch" }}
+                data-tina-field={tinaField(book, "tableOfContents")}
+              >
+                {tableOfContents.map((chapter) => (
                   <li key={chapter.title}>
                     <details>
                       <summary className="flex cursor-pointer list-none gap-[var(--space-3)]" style={{ fontSize: "var(--text-sm)", lineHeight: "var(--lh-snug)", color: "var(--text)" }}>
                         <span className="toc-num w-5 shrink-0" style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--accent)" }} />
                         <span style={{ color: "var(--text)", fontWeight: "var(--fw-medium)" }}>{chapter.title}</span>
                       </summary>
-                      {chapter.sections.length > 0 && (
+                      {chapter.sections && chapter.sections.length > 0 && (
                         <ul
                           className="ml-8 mt-2 flex list-none flex-col gap-1.5 border-l pl-3"
                           style={{ borderColor: "var(--border)" }}
                         >
-                          {chapter.sections.map((section) => (
-                            <li key={section} style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
-                              {section}
-                            </li>
-                          ))}
+                          {chapter.sections
+                            .filter((s): s is string => s !== null)
+                            .map((section) => (
+                              <li key={section} style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+                                {section}
+                              </li>
+                            ))}
                         </ul>
                       )}
                     </details>
@@ -249,23 +230,5 @@ export default async function BookPage(props: PageProps) {
         )}
       </div>
     </>
-  );
-
-  return (
-    <div className="page">
-      <Link
-        href="/#books"
-        className="inline-flex items-center gap-1.5 no-underline"
-        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
-      >
-        ← back to books
-      </Link>
-
-      {tinaData ? (
-        <ClientBook query={tinaData.query} variables={tinaData.variables} data={tinaData.data} />
-      ) : (
-        body
-      )}
-    </div>
   );
 }

@@ -27,19 +27,27 @@ function parseGitHubRepo(url) {
   }
 }
 
-function isFresh(mdPath) {
+function isFresh(mdPath, expectedRepo) {
   if (!existsSync(mdPath)) return false;
   const raw = readFileSync(mdPath, "utf8");
   const match = raw.match(/^fetchedAt:\s*(\S+)/m);
   if (!match) return false;
   const fetchedAt = new Date(match[1]);
   if (Number.isNaN(fetchedAt.getTime())) return false;
-  return Date.now() - fetchedAt.getTime() < FRESH_MS;
+  if (Date.now() - fetchedAt.getTime() >= FRESH_MS) return false;
+  // A project repointed at a different GitHub repo must refresh even inside
+  // the freshness window — otherwise the page keeps showing the old repo's
+  // README under the new project until the 7 days elapse or --force is used.
+  const sourceRepoMatch = raw.match(/^sourceRepo:\s*"?([^"\n]+?)"?\s*$/m);
+  return sourceRepoMatch?.[1] === expectedRepo;
+}
+
+function yamlQuote(str) {
+  return `"${str.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
 }
 
 function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch }) {
-  const quoted = `"${title.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
-  return `---\ntitle: ${quoted}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${sourceRepo}\nsourceBranch: ${sourceBranch}\n---\n\n`;
+  return `---\ntitle: ${yamlQuote(title)}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${yamlQuote(sourceRepo)}\nsourceBranch: ${yamlQuote(sourceBranch)}\n---\n\n`;
 }
 
 function isAbsoluteOrSkippable(url) {
@@ -225,14 +233,21 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
 async function processProject(file, slug, force) {
   try {
     const project = JSON.parse(readFileSync(file, "utf8"));
-    if (!project.github) return "no github";
+    const mdPath = path.join(README_DIR, `${slug}.md`);
+
+    if (!project.github) {
+      // The project dropped its github field — getProjectReadme() looks up
+      // snapshots by slug alone, so a stale one here would keep rendering
+      // the old repo's docs on what's now meant to be a header-only page.
+      if (existsSync(mdPath)) unlinkSync(mdPath);
+      return "no github";
+    }
 
     const repo = parseGitHubRepo(project.github);
     if (!repo) return "error: malformed github URL";
     const [owner, repoName] = repo.split("/");
 
-    const mdPath = path.join(README_DIR, `${slug}.md`);
-    if (!force && isFresh(mdPath)) return "skipped (fresh)";
+    if (!force && isFresh(mdPath, repo)) return "skipped (fresh)";
 
     const token = process.env.GITHUB_TOKEN;
     const headers = {

@@ -8,24 +8,21 @@ import rehypeSlug from "rehype-slug";
 import rehypeShiki from "@shikijs/rehype";
 import rehypeStringify from "rehype-stringify";
 
-// rehype-sanitize strips class/style by default, which would kill shiki's
-// injected colors — widen it to keep those on the elements shiki decorates,
-// plus `loading` on img (READMEs hand-author it for lazy-loading screenshots).
+// Sanitize runs before shiki in the pipeline below, so shiki's own output is
+// added after sanitization and never touched by this schema — widening it
+// for span/code/pre/div class/style buys shiki nothing and only widens the
+// injection surface for raw HTML mirrored in from READMEs. Only `loading` on
+// img (READMEs hand-author it for lazy-loading screenshots) is needed here.
 const sanitizeSchema: SanitizeSchema = {
   ...defaultSchema,
   attributes: {
     ...defaultSchema.attributes,
-    span: [...(defaultSchema.attributes?.span ?? []), "className", "style"],
-    code: [...(defaultSchema.attributes?.code ?? []), "className", "style"],
-    pre: [...(defaultSchema.attributes?.pre ?? []), "className", "style"],
-    div: [...(defaultSchema.attributes?.div ?? []), "className", "style"],
     img: [...(defaultSchema.attributes?.img ?? []), "loading"],
   },
 };
 
 // rehype-raw parses the raw HTML READMEs mix into markdown (`<div align>`,
-// `<img>`, badges) back into the tree; sanitize runs before shiki so shiki's
-// own trusted output is never stripped.
+// `<img>`, badges) back into the tree before sanitize runs.
 //
 // Shiki's dual-theme spans only carry `--shiki-light`/`--shiki-dark` CSS
 // custom properties (defaultColor: false) — nothing consumes them without a
@@ -49,8 +46,15 @@ const processor = unified()
           // codeblock-highlighted: reuses the blog's shiki color rule.
           // readme-code: box chrome (bg/border/padding) in tailwind.css —
           // README <pre>s have no CodeBlock.tsx wrapper div to supply it.
-          const existingClass = typeof node.properties.class === "string" ? node.properties.class : "";
-          node.properties.class = `${existingClass} codeblock-highlighted readme-code`.trim();
+          // hast represents the class attribute as `className` (an array),
+          // not `class` — writing the latter is silently ignored by rehype-stringify.
+          const existing = node.properties.className;
+          const classes = Array.isArray(existing)
+            ? existing
+            : typeof existing === "string"
+              ? existing.split(" ")
+              : [];
+          node.properties.className = [...classes, "codeblock-highlighted", "readme-code"];
         },
       },
     ],

@@ -1,6 +1,6 @@
 ---
 title: "ClaudeNest"
-fetchedAt: 2026-07-11
+fetchedAt: 2026-07-12
 sourceRepo: GordonBeeming/ClaudeNest
 sourceBranch: main
 ---
@@ -10,7 +10,7 @@ sourceBranch: main
 [![CI](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/ci.yml/badge.svg)](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/ci.yml)
 [![Deploy](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/deploy.yml/badge.svg)](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/deploy.yml)
 [![Agent Release](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/agent-release.yml/badge.svg)](https://github.com/gordonbeeming/ClaudeNest/actions/workflows/agent-release.yml)
-[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-blue.svg)](LICENSE)
+[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-blue.svg)](https://github.com/GordonBeeming/ClaudeNest/blob/main/LICENSE)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB)](https://react.dev/)
 

@@ -232,18 +232,18 @@ function parseProjectFile(file: string): ProjectData | null {
     const data = JSON.parse(raw) as Record<string, unknown>;
     return {
       slug: file.replace(/\.json$/, ""),
-      title: (data.title as string) ?? "Untitled",
-      description: (data.description as string) ?? "",
-      href: (data.href as string) ?? undefined,
-      imgSrc: (data.imgSrc as string) ?? undefined,
+      title: typeof data.title === "string" ? data.title : "Untitled",
+      description: typeof data.description === "string" ? data.description : "",
+      href: typeof data.href === "string" ? data.href : undefined,
+      imgSrc: typeof data.imgSrc === "string" ? data.imgSrc : undefined,
       techStack: Array.isArray(data.techStack)
-        ? (data.techStack as string[])
+        ? data.techStack.filter((t): t is string => typeof t === "string")
         : [],
-      github: (data.github as string) ?? undefined,
+      github: typeof data.github === "string" ? data.github : undefined,
       appStore: typeof data.appStore === "string" ? data.appStore : undefined,
       video: typeof data.video === "string" ? data.video : undefined,
       status: typeof data.status === "string" && data.status.trim() !== "" ? data.status.trim() : undefined,
-      featured: (data.featured as boolean) ?? false,
+      featured: typeof data.featured === "boolean" ? data.featured : false,
       githubStars: typeof data.githubStars === "number" ? data.githubStars : undefined,
       date: typeof data.date === "string" ? data.date : undefined,
     };
@@ -264,7 +264,9 @@ export function getAllProjects(): ProjectData[] {
 
   for (const file of files) {
     const project = parseProjectFile(file);
-    if (project !== null) {
+    // Filenames that don't pass the slug allowlist would 404 at
+    // getProjectBySlug() — skip them here instead of linking to a dead page.
+    if (project !== null && isValidProjectSlug(project.slug)) {
       projects.push(project);
     }
   }
@@ -311,7 +313,7 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
     // objects, not strings — same quirk `date`/`lastmod` handle elsewhere
     // in this file.
     const fetchedAtValid =
-      data.fetchedAt instanceof Date ||
+      (data.fetchedAt instanceof Date && !Number.isNaN(data.fetchedAt.getTime())) ||
       (typeof data.fetchedAt === "string" && data.fetchedAt.trim() !== "");
 
     if (

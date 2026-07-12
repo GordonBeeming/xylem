@@ -1,6 +1,6 @@
 ---
 title: "ClaudeBar"
-fetchedAt: 2026-07-11
+fetchedAt: 2026-07-12
 sourceRepo: GordonBeeming/claude-bar
 sourceBranch: main
 ---
@@ -32,7 +32,7 @@ That's the whole app. No cost tracking, no charts, no extras. The menu renders i
 ## Preview
 
 <p align="center">
-  <a href="docs/screenshot.png">
+  <a href="/assets/projects/claude-bar/screenshot.png">
     <img src="/assets/projects/claude-bar/screenshot.png" width="720" alt="ClaudeBar menu showing usage limits" />
   </a>
 </p>

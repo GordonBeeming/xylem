@@ -7,6 +7,9 @@ const README_DIR = "content/project-readmes";
 const ASSETS_DIR = "public/assets/projects";
 const FRESH_MS = 7 * 24 * 60 * 60 * 1000;
 const IMAGE_EXT_RE = /\.(png|jpe?g|gif|svg|webp|bmp|ico)$/i;
+// Mirrors VALID_PROJECT_SLUG in src/lib/tina-helpers.ts — same reasoning as
+// parseGitHubRepo above for why it's duplicated rather than imported.
+const VALID_SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
 
 // Mirrors parseGitHubRepo in src/lib/github-stars.ts — duplicated here because
 // this script runs as plain Node ESM and can't import a TS module directly.
@@ -135,8 +138,26 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
 
     segment = await replaceAsync(
       segment,
-      /(!?)\[([^\]]*)\]\(([^)]+)\)/g,
-      async (_match, bang, text, inner) => {
+      /<a\b([^>]*?)\bhref=(["'])([^"']+)\2([^>]*)>/gi,
+      async (_match, pre, quote, href, post) => {
+        const newHref = await resolveUrl(href, false);
+        return `<a${pre}href=${quote}${newHref}${quote}${post}>`;
+      }
+    );
+
+    // Badge-in-link markdown (`[![alt](img)](href)`) needs both URLs rewritten
+    // in one pass — matching the plain-link branch alone leaves the badge's
+    // `![alt](img)` consumed but the wrapping `](href)` dangling unmatched,
+    // since the wrapping `[` was already spent on the inner image match.
+    segment = await replaceAsync(
+      segment,
+      /\[!\[([^\]]*)\]\(([^)]+)\)\]\(([^)]+)\)|(!?)\[([^\]]*)\]\(([^)]+)\)/g,
+      async (_match, nestedAlt, nestedImg, nestedHref, bang, text, inner) => {
+        if (nestedHref !== undefined) {
+          const newImg = await resolveUrl(nestedImg, true);
+          const newHref = await resolveUrl(nestedHref, false);
+          return `[![${nestedAlt}](${newImg})](${newHref})`;
+        }
         const spaceIdx = inner.search(/\s/);
         const url = spaceIdx === -1 ? inner : inner.slice(0, spaceIdx);
         const titlePart = spaceIdx === -1 ? "" : inner.slice(spaceIdx);
@@ -220,6 +241,10 @@ async function main() {
 
   let files;
   if (slugArg) {
+    if (!VALID_SLUG_RE.test(slugArg)) {
+      console.error(`Invalid project slug: ${slugArg}`);
+      process.exit(1);
+    }
     const file = path.join(PROJECTS_DIR, `${slugArg}.json`);
     if (!existsSync(file)) {
       console.error(`Unknown project slug: ${slugArg}`);

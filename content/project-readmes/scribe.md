@@ -1,6 +1,6 @@
 ---
 title: "Scribe"
-fetchedAt: 2026-07-11
+fetchedAt: 2026-07-12
 sourceRepo: GordonBeeming/Scribe
 sourceBranch: main
 ---
@@ -12,7 +12,7 @@ sourceBranch: main
 [![Swift 6](https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white)](https://swift.org)
 [![Platform iOS](https://img.shields.io/badge/Platform-iOS%20%7C%20iPadOS-blue?logo=apple)](https://developer.apple.com/ios/)
 [![Platform watchOS](https://img.shields.io/badge/Platform-watchOS-blue?logo=apple)](https://developer.apple.com/watchos/)
-[![License FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-yellow)](LICENSE)
+[![License FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-yellow)](https://github.com/GordonBeeming/Scribe/blob/main/LICENSE)
 [![XcodeGen](https://img.shields.io/badge/XcodeGen-Generated-blue)](https://github.com/yonaskolb/XcodeGen)
 [![CloudKit](https://img.shields.io/badge/CloudKit-Sync-brightgreen?logo=icloud&logoColor=white)](https://developer.apple.com/icloud/cloudkit/)
 

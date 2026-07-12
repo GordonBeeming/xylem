@@ -55,7 +55,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       url,
       type: "website",
       images: project.imgSrc
-        ? [{ url: `https://gordonbeeming.com${project.imgSrc}`, alt: project.title }]
+        ? [
+            {
+              url: project.imgSrc.startsWith("http")
+                ? project.imgSrc
+                : `https://gordonbeeming.com${project.imgSrc}`,
+              alt: project.title,
+            },
+          ]
         : undefined,
     },
     twitter: {

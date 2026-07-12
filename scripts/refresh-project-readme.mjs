@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from "fs";
 import path from "path";
 import { createHash } from "crypto";
 
@@ -174,7 +174,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     // since the wrapping `[` was already spent on the inner image match.
     segment = await replaceAsync(
       segment,
-      /\[!\[([^\]]*)\]\(([^)]+)\)\]\(([^)]+)\)|(!?)\[([^\]]*)\]\(([^)]+)\)/g,
+      /\[!\[([^\]]*)\]\(((?:[^()]+|\([^()]*\))+)\)\]\(((?:[^()]+|\([^()]*\))+)\)|(!?)\[([^\]]*)\]\(((?:[^()]+|\([^()]*\))+)\)/g,
       async (_match, nestedAlt, nestedImg, nestedHref, bang, text, inner) => {
         if (nestedHref !== undefined) {
           const newImg = await resolveUrl(nestedImg, true);
@@ -220,7 +220,12 @@ async function processProject(file, slug, force) {
     };
 
     const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, { headers });
-    if (res.status === 404) return "no readme";
+    if (res.status === 404) {
+      // The repo dropped its README — remove any previously mirrored snapshot
+      // so the detail page falls back to header-only instead of showing stale docs.
+      if (existsSync(mdPath)) unlinkSync(mdPath);
+      return "no readme";
+    }
     if (!res.ok) return `error: GitHub API ${res.status}`;
 
     const data = await res.json();
@@ -301,6 +306,10 @@ async function main() {
   console.log(
     `\nTotal: ${tally.refreshed} refreshed, ${tally["skipped (fresh)"]} fresh, ${tally["no readme"]} no readme, ${tally["no github"]} no github, ${tally.error} errors`
   );
+
+  if (tally.error > 0) {
+    process.exit(1);
+  }
 
   if (tally.refreshed === 0 && tally["skipped (fresh)"] > 0) {
     console.log("RESULT: nothing-to-refresh");

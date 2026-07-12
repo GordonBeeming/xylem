@@ -14,18 +14,44 @@ import { proseComponents } from "@/components/prose/prose-components";
 
 const CLOBBER_PREFIX = defaultSchema.clobberPrefix ?? "";
 
+function normalizeAnchor(id: string): string {
+  return id.replace(/-+/g, "-");
+}
+
 // rehype-sanitize's clobberPrefix rewrites every heading id to
 // `<prefix><slug>`, but a README-authored in-page link (`href="#slug"`)
-// still points at the unprefixed form — rewrite those to match so anchor
-// links keep working.
+// still points at the unprefixed form. Blindly re-prefixing isn't enough
+// though — GitHub's own TOC slugger can diverge from rehype-slug's
+// (github-slugger) on punctuation-heavy headings, usually by a dash count
+// (e.g. "Foo (Bar) (Baz)" — GitHub's TOC keeps a double dash where
+// github-slugger collapses to one). So resolve against the real ids: exact
+// match first, then a dash-collapsed match, but only when it's unambiguous.
 function rehypeFixAnchorHashes() {
   return (tree: { type: string; children?: unknown[] }) => {
+    const ids = new Set<string>();
+    visit(tree, "element", (node: { properties?: Record<string, unknown> }) => {
+      const id = node.properties?.id;
+      if (typeof id === "string") ids.add(id);
+    });
+
     visit(tree, "element", (node: { tagName?: string; properties?: Record<string, unknown> }) => {
       if (node.tagName !== "a" || !node.properties) return;
       const href = node.properties.href;
-      if (typeof href === "string" && href.startsWith("#") && href.length > 1 && !href.startsWith(`#${CLOBBER_PREFIX}`)) {
-        node.properties.href = `#${CLOBBER_PREFIX}${href.slice(1)}`;
+      if (typeof href !== "string" || !href.startsWith("#") || href.length <= 1) return;
+
+      const stripped = href.startsWith(`#${CLOBBER_PREFIX}`) ? href.slice(1 + CLOBBER_PREFIX.length) : href.slice(1);
+      const candidate = `${CLOBBER_PREFIX}${stripped}`;
+      if (ids.has(candidate)) {
+        node.properties.href = `#${candidate}`;
+        return;
       }
+
+      const normalizedCandidate = normalizeAnchor(candidate);
+      const matches = [...ids].filter((id) => normalizeAnchor(id) === normalizedCandidate);
+      if (matches.length === 1) {
+        node.properties.href = `#${matches[0]}`;
+      }
+      // Otherwise leave the href as-is — genuinely unresolvable, don't guess.
     });
   };
 }

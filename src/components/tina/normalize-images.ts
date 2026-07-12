@@ -45,10 +45,12 @@ function walk(value: unknown): unknown {
 }
 
 /**
- * Deep-clone a TinaCloud response, rewriting every string leaf through
- * {@link normalizeTinaImageUrl}. Structure and non-string leaves are preserved,
- * so the generic type is retained — the lone `as T` is sound because `walk`
- * only ever replaces a string with another string. Input is not mutated.
+ * Rewrite every string leaf of a TinaCloud response through
+ * {@link normalizeTinaImageUrl}, returning a deep-cloned copy with structure and
+ * non-string leaves preserved — the lone `as T` is sound because `walk` only ever
+ * replaces a string with another string. When no client ID is configured (local
+ * dev, where these CDN URLs never appear) it short-circuits and returns the input
+ * unchanged. Input is never mutated.
  */
 export function normalizeTinaImages<T>(data: T): T {
   if (!CDN_PREFIX) return data;

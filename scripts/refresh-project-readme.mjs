@@ -57,9 +57,13 @@ function splitFragment(url) {
   return { path: url.slice(0, idx), suffix: url.slice(idx) };
 }
 
+// Returns null if relPath normalizes to outside the repo root (e.g. `../../x`)
+// rather than a resolvable in-repo path.
 function resolveRepoPath(baseDir, relPath) {
   const joined = relPath.startsWith("/") ? relPath : path.posix.join(baseDir, relPath);
-  return path.posix.normalize(joined).replace(/^\/+/, "");
+  const normalized = path.posix.normalize(joined);
+  if (normalized.startsWith("..") || normalized === ".") return null;
+  return normalized.replace(/^\/+/, "");
 }
 
 function dedupeBasename(usedBasenames, resolvedPath) {
@@ -111,6 +115,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     const { path: rawPath, suffix } = splitFragment(url);
     if (!rawPath) return url;
     const resolvedPath = resolveRepoPath(baseDir, rawPath);
+    if (!resolvedPath) return url;
     // resolvedPath is also used as a local path (dedupeBasename/writeFileSync)
     // and in notes — only the URL-bound copy needs escaping.
     const encodedPath = resolvedPath.split("/").map(encodeURIComponent).join("/");
@@ -208,11 +213,19 @@ async function processProject(file, slug, force) {
     const data = await res.json();
     const raw = Buffer.from(data.content, "base64").toString("utf8");
 
-    const downloadUrl = new URL(data.download_url);
-    const parts = downloadUrl.pathname.split("/").filter(Boolean);
-    // pathname is /<owner>/<repo>/<branch>/<...dir>/<file>
-    const branch = parts[2];
-    const baseDir = parts.slice(3, -1).join("/");
+    // data.path is the file's exact repo-relative path (e.g. "docs/README.md"),
+    // so its dirname is baseDir regardless of branch — no URL parsing needed.
+    const pathDir = path.posix.dirname(data.path);
+    const baseDir = pathDir === "." ? "" : pathDir;
+
+    // Branch names can legally contain "/" (e.g. "release/2026"), which would
+    // shift a naive `download_url` split. html_url is `/<owner>/<repo>/blob/
+    // <branch>/<path>` — since data.path's segment count is known, whatever's
+    // left between "blob" and that known tail is the branch, however many
+    // segments it has.
+    const htmlUrlParts = new URL(data.html_url).pathname.split("/").filter(Boolean);
+    const pathSegmentCount = data.path.split("/").filter(Boolean).length;
+    const branch = htmlUrlParts.slice(3, htmlUrlParts.length - pathSegmentCount).join("/");
 
     const { body, notes } = await rewriteMarkdown(raw, {
       owner,

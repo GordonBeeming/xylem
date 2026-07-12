@@ -65,7 +65,7 @@ export function buildHomeFeed(
     .filter((p): p is ProjectData & { date: string } => Boolean(p.date))
     .map((p) => ({
       type: "project",
-      key: `project-${p.title}`,
+      key: `project-${p.slug}`,
       title: p.title,
       date: p.date,
       dateDisplay: formatDateShort(p.date),

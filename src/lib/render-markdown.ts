@@ -1,4 +1,5 @@
 import { unified } from "unified";
+import { visit } from "unist-util-visit";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
@@ -10,6 +11,24 @@ import rehypeReact from "rehype-react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import type { ReactElement } from "react";
 import { proseComponents } from "@/components/prose/prose-components";
+
+const CLOBBER_PREFIX = defaultSchema.clobberPrefix ?? "";
+
+// rehype-sanitize's clobberPrefix rewrites every heading id to
+// `<prefix><slug>`, but a README-authored in-page link (`href="#slug"`)
+// still points at the unprefixed form — rewrite those to match so anchor
+// links keep working.
+function rehypeFixAnchorHashes() {
+  return (tree: { type: string; children?: unknown[] }) => {
+    visit(tree, "element", (node: { tagName?: string; properties?: Record<string, unknown> }) => {
+      if (node.tagName !== "a" || !node.properties) return;
+      const href = node.properties.href;
+      if (typeof href === "string" && href.startsWith("#") && !href.startsWith(`#${CLOBBER_PREFIX}`)) {
+        node.properties.href = `#${CLOBBER_PREFIX}${href.slice(1)}`;
+      }
+    });
+  };
+}
 
 // Sanitize runs before shiki in the pipeline below, so shiki's own output is
 // added after sanitization and never touched by this schema. The fence
@@ -39,6 +58,7 @@ const processor = unified()
   .use(rehypeRaw)
   .use(rehypeSlug)
   .use(rehypeSanitize, sanitizeSchema)
+  .use(rehypeFixAnchorHashes)
   .use(rehypeShiki, {
     themes: { light: "github-light", dark: "github-dark" },
     defaultColor: false,

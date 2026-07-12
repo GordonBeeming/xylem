@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAllPosts, getAllBooks, getAllProjects, getSiteConfig } from '@/lib/tina-helpers';
+import { getAllPosts, getAllBooks, getAllProjects, getProjectReadme, getSiteConfig } from '@/lib/tina-helpers';
 import { getAllNuggets } from '@/lib/nuggets';
 import {
   sortPosts,
@@ -110,11 +110,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  // Project detail pages
+  // Project detail pages — a README refresh changes the page even when
+  // project.date (the project's own "shipped" date) doesn't, so prefer the
+  // README's fetchedAt when one's mirrored.
   const projects = getAllProjects();
   const projectEntries: MetadataRoute.Sitemap = projects.map((project) => ({
     url: `${siteUrl}/projects/${project.slug}`,
-    lastModified: project.date ?? todayStr,
+    lastModified: getProjectReadme(project.slug)?.fetchedAt ?? project.date ?? todayStr,
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));

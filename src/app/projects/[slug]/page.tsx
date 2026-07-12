@@ -1,32 +1,22 @@
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllProjects, type ProjectData } from "@/lib/tina-helpers";
+import type { Metadata } from "next";
+import { getAllProjects, getProjectBySlug, getProjectReadme } from "@/lib/tina-helpers";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
-import { Card } from "@/components/ds/Card";
+import { renderMarkdown } from "@/lib/render-markdown";
 import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
 import { ProjectVideo } from "@/components/ui/ProjectVideo";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description: "Open-source tools and side projects by Gordon Beeming.",
-  openGraph: {
-    title: "Projects | Gordon Beeming",
-    description: "Open-source tools and side projects by Gordon Beeming.",
-  },
-};
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
 const mono = { fontFamily: "var(--font-mono)" };
 
-// Group projects by lifecycle before ordering by popularity: live projects
-// first, then private previews, then deprecated ones at the bottom.
-function statusTier(status?: string): number {
-  const normalized = status?.trim().toLowerCase();
-  if (!normalized) return 0;
-  return normalized === "deprecated" ? 2 : 1;
-}
-
+// Same icon-link markup as the /projects card grid (src/app/projects/page.tsx) —
+// not exported there, so duplicated here rather than restructuring that page.
 function IconLink({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
   return (
     <a
@@ -42,34 +32,96 @@ function IconLink({ href, label, children }: { href: string; label: string; chil
   );
 }
 
-function ProjectCard({ project }: { project: ProjectData }) {
-  const featured = Boolean(project.featured);
+export async function generateStaticParams() {
+  return getAllProjects().map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const { slug } = await props.params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    return { title: "Project Not Found" };
+  }
+
+  const url = `https://gordonbeeming.com/projects/${slug}`;
+
+  return {
+    title: `${project.title} - Gordon Beeming`,
+    description: project.description,
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      url,
+      type: "website",
+      images: project.imgSrc
+        ? [
+            {
+              url: project.imgSrc.startsWith("http")
+                ? project.imgSrc
+                : `https://gordonbeeming.com${project.imgSrc}`,
+              alt: project.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary",
+      title: project.title,
+      description: project.description,
+      creator: "@GordonBeeming",
+    },
+    alternates: {
+      canonical: url,
+    },
+  };
+}
+
+export default async function ProjectPage(props: PageProps) {
+  const { slug } = await props.params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  const [enriched] = await enrichProjectsWithStars([project]);
+  const githubStars = enriched?.githubStars ?? project.githubStars;
+  const readme = getProjectReadme(slug);
+  const readmeElement = readme ? await renderMarkdown(readme.content) : null;
+
   return (
-    <Card padding="lg" className={`flex flex-col ${featured ? "lg:col-span-3" : "lg:col-span-2"}`}>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-[var(--space-3)]">
-          {/* Title is the card's primary link; IconLinks below stay as sibling anchors (no nesting). */}
-          <Link
-            href={`/projects/${project.slug}`}
-            className="hover:underline"
-            style={{ ...mono, fontSize: featured ? "var(--text-lg)" : "var(--text-base)", fontWeight: "var(--fw-semibold)", color: "var(--text)" }}
+    <div className="page">
+      <Link
+        href="/projects"
+        className="inline-flex items-center gap-1.5 no-underline"
+        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+      >
+        ← back to projects
+      </Link>
+
+      <div className="mt-[var(--space-6)] flex items-start justify-between gap-4">
+        <div>
+          <div className="eyebrow">Project</div>
+          <h1
+            className="mt-3"
+            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
           >
             {project.title}
-          </Link>
-          {featured && <Badge tone="accent">Featured</Badge>}
+          </h1>
         </div>
-        {typeof project.githubStars === "number" && <StarCount n={project.githubStars} />}
+        {typeof githubStars === "number" && <StarCount n={githubStars} />}
       </div>
 
       <p
-        className="mt-2.5 flex-1"
-        style={{ fontSize: "var(--text-sm)", lineHeight: "var(--lh-relaxed)", color: "var(--text-muted)", maxWidth: featured ? "60ch" : "none" }}
+        className="mt-[var(--space-4)] max-w-[var(--width-prose)]"
+        style={{ fontSize: "var(--text-md)", lineHeight: "var(--lh-relaxed)", color: "var(--text-muted)" }}
       >
         {project.description}
       </p>
 
       {project.video && (
-        <div className="mt-4">
+        <div className="mt-[var(--space-5)]">
           <ProjectVideo url={project.video} title={project.title} />
         </div>
       )}
@@ -113,48 +165,19 @@ function ProjectCard({ project }: { project: ProjectData }) {
           )}
         </div>
       </div>
-    </Card>
-  );
-}
 
-export default async function ProjectsPage() {
-  const projects = (await enrichProjectsWithStars(getAllProjects())).sort((a, b) => {
-    const featured = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
-    if (featured !== 0) return featured;
-    const tier = statusTier(a.status) - statusTier(b.status);
-    if (tier !== 0) return tier;
-    const stars = (b.githubStars ?? 0) - (a.githubStars ?? 0);
-    if (stars !== 0) return stars;
-    return a.title.localeCompare(b.title);
-  });
-
-  return (
-    <div className="page">
-      <div className="eyebrow">Projects</div>
-      <h1
-        className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
-      >
-        Things I&apos;ve built
-      </h1>
-      <p
-        className="mt-2.5 max-w-[var(--width-prose)]"
-        style={{ fontSize: "var(--text-md)", color: "var(--text-muted)", lineHeight: "var(--lh-relaxed)" }}
-      >
-        Developer tools, macOS utilities, and open source — mostly born from scratching my
-        own itch. Star counts are live from GitHub.
-      </p>
-
-      {projects.length === 0 ? (
-        <p className="mt-10 text-center" style={{ color: "var(--text-subtle)" }}>
-          No projects found.
-        </p>
-      ) : (
-        <div className="projects-grid mt-[var(--space-10)] grid grid-cols-1 gap-[var(--space-5)] sm:grid-cols-2 lg:grid-cols-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+      {readme && readmeElement && (
+        <>
+          <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
+          <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
+            README mirrored from{" "}
+            <a href={`https://github.com/${readme.sourceRepo}`} target="_blank" rel="noopener noreferrer">
+              {readme.sourceRepo}
+            </a>{" "}
+            · updated {readme.fetchedAt}
+          </p>
+          <div className="prose mt-[var(--space-5)]">{readmeElement}</div>
+        </>
       )}
     </div>
   );

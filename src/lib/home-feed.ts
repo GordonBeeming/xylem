@@ -65,13 +65,13 @@ export function buildHomeFeed(
     .filter((p): p is ProjectData & { date: string } => Boolean(p.date))
     .map((p) => ({
       type: "project",
-      key: `project-${p.title}`,
+      key: `project-${p.slug}`,
       title: p.title,
       date: p.date,
       dateDisplay: formatDateShort(p.date),
       year: new Date(p.date).getFullYear(),
-      href: p.href ?? p.github ?? "/projects",
-      external: Boolean(p.href ?? p.github),
+      href: `/projects/${p.slug}`,
+      external: false,
       summary: p.description,
       tags: p.techStack,
       stars: p.githubStars,

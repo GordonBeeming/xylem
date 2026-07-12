@@ -8,7 +8,7 @@ interface EditInTinaButtonProps {
 // Renders on Tina-driven blog posts; the deep link opens that post in the
 // Tina admin. No auth gate here — /admin handles that.
 export function EditInTinaButton({ relativePath }: EditInTinaButtonProps) {
-  const slug = relativePath.replace(/\.mdx$/, "");
+  const slug = relativePath.replace(/\.mdx?$/, "");
   const editUrl = `/admin/index.html#/~/blog/${slug}`;
 
   return (

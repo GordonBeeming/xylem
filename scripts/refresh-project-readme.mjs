@@ -82,7 +82,7 @@ function dedupeBasename(usedBasenames, resolvedPath) {
 
 async function downloadAsset(rawUrl, headers) {
   try {
-    const res = await fetch(rawUrl, { headers });
+    const res = await fetch(rawUrl, { headers, signal: AbortSignal.timeout(10000) });
     if (!res.ok) return null;
     return Buffer.from(await res.arrayBuffer());
   } catch {
@@ -223,7 +223,10 @@ async function processProject(file, slug, force) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, { headers });
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, {
+      headers,
+      signal: AbortSignal.timeout(10000),
+    });
     if (res.status === 404) {
       // The repo dropped its README — remove any previously mirrored snapshot
       // so the detail page falls back to header-only instead of showing stale docs.

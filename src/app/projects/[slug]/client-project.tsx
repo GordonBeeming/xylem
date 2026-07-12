@@ -1,6 +1,7 @@
 "use client";
 
 import { useTina, tinaField } from "tinacms/dist/react";
+import { normalizeTinaImages } from "@/components/tina/normalize-images";
 import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
@@ -43,7 +44,11 @@ interface ClientProjectProps {
  * it stays outside this component entirely, rendered by page.tsx.
  */
 export function ClientProject({ query, variables, data, githubStars }: ClientProjectProps) {
-  const { data: live } = useTina({ query, variables, data });
+  // Re-normalize the live data: edit-mode `useTina` refetches from TinaCloud and
+  // bypasses `fetchTina`, which would otherwise reintroduce the dead
+  // assets.tina.io image URL in the admin preview.
+  const { data: liveRaw } = useTina({ query, variables, data });
+  const live = normalizeTinaImages(liveRaw);
   const project = live.project;
   const techStack = (project.techStack ?? []).filter((t): t is string => typeof t === "string");
 

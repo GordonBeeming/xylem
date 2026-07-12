@@ -1,4 +1,5 @@
 import client from "../../../tina/__generated__/client";
+import { normalizeTinaImages } from "./normalize-images";
 
 /**
  * The generated Tina GraphQL client, re-exported from a stable `@/` path so
@@ -39,7 +40,9 @@ export async function fetchTina<
     return {
       query: result.query,
       variables: result.variables as Record<string, unknown>,
-      data: result.data,
+      // TinaCloud rewrites image fields to dead assets.tina.io URLs; restore the
+      // same-origin repo paths that actually serve the files. See normalize-images.ts.
+      data: normalizeTinaImages(result.data),
     };
   } catch (error) {
     if (isServerUnreachable(error)) {

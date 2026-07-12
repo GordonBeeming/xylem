@@ -1,6 +1,7 @@
 "use client";
 
 import { useTina, tinaField } from "tinacms/dist/react";
+import { normalizeTinaImages } from "@/components/tina/normalize-images";
 import { AboutView, type AboutTinaFields } from "./AboutView";
 import type { AuthorData, SiteConfig } from "@/lib/tina-helpers";
 import type { AuthorQuery } from "../../../tina/__generated__/types";
@@ -23,7 +24,11 @@ interface ClientAuthorProps {
  * avatar, profile lines, company/MVP logos) is live.
  */
 export function ClientAuthor({ query, variables, data, fallbackAuthor, siteConfig }: ClientAuthorProps) {
-  const { data: live } = useTina({ query, variables, data });
+  // In edit mode `useTina` refetches live from TinaCloud, bypassing the
+  // normalization `fetchTina` applied to the initial data — so re-normalize here
+  // to keep the admin image preview pointing at the same-origin repo paths.
+  const { data: liveRaw } = useTina({ query, variables, data });
+  const live = normalizeTinaImages(liveRaw);
   const author = live.author;
 
   const mergedAuthor: AuthorData = {

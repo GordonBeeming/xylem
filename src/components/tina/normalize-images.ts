@@ -15,7 +15,8 @@ const CDN_PREFIX = CLIENT_ID ? `https://assets.tina.io/${CLIENT_ID}/` : "";
  *  paths) pass through unchanged. */
 export function normalizeTinaImageUrl(value: string): string {
   if (CDN_PREFIX && value.startsWith(CDN_PREFIX)) {
-    return "/" + value.slice(CDN_PREFIX.length);
+    const path = value.slice(CDN_PREFIX.length);
+    return path.startsWith("/") ? path : "/" + path;
   }
   return value;
 }
@@ -23,10 +24,17 @@ export function normalizeTinaImageUrl(value: string): string {
 function walk(value: unknown): unknown {
   if (typeof value === "string") return normalizeTinaImageUrl(value);
   if (Array.isArray(value)) return value.map(walk);
+  // Only recurse into plain objects — the TinaCloud response is parsed JSON, so this
+  // is always true in practice, but guarding the prototype stops a Date/RegExp/Map/Set
+  // (or other non-plain object) from being silently flattened into `{}` if one ever
+  // ends up in the tree.
   if (value !== null && typeof value === "object") {
-    const out: Record<string, unknown> = {};
-    for (const [key, val] of Object.entries(value)) out[key] = walk(val);
-    return out;
+    const proto = Object.getPrototypeOf(value);
+    if (proto === null || proto === Object.prototype) {
+      const out: Record<string, unknown> = {};
+      for (const [key, val] of Object.entries(value)) out[key] = walk(val);
+      return out;
+    }
   }
   return value;
 }

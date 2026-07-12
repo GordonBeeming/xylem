@@ -432,19 +432,6 @@ html.dark .codeblock-highlighted span {
   color: var(--shiki-dark);
 }
 
-/* README code blocks (project detail pages) have no CodeBlock wrapper, so the
-   fill/chrome the blog gets from that wrapper is applied to the <pre> itself.
-   !important overrides .codeblock-highlighted's transparent background. */
-.readme-code {
-  background: var(--code-bg) !important;
-  border: 1px solid var(--code-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-5);
-  overflow-x: auto;
-  font-size: var(--text-sm);
-  line-height: var(--lh-relaxed);
-}
-
 /* Code block line numbers and word wrap */
 .codeblock-line-numbers code {
   counter-reset: line;

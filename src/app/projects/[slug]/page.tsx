@@ -80,7 +80,7 @@ export default async function ProjectPage(props: PageProps) {
 
   const [enriched] = await enrichProjectsWithStars([project]);
   const readme = getProjectReadme(slug);
-  const readmeHtml = readme ? await renderMarkdown(readme.content) : null;
+  const readmeElement = readme ? await renderMarkdown(readme.content) : null;
 
   return (
     <div className="page">
@@ -158,7 +158,7 @@ export default async function ProjectPage(props: PageProps) {
         </div>
       </div>
 
-      {readme && readmeHtml && (
+      {readme && readmeElement && (
         <>
           <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
           <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
@@ -168,7 +168,7 @@ export default async function ProjectPage(props: PageProps) {
             </a>{" "}
             · updated {readme.fetchedAt}
           </p>
-          <div className="prose mt-[var(--space-5)]" dangerouslySetInnerHTML={{ __html: readmeHtml }} />
+          <div className="prose mt-[var(--space-5)]">{readmeElement}</div>
         </>
       )}
     </div>

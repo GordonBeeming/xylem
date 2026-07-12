@@ -6,13 +6,18 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema, type Options as SanitizeSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import rehypeShiki from "@shikijs/rehype";
-import rehypeStringify from "rehype-stringify";
+import rehypeReact from "rehype-react";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import type { ReactElement } from "react";
+import { proseComponents } from "@/components/prose/prose-components";
 
 // Sanitize runs before shiki in the pipeline below, so shiki's own output is
-// added after sanitization and never touched by this schema — widening it
-// for span/code/pre/div class/style buys shiki nothing and only widens the
-// injection surface for raw HTML mirrored in from READMEs. Only `loading` on
-// img (READMEs hand-author it for lazy-loading screenshots) is needed here.
+// added after sanitization and never touched by this schema. The fence
+// language reaches shiki + the CodeBlock header via the `language-*`
+// className remark/rehype put on <code> before sanitize runs — rehype-sanitize's
+// defaultSchema already special-cases `className` on `code` to allow that
+// pattern, so no widening is needed there. Only `loading` on img (READMEs
+// hand-author it for lazy-loading screenshots) is added here.
 const sanitizeSchema: SanitizeSchema = {
   ...defaultSchema,
   attributes: {
@@ -23,12 +28,6 @@ const sanitizeSchema: SanitizeSchema = {
 
 // rehype-raw parses the raw HTML READMEs mix into markdown (`<div align>`,
 // `<img>`, badges) back into the tree before sanitize runs.
-//
-// Shiki's dual-theme spans only carry `--shiki-light`/`--shiki-dark` CSS
-// custom properties (defaultColor: false) — nothing consumes them without a
-// class. The transformer below tags every <pre> with `codeblock-highlighted`
-// (blog's color rule) and `readme-code` (box chrome, since README <pre>s
-// have no CodeBlock.tsx wrapper to supply it) — both in tailwind.css.
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -40,29 +39,25 @@ const processor = unified()
     themes: { light: "github-light", dark: "github-dark" },
     defaultColor: false,
     addLanguageClass: true,
-    transformers: [
-      {
-        pre(node: { properties: Record<string, unknown> }) {
-          // codeblock-highlighted: reuses the blog's shiki color rule.
-          // readme-code: box chrome (bg/border/padding) in tailwind.css —
-          // README <pre>s have no CodeBlock.tsx wrapper div to supply it.
-          // hast represents the class attribute as `className` (an array),
-          // not `class` — writing the latter is silently ignored by rehype-stringify.
-          const existing = node.properties.className;
-          const classes = Array.isArray(existing)
-            ? existing
-            : typeof existing === "string"
-              ? existing.split(" ")
-              : [];
-          node.properties.className = [...classes, "codeblock-highlighted", "readme-code"];
-        },
+    parseMetaString: (metaString: string) => {
+      return { __raw: metaString };
+    },
+    transformers: [{
+      pre(node: { properties: Record<string, unknown> }) {
+        const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
+        if (meta) {
+          node.properties["data-meta"] = meta;
+        }
       },
-    ],
+    }],
   })
-  .use(rehypeStringify);
+  // proseComponents supplies the CodeBlock/MermaidDiagram <pre> handler, so
+  // the box chrome comes from those components rather than a CSS class on
+  // the raw <pre> (as the old rehype-stringify pipeline needed).
+  .use(rehypeReact, { Fragment, jsx, jsxs, components: proseComponents });
 
-/** Render committed README markdown to an HTML string for `dangerouslySetInnerHTML`. */
-export async function renderMarkdown(markdown: string): Promise<string> {
+/** Render committed README markdown through the blog's prose component pipeline. */
+export async function renderMarkdown(markdown: string): Promise<ReactElement> {
   const file = await processor.process(markdown);
-  return String(file);
+  return file.result;
 }

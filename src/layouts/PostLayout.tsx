@@ -23,6 +23,10 @@ interface PostLayoutProps {
   headings: HeadingEntry[];
   siteConfig: SiteConfig;
   children: React.ReactNode;
+  // Present only when rendered inside the TinaCMS admin (via ClientPost): the
+  // `data-tina-field` values that make each element click-to-edit. Undefined on
+  // the static site, where the attributes are simply omitted.
+  tinaFields?: { title?: string; date?: string; tags?: string };
 }
 
 const mono = { fontFamily: "var(--font-mono)" };
@@ -59,6 +63,7 @@ export function PostLayout({
   headings,
   siteConfig,
   children,
+  tinaFields,
 }: PostLayoutProps) {
   return (
     <>
@@ -78,6 +83,7 @@ export function PostLayout({
             id="post-title"
             className="mt-5"
             style={{ fontSize: "var(--text-3xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.05, color: "var(--text)" }}
+            data-tina-field={tinaFields?.title}
           >
             {meta.title}
           </h1>
@@ -91,6 +97,7 @@ export function PostLayout({
             <time
               dateTime={meta.date}
               style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}
+              data-tina-field={tinaFields?.date}
             >
               {formatDateShort(meta.date)}
             </time>
@@ -102,7 +109,7 @@ export function PostLayout({
           </div>
 
           {meta.tags.length > 0 && (
-            <div className="mt-[var(--space-5)] flex flex-wrap gap-1.5">
+            <div className="mt-[var(--space-5)] flex flex-wrap gap-1.5" data-tina-field={tinaFields?.tags}>
               {meta.tags.map((tag) => (
                 <Tag key={tag} as="a" href={`/tags/${slugifyTag(tag).replace(/--+/g, "-")}`} size="sm">
                   {tag}

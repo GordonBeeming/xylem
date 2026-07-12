@@ -76,6 +76,10 @@ const schema = defineSchema({
       label: "Authors",
       path: "content/authors",
       format: "mdx",
+      ui: {
+        // Single author doc surfaced on the about page.
+        router: () => "/about",
+      },
       fields: [
         { type: "string", name: "name", label: "Name", isTitle: true, required: true },
         { type: "image", name: "avatar", label: "Avatar" },
@@ -102,6 +106,10 @@ const schema = defineSchema({
       label: "Projects",
       path: "content/projects",
       format: "json",
+      ui: {
+        // slug = the JSON filename basename, e.g. content/projects/foo.json → /projects/foo
+        router: ({ document }) => `/projects/${document._sys.filename}`,
+      },
       fields: [
         { type: "string", name: "title", label: "Title", isTitle: true, required: true },
         { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
@@ -132,6 +140,10 @@ const schema = defineSchema({
       label: "Books",
       path: "content/books",
       format: "json",
+      ui: {
+        // slug = the JSON filename basename, e.g. content/books/foo.json → /books/foo
+        router: ({ document }) => `/books/${document._sys.filename}`,
+      },
       fields: [
         { type: "string", name: "title", label: "Title", isTitle: true, required: true },
         { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
@@ -180,6 +192,8 @@ const schema = defineSchema({
       format: "json",
       ui: {
         allowedActions: { create: false, delete: false },
+        // Single site-config doc; edited against the home page preview.
+        router: () => "/",
       },
       fields: [
         { type: "string", name: "title", label: "Site Title", isTitle: true, required: true },

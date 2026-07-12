@@ -6,6 +6,8 @@ import rehypeSlug from "rehype-slug";
 import rehypeKatex from "rehype-katex";
 import rehypeShiki from "@shikijs/rehype";
 import { PostLayout } from "@/layouts/PostLayout";
+import { ClientPost } from "./client-post";
+import { fetchTina, tinaClient } from "@/components/tina/fetch";
 import {
   getAllPosts,
   getPost,
@@ -88,22 +90,6 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-// Try to fetch from TinaCMS client for visual editing support
-async function fetchTinaData(slugParts: string[]) {
-  try {
-    const client = (await import("../../../../tina/__generated__/client")).default;
-    const relativePath = `${slugParts.join("/")}.mdx`;
-    const result = await client.queries.post({ relativePath });
-    return {
-      query: result.query,
-      variables: result.variables as Record<string, unknown>,
-      data: result.data as Record<string, unknown>,
-    };
-  } catch {
-    return null;
-  }
-}
-
 export default async function BlogPostPage(props: PageProps) {
   const { slug } = await props.params;
   const result = getPost(slug);
@@ -143,72 +129,77 @@ export default async function BlogPostPage(props: PageProps) {
     keywords: meta.tags.join(", "),
   };
 
-  // Fetch TinaCMS data for visual editing sidebar
-  const tinaData = await fetchTinaData(slug);
+  // Live editing data from the Tina client. Null on the static build and on a
+  // plain `pnpm dev` (no Tina server on :4001) — the page then renders straight
+  // from the filesystem with no client JS.
+  const tinaData = await fetchTina(() =>
+    tinaClient.queries.post({ relativePath: `${meta.slug}.mdx` }),
+  );
 
-  const pageContent = (
+  const mdxBody = (
+    <MDXRemote
+      source={content}
+      components={mdxComponents}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm, remarkMath],
+          rehypePlugins: [
+            rehypeSlug,
+            rehypeKatex,
+            [rehypeShiki, {
+              themes: {
+                light: "github-light",
+                dark: "github-dark",
+              },
+              defaultColor: false,
+              addLanguageClass: true,
+              parseMetaString: (metaString: string) => {
+                return { __raw: metaString };
+              },
+              transformers: [{
+                pre(node: { properties: Record<string, unknown> }) {
+                  const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
+                  if (meta) {
+                    node.properties["data-meta"] = meta;
+                  }
+                },
+              }],
+            }],
+          ],
+        },
+      }}
+    />
+  );
+
+  const layoutProps = {
+    prevPost: prev,
+    nextPost: next,
+    relatedPosts,
+    headings,
+    siteConfig,
+  };
+
+  return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <PostLayout
-        meta={meta}
-        prevPost={prev}
-        nextPost={next}
-        relatedPosts={relatedPosts}
-        headings={headings}
-        siteConfig={siteConfig}
-      >
-        <MDXRemote
-          source={content}
-          components={mdxComponents}
-          options={{
-            mdxOptions: {
-              remarkPlugins: [remarkGfm, remarkMath],
-              rehypePlugins: [
-                rehypeSlug,
-                rehypeKatex,
-                [rehypeShiki, {
-                  themes: {
-                    light: "github-light",
-                    dark: "github-dark",
-                  },
-                  defaultColor: false,
-                  addLanguageClass: true,
-                  parseMetaString: (metaString: string) => {
-                    return { __raw: metaString };
-                  },
-                  transformers: [{
-                    pre(node: { properties: Record<string, unknown> }) {
-                      const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
-                      if (meta) {
-                        node.properties["data-meta"] = meta;
-                      }
-                    },
-                  }],
-                }],
-              ],
-            },
-          }}
-        />
-      </PostLayout>
+      {tinaData ? (
+        <ClientPost
+          query={tinaData.query}
+          variables={tinaData.variables}
+          data={tinaData.data}
+          meta={meta}
+          layoutProps={layoutProps}
+        >
+          {mdxBody}
+        </ClientPost>
+      ) : (
+        <PostLayout meta={meta} {...layoutProps}>
+          {mdxBody}
+        </PostLayout>
+      )}
     </>
   );
-
-  // Wrap with TinaCMS client component for visual editing when available
-  if (tinaData) {
-    const { ClientPost } = await import("./client-post");
-    return (
-      <ClientPost
-        query={tinaData.query}
-        variables={tinaData.variables}
-        data={tinaData.data}
-      >
-        {pageContent}
-      </ClientPost>
-    );
-  }
-
-  return pageContent;
 }

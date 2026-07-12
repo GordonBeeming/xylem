@@ -28,13 +28,17 @@ const sanitizeSchema: SanitizeSchema = {
 
 // rehype-raw parses the raw HTML READMEs mix into markdown (`<div align>`,
 // `<img>`, badges) back into the tree before sanitize runs.
+//
+// rehypeSlug runs before rehypeSanitize (not after) so the heading ids it
+// generates pass through the sanitizer's clobberPrefix — otherwise a heading
+// whose slug collides with a DOM/window global would ship unprefixed.
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
-  .use(rehypeSanitize, sanitizeSchema)
   .use(rehypeSlug)
+  .use(rehypeSanitize, sanitizeSchema)
   .use(rehypeShiki, {
     themes: { light: "github-light", dark: "github-dark" },
     defaultColor: false,

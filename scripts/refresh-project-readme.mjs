@@ -7,9 +7,11 @@ const README_DIR = "content/project-readmes";
 const ASSETS_DIR = "public/assets/projects";
 const FRESH_MS = 7 * 24 * 60 * 60 * 1000;
 const IMAGE_EXT_RE = /\.(png|jpe?g|gif|svg|webp|bmp|ico)$/i;
-// Mirrors VALID_PROJECT_SLUG in src/lib/tina-helpers.ts — same reasoning as
-// parseGitHubRepo above for why it's duplicated rather than imported.
+// Mirrors VALID_PROJECT_SLUG + the length cap in isValidProjectSlug
+// (src/lib/tina-helpers.ts) — same reasoning as parseGitHubRepo above for
+// why it's duplicated rather than imported.
 const VALID_SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
+const MAX_SLUG_LENGTH = 100;
 
 // Mirrors parseGitHubRepo in src/lib/github-stars.ts — duplicated here because
 // this script runs as plain Node ESM and can't import a TS module directly.
@@ -109,9 +111,12 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     const { path: rawPath, suffix } = splitFragment(url);
     if (!rawPath) return url;
     const resolvedPath = resolveRepoPath(baseDir, rawPath);
+    // resolvedPath is also used as a local path (dedupeBasename/writeFileSync)
+    // and in notes — only the URL-bound copy needs escaping.
+    const encodedPath = resolvedPath.split("/").map(encodeURIComponent).join("/");
 
     if (isImageContext || IMAGE_EXT_RE.test(rawPath)) {
-      const rawDownloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${resolvedPath}`;
+      const rawDownloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodedPath}`;
       const buf = await downloadAsset(rawDownloadUrl, headers);
       if (!buf) {
         notes.push(`image not downloaded: ${resolvedPath}`);
@@ -123,7 +128,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
       return `/assets/projects/${slug}/${basename}`;
     }
 
-    return `https://github.com/${owner}/${repo}/blob/${branch}/${resolvedPath}${suffix}`;
+    return `https://github.com/${owner}/${repo}/blob/${branch}/${encodedPath}${suffix}`;
   }
 
   async function processSegment(segment) {
@@ -241,7 +246,7 @@ async function main() {
 
   let files;
   if (slugArg) {
-    if (!VALID_SLUG_RE.test(slugArg)) {
+    if (!VALID_SLUG_RE.test(slugArg) || slugArg.length > MAX_SLUG_LENGTH) {
       console.error(`Invalid project slug: ${slugArg}`);
       process.exit(1);
     }

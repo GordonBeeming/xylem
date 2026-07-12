@@ -65,7 +65,18 @@ export function FeatureFlagProvider({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Flags remain settable via URL params (e.g. ?ssw-theme=true) now that
+    // the dedicated /flags page is gone — this was previously handled there.
+    const urlParams = new URLSearchParams(window.location.search);
     const stored = readAllFlags();
+    for (const flag of FEATURE_FLAGS) {
+      const paramValue = urlParams.get(flag.key);
+      if (paramValue !== null) {
+        const value = paramValue === "true";
+        writeFlagToStorage(flag.key, value);
+        stored[flag.key] = value;
+      }
+    }
     setFlags(stored);
     syncCssClasses(stored);
     setMounted(true);

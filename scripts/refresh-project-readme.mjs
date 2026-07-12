@@ -108,6 +108,7 @@ function splitCodeFences(markdown) {
 async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, headers }) {
   const assetOutDir = path.join(ASSETS_DIR, slug);
   const usedBasenames = new Map();
+  const imageCache = new Map();
   const notes = [];
 
   async function resolveUrl(url, isImageContext) {
@@ -121,6 +122,7 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
     const encodedPath = resolvedPath.split("/").map(encodeURIComponent).join("/");
 
     if (isImageContext || IMAGE_EXT_RE.test(rawPath)) {
+      if (imageCache.has(resolvedPath)) return imageCache.get(resolvedPath);
       const rawDownloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodedPath}`;
       const buf = await downloadAsset(rawDownloadUrl, headers);
       if (!buf) {
@@ -130,7 +132,9 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
       const basename = dedupeBasename(usedBasenames, resolvedPath);
       mkdirSync(assetOutDir, { recursive: true });
       writeFileSync(path.join(assetOutDir, basename), buf);
-      return `/assets/projects/${slug}/${basename}`;
+      const resolvedUrl = `/assets/projects/${slug}/${basename}`;
+      imageCache.set(resolvedPath, resolvedUrl);
+      return resolvedUrl;
     }
 
     return `https://github.com/${owner}/${repo}/blob/${branch}/${encodedPath}${suffix}`;

@@ -23,7 +23,7 @@ function rehypeFixAnchorHashes() {
     visit(tree, "element", (node: { tagName?: string; properties?: Record<string, unknown> }) => {
       if (node.tagName !== "a" || !node.properties) return;
       const href = node.properties.href;
-      if (typeof href === "string" && href.startsWith("#") && !href.startsWith(`#${CLOBBER_PREFIX}`)) {
+      if (typeof href === "string" && href.startsWith("#") && href.length > 1 && !href.startsWith(`#${CLOBBER_PREFIX}`)) {
         node.properties.href = `#${CLOBBER_PREFIX}${href.slice(1)}`;
       }
     });
@@ -77,7 +77,7 @@ const processor = unified()
   })
   // proseComponents supplies the CodeBlock/MermaidDiagram <pre> handler, so
   // the box chrome comes from those components rather than a CSS class on
-  // the raw <pre> (as the old rehype-stringify pipeline needed).
+  // the raw <pre> (as a stringify-to-HTML pipeline would have needed).
   .use(rehypeReact, { Fragment, jsx, jsxs, components: proseComponents });
 
 /** Render committed README markdown through the blog's prose component pipeline. */

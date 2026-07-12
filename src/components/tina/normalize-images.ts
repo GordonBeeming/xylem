@@ -32,7 +32,12 @@ function walk(value: unknown): unknown {
     const proto = Object.getPrototypeOf(value);
     if (proto === null || proto === Object.prototype) {
       const out: Record<string, unknown> = {};
-      for (const [key, val] of Object.entries(value)) out[key] = walk(val);
+      for (const [key, val] of Object.entries(value)) {
+        // Tina's internal metadata (_sys, _values, __typename, __tina_metadata) has no
+        // image fields, and `_values` duplicates the entire raw document — skip walking
+        // it so normalization stays cheap.
+        out[key] = key.startsWith("_") ? val : walk(val);
+      }
       return out;
     }
   }

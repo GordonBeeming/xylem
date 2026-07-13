@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTheme } from "next-themes";
 import mermaid from "mermaid";
+import { stripMermaidColors } from "@/lib/mermaid-theme";
 
 interface MermaidDiagramProps {
   chart: string;
@@ -51,6 +52,13 @@ function initMermaidForTheme(isDark: boolean) {
           activationBkgColor: "#132e34",
           activationBorderColor: "#22d3ee",
           sequenceNumberColor: "#04252e",
+          // Subgraph (cluster) chrome — mermaid's base defaults render these
+          // near-black, so the solid + dashed grouping boxes vanished on the
+          // dark card. A light slate border reads as a grouping boundary,
+          // distinct from the cyan node borders.
+          clusterBkg: "#0f1c2e",
+          clusterBorder: "#8595ad",
+          titleColor: "#e8eef6",
         }
       : {
           primaryColor: "#e7f6f8",
@@ -78,6 +86,11 @@ function initMermaidForTheme(isDark: boolean) {
           activationBkgColor: "#e7f6f8",
           activationBorderColor: "#0e7490",
           sequenceNumberColor: "#ffffff",
+          // See dark-theme note above — a mid-slate boundary keeps the solid +
+          // dashed subgraph boxes visible on the light card.
+          clusterBkg: "#f1f5f9",
+          clusterBorder: "#64748b",
+          titleColor: "#0f172a",
         },
     flowchart: { useMaxWidth: true },
     sequence: { useMaxWidth: true },
@@ -100,7 +113,7 @@ export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
     initMermaidForTheme(isDark);
 
     try {
-      const result = await mermaid.render(id, chart.trim());
+      const result = await mermaid.render(id, stripMermaidColors(chart.trim()));
       if (signal.cancelled) return;
 
       bindFunctionsRef.current = result.bindFunctions ?? null;

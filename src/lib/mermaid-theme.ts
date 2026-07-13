@@ -46,14 +46,24 @@ export function stripMermaidColors(chart: string): string {
 
       const [, indent, keyword, target, propsPart] = match;
 
-      // ponytail: top-level comma split handles rgb()/hsl() and a trailing
-      // `;`. A bare comma inside a non-paren value (e.g. `stroke-dasharray: 5,
-      // 5` instead of the normal space-separated form) would still mis-split
-      // — worst case a harmless stray token, not corruption. Swap in a real
-      // tokenizer only if a README ever needs that.
-      const kept = splitTopLevelCommas(propsPart.trim().replace(/;+$/, ""))
+      const cleaned = propsPart.trim().replace(/;+$/, "");
+      // Mermaid allows multiple `;`-separated statements on one line
+      // (`style A fill:#fff; style B fill:#000`). A leftover `;` after
+      // stripping the trailing one means this line has more than one
+      // statement — parsing that needs a real tokenizer, so leave the whole
+      // line untouched rather than risk mangling the later statement.
+      if (cleaned.includes(";")) return line;
+
+      // ponytail: top-level comma split handles rgb()/hsl(), a trailing `;`,
+      // and empty segments; multi-statement lines are passed through above
+      // rather than parsed. A bare comma inside a non-paren value (e.g.
+      // `stroke-dasharray: 5, 5` instead of the normal space-separated form)
+      // would still mis-split — worst case a harmless stray token, not
+      // corruption. Swap in a real tokenizer only if a README ever needs that.
+      const kept = splitTopLevelCommas(cleaned)
         .map((p) => p.trim())
         .filter((prop) => {
+          if (!prop) return false; // empty segment from a trailing/double comma
           const colonIdx = prop.indexOf(":");
           if (colonIdx === -1) return true; // not a key:value pair, leave it
           const key = prop.slice(0, colonIdx).trim().toLowerCase();

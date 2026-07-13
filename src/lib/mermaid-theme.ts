@@ -69,7 +69,10 @@ export function stripMermaidColors(chart: string): string {
           const key = prop.slice(0, colonIdx).trim().toLowerCase();
           const value = prop.slice(colonIdx + 1).trim().toLowerCase();
           if (!COLOR_KEYS.has(key)) return true;
-          return PRESERVED_VALUES.has(value);
+          if (PRESERVED_VALUES.has(value)) return true;
+          // var()/url() are dynamic/theme-friendly, not hardcoded colors —
+          // stripping them would defeat the point of this helper.
+          return value.includes("var(") || value.startsWith("url(");
         });
 
       // All props were colors → the directive has nothing left to say, drop it.

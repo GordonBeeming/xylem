@@ -10,6 +10,25 @@ const PRESERVED_VALUES = new Set(["none", "transparent", "inherit"]);
 
 const DIRECTIVE = /^(\s*)(style|linkStyle|classDef)\s+(\S+)\s+(.*)$/;
 
+// Splits a props list on top-level commas only, so a comma inside a color
+// function (`rgb(0,0,0)`, `hsl(210, 50%, 40%)`) doesn't shatter the value.
+function splitTopLevelCommas(props: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < props.length; i++) {
+    const char = props[i];
+    if (char === "(") depth++;
+    else if (char === ")") depth = Math.max(0, depth - 1);
+    else if (char === "," && depth === 0) {
+      parts.push(props.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(props.slice(start));
+  return parts;
+}
+
 /**
  * Strip hardcoded colors from a mermaid chart's inline `style`/`linkStyle`/
  * `classDef` directives so the site's theme variables drive all coloring.
@@ -27,11 +46,12 @@ export function stripMermaidColors(chart: string): string {
 
       const [, indent, keyword, target, propsPart] = match;
 
-      // ponytail: props split on commas; a value containing its own comma
-      // (rare, e.g. `stroke-dasharray: 5, 5`) would mis-split — swap in a real
-      // tokenizer only if a README ever needs it.
-      const kept = propsPart
-        .split(",")
+      // ponytail: top-level comma split handles rgb()/hsl() and a trailing
+      // `;`. A bare comma inside a non-paren value (e.g. `stroke-dasharray: 5,
+      // 5` instead of the normal space-separated form) would still mis-split
+      // — worst case a harmless stray token, not corruption. Swap in a real
+      // tokenizer only if a README ever needs that.
+      const kept = splitTopLevelCommas(propsPart.trim().replace(/;+$/, ""))
         .map((p) => p.trim())
         .filter((prop) => {
           const colonIdx = prop.indexOf(":");

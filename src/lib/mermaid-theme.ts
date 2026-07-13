@@ -6,7 +6,7 @@ const COLOR_KEYS = new Set(["fill", "stroke", "color", "background", "background
 // Values that express structural intent rather than a concrete color. Preserving
 // `none` keeps an intentionally invisible node (e.g. `fill:none,stroke:none`)
 // invisible instead of letting the theme fill it in.
-const PRESERVED_VALUES = new Set(["none", "transparent", "inherit"]);
+const PRESERVED_VALUES = new Set(["none", "transparent", "inherit", "currentcolor", "initial", "unset"]);
 
 const DIRECTIVE = /^(\s*)(style|linkStyle|classDef)\s+(\S+)\s+(.*)$/;
 
@@ -39,7 +39,7 @@ function splitTopLevelCommas(props: string): string[] {
  */
 export function stripMermaidColors(chart: string): string {
   return chart
-    .split("\n")
+    .split(/\r?\n/)
     .map((line) => {
       const match = DIRECTIVE.exec(line);
       if (!match) return line;

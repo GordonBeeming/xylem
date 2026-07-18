@@ -1,0 +1,72 @@
+---
+title: "I bet you didn't know you could get a 10x or 40x Codex subscription"
+date: 2026-07-18
+tags: ['AI', 'Codex', 'OpenAI', 'Developer Tools', 'macOS', 'Agentic Engineering']
+summary: "OpenAI's Codex Pro options are officially 5x and 20x, but a banked full usage reset could temporarily turn them into an effective 10x or 40x allowance. This is what happened when I used one."
+---
+
+I bet you didn't know you could get a 10x or 40x Codex subscription from OpenAI.
+
+*And if you really go hard enough to burn through all four full weekly resets, the resets alone could add another 80x worth of usage.*
+
+Well, sort of.
+
+The title is deliberately a little cheeky because OpenAI doesn't actually sell plans with those names. The [official Codex pricing](https://learn.chatgpt.com/docs/pricing) describes the two Pro options as 5x and 20x the usage of Plus. During a short promotion in June 2026, eligible users could also bank full rate-limit resets.
+
+At the time I'm writing this, the calculation is based on the much larger weekly allowance. OpenAI's Tibo Sottiaux said the [five-hour rate limit remains switched off](https://x.com/thsottiaux/status/2077114635308986427), and the newer banked resets [replenish weekly usage](https://x.com/thsottiaux/status/2076735790567338203).
+
+Use one reset after working through a full allowance and the maths looks like this:
+
+- Pro 5x, plus another full 5x weekly allowance after the reset, gives you an effective 10x.
+- Pro 20x, plus another full 20x weekly allowance after the reset, gives you an effective 40x.
+- Four resets on Pro 20x could add another 80x after the original allowance. If you somehow used all of it, that would be 100x of Plus weekly usage before the credits expired.
+
+It isn't a permanent upgrade, and you can't go to the pricing page and buy a plan called "40x". It is a lot of Codex in one usage period though, which is how I ended up noticing the feature in the first place.
+
+## The task that found it
+
+I had Codex running on one of those jobs that starts as a normal task and then keeps going. By the time it finished, the goal had been running for 1 day, 5 hours and 51 minutes.
+
+At the top of my screen, [CodexBar](/projects/codex-bar) was sitting at 79% with a fire emoji beside it. The percentage is the highest active Codex usage limit, and the flame means I'm ahead of a steady pace through that limit's window. Basically, I was using the allowance faster than time was replenishing it.
+
+That little indicator is exactly why I built CodexBar. It keeps my current Codex usage and reset time visible in the macOS menu bar, so I can see how hard I'm pushing the allowance without opening a settings page or waiting until I hit a wall.
+
+## Then `/usage` showed me four resets
+
+When I opened Codex's `/usage` menu, it offered a **Redeem usage limit reset** option. I had four full resets available.
+
+Those four came from the [June reset-banking launch](https://learn.chatgpt.com/docs/changelog): one free reset at launch, then up to three more from the referral promotion. OpenAI's [reset explainer](https://learn.chatgpt.com/docs/pricing#invite-friends-and-coworkers) says the referral period ran from 11 to 24 June 2026. When an eligible friend sent their first Codex message, both people received a banked reset, and each reset remained usable for 30 days after it was granted.
+
+So I used one.
+
+Codex showed the four available credits and their expiry times, asked me to choose one, then reset the current usage limits. My balance went from four resets to three and CodexBar went from 79% to 0%.
+
+I've put the complete screenshot sequence into a [visual walkthrough of the Codex usage reset](/nuggets/codex-usage-reset). It includes the menu steps, confirmation, expiry information, and the privacy-redacted terminal screenshots.
+
+## Why did the screen fill with fireworks?
+
+That part wasn't OpenAI. It was CodexBar.
+
+I added optional celebrations because a reset is a useful event, and a full-screen reaction is much harder to miss than watching a percentage quietly change in the menu bar. In this case, CodexBar gave me fireworks when the weekly usage returned to zero.
+
+## Keeping the limits visible
+
+I also maintain [ClaudeBar](/projects/claude-bar), which does the same basic job for Claude Code. Both apps keep the current usage and next reset visible in the menu bar, so I know how hard I'm pushing the allowance and when it will come back. In this case, CodexBar was also what turned the reset into the fireworks at the end of the walkthrough.
+
+## The catch with the 10x and 40x maths
+
+The reset credits were promotional. They were not a new recurring timer or a permanent subscription benefit.
+
+[OpenAI's pricing page](https://learn.chatgpt.com/docs/pricing#what-are-the-usage-limits-for-my-plan) still describes five-hour windows, but the live product and Tibo's more recent announcement have temporarily moved Plus, Business, and Pro users to the weekly limit only. That makes maxing it out a much bigger job than running down the old five-hour allowance.
+
+The weekly limit still rolls over on its normal schedule whether you have a banked reset or not. The promotional reset sits on top, so using one just before the scheduled weekly rollover wastes most of it. You get the most value when you're close to the weekly limit, the normal reset is still several days away, and you actually have enough work lined up to use the fresh allowance. CodexBar shows both the percentage and reset time, so you can see that at a glance.
+
+There is another complication: OpenAI has been resetting everyone's limits without using their banked credits. Sometimes it is compensation for an incident, sometimes it celebrates a user milestone, and at least once the explanation was basically that the vibes were good. A [community tracker of Tibo's announcements](https://codex-resets.com/) had recorded 34 of these global resets over 26 weeks when I checked, including fresh resets for the 8 and 9 million user milestones.
+
+Those resets are good news, but they make your own credits harder to optimise. If you wait at 90% hoping to redeem tomorrow and OpenAI hard-resets everyone overnight, your banked credit is still there but the usage you were about to replace has already been cleared for free. There is no perfect way to predict that. Your best chance of getting the full value is to redeem close to the weekly limit, while the scheduled rollover is still well away, and before the credit's 30-day expiry catches you.
+
+The 10x and 40x framing also assumes you actually use the allowance on both sides of the reset. Redeeming at 20% doesn't magically give you another complete plan's worth of work already consumed. It clears the current weekly limit, so the practical value depends on when you use it.
+
+Still, I had worked through 79%, had a long-running task behind me, and wanted to keep going. A few clicks later I had three reset credits left, a clean 0% in the menu bar, and fireworks across the terminal.
+
+Not a 40x subscription you can buy, then. For one slightly ridiculous stretch of Codex usage, it felt very much like one.

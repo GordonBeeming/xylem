@@ -1,0 +1,14 @@
+{
+  "title": "MyTerm",
+  "description": "An opinionated native macOS terminal for people who keep several projects open all day. It keeps long-lived terminal sessions and WebKit browser tabs inside named workspaces, with fast pane splitting and very little surrounding UI.",
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "SwiftTerm",
+    "WebKit",
+    "macOS"
+  ],
+  "github": "https://github.com/GordonBeeming/myterm",
+  "date": "2026-07-21",
+  "featured": false
+}

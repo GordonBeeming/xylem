@@ -169,7 +169,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-full ${className}`}
+      className={`relative shrink-0 overflow-hidden rounded-full ${className}`}
       style={{
         width: size,
         height: size,

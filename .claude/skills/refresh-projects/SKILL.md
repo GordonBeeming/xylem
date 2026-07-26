@@ -4,8 +4,12 @@ description: |
   Refresh the committed README snapshots and downloaded images that back the
   /projects/<slug> detail pages. Use when Gordon runs /refresh-projects, says
   "refresh project readmes", "update the project READMEs", or "pull the
-  latest README for <project>". Also worth suggesting before a projects-page
-  release if any content/project-readmes/*.md file is more than a week old.
+  latest README for <project>" — and also right after a new project is added,
+  since a project with a `github` field needs this to produce its snapshot
+  before pnpm build's guard will pass. Triggers for that case include "added
+  a project", "new project", and "adding a project to the site". Also worth
+  suggesting before a projects-page release if any
+  content/project-readmes/*.md file is more than a week old.
 allowed-tools:
   - Bash
   - Read
@@ -24,6 +28,12 @@ detail pages on https://gordonbeeming.com. Each project's `github` URL (in
 committed as `content/project-readmes/<slug>.md`, with any relative images
 downloaded into `public/assets/projects/<slug>/`. The detail pages read these
 committed files directly; nothing is fetched live at request time.
+
+`node scripts/check-project-readmes.mjs` runs at the front of `pnpm build`
+and `pnpm build:tina`, so it also runs in CI, and fails the build when a
+project has a `github` field but no snapshot and no `.no-readme` sentinel.
+Running this skill after adding a project isn't optional anymore — skip it
+and the build goes red.
 
 This skill **only runs in Gordon's `xylem` blog repo** at
 `/Users/gordonbeeming/Developer/github/gordonbeeming/xylem`. Bail out if you
@@ -52,8 +62,9 @@ hit the limit.
   node scripts/refresh-project-readme.mjs claude-bar --force
   ```
 
-Each project prints one status line (`refreshed`, `skipped (fresh)`,
-`no readme`, `no github`, or `error: <reason>`), then a tally at the end.
+Each project prints one status line (`refreshed`, `refreshed (private)`,
+`skipped (fresh)`, `no readme`, `no github`, `private (placeholder)`, or
+`error: <reason>`), then a tally at the end.
 
 ## 2. If there's nothing to refresh
 
@@ -143,8 +154,22 @@ skill.
 - **A project with no `github` field is header-only by design** (currently
   `pullup` and `shunt`). `no github` in the script's output is expected for
   those — don't try to force a README onto them.
-- **A project whose repo has no README** reports `no readme` and is skipped;
-  its detail page simply renders without a README section.
+- **A project whose repo has no README** reports `no readme`. The script
+  still writes the `.no-readme` sentinel (see below), so the guard knows the
+  gap is genuine, and the detail page simply renders without a README
+  section.
+- **Private repos get a placeholder, not their real README.** The script
+  runs with whatever `GITHUB_TOKEN` is in the environment, and a token with
+  private access would otherwise mirror private content onto a public site.
+  Instead the snapshot's body reads `Private — README coming soon!`, with
+  `visibility: private` and `mirrorPrivate: false` in its frontmatter.
+  Flipping `mirrorPrivate` to `true` by hand is the one exception to "never
+  hand-edit a snapshot" above — the next run then mirrors the real README
+  and keeps the flag set across future rewrites.
+- **A `.no-readme` sentinel records that the script ran and found nothing to
+  mirror.** That's what tells the guard "nobody ran the script" apart from
+  "there's genuinely nothing to mirror" — it's generated output alongside
+  the snapshots, so the same "never hand-edit" rule applies.
 
 ## Self-improvement (mandatory, end of every run)
 

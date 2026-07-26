@@ -63,6 +63,9 @@ Create `content/blog/YYYY-MM-DD/slug.mdx` with frontmatter (title, date, tags, s
 ### Adding a Nugget
 Drop a standalone HTML explainer into `content/nuggets/<slug>.html`. Before committing, run `/update-nuggets` — the skill reads the HTML, writes the sidecar `content/nuggets/<slug>.yaml` (title, date, summary, tags), and injects the iframe-resize shim if missing. Nuggets render at `/nuggets/<slug>` wrapped in site chrome via an iframe; the raw file stays at `/nuggets/<slug>.html`. They show up in the command palette with a `Nugget` pill, in the sitemap, and are intentionally left out of RSS/Atom/JSON feeds.
 
+### Adding a Project
+Create `content/projects/<slug>.json`. If it has a `github` field, run `/refresh-projects` (or `node scripts/refresh-project-readme.mjs <slug>` directly) to fetch and commit the README snapshot to `content/project-readmes/<slug>.md` — `pnpm build` now fails without one. Private repos get a placeholder body instead of the real README; flip `mirrorPrivate: true` in the snapshot's frontmatter to mirror it for real.
+
 ### Code Block Titles
 Use the meta string on code fences: ` ```language title="descriptive title" `. The title shows in a grey header bar above the code.
 
@@ -86,5 +89,6 @@ Project cards fetch live star counts from GitHub API at build time via `src/lib/
 - Tags in URLs are always lowercase/slugified — never use raw tag text in hrefs
 - URL redirect rules are handled by the Cloudflare Worker in `../cloudflare-xylem-worker`
 - Code blocks must always have both a language and a `title="..."` meta string (e.g. ` ```json title="manifest.json" `). The title shows as a filename/description in the header bar. Never leave a code block without a title.
+- A project JSON with a `github` field needs a README snapshot or `pnpm build` fails — run `/refresh-projects` to generate one.
 
 @AGENTS.md

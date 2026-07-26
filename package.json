@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && next dev",
     "dev:tina": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && tinacms dev -c \"next dev\"",
-    "build": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && next build",
-    "build:tina": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && tinacms build && next build",
+    "build": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && next build",
+    "build:tina": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && tinacms build && next build",
     "start": "next start",
     "lint": "eslint",
     "analyze": "cross-env ANALYZE=true next build"

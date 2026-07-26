@@ -195,9 +195,15 @@ export default async function ProjectPage(props: PageProps) {
           <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
           <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
             README mirrored from{" "}
-            <a href={`https://github.com/${readme.sourceRepo}`} target="_blank" rel="noopener noreferrer">
-              {readme.sourceRepo}
-            </a>{" "}
+            {readme.visibility === "private" ? (
+              // A private repo's README page is a 404 for every visitor — no
+              // point linking somewhere nobody but Gordon can open.
+              readme.sourceRepo
+            ) : (
+              <a href={`https://github.com/${readme.sourceRepo}`} target="_blank" rel="noopener noreferrer">
+                {readme.sourceRepo}
+              </a>
+            )}{" "}
             · updated {readme.fetchedAt}
           </p>
           <div className="prose mt-[var(--space-5)]">{readmeElement}</div>

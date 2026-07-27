@@ -58,9 +58,12 @@ function isFresh(mdPath, expectedRepo, isPrivate, optedIn) {
   // missing key defaults to "public" rather than failing the comparison.
   const recordedVisibility = raw.match(/^visibility:\s*(\S+)/m)?.[1] ?? "public";
   if (recordedVisibility !== (isPrivate ? "private" : "public")) return false;
-  // Opted-in but the file on disk is still the placeholder text — the flip
-  // just happened and the real content hasn't been fetched yet.
-  if (isPrivate && optedIn && isPlaceholderSnapshot(raw)) return false;
+  // A private repo's on-disk body must match today's opt-in state: opted-in
+  // but still the placeholder text means the flip just happened and the real
+  // content hasn't been fetched yet; not opted-in but *not* the placeholder
+  // means mirrorPrivate was just revoked and the real content is still
+  // sitting there waiting to be replaced. Either disagreement is not fresh.
+  if (isPrivate && isPlaceholderSnapshot(raw) === optedIn) return false;
   return true;
 }
 

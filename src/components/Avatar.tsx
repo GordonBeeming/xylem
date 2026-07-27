@@ -107,7 +107,6 @@ const Avatar: React.FC<AvatarProps> = ({
             : "opacity-0"
         }`}
         autoPlay
-        loop
         muted
         playsInline
         preload="metadata"

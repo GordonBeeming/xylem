@@ -27,7 +27,21 @@ function parseGitHubRepo(url) {
   }
 }
 
-function isFresh(mdPath, expectedRepo) {
+// Body-only marker for a not-yet-mirrored private repo — shared with the
+// writer below so the two can never drift apart.
+const PRIVATE_PLACEHOLDER_BODY = "Private — README coming soon!";
+
+function isPlaceholderSnapshot(raw) {
+  const bodyMatch = raw.match(/^---\n[\s\S]*?\n---\n\n([\s\S]*)$/);
+  return bodyMatch ? bodyMatch[1].trim() === PRIVATE_PLACEHOLDER_BODY : false;
+}
+
+// isPrivate/optedIn reflect the repo's state as of *this* run (the caller
+// just re-fetched them), not whatever the snapshot happened to record last
+// time — a snapshot can sit inside the date window while the repo's
+// visibility changed, or while Gordon hand-flips mirrorPrivate to opt a
+// private repo in, and neither case should be treated as still fresh.
+function isFresh(mdPath, expectedRepo, isPrivate, optedIn) {
   if (!existsSync(mdPath)) return false;
   const raw = readFileSync(mdPath, "utf8");
   const match = raw.match(/^fetchedAt:\s*(\S+)/m);
@@ -39,15 +53,63 @@ function isFresh(mdPath, expectedRepo) {
   // the freshness window — otherwise the page keeps showing the old repo's
   // README under the new project until the 7 days elapse or --force is used.
   const sourceRepoMatch = raw.match(/^sourceRepo:\s*"?([^"\n]+?)"?\s*$/m);
-  return sourceRepoMatch?.[1] === expectedRepo;
+  if (sourceRepoMatch?.[1] !== expectedRepo) return false;
+  // Snapshots written before this field existed are all public mirrors, so a
+  // missing key defaults to "public" rather than failing the comparison.
+  const recordedVisibility = raw.match(/^visibility:\s*(\S+)/m)?.[1] ?? "public";
+  if (recordedVisibility !== (isPrivate ? "private" : "public")) return false;
+  // A private repo's on-disk body must match today's opt-in state: opted-in
+  // but still the placeholder text means the flip just happened and the real
+  // content hasn't been fetched yet; not opted-in but *not* the placeholder
+  // means mirrorPrivate was just revoked and the real content is still
+  // sitting there waiting to be replaced. Either disagreement is not fresh.
+  if (isPrivate && isPlaceholderSnapshot(raw) === optedIn) return false;
+  return true;
+}
+
+// Slices out just the leading YAML block. Matching against the whole file
+// would let a `mirrorPrivate: true` string that happens to appear in a
+// mirrored README's *body* (a code sample, a doc line describing this very
+// feature) be misread as the real opt-in flag — exactly the kind of false
+// positive that would mirror a private README onto the public site.
+function extractFrontmatter(raw) {
+  const match = raw.match(/^---\n([\s\S]*?)\n---(?:\n|$)/);
+  return match ? match[1] : "";
+}
+
+// The private-mirror opt-in has no home on GitHub's side — it only exists as
+// a flag in the snapshot the script itself wrote last time, so a rewrite must
+// read it back before it can decide whether this run is still opted in.
+function readMirrorPrivateFlag(mdPath) {
+  if (!existsSync(mdPath)) return false;
+  const raw = readFileSync(mdPath, "utf8");
+  return /^mirrorPrivate:\s*true\s*$/m.test(extractFrontmatter(raw));
+}
+
+function noReadmeSentinelPath(slug) {
+  return path.join(README_DIR, `${slug}.no-readme`);
+}
+
+// Any path that (re)writes a real snapshot, or that no longer has a github
+// field at all, makes the "checked and confirmed nothing to mirror" sentinel
+// stale — callers delete it whenever they touch the corresponding .md state.
+function deleteNoReadmeSentinel(slug) {
+  const sentinelPath = noReadmeSentinelPath(slug);
+  if (existsSync(sentinelPath)) unlinkSync(sentinelPath);
 }
 
 function yamlQuote(str) {
   return `"${str.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
 }
 
-function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch }) {
-  return `---\ntitle: ${yamlQuote(title)}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${yamlQuote(sourceRepo)}\nsourceBranch: ${yamlQuote(sourceBranch)}\n---\n\n`;
+function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch, visibility, mirrorPrivate }) {
+  let fm = `---\ntitle: ${yamlQuote(title)}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${yamlQuote(sourceRepo)}\nsourceBranch: ${yamlQuote(sourceBranch)}\n`;
+  // visibility is written for every snapshot this script produces (public or
+  // private); mirrorPrivate only when the repo is private. Both stay optional
+  // so snapshots written before this handling existed keep their original shape.
+  if (visibility !== undefined) fm += `visibility: ${visibility}\n`;
+  if (mirrorPrivate !== undefined) fm += `mirrorPrivate: ${mirrorPrivate}\n`;
+  return `${fm}---\n\n`;
 }
 
 function isAbsoluteOrSkippable(url) {
@@ -240,6 +302,7 @@ async function processProject(file, slug, force) {
       // snapshots by slug alone, so a stale one here would keep rendering
       // the old repo's docs on what's now meant to be a header-only page.
       if (existsSync(mdPath)) unlinkSync(mdPath);
+      deleteNoReadmeSentinel(slug);
       return "no github";
     }
 
@@ -247,14 +310,73 @@ async function processProject(file, slug, force) {
     if (!repo) return "error: malformed github URL";
     const [owner, repoName] = repo.split("/");
 
-    if (!force && isFresh(mdPath, repo)) return "skipped (fresh)";
-
     const token = process.env.GITHUB_TOKEN;
     const headers = {
       Accept: "application/vnd.github.v3+json",
       "User-Agent": "xylem-refresh-projects",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
+
+    // project.title is unvalidated JSON — a non-string or blank value would
+    // reach buildFrontmatter's title.replace() and throw, aborting this
+    // project's refresh with a confusing error.
+    const title = typeof project.title === "string" && project.title.trim() !== "" ? project.title : slug;
+
+    // The README endpoint alone can't tell "private repo, token happens to be
+    // set" apart from "public repo" — both return 200 with real content. The
+    // repo endpoint is the only place visibility is exposed, so it has to be
+    // checked before any README content is fetched or written anywhere — and
+    // before the freshness check below, since a snapshot can sit inside the
+    // date window while the repo's visibility (or a hand-flipped mirrorPrivate
+    // opt-in) has since changed underneath it.
+    const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repoName}`, {
+      headers,
+      signal: AbortSignal.timeout(10000),
+    });
+    if (repoRes.status === 404) {
+      // A private repo the token can't see 404s exactly like one that doesn't
+      // exist at all, so point at the likely fix when no token is set instead
+      // of reporting a bare "not found" that hides the real cause.
+      return token
+        ? "error: repo not found"
+        : "error: repo not found (or private — set GITHUB_TOKEN to a token with access)";
+    }
+    if (!repoRes.ok) return `error: GitHub API ${repoRes.status}`;
+    const repoData = await repoRes.json();
+    const isPrivate = repoData.private === true;
+    const optedIn = isPrivate && readMirrorPrivateFlag(mdPath);
+
+    if (!force && isFresh(mdPath, repo, isPrivate, optedIn)) return "skipped (fresh)";
+
+    if (isPrivate && !optedIn) {
+      // A blank sourceBranch would satisfy this guard script (the .md exists)
+      // while getProjectReadme() rejects the snapshot outright — the page
+      // silently falls back to header-only, which looks identical to the
+      // bug this whole change exists to fix. Bail loudly instead.
+      if (typeof repoData.default_branch !== "string" || repoData.default_branch.trim() === "") {
+        return "error: repo response missing default_branch";
+      }
+
+      // Not opted in — never fetch the README body at all, so a private repo
+      // can't leak onto the public site through this path. Wipe any assets
+      // left behind from when the repo was public (or from an opt-in that
+      // was later revoked) and drop a placeholder so the page has something
+      // other than a silent "no readme" to show.
+      const assetOutDir = path.join(ASSETS_DIR, slug);
+      if (existsSync(assetOutDir)) rmSync(assetOutDir, { recursive: true, force: true });
+      mkdirSync(README_DIR, { recursive: true });
+      const frontmatter = buildFrontmatter({
+        title,
+        fetchedAt: new Date().toISOString().slice(0, 10),
+        sourceRepo: repo,
+        sourceBranch: repoData.default_branch.trim(),
+        visibility: "private",
+        mirrorPrivate: false,
+      });
+      writeFileSync(mdPath, `${frontmatter}${PRIVATE_PLACEHOLDER_BODY}\n`);
+      deleteNoReadmeSentinel(slug);
+      return "private (placeholder)";
+    }
 
     const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, {
       headers,
@@ -264,6 +386,11 @@ async function processProject(file, slug, force) {
       // The repo dropped its README — remove any previously mirrored snapshot
       // so the detail page falls back to header-only instead of showing stale docs.
       if (existsSync(mdPath)) unlinkSync(mdPath);
+      mkdirSync(README_DIR, { recursive: true });
+      writeFileSync(
+        noReadmeSentinelPath(slug),
+        `sourceRepo: ${yamlQuote(repo)}\ncheckedAt: ${new Date().toISOString().slice(0, 10)}\n`
+      );
       return "no readme";
     }
     if (!res.ok) return `error: GitHub API ${res.status}`;
@@ -284,6 +411,10 @@ async function processProject(file, slug, force) {
     const htmlUrlParts = new URL(data.html_url).pathname.split("/").filter(Boolean);
     const pathSegmentCount = data.path.split("/").filter(Boolean).length;
     const branch = htmlUrlParts.slice(3, htmlUrlParts.length - pathSegmentCount).join("/");
+    // Same hole as default_branch above: a blank value here would write a
+    // snapshot that getProjectReadme() silently rejects, so the guard passes
+    // while the page quietly falls back to header-only.
+    if (branch.trim() === "") return "error: could not determine branch from GitHub response";
 
     // Wipe any previously mirrored assets before re-downloading — otherwise an
     // image removed or renamed in the upstream README leaves its old copy
@@ -301,20 +432,22 @@ async function processProject(file, slug, force) {
     });
 
     mkdirSync(README_DIR, { recursive: true });
-    // project.title is unvalidated JSON — a non-string or blank value would
-    // reach buildFrontmatter's title.replace() and throw, aborting this
-    // project's refresh with a confusing error.
-    const title = typeof project.title === "string" && project.title.trim() !== "" ? project.title : slug;
     const frontmatter = buildFrontmatter({
       title,
       fetchedAt: new Date().toISOString().slice(0, 10),
       sourceRepo: repo,
       sourceBranch: branch,
+      visibility: isPrivate ? "private" : "public",
+      // Reaching here with isPrivate true only happens via the opted-in
+      // branch above (the non-opted-in case already returned), so this is
+      // always true when present.
+      mirrorPrivate: isPrivate ? true : undefined,
     });
     writeFileSync(mdPath, frontmatter + body);
+    deleteNoReadmeSentinel(slug);
 
     for (const note of notes) console.warn(`  [${slug}] ${note}`);
-    return "refreshed";
+    return isPrivate ? "refreshed (private)" : "refreshed";
   } catch (err) {
     return `error: ${err instanceof Error ? err.message : String(err)}`;
   }
@@ -343,7 +476,15 @@ async function main() {
       .map((f) => path.join(PROJECTS_DIR, f));
   }
 
-  const tally = { refreshed: 0, "skipped (fresh)": 0, "no readme": 0, "no github": 0, error: 0 };
+  const tally = {
+    refreshed: 0,
+    "refreshed (private)": 0,
+    "private (placeholder)": 0,
+    "skipped (fresh)": 0,
+    "no readme": 0,
+    "no github": 0,
+    error: 0,
+  };
 
   for (const file of files) {
     const slug = path.basename(file, ".json");
@@ -363,14 +504,19 @@ async function main() {
   }
 
   console.log(
-    `\nTotal: ${tally.refreshed} refreshed, ${tally["skipped (fresh)"]} fresh, ${tally["no readme"]} no readme, ${tally["no github"]} no github, ${tally.error} errors`
+    `\nTotal: ${tally.refreshed} refreshed, ${tally["refreshed (private)"]} refreshed private, ${tally["private (placeholder)"]} private placeholder, ${tally["skipped (fresh)"]} fresh, ${tally["no readme"]} no readme, ${tally["no github"]} no github, ${tally.error} errors`
   );
 
   if (tally.error > 0) {
     process.exit(1);
   }
 
-  if (tally.refreshed === 0 && tally["skipped (fresh)"] > 0) {
+  // A private-placeholder or private-mirror write is a real on-disk change
+  // just as much as a public refresh — only skips-because-fresh means the
+  // run genuinely did nothing.
+  const wroteNothing =
+    tally.refreshed === 0 && tally["refreshed (private)"] === 0 && tally["private (placeholder)"] === 0;
+  if (wroteNothing && tally["skipped (fresh)"] > 0) {
     console.log("RESULT: nothing-to-refresh");
     process.exit(3);
   }

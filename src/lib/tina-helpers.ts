@@ -292,6 +292,9 @@ export interface ProjectReadme {
   fetchedAt: string;
   sourceRepo: string;
   sourceBranch: string;
+  // Absent on every snapshot written before private-repo handling existed —
+  // must stay optional so those keep rendering exactly as they do today.
+  visibility?: "public" | "private";
 }
 
 const PROJECT_README_DIR = path.join(process.cwd(), "content", "project-readmes");
@@ -336,6 +339,7 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
       fetchedAt: fetchedAtDate.toISOString().slice(0, 10),
       sourceRepo: data.sourceRepo.trim(),
       sourceBranch: data.sourceBranch.trim(),
+      visibility: data.visibility === "public" || data.visibility === "private" ? data.visibility : undefined,
     };
   } catch (error) {
     console.error(`Error reading project readme ${filePath}:`, error);

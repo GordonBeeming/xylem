@@ -79,8 +79,9 @@ function yamlQuote(str) {
 
 function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch, visibility, mirrorPrivate }) {
   let fm = `---\ntitle: ${yamlQuote(title)}\nfetchedAt: ${fetchedAt}\nsourceRepo: ${yamlQuote(sourceRepo)}\nsourceBranch: ${yamlQuote(sourceBranch)}\n`;
-  // Both are optional and only ever set together with a private repo in play —
-  // omitting them entirely keeps existing public snapshots' shape unchanged.
+  // visibility is written for every snapshot this script produces (public or
+  // private); mirrorPrivate only when the repo is private. Both stay optional
+  // so snapshots written before this handling existed keep their original shape.
   if (visibility !== undefined) fm += `visibility: ${visibility}\n`;
   if (mirrorPrivate !== undefined) fm += `mirrorPrivate: ${mirrorPrivate}\n`;
   return `${fm}---\n\n`;

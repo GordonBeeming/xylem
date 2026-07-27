@@ -27,7 +27,21 @@ function parseGitHubRepo(url) {
   }
 }
 
-function isFresh(mdPath, expectedRepo) {
+// Body-only marker for a not-yet-mirrored private repo — shared with the
+// writer below so the two can never drift apart.
+const PRIVATE_PLACEHOLDER_BODY = "Private — README coming soon!";
+
+function isPlaceholderSnapshot(raw) {
+  const bodyMatch = raw.match(/^---\n[\s\S]*?\n---\n\n([\s\S]*)$/);
+  return bodyMatch ? bodyMatch[1].trim() === PRIVATE_PLACEHOLDER_BODY : false;
+}
+
+// isPrivate/optedIn reflect the repo's state as of *this* run (the caller
+// just re-fetched them), not whatever the snapshot happened to record last
+// time — a snapshot can sit inside the date window while the repo's
+// visibility changed, or while Gordon hand-flips mirrorPrivate to opt a
+// private repo in, and neither case should be treated as still fresh.
+function isFresh(mdPath, expectedRepo, isPrivate, optedIn) {
   if (!existsSync(mdPath)) return false;
   const raw = readFileSync(mdPath, "utf8");
   const match = raw.match(/^fetchedAt:\s*(\S+)/m);
@@ -39,7 +53,15 @@ function isFresh(mdPath, expectedRepo) {
   // the freshness window — otherwise the page keeps showing the old repo's
   // README under the new project until the 7 days elapse or --force is used.
   const sourceRepoMatch = raw.match(/^sourceRepo:\s*"?([^"\n]+?)"?\s*$/m);
-  return sourceRepoMatch?.[1] === expectedRepo;
+  if (sourceRepoMatch?.[1] !== expectedRepo) return false;
+  // Snapshots written before this field existed are all public mirrors, so a
+  // missing key defaults to "public" rather than failing the comparison.
+  const recordedVisibility = raw.match(/^visibility:\s*(\S+)/m)?.[1] ?? "public";
+  if (recordedVisibility !== (isPrivate ? "private" : "public")) return false;
+  // Opted-in but the file on disk is still the placeholder text — the flip
+  // just happened and the real content hasn't been fetched yet.
+  if (isPrivate && optedIn && isPlaceholderSnapshot(raw)) return false;
+  return true;
 }
 
 // Slices out just the leading YAML block. Matching against the whole file
@@ -285,8 +307,6 @@ async function processProject(file, slug, force) {
     if (!repo) return "error: malformed github URL";
     const [owner, repoName] = repo.split("/");
 
-    if (!force && isFresh(mdPath, repo)) return "skipped (fresh)";
-
     const token = process.env.GITHUB_TOKEN;
     const headers = {
       Accept: "application/vnd.github.v3+json",
@@ -302,17 +322,30 @@ async function processProject(file, slug, force) {
     // The README endpoint alone can't tell "private repo, token happens to be
     // set" apart from "public repo" — both return 200 with real content. The
     // repo endpoint is the only place visibility is exposed, so it has to be
-    // checked before any README content is fetched or written anywhere.
+    // checked before any README content is fetched or written anywhere — and
+    // before the freshness check below, since a snapshot can sit inside the
+    // date window while the repo's visibility (or a hand-flipped mirrorPrivate
+    // opt-in) has since changed underneath it.
     const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repoName}`, {
       headers,
       signal: AbortSignal.timeout(10000),
     });
-    if (repoRes.status === 404) return "error: repo not found";
+    if (repoRes.status === 404) {
+      // A private repo the token can't see 404s exactly like one that doesn't
+      // exist at all, so point at the likely fix when no token is set instead
+      // of reporting a bare "not found" that hides the real cause.
+      return token
+        ? "error: repo not found"
+        : "error: repo not found (or private — set GITHUB_TOKEN to a token with access)";
+    }
     if (!repoRes.ok) return `error: GitHub API ${repoRes.status}`;
     const repoData = await repoRes.json();
     const isPrivate = repoData.private === true;
+    const optedIn = isPrivate && readMirrorPrivateFlag(mdPath);
 
-    if (isPrivate && !readMirrorPrivateFlag(mdPath)) {
+    if (!force && isFresh(mdPath, repo, isPrivate, optedIn)) return "skipped (fresh)";
+
+    if (isPrivate && !optedIn) {
       // A blank sourceBranch would satisfy this guard script (the .md exists)
       // while getProjectReadme() rejects the snapshot outright — the page
       // silently falls back to header-only, which looks identical to the
@@ -337,7 +370,7 @@ async function processProject(file, slug, force) {
         visibility: "private",
         mirrorPrivate: false,
       });
-      writeFileSync(mdPath, `${frontmatter}Private — README coming soon!\n`);
+      writeFileSync(mdPath, `${frontmatter}${PRIVATE_PLACEHOLDER_BODY}\n`);
       deleteNoReadmeSentinel(slug);
       return "private (placeholder)";
     }

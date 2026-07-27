@@ -9,7 +9,7 @@
     "build:tina": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && tinacms build && next build",
     "start": "next start",
     "lint": "eslint",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "node scripts/check-project-readmes.mjs && cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",

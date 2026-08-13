@@ -41,6 +41,14 @@ This starts the TinaCMS local GraphQL server alongside Next.js. Content edits in
 | `pnpm build:tina` | Production build with TinaCMS (requires cloud credentials) |
 | `pnpm lint` | Run ESLint |
 | `pnpm analyze` | Analyze bundle size |
+| `pnpm blog:state:init` | Create local owner-only automation state without overwriting it |
+| `pnpm blog:scout -- <command>` | Prepare, complete, or abort a weekly idea run |
+| `pnpm blog:queue -- <command>` | Inspect or edit the local publication queue |
+| `pnpm blog:publisher:status -- --date YYYY-MM-DD` | Check whether one queued post is due |
+| `pnpm blog:publisher:prepare -- --date YYYY-MM-DD --repo PATH` | Prepare the due draft and record its transaction |
+| `pnpm blog:publisher:finalize -- --date YYYY-MM-DD --merge-sha SHA --live-url URL` | Remove one verified publication from the queue |
+| `pnpm lint:blog-automation` | Lint the blog automation scripts |
+| `pnpm test:blog-automation` | Run the collector, privacy, queue, publisher, and state tests |
 
 ## Project Structure
 
@@ -48,6 +56,7 @@ This starts the TinaCMS local GraphQL server alongside Next.js. Content edits in
 xylem-x/
 ├── content/
 │   ├── blog/           # MDX blog posts (YYYY-MM-DD/slug.mdx)
+│   ├── blog-drafts/    # Tracked draft bundles outside the public loader
 │   ├── authors/        # Author profiles (MDX)
 │   ├── projects/       # Project data (JSON)
 │   ├── books/          # Book data (JSON)
@@ -71,6 +80,7 @@ xylem-x/
 ├── tina/
 │   └── config.ts       # TinaCMS schema (5 collections)
 ├── scripts/            # Build scripts (image copy, etc.)
+├── automation/blog/    # Desktop Scheduled task prompts
 └── config/
 ```
 
@@ -84,7 +94,6 @@ title: Post Title
 date: 2026-03-11
 tags: [tag1, tag2]
 summary: Brief description
-draft: false
 ---
 ```
 
@@ -95,6 +104,44 @@ Code blocks support titles via the meta string:
 Console.WriteLine("Hello");
 ```
 ````
+
+### Draft bundles and the publication queue
+
+Unpublished posts live in tracked bundles at `content/blog-drafts/<slug>/post.mdx`. Put draft images in the bundle's optional `images/` directory. A draft stays outside the public site until the publisher moves it into `content/blog/YYYY-MM-DD/<slug>.mdx`. The old Tina `draft` field is a deprecated schema placeholder and does not control publication.
+
+The queue and run records live outside Git at `/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation/`. The initializer creates that directory and its files with owner-only permissions. Queue order is publication order.
+
+Use these commands to manage the queue:
+
+```bash
+pnpm blog:state:init
+pnpm blog:queue -- list
+pnpm blog:queue -- add content/blog-drafts/example/post.mdx
+pnpm blog:queue -- move content/blog-drafts/example/post.mdx --to 1
+pnpm blog:queue -- remove content/blog-drafts/example/post.mdx
+pnpm blog:queue -- set-cadence 2
+```
+
+The cadence is measured in days. Changing it does not move `nextPublishOn` immediately. The new value takes effect when the next post publishes successfully and the routine calculates the following date. A daily run handles at most the first queued post.
+
+### Weekly ideas and daily publishing
+
+The idea scout reads all locally persisted root Codex and Claude Code conversations across the Mac, regardless of repository or working directory. Xylem hosts the routine but does not limit its scan. Cloud-only chats remain out of scope unless they become available through an export or API.
+
+The weekly idea run stays in one agent so raw context is not copied into several workers. After Gordon selects an idea, separate research and drafting work may use subagents. Customer-repository conversations are reduced to broad theme counts before the model sees them; examples for those themes must be invented.
+
+The Scheduled task handoffs are [scout.md](automation/blog/scout.md) and [publisher.md](automation/blog/publisher.md). This session prepared the prompts but could not create the schedules. In the ChatGPT or Codex desktop app:
+
+1. Open Scheduled and create a standalone local task.
+2. Select the local Xylem project.
+3. In the `blog-publisher` worktree, create an ignored `.env` symlink to the registration checkout's existing `.env`. Never copy or commit the environment file.
+4. Paste the matching task prompt from `automation/blog/`.
+5. Schedule the publisher daily at 09:30 in `Australia/Brisbane`.
+6. Schedule the scout daily at 10:30 in `Australia/Brisbane`.
+
+The scout's daily tick checks a persisted Thursday due date. If the Mac misses Thursday's run, the first later 10:30 tick catches up. Local Scheduled tasks need the Mac powered on, the desktop app running, and the project available on disk.
+
+The publisher uses `pnpm build:tina` because it matches deployment and regenerates the ignored Tina client in a fresh siding. Supervise the first scout and publisher runs. Check that restricted material is absent from the idea report. For the first publication, verify the signed commit, intended-file diff, current-head reviews and CI, Pages deployment, exact live article, index, feeds, and sitemap before trusting unattended runs.
 
 ## Environment Variables
 

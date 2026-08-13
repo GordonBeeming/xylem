@@ -19,6 +19,7 @@ This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeem
 
 ### Content System
 - Blog posts, authors are **MDX** in `content/`
+- Unpublished post bundles are tracked under `content/blog-drafts/<slug>/post.mdx`; the public loader ignores that directory
 - Projects, books, site config are **JSON** in `content/`
 - TinaCMS schema defined in `tina/config.ts` (5 collections: post, author, project, book, siteConfig)
 - Content is read at build time via `src/lib/tina-helpers.ts` (filesystem) with TinaCMS client as overlay for visual editing
@@ -59,6 +60,20 @@ This is **xylem-x**, Gordon Beeming's developer blog and portfolio at gordonbeem
 
 ### Adding a Blog Post
 Create `content/blog/YYYY-MM-DD/slug.mdx` with frontmatter (title, date, tags, summary). Images go in `content/blog/YYYY-MM-DD/images/` — they are copied to `public/images/` automatically when running `pnpm dev` or `pnpm build`.
+
+For a queued post, create `content/blog-drafts/<slug>/post.mdx` with optional sibling images under `images/`. Add it with `pnpm blog:queue -- add content/blog-drafts/<slug>/post.mdx`. Do not use Tina's deprecated `draft` field for publication control.
+
+### Blog automation
+
+Local automation state is outside Git at `/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation/`. Run `pnpm blog:state:init` before collector or publisher commands. Queue edits go through `pnpm blog:queue -- <command>` so schema validation, ordering, and file permissions stay intact.
+
+The scout covers all locally persisted root Codex and Claude Code conversations on the Mac, regardless of repository or working directory. Xylem hosts the scripts and Scheduled task, but it does not limit the history scan to this repository. Cloud-only chats are not scanned without an export or API.
+
+Idea generation is single-agent work. Subagents may help only after Gordon selects an idea for research or drafting. Raw restricted history never enters model-readable batches; customer work contributes broad taxonomy counts and invented examples only.
+
+The publisher works only in the existing worktree-only `blog-publisher` Shunt siding. It publishes at most one queue head and finalizes only after the exact pull request is merged, its Pages run succeeds, and the live article, index, feeds, and sitemap are verified. It never starts a Shunt guest or edits the GitButler host checkout.
+
+Desktop Scheduled task prompts and setup notes live under `automation/blog/`. Local tasks require the Mac and desktop app to remain running.
 
 ### Adding a Nugget
 Drop a standalone HTML explainer into `content/nuggets/<slug>.html`. Before committing, run `/update-nuggets` — the skill reads the HTML, writes the sidecar `content/nuggets/<slug>.yaml` (title, date, summary, tags), and injects the iframe-resize shim if missing. Nuggets render at `/nuggets/<slug>` wrapped in site chrome via an iframe; the raw file stays at `/nuggets/<slug>.html`. They show up in the command palette with a `Nugget` pill, in the sitemap, and are intentionally left out of RSS/Atom/JSON feeds.

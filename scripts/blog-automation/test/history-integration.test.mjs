@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
 import { appendFile, cp, mkdir, mkdtemp, readFile, readdir, stat, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -162,6 +163,28 @@ test('complete validates ideas, archives provenance, and advances state only aft
   assert.equal(JSON.parse(await readFile(result.reportPath, 'utf8')).ideas.length, 1)
   assert.equal(JSON.parse(await readFile(join(archive, 'provenance.json'), 'utf8')).events.length > 0, true)
   assert.equal(prepared.runDirectory.endsWith(result.runId), true)
+})
+
+test('history CLI accepts the pnpm argument separator', async () => {
+  const { root, home, stateDir } = await setup()
+  const prepared = await prepare({ now: new Date('2026-08-14T00:00:00.000Z'), stateDir, home })
+  const manifest = JSON.parse(await readFile(join(prepared.runDirectory, 'manifest.json'), 'utf8'))
+  const ideasPath = join(root, 'ideas.json')
+  await writeFile(ideasPath, JSON.stringify(validIdeas(manifest.cardCatalog[0].id)))
+  const cli = join(dirname(fileURLToPath(import.meta.url)), '..', 'history', 'cli.mjs')
+  const completed = spawnSync(process.execPath, [
+    cli,
+    'complete',
+    '--',
+    '--ideas',
+    ideasPath,
+    '--state-dir',
+    stateDir,
+    '--now',
+    '2026-08-14T01:00:00.000Z',
+  ], { encoding: 'utf8', env: process.env })
+  assert.equal(completed.status, 0, completed.stderr)
+  assert.equal(JSON.parse(completed.stdout).status, 'completed')
 })
 
 test('retry lookback deduplicates archived events and admits a late unseen event', async () => {

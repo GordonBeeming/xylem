@@ -20,6 +20,7 @@ function parseArguments(argv) {
   const options = {};
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
+    if (value === "--") continue;
     if (!value.startsWith("--")) {
       positional.push(value);
       continue;

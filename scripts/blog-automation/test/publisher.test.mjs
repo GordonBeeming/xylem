@@ -121,7 +121,7 @@ test("CLI initialization uses owner-only state and emits JSON", () => {
   assert.equal(JSON.parse(initialized.stdout).outcome, "initialized");
   assert.equal(statSync(stateDir).mode & 0o777, 0o700);
   assert.equal(statSync(path.join(stateDir, "queue.yaml")).mode & 0o777, 0o600);
-  const listed = spawnSync(process.execPath, [cli, "--state-dir", stateDir, "list"], {
+  const listed = spawnSync(process.execPath, [cli, "--", "--state-dir", stateDir, "list"], {
     encoding: "utf8",
     env: process.env,
   });

@@ -3,7 +3,7 @@
 import { abort, complete, DEFAULT_STATE_DIR, prepare } from './core.mjs'
 
 function parseArguments(argv) {
-  const [command, ...rest] = argv
+  const [command, ...rest] = argv.filter((argument) => argument !== '--')
   const options = { command }
   for (let index = 0; index < rest.length; index += 1) {
     const argument = rest[index]

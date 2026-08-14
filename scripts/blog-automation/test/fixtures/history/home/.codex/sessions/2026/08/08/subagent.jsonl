@@ -1,0 +1,2 @@
+{"timestamp":"2026-08-08T02:00:00.000Z","type":"session_meta","payload":{"id":"codex-subagent","timestamp":"2026-08-08T02:00:00.000Z","cwd":"/missing/restricted-work","source":{"subagent":{"thread_spawn":{"parent_thread_id":"codex-root"}}},"thread_source":"subagent","parent_thread_id":"codex-root"}}
+{"timestamp":"2026-08-08T02:01:00.000Z","type":"response_item","payload":{"id":"subagent-user","type":"message","role":"user","content":[{"type":"input_text","text":"SUBAGENT_CANARY"}]}}

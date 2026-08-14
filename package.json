@@ -9,7 +9,20 @@
     "build:tina": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && tinacms build && next build",
     "start": "next start",
     "lint": "eslint",
-    "analyze": "node scripts/check-project-readmes.mjs && cross-env ANALYZE=true next build"
+    "analyze": "node scripts/check-project-readmes.mjs && cross-env ANALYZE=true next build",
+    "blog:state:init": "node scripts/blog-automation/state/init.mjs",
+    "blog:scout:due": "node scripts/blog-automation/state/scout-due.mjs",
+    "blog:scout": "node scripts/blog-automation/history/cli.mjs",
+    "blog:scout:prepare": "node scripts/blog-automation/history/cli.mjs prepare",
+    "blog:scout:complete": "node scripts/blog-automation/history/cli.mjs complete",
+    "blog:scout:abort": "node scripts/blog-automation/history/cli.mjs abort",
+    "blog:queue": "node scripts/blog-automation/publisher/cli.mjs",
+    "blog:publisher:status": "node scripts/blog-automation/publisher/cli.mjs status",
+    "blog:publisher:prepare": "node scripts/blog-automation/publisher/cli.mjs prepare",
+    "blog:publisher:finalize": "node scripts/blog-automation/publisher/cli.mjs finalize",
+    "blog:publisher:reconcile": "node scripts/blog-automation/publisher/cli.mjs reconcile",
+    "lint:blog-automation": "eslint \"scripts/blog-automation/**/*.mjs\"",
+    "test:blog-automation": "node --test scripts/blog-automation/test/*.test.mjs"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",

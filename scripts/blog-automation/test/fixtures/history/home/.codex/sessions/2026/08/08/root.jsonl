@@ -1,0 +1,5 @@
+{"timestamp":"2026-08-06T12:00:00.000Z","type":"session_meta","payload":{"id":"codex-root","timestamp":"2026-08-06T12:00:00.000Z","cwd":"/missing/restricted-work","source":"cli","thread_source":"user","parent_thread_id":null}}
+{"timestamp":"2026-08-06T12:01:00.000Z","type":"response_item","payload":{"id":"codex-orientation","type":"message","role":"user","content":[{"type":"input_text","text":"RESTRICTED_CANARY_ORIENTATION testing an automation workflow"}]}}
+{"timestamp":"2026-08-08T01:00:00.000Z","type":"response_item","payload":{"id":"codex-user","type":"message","role":"user","content":[{"type":"input_text","text":"RESTRICTED_CANARY_CODEX debug a release pipeline api_key=sk-abcdefghijklmnopqrstuvwxyz0123456789"}]}}
+{"timestamp":"2026-08-08T01:01:00.000Z","type":"response_item","payload":{"id":"codex-final","type":"message","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"RESTRICTED_CANARY_REPLY testing and release advice"}]}}
+{"timestamp":"2026-08-08T01:01:10.000Z","type":"event_msg","payload":{"type":"token_count","info":{"sensitive":"RESTRICTED_TOOL_PAYLOAD"}}}

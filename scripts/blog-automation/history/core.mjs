@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { spawn } from 'node:child_process'
 import { createReadStream } from 'node:fs'
 import { access, chmod, lstat, mkdir, open, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises'
-import { homedir } from 'node:os'
+import { homedir, hostname } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 
 export const STATE_VERSION = 1
@@ -20,7 +20,7 @@ const UUIDISH = /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0
 const URL = /\b(?:https?|ssh|git):\/\/\S+/gi
 const PRIVATE_KEY = /-----BEGIN [^-\n]*(?:PRIVATE KEY|OPENSSH KEY)-----[\s\S]*?-----END [^-\n]*(?:PRIVATE KEY|OPENSSH KEY)-----/g
 const CONNECTION_STRING = /\b(?:Server|Host|Data Source|AccountKey|SharedAccessSignature|Password|Pwd|Secret)\s*=\s*[^;\s]+/gi
-const ASSIGNMENT_SECRET = /\b(?:api[_-]?key|token|secret|password|passwd|pwd|authorization)\b\s*[:=]\s*["']?[^\s,"']{8,}/gi
+const ASSIGNMENT_SECRET = /["']?\b(?:api[_-]?key|token|secret|password|passwd|pwd|authorization)\b["']?\s*[:=]\s*["']?[^\s,"']{8,}/gi
 const BEARER = /\bBearer\s+[A-Za-z0-9._~+/=-]{12,}/gi
 const COMMON_TOKEN = /\b(?:sk|ghp|github_pat|xox[baprs]|AKIA)[-_A-Za-z0-9]{12,}\b/g
 const HIGH_ENTROPY = /\b[A-Za-z0-9+/=_-]{32,}\b/g
@@ -376,7 +376,7 @@ async function collectClaude(home, scanSince, until, orientationSince) {
   const transcriptFiles = await findClaudeTranscriptFiles(join(home, '.claude', 'projects'), new Set(index.keys()))
   const bySession = new Map()
   for (const path of transcriptFiles) {
-    if (path.includes(`${join('', 'subagents', '')}`) || dirname(path).endsWith('/subagents')) continue
+    if (isClaudeSubagentPath(path)) continue
     const sessionId = basename(path, '.jsonl')
     if (!index.has(sessionId)) continue
     const list = bySession.get(sessionId) ?? []
@@ -400,6 +400,10 @@ async function collectClaude(home, scanSince, until, orientationSince) {
     conversations.push(await parseClaudeTranscript(ranked[0].path, sessionId, prompts, scanSince, until, orientationSince))
   }
   return conversations
+}
+
+export function isClaudeSubagentPath(path) {
+  return /(?:^|[\\/])subagents(?:[\\/]|$)/.test(path)
 }
 
 async function findClaudeTranscriptFiles(projectsRoot, sessionIds) {
@@ -482,20 +486,43 @@ async function ensurePrivateDirectory(path) {
 async function withScoutLock(stateDir, operation) {
   await ensurePrivateDirectory(stateDir)
   const lockPath = join(stateDir, 'scout.lock')
+  const token = randomUUID()
+  const record = { token, pid: process.pid, hostname: hostname(), startedAt: new Date().toISOString() }
   let handle
-  try {
-    handle = await open(lockPath, 'wx', 0o600)
-  } catch (error) {
-    if (error?.code === 'EEXIST') throw new Error('A scout preparation is already running')
-    throw error
+  for (let attempt = 0; attempt < 2 && !handle; attempt += 1) {
+    try {
+      handle = await open(lockPath, 'wx', 0o600)
+    } catch (error) {
+      if (error?.code !== 'EEXIST') throw error
+      if (!await staleScoutLock(lockPath)) throw new Error('A scout preparation is already running')
+      await rm(lockPath, { force: true })
+    }
   }
+  if (!handle) throw new Error('Could not acquire scout preparation lock')
   try {
-    await handle.writeFile(`${JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() })}\n`)
+    await handle.writeFile(`${JSON.stringify(record)}\n`)
     return await operation()
   } finally {
     await handle.close()
-    await rm(lockPath, { force: true })
+    const current = await readJson(lockPath)
+    if (current?.token === token) await rm(lockPath, { force: true })
   }
+}
+
+function isProcessAlive(pid) {
+  if (!Number.isSafeInteger(pid) || pid <= 0) return false
+  try {
+    process.kill(pid, 0)
+    return true
+  } catch (error) {
+    return error?.code === 'EPERM'
+  }
+}
+
+async function staleScoutLock(lockPath) {
+  const lock = await readJson(lockPath)
+  if (!lock || lock.hostname !== hostname() || !Number.isSafeInteger(lock.pid)) return true
+  return !isProcessAlive(lock.pid)
 }
 
 async function readJson(path, fallback = null) {

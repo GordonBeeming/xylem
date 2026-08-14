@@ -13,6 +13,7 @@ import {
   findPrivacyViolations,
   findRestrictedOverlap,
   inHalfOpenWindow,
+  isClaudeSubagentPath,
   isClaudeHumanPrompt,
   isCodexRoot,
   nextBrisbaneThursday,
@@ -42,6 +43,9 @@ test('root filters reject Codex descendants and Claude synthetic prompts', () =>
   assert.equal(isClaudeHumanPrompt({ type: 'user', isSidechain: true, message: { content: 'hello' } }), false)
   assert.equal(isClaudeHumanPrompt({ type: 'user', isMeta: true, message: { content: 'hello' } }), false)
   assert.equal(isClaudeHumanPrompt({ type: 'user', message: { content: [{ type: 'tool_result', content: 'secret' }] } }), false)
+  assert.equal(isClaudeSubagentPath('/tmp/projects/subagents/run.jsonl'), true)
+  assert.equal(isClaudeSubagentPath('C:\\tmp\\projects\\subagents\\run.jsonl'), true)
+  assert.equal(isClaudeSubagentPath('/tmp/projects/subagents-archive/run.jsonl'), false)
 })
 
 test('ownership classification fails closed for SSW, mixed, missing, and unresolved cwd ownership', () => {
@@ -65,6 +69,8 @@ test('redaction and bounds are deterministic', () => {
   const source = 'Authorization: Bearer abcdefghijklmnopqrstuvwxyz012345 and api_key=sk-abcdefghijklmnopqrstuvwxyz0123456789'
   assert.equal(redactSecrets(source).includes('abcdefghijklmnopqrstuvwxyz012345'), false)
   assert.equal(redactSecrets(source), redactSecrets(source))
+  assert.equal(redactSecrets('{"api_key":"short-secret-value"}').includes('short-secret-value'), false)
+  assert.equal(redactSecrets('{"password":"hunter12345"}').includes('hunter12345'), false)
   const bounded = boundText('x'.repeat(500), 100)
   assert.equal(bounded.length <= 100, true)
   assert.match(bounded, /\[TRUNCATED\]$/)

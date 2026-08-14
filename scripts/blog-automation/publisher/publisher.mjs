@@ -539,7 +539,11 @@ export function prepare(stateDir, { date, repo }) {
   const raw = readFileSync(sourceAbsolute, "utf8");
   validateFrontmatter(raw, date);
 
-  const existingAssetNames = new Set(listFilesRecursively(path.join(repo, "content", "blog")).map((file) => path.basename(file)));
+  const existingAssetNames = new Set(
+    listFilesRecursively(path.join(repo, "content", "blog"))
+      .filter((file) => path.basename(path.dirname(file)) === "images")
+      .map((file) => path.basename(file)),
+  );
   const assetMoves = assetFiles.map((sourceAsset) => {
     const name = path.basename(sourceAsset);
     assert(ASSET_NAME.test(name) && name !== "." && name !== "..", `Draft image has an unsafe filename: ${name}`, "invalid_bundle");

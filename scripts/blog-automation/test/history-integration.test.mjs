@@ -102,6 +102,13 @@ test('prepare serializes concurrent state transitions and rejects unsafe state p
   )
 })
 
+test('prepare recovers a stale scout lock left by a dead process', async () => {
+  const { home, stateDir } = await setup()
+  await writeFile(join(stateDir, 'scout.lock'), `${JSON.stringify({ token: 'stale', pid: 999999, hostname: 'localhost', startedAt: '2026-08-14T00:00:00.000Z' })}\n`, { mode: 0o600 })
+  const result = await prepare({ now: new Date('2026-08-14T00:00:00.000Z'), stateDir, home })
+  assert.equal(result.status, 'prepared')
+})
+
 test('unrestricted batches redact secrets and enforce per-message bounds', async () => {
   const { home, stateDir } = await setup()
   const ownershipResolver = async (cwd) => ({ cwd, exists: true, email: 'person@example.com' })

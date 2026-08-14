@@ -202,6 +202,16 @@ test("prepare fails on an image collision and leaves source and queue unchanged"
   assert.deepEqual(loadQueue(stateDir).posts, [draft]);
 });
 
+test("prepare ignores post filenames when checking image collisions", () => {
+  const { repo, stateDir } = scenario();
+  const draft = addFixture(repo);
+  const post = path.join(repo, "content", "blog", "2025-01-01", "diagram.png");
+  mkdirSync(path.dirname(post), { recursive: true });
+  writeFileSync(post, "existing post content");
+  addPost(stateDir, draft);
+  assert.equal(prepare(stateDir, { date: "2026-08-14", repo }).outcome, "prepared");
+});
+
 test("prepare rejects conflicting frontmatter dates and existing post destinations", () => {
   const dated = scenario();
   const datedDraft = addFixture(dated.repo);

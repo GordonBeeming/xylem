@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -23,11 +24,13 @@ export function scoutDue(state, now = new Date(), stateDir = DEFAULT_STATE_DIR) 
   validateScoutState(state);
 
   if (state.activeRun) {
+    const runDirectory = path.join(stateDir, STATE_PATHS.runs, state.activeRun);
+    const archiveDirectory = path.join(stateDir, STATE_PATHS.archive, state.activeRun);
     return {
       due: true,
       reason: "active-run",
       activeRun: state.activeRun,
-      runDirectory: path.join(stateDir, STATE_PATHS.runs, state.activeRun),
+      runDirectory: existsSync(runDirectory) || !existsSync(archiveDirectory) ? runDirectory : archiveDirectory,
     };
   }
 

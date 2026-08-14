@@ -433,7 +433,9 @@ export function createOwnershipResolver() {
     if (cache.has(cwd)) return cache.get(cwd)
     const promise = (async () => {
       if (!cwd || !await pathExists(cwd)) return { cwd, exists: false, email: null }
-      const email = await spawnText('git', ['-C', cwd, 'config', '--get', 'user.email']).catch(() => null)
+      // Only a repository-local identity establishes ownership. Falling back to
+      // the user's global Git config could expose an unknown workspace's history.
+      const email = await spawnText('git', ['-C', cwd, 'config', '--local', '--get', 'user.email']).catch(() => null)
       return { cwd, exists: true, email: email || null }
     })()
     cache.set(cwd, promise)

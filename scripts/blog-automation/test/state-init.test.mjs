@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, stat, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, stat, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -56,6 +56,16 @@ test("scout due gate resumes an active run instead of preparing another", () => 
     activeRun: "2026-08-13-example",
     runDirectory: "/tmp/xylem-state/runs/2026-08-13-example",
   });
+});
+
+test("scout due gate recovers an active run from the archive after completion moved it", async () => {
+  const stateDir = await temporaryStateDir();
+  const activeRun = "2026-08-13-example";
+  const archiveDirectory = path.join(stateDir, STATE_PATHS.archive, activeRun);
+  await mkdir(archiveDirectory, { recursive: true });
+  const state = { ...initialScoutState(FIXED_NOW), activeRun };
+
+  assert.equal(scoutDue(state, FIXED_NOW, stateDir).runDirectory, archiveDirectory);
 });
 
 test("queue parser validates queued draft paths", () => {

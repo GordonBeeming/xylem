@@ -16,14 +16,14 @@ import {
   unlinkSync,
   writeFileSync,
 } from "node:fs";
-import { hostname } from "node:os";
+import { homedir, hostname } from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
 export const DEFAULT_STATE_DIR =
-  "/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation";
+  path.join(homedir(), "Library", "Application Support", "Xylem Blog Automation");
 export const QUEUE_FILENAME = "queue.yaml";
 export const TRANSACTION_FILENAME = "publisher-transaction.json";
 export const LOCK_FILENAME = "publisher.lock";
@@ -461,15 +461,6 @@ function hashQueue(queue) {
   return createHash("sha256").update(JSON.stringify(queue)).digest("hex");
 }
 
-function hasSamePublishedPosition(actual, expected) {
-  return (
-    actual.version === expected.version &&
-    actual.timezone === expected.timezone &&
-    actual.nextPublishOn === expected.nextPublishOn &&
-    JSON.stringify(actual.posts) === JSON.stringify(expected.posts)
-  );
-}
-
 function stableMarker(source, destination) {
   const digest = createHash("sha256").update(`${source}\0${destination}`).digest("hex");
   return `xylem-blog-publication:${digest}`;
@@ -523,13 +514,7 @@ export function prepare(stateDir, { date, repo }) {
       assert(destinationExists && !sourceExists && assetsExist, "Prepared transaction files do not match its record", "incomplete_transaction");
       return { ok: true, outcome: "already-prepared", transaction: existingTransaction };
     }
-    if (existingTransaction.status === "finalized" && existingTransaction.queueApplied) {
-      const expected = expectedQueueAfterFinalize(
-        existingTransaction.queueAtFinalize,
-        existingTransaction.successfulPublicationDate,
-      );
-      assert(hasSamePublishedPosition(queue, expected), "Finalized transaction does not match the current queue", "queue_head_changed");
-    } else {
+    if (!(existingTransaction.status === "finalized" && existingTransaction.queueApplied)) {
       assert(matches, "An existing publisher transaction does not match the queue head", "transaction_mismatch");
       throw new PublisherError("An interrupted preparing transaction requires manual inspection", "incomplete_transaction");
     }
@@ -669,11 +654,6 @@ export function finalize(stateDir, { date, mergeSha, liveUrl }) {
     );
     let appliedQueue;
     if (transaction.queueApplied) {
-      const expected = expectedQueueAfterFinalize(
-        transaction.queueAtFinalize,
-        transaction.successfulPublicationDate,
-      );
-      assert(hasSamePublishedPosition(queue, expected), "Finalized transaction does not match the current queue", "queue_head_changed");
       appliedQueue = queue;
     } else {
       appliedQueue = applyFinalizedQueue(stateDir, transaction, queue);
@@ -722,10 +702,5 @@ export function reconcile(stateDir) {
     const appliedQueue = applyFinalizedQueue(stateDir, transaction, queue);
     return { ok: true, outcome: "reconciled", transaction, queue: appliedQueue };
   }
-  const expected = expectedQueueAfterFinalize(
-    transaction.queueAtFinalize,
-    transaction.successfulPublicationDate,
-  );
-  assert(hasSamePublishedPosition(queue, expected), "Finalized transaction does not match the current queue", "queue_head_changed");
   return { ok: true, outcome: "noop", reason: "already-finalized", transaction, queue };
 }

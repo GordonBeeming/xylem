@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { appendFile, cp, mkdtemp, readFile, readdir, stat, writeFile } from 'node:fs/promises'
+import { appendFile, cp, mkdir, mkdtemp, readFile, readdir, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,17 +15,14 @@ async function setup() {
   const stateDir = join(root, 'state')
   await cp(fixtureHome, home, { recursive: true })
   await appendFile(join(home, '.codex', 'archived_sessions', 'archived.jsonl'), '{"timestamp":"2026-08-09T02:02:01.000Z","type":"response_item"')
+  await mkdir(stateDir, { recursive: true })
   await writeFile(join(stateDir, 'scout-state.json'), `${JSON.stringify({
     version: 1,
     timezone: 'Australia/Brisbane',
     lastSuccessfulCutoff: null,
     nextNominalThursday: '2026-08-13',
     activeRun: null,
-  })}\n`, { recursive: true }).catch(async () => {
-    const { mkdir } = await import('node:fs/promises')
-    await mkdir(stateDir, { recursive: true })
-    await writeFile(join(stateDir, 'scout-state.json'), `${JSON.stringify({ version: 1, timezone: 'Australia/Brisbane', lastSuccessfulCutoff: null, nextNominalThursday: '2026-08-13', activeRun: null })}\n`)
-  })
+  })}\n`)
   return { root, home, stateDir }
 }
 

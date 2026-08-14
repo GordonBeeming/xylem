@@ -1,9 +1,10 @@
 import { chmod, lstat, mkdir, open, readFile } from "node:fs/promises";
+import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const DEFAULT_STATE_DIR =
-  "/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation";
+  path.join(homedir(), "Library", "Application Support", "Xylem Blog Automation");
 
 export const STATE_PATHS = Object.freeze({
   queue: "queue.yaml",

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { execFileSync } from 'node:child_process'
 import { mkdtemp, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -8,6 +9,7 @@ import { test } from 'node:test'
 import {
   boundText,
   classifyOwnership,
+  createOwnershipResolver,
   findPrivacyViolations,
   findRestrictedOverlap,
   inHalfOpenWindow,
@@ -48,6 +50,15 @@ test('ownership classification fails closed for SSW, mixed, missing, and unresol
   assert.deepEqual(classifyOwnership([{ cwd: '/a', exists: true, email: 'a@example.com' }, { cwd: '/b', exists: true, email: 'b@example.com' }]), { restricted: true, reason: 'mixed' })
   assert.deepEqual(classifyOwnership([{ cwd: '/gone', exists: false, email: null }]), { restricted: true, reason: 'unresolved' })
   assert.deepEqual(classifyOwnership([]), { restricted: true, reason: 'unresolved' })
+})
+
+test('ownership resolver accepts only a repository-local Git identity', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'xylem-ownership-'))
+  assert.deepEqual(await createOwnershipResolver()(root), { cwd: root, exists: true, email: null })
+
+  execFileSync('git', ['init', '--quiet', root])
+  execFileSync('git', ['-C', root, 'config', '--local', 'user.email', 'local@example.com'])
+  assert.deepEqual(await createOwnershipResolver()(root), { cwd: root, exists: true, email: 'local@example.com' })
 })
 
 test('redaction and bounds are deterministic', () => {

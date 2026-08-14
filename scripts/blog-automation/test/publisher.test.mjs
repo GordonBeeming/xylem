@@ -305,6 +305,7 @@ test("finalize pops one item and retry reconciliation stays idempotent", () => {
   const { repo, stateDir } = scenario();
   const first = addFixture(repo, "first-post");
   const second = addFixture(repo, "second-post", { withImage: false });
+  const third = addFixture(repo, "third-post", { withImage: false });
   addPost(stateDir, first);
   addPost(stateDir, second);
   setCadence(stateDir, 3);
@@ -332,10 +333,12 @@ test("finalize pops one item and retry reconciliation stays idempotent", () => {
 
   const changedCadence = setCadence(stateDir, 4);
   assert.equal(changedCadence.nextPublishOn, "2026-08-18");
+  addPost(stateDir, third);
+  movePost(stateDir, third, 1);
   assert.equal(reconcile(stateDir).reason, "already-finalized");
   const next = prepare(stateDir, { date: "2026-08-18", repo });
   assert.equal(next.outcome, "prepared");
-  assert.equal(next.transaction.source, second);
+  assert.equal(next.transaction.source, third);
 });
 
 test("the exclusive lock rejects a live owner and recovers a stale owner", () => {

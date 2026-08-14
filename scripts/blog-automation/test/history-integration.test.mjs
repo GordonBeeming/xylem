@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { appendFile, cp, mkdir, mkdtemp, readFile, readdir, stat, writeFile } from 'node:fs/promises'
+import { appendFile, cp, mkdir, mkdtemp, readFile, readdir, stat, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,7 +15,7 @@ async function setup() {
   const stateDir = join(root, 'state')
   await cp(fixtureHome, home, { recursive: true })
   await appendFile(join(home, '.codex', 'archived_sessions', 'archived.jsonl'), '{"timestamp":"2026-08-09T02:02:01.000Z","type":"response_item"')
-  await mkdir(stateDir, { recursive: true })
+  await mkdir(stateDir, { recursive: true, mode: 0o700 })
   await writeFile(join(stateDir, 'scout-state.json'), `${JSON.stringify({
     version: 1,
     timezone: 'Australia/Brisbane',
@@ -81,6 +81,25 @@ test('prepare inventories root local histories and keeps restricted canaries out
   assert.ok(state.activeRun)
   assert.equal(state.lastSuccessfulCutoff, null)
   await assert.rejects(() => prepare({ now: new Date('2026-08-14T01:00:00.000Z'), stateDir, home }), /already active/)
+})
+
+test('prepare serializes concurrent state transitions and rejects unsafe state paths', async () => {
+  const { root, home, stateDir } = await setup()
+  const attempts = await Promise.allSettled([
+    prepare({ now: new Date('2026-08-14T00:00:00.000Z'), stateDir, home }),
+    prepare({ now: new Date('2026-08-14T00:00:00.000Z'), stateDir, home }),
+  ])
+  assert.equal(attempts.filter((attempt) => attempt.status === 'fulfilled').length, 1)
+  assert.equal(attempts.filter((attempt) => attempt.status === 'rejected').length, 1)
+
+  const unsafeStateDir = join(root, 'unsafe-state')
+  await mkdir(unsafeStateDir, { mode: 0o700 })
+  const symlinkedStateDir = join(root, 'symlinked-state')
+  await symlink(unsafeStateDir, symlinkedStateDir)
+  await assert.rejects(
+    () => prepare({ now: new Date('2026-08-14T02:00:00.000Z'), stateDir: symlinkedStateDir, home }),
+    /Private state directory is unsafe/,
+  )
 })
 
 test('unrestricted batches redact secrets and enforce per-message bounds', async () => {

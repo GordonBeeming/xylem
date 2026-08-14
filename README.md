@@ -109,7 +109,7 @@ Console.WriteLine("Hello");
 
 Unpublished posts live in tracked bundles at `content/blog-drafts/<slug>/post.mdx`. Put draft images in the bundle's optional `images/` directory. A draft stays outside the public site until the publisher moves it into `content/blog/YYYY-MM-DD/<slug>.mdx`. The old Tina `draft` field is a deprecated schema placeholder and does not control publication.
 
-The queue and run records live outside Git at `/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation/`. The initializer creates that directory and its files with owner-only permissions. Queue order is publication order.
+The queue and run records live outside Git at `~/Library/Application Support/Xylem Blog Automation/`. The initializer creates that directory and its files with owner-only permissions. Queue order is publication order.
 
 Use these commands to manage the queue:
 

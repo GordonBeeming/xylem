@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { spawn } from 'node:child_process'
 import { createReadStream } from 'node:fs'
-import { access, chmod, mkdir, open, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises'
+import { access, chmod, lstat, mkdir, open, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 
@@ -470,14 +470,39 @@ async function atomicWriteJson(path, value, mode = 0o600) {
 
 async function ensurePrivateDirectory(path) {
   await mkdir(path, { recursive: true, mode: 0o700 })
+  const info = await lstat(path)
+  if (info.isSymbolicLink() || !info.isDirectory()) throw new Error(`Private state directory is unsafe: ${path}`)
+  if (typeof process.getuid === 'function' && info.uid !== process.getuid()) throw new Error(`Private state directory is not owned by the current user: ${path}`)
+  if ((info.mode & 0o077) !== 0) throw new Error(`Private state directory is accessible by group or other users: ${path}`)
   await chmod(path, 0o700)
+  const verified = await lstat(path)
+  if (verified.isSymbolicLink() || !verified.isDirectory() || (verified.mode & 0o077) !== 0) throw new Error(`Private state directory changed while being secured: ${path}`)
+}
+
+async function withScoutLock(stateDir, operation) {
+  await ensurePrivateDirectory(stateDir)
+  const lockPath = join(stateDir, 'scout.lock')
+  let handle
+  try {
+    handle = await open(lockPath, 'wx', 0o600)
+  } catch (error) {
+    if (error?.code === 'EEXIST') throw new Error('A scout preparation is already running')
+    throw error
+  }
+  try {
+    await handle.writeFile(`${JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() })}\n`)
+    return await operation()
+  } finally {
+    await handle.close()
+    await rm(lockPath, { force: true })
+  }
 }
 
 async function readJson(path, fallback = null) {
   try { return JSON.parse(await readFile(path, 'utf8')) } catch (error) { if (error.code === 'ENOENT') return fallback; throw error }
 }
 
-export async function prepare({ now = new Date(), stateDir = DEFAULT_STATE_DIR, home = homedir(), ownershipResolver = createOwnershipResolver() } = {}) {
+async function prepareUnlocked({ now = new Date(), stateDir = DEFAULT_STATE_DIR, home = homedir(), ownershipResolver = createOwnershipResolver() } = {}) {
   const until = parseInstant(now, 'now')
   const statePath = join(stateDir, 'scout-state.json')
   const state = await readJson(statePath, { version: STATE_VERSION, timezone: TIMEZONE, lastSuccessfulCutoff: null, nextNominalThursday: nextBrisbaneThursday(until), activeRun: null })
@@ -556,6 +581,11 @@ export async function prepare({ now = new Date(), stateDir = DEFAULT_STATE_DIR, 
     batchCount: batches.length,
     conversationCount: cards.length,
   }
+}
+
+export async function prepare(options = {}) {
+  const stateDir = options.stateDir ?? DEFAULT_STATE_DIR
+  return withScoutLock(stateDir, () => prepareUnlocked({ ...options, stateDir }))
 }
 
 export async function complete({ ideasPath, now = new Date(), stateDir = DEFAULT_STATE_DIR } = {}) {

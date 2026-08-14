@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { hostname, tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -97,6 +97,15 @@ test("status returns successful no-ops for empty and not-due queues", () => {
   assert.equal(due.outcome, "action");
   assert.equal(due.action, "publish");
   assert.equal(due.head, draft);
+});
+
+test("state initialization rejects a symlink before changing its target permissions", () => {
+  const root = mkdtempSync(path.join(TEST_ROOT, "symlink-state-"));
+  const target = path.join(root, "target");
+  const stateDir = path.join(root, "state");
+  mkdirSync(target, { mode: 0o700 });
+  symlinkSync(target, stateDir);
+  expectPublisherError(() => initializeQueue(stateDir, { nextPublishOn: "2026-08-14" }), "unsafe_state_permissions");
 });
 
 test("CLI initialization uses owner-only state and emits JSON", () => {

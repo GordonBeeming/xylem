@@ -142,6 +142,7 @@ function assertOwnerOnly(target, expectedType) {
 export function ensureStateDirectory(stateDir) {
   assert(path.isAbsolute(stateDir), "State directory must be absolute", "invalid_state_dir");
   if (!existsSync(stateDir)) mkdirSync(stateDir, { recursive: true, mode: 0o700 });
+  assertOwnerOnly(stateDir, "directory");
   chmodSync(stateDir, 0o700);
   assertOwnerOnly(stateDir, "directory");
 }
@@ -474,11 +475,6 @@ function expectedQueueAfterFinalize(queue, publicationDate) {
   });
 }
 
-function filesWithBasename(directory, basename) {
-  if (!existsSync(directory)) return [];
-  return listFilesRecursively(directory).filter((file) => path.basename(file) === basename);
-}
-
 function removeEmptyParents(directory, stopAt) {
   let current = directory;
   while (current.startsWith(stopAt) && current !== stopAt) {
@@ -543,14 +539,12 @@ export function prepare(stateDir, { date, repo }) {
   const raw = readFileSync(sourceAbsolute, "utf8");
   validateFrontmatter(raw, date);
 
+  const existingAssetNames = new Set(listFilesRecursively(path.join(repo, "content", "blog")).map((file) => path.basename(file)));
   const assetMoves = assetFiles.map((sourceAsset) => {
     const name = path.basename(sourceAsset);
     assert(ASSET_NAME.test(name) && name !== "." && name !== "..", `Draft image has an unsafe filename: ${name}`, "invalid_bundle");
     const destinationAsset = path.join(repo, "content", "blog", date, "images", name);
-    const collisions = filesWithBasename(path.join(repo, "content", "blog"), name).filter(
-      (candidate) => !candidate.startsWith(bundle + path.sep),
-    );
-    assert(!existsSync(destinationAsset) && collisions.length === 0, `Image destination collides for ${name}`, "asset_collision");
+    assert(!existsSync(destinationAsset) && !existingAssetNames.has(name), `Image destination collides for ${name}`, "asset_collision");
     return {
       source: path.relative(repo, sourceAsset).split(path.sep).join("/"),
       destination: path.relative(repo, destinationAsset).split(path.sep).join("/"),
@@ -662,12 +656,6 @@ export function finalize(stateDir, { date, mergeSha, liveUrl }) {
   }
 
   assert(queue.posts[0] === transaction.source, "Queue head changed after publication was prepared", "queue_head_changed");
-  assert(
-    queue.nextPublishOn === transaction.queueAtPrepare.nextPublishOn &&
-      JSON.stringify(queue.posts) === JSON.stringify(transaction.queueAtPrepare.posts),
-    "Queue order or due date changed after publication was prepared",
-    "queue_head_changed",
-  );
   transaction.queueAtFinalize = queue;
   transaction.queueHashAtFinalize = hashQueue(queue);
   transaction.status = "finalized";

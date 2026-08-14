@@ -65,7 +65,7 @@ For a queued post, create `content/blog-drafts/<slug>/post.mdx` with optional si
 
 ### Blog automation
 
-Local automation state is outside Git at `/Users/gordonbeeming/Library/Application Support/Xylem Blog Automation/`. Run `pnpm blog:state:init` before collector or publisher commands. Queue edits go through `pnpm blog:queue -- <command>` so schema validation, ordering, and file permissions stay intact.
+Local automation state is outside Git at `~/Library/Application Support/Xylem Blog Automation/`. Run `pnpm blog:state:init` before collector or publisher commands. Queue edits go through `pnpm blog:queue -- <command>` so schema validation, ordering, and file permissions stay intact.
 
 The scout covers all locally persisted root Codex and Claude Code conversations on the Mac, regardless of repository or working directory. Xylem hosts the scripts and Scheduled task, but it does not limit the history scan to this repository. Cloud-only chats are not scanned without an export or API.
 

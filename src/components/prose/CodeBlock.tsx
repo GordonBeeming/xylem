@@ -23,11 +23,12 @@ export function CodeBlock({ code, language, filename, children }: CodeBlockProps
   }, [code]);
 
   return (
-    <div
-      className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--code-border)] bg-[var(--code-bg)]"
-      style={{ fontFamily: "var(--font-mono)" }}
-    >
-      <div className="flex items-center justify-between border-b border-[var(--code-border)] bg-[var(--surface-2)] px-3.5 py-2">
+    <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--code-border)] bg-[var(--code-bg)]">
+      {/* The title bar is chrome, not code, so it takes the UI face while only the <pre> stays monospaced. */}
+      <div
+        className="flex items-center justify-between border-b border-[var(--code-border)] bg-[var(--surface-2)] px-3.5 py-2"
+        style={{ fontFamily: "var(--font-ui)" }}
+      >
         <span className="text-[length:var(--text-2xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)] uppercase">
           {filename || language || "text"}
         </span>
@@ -40,11 +41,11 @@ export function CodeBlock({ code, language, filename, children }: CodeBlockProps
         </button>
       </div>
       {children ? (
-        <pre className="codeblock-highlighted codeblock-line-numbers overflow-x-auto p-[var(--space-5)] text-[length:var(--text-sm)] leading-[var(--lh-relaxed)]" style={{ background: "transparent" }}>
+        <pre className="codeblock-highlighted codeblock-line-numbers overflow-x-auto p-[var(--space-5)] text-[length:var(--text-sm)] leading-[var(--lh-relaxed)]" style={{ background: "transparent", fontFamily: "var(--font-mono)" }}>
           {children}
         </pre>
       ) : (
-        <pre className="overflow-x-auto p-[var(--space-5)]">
+        <pre className="overflow-x-auto p-[var(--space-5)]" style={{ fontFamily: "var(--font-mono)" }}>
           <code className="text-[length:var(--text-sm)] leading-[var(--lh-relaxed)] text-[color:var(--code-text)]">
             {code}
           </code>

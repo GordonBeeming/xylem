@@ -7,6 +7,16 @@ import {
   type SearchableItem,
 } from "@/components/ui/CommandPalette";
 
+// The nav band is a solid dark strip in both themes, so this button cannot use
+// the light surface tokens. Inheriting the band's own text colour and deriving
+// the border from it keeps the chip readable wherever the button is placed.
+const searchButtonStyle: React.CSSProperties = {
+  fontFamily: "var(--font-ui)",
+  color: "inherit",
+  background: "transparent",
+  border: "1px solid color-mix(in srgb, currentColor 35%, transparent)",
+};
+
 export function SearchButton() {
   const { isOpen, open, close } = useCommandPalette();
   const [items, setItems] = useState<SearchableItem[]>([]);
@@ -36,8 +46,8 @@ export function SearchButton() {
       <button
         onClick={open}
         aria-label="Search (⌘K)"
-        className="nav-search flex items-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-[11px] py-[7px] text-[length:var(--text-sm)] text-[color:var(--text-muted)] transition-[var(--transition-colors)]"
-        style={{ fontFamily: "var(--font-mono)" }}
+        className="nav-search flex min-h-11 items-center gap-[var(--space-3)] rounded-[var(--radius-md)] px-[11px] text-[length:var(--text-sm)] opacity-80 transition-[var(--transition-colors)] hover:opacity-100"
+        style={searchButtonStyle}
       >
         <svg
           viewBox="0 0 24 24"
@@ -54,7 +64,10 @@ export function SearchButton() {
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <span className="nav-search-kbd">
-          <kbd className="rounded-[var(--radius-xs)] border border-[var(--border-strong)] px-[6px] py-[1px] text-[length:var(--text-2xs)]">
+          <kbd
+            className="rounded-[var(--radius-xs)] px-[6px] py-[1px] text-[length:var(--text-2xs)]"
+            style={{ border: "1px solid color-mix(in srgb, currentColor 35%, transparent)" }}
+          >
             ⌘K
           </kbd>
         </span>

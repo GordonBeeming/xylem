@@ -11,6 +11,7 @@ interface LayoutProps {
   prevPost: PostMeta | null;
   nextPost: PostMeta | null;
   relatedPosts: PostMeta[];
+  recentPosts: PostMeta[];
   headings: HeadingEntry[];
   siteConfig: SiteConfig;
 }

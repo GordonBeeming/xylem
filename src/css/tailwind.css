@@ -77,7 +77,9 @@
      src/app/books/[slug]/client-book.tsx but never defined there, so those
      pills silently fell back to square corners. Defined here, not in those
      files — they belong to a different workspace this wave. */
-  --radius-pill: 9999px;
+  /* This design has no rounded pills; the token stays so the three pages
+     that reference it resolve, but it follows the square radius scale. */
+  --radius-pill: 0;
 
   /* Transitions */
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
@@ -391,8 +393,8 @@ body {
   left: 0;
   z-index: 100;
   padding: 0.75rem 1.5rem;
-  background: var(--color-brand-primary);
-  color: white;
+  background: var(--accent);
+  color: var(--text-on-accent);
   font-weight: 600;
   transition: top 0.2s;
 }

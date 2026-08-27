@@ -181,7 +181,7 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
                   </Link>
                 ))}
                 <Link href="/blog" className={styles.archiveAll}>
-                  All {totalPostCount} posts &raquo;
+                  {`All ${totalPostCount} posts \u00BB`}
                 </Link>
               </div>
             </div>

@@ -41,7 +41,7 @@ a:visited { color: var(--link-hover); }
 .site-nav-links-bar { border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
 .site-nav-links-inner { max-width: 1180px; margin: 0 auto; padding: 9px 28px; }
 .site-nav-links {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;
+  display: flex; flex-wrap: wrap; gap: 20px;
   font-family: var(--font-ui); font-size: var(--text-xs);
 }
 /* 44px minimum touch target: height comes from the link itself rather than
@@ -78,6 +78,9 @@ a:visited { color: var(--link-hover); }
   .site-nav-inner { padding: 13px 22px; gap: 14px; }
   /* keep the two nav rows flush with each other, not just with themselves */
   .site-nav-links-inner { padding: 9px 22px; }
+  /* only once the row is narrow enough to fill: at 1180px this would strand
+     each link in its own quarter of the bar */
+  .site-nav-links { justify-content: space-between; gap: 8px; }
   .nav-search-kbd { display: none; }
 }
 
@@ -135,6 +138,7 @@ a:visited { color: var(--link-hover); }
 }
 .prose :not(pre) > code {
   font-family: var(--font-mono); font-size: 0.88em;
+  overflow-wrap: anywhere; word-break: break-word;
   background: var(--code-bg); color: var(--code-text);
   border: 1px solid var(--code-border); border-radius: var(--radius-xs);
   padding: 0.12em 0.4em;

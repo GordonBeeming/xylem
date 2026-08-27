@@ -31,8 +31,8 @@ const sizeClasses: Record<TagSize, string> = {
 
 /** Xylem Tag — the mono pill used across posts & nuggets taxonomy. */
 export function Tag({ tone = "neutral", size = "md", children, className = "", ...rest }: TagProps) {
-  const classes = `inline-flex items-center whitespace-nowrap rounded-[999px] font-[var(--fw-medium)] leading-[1.4] tracking-[var(--ls-wide)] no-underline transition-[var(--transition-colors)] ${toneClasses[tone]} ${sizeClasses[size]} ${className}`.trim();
-  const style = { fontFamily: "var(--font-mono)" };
+  const classes = `inline-flex items-center whitespace-nowrap rounded-[var(--radius-sm)] font-[var(--fw-medium)] leading-[1.4] tracking-[var(--ls-wide)] no-underline transition-[var(--transition-colors)] ${toneClasses[tone]} ${sizeClasses[size]} ${className}`.trim();
+  const style = { fontFamily: "var(--font-ui)" };
 
   if (rest.as === "a") {
     const { as: _as, href, ...linkRest } = rest;

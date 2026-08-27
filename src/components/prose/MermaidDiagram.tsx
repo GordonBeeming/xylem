@@ -24,7 +24,7 @@ function initMermaidForTheme(isDark: boolean) {
   mermaid.initialize({
     startOnLoad: false,
     theme: "base",
-    fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
+    fontFamily: "var(--font-mono)",
     themeVariables: isDark
       ? {
           primaryColor: "#132e34",

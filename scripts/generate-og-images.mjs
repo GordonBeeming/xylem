@@ -9,12 +9,15 @@ const BLOG_DIR = './content/blog';
 const OUTPUT_DIR = './public/og';
 const AVATAR_PATH = './public/static/images/avatar.jpg';
 
-const SLATE_950 = '#0b1120';
-const ACCENT = '#0e7490';
-const ACCENT_LIGHT = '#67e8f9';
-const SLATE_400 = '#94a3b8';
-const BORDER_STRONG = '#263250';
-const TEXT = '#e8eef6';
+// This card is always rendered on a dark ground regardless of the visitor's
+// theme, so these mirror the site's dark-mode semantic tokens directly
+// (src/css/tailwind.css) rather than the light-mode warm-neutral ramp.
+const SLATE_950 = '#14161a';
+const ACCENT = '#7fb4e6';
+const ACCENT_LIGHT = '#b0d1eb';
+const SLATE_400 = '#9a948b';
+const BORDER_STRONG = '#2a2f37';
+const TEXT = '#ddd9d2';
 
 function walkDir(dir) {
   const results = [];
@@ -70,9 +73,14 @@ async function fetchFont(family, weight) {
   return Buffer.from(await resp.arrayBuffer());
 }
 
-const [spaceGroteskBold, spaceGroteskMedium, plexMono] = await Promise.all([
-  fetchFont('Space+Grotesk', 700),
-  fetchFont('Space+Grotesk', 500),
+// Georgia (the site's --font-heading/--font-body) isn't on Google Fonts, so
+// Gelasio — metric-compatible with Georgia — stands in for Satori, which
+// can only render fonts it's handed as file data. IBM Plex Mono still
+// covers the card's mono labels; the site's own --font-mono (Courier New)
+// is a local system face Satori has no way to load.
+const [gelasioBold, gelasioRegular, plexMono] = await Promise.all([
+  fetchFont('Gelasio', 700),
+  fetchFont('Gelasio', 400),
   fetchFont('IBM+Plex+Mono', 400),
 ]);
 
@@ -103,9 +111,9 @@ for (const post of posts) {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '64px 72px',
-          background: `radial-gradient(120% 140% at 100% 0%, rgba(14,116,144,0.16), rgba(11,17,32,0) 55%), ${SLATE_950}`,
+          background: `radial-gradient(120% 140% at 100% 0%, rgba(127,180,230,0.16), rgba(20,22,26,0) 55%), ${SLATE_950}`,
           color: TEXT,
-          fontFamily: 'Space Grotesk',
+          fontFamily: 'Gelasio',
         },
         children: [
           // vessel channel motif — vertical accent line + two nodes on the right
@@ -118,7 +126,7 @@ for (const post of posts) {
                 right: '150px',
                 bottom: '-80px',
                 width: '2px',
-                background: `linear-gradient(180deg, rgba(11,17,32,0), rgba(14,116,144,0.5), rgba(11,17,32,0))`,
+                background: `linear-gradient(180deg, rgba(20,22,26,0), rgba(127,180,230,0.5), rgba(20,22,26,0))`,
               },
             },
           },
@@ -227,7 +235,7 @@ for (const post of posts) {
                   props: {
                     style: { display: 'flex', flexDirection: 'column', gap: '4px' },
                     children: [
-                      { type: 'div', props: { style: { fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em' }, children: 'Gordon Beeming' } },
+                      { type: 'div', props: { style: { fontSize: 22, fontWeight: 400, letterSpacing: '-0.01em' }, children: 'Gordon Beeming' } },
                       {
                         type: 'div',
                         props: {
@@ -251,7 +259,7 @@ for (const post of posts) {
                               fontSize: 14,
                               padding: '6px 14px',
                               borderRadius: '999px',
-                              background: 'rgba(14,116,144,0.14)',
+                              background: 'rgba(127,180,230,0.14)',
                               color: ACCENT_LIGHT,
                             },
                             children: tag.trim(),
@@ -270,8 +278,8 @@ for (const post of posts) {
       width: 1200,
       height: 630,
       fonts: [
-        { name: 'Space Grotesk', data: spaceGroteskBold, weight: 700, style: 'normal' },
-        { name: 'Space Grotesk', data: spaceGroteskMedium, weight: 500, style: 'normal' },
+        { name: 'Gelasio', data: gelasioBold, weight: 700, style: 'normal' },
+        { name: 'Gelasio', data: gelasioRegular, weight: 400, style: 'normal' },
         { name: 'IBM Plex Mono', data: plexMono, weight: 400, style: 'normal' },
       ],
     }

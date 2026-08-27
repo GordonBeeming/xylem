@@ -10,64 +10,74 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   Signal — cool slate neutrals + teal-cyan accent. Equal light/dark.
-   Existing --color-* tokens are re-pointed to the Signal palette so
-   the whole site reskins from these values with no per-file edits.
+   Sidebar — warm parchment neutrals + an editorial blue accent,
+   in the spirit of a 2006-2009 personal blog. Existing --color-*
+   tokens are re-pointed to this palette so the whole site reskins
+   from these values with no per-file edits.
    ============================================================ */
 @theme {
   /* Surfaces - Light (default) */
-  --color-surface-primary: #F8FAFC;
+  --color-surface-primary: #E9E7E1;
   --color-surface-secondary: #FFFFFF;
-  --color-surface-tertiary: #F1F5F9;
-  --color-surface-inverse: #0F172A;
+  --color-surface-tertiary: #F6F4EF;
+  --color-surface-inverse: #14161A;
 
   /* Text */
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-tertiary: #94A3B8;
-  --color-text-inverse: #F1F5F9;
+  --color-text-primary: #2F2C28;
+  --color-text-secondary: #69655D;
+  /* Same value as --color-text-secondary: a third, lighter grey tier
+     failed AA (4.5:1) on this palette's page background once the
+     secondary tier was darkened enough to pass there itself — see
+     --text-subtle below for the full reasoning. */
+  --color-text-tertiary: #69655D;
+  --color-text-inverse: #DDD9D2;
   --color-text-on-primary: #FFFFFF;
 
   /* Brand */
-  --color-brand-primary: #0E7490;
-  --color-brand-accent: #0891B2;
-  --color-brand-highlight: #22D3EE;
+  --color-brand-primary: #1A5C9C;
+  --color-brand-accent: #1F6CAE;
+  --color-brand-highlight: #7FB4E6;
 
   /* Interactive */
-  --color-interactive-default: #0E7490;
-  --color-interactive-hover: #155E75;
-  --color-interactive-focus: #0891B2;
+  --color-interactive-default: #1A5C9C;
+  --color-interactive-hover: #15497D;
+  --color-interactive-focus: #1A5C9C;
 
   /* Borders */
-  --color-border-default: #E9EEF3;
-  --color-border-subtle: #F1F5F9;
-  --color-border-strong: #E2E8F0;
+  --color-border-default: #CDC8BD;
+  --color-border-subtle: #DED9CF;
+  --color-border-strong: #DED9CF;
 
   /* Status */
-  --color-success: #0D9488;
-  --color-warning: #D97706;
-  --color-error: #E11D48;
-  --color-info: #0E7490;
+  --color-success: #456022;
+  --color-warning: #954D04;
+  --color-error: #C81A3F;
+  --color-info: #1A5C9C;
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 5px -2px rgba(15, 23, 42, 0.05);
-  --shadow-lg: 0 14px 32px -8px rgba(15, 23, 42, 0.12), 0 4px 10px -4px rgba(15, 23, 42, 0.07);
-  --shadow-xl: 0 20px 25px rgba(15, 23, 42, 0.08), 0 8px 10px rgba(15, 23, 42, 0.04);
-  --shadow-accent: 0 8px 24px -8px rgba(14, 116, 144, 0.4);
-  --shadow-glow: 0 0 20px rgba(34, 211, 238, 0.15);
-  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.02);
-  --shadow-card-hover: 0 8px 24px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(14, 116, 144, 0.08);
+  /* Shadows — the period this design evokes didn't have them. */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-accent: none;
+  --shadow-glow: none;
+  --shadow-card: none;
+  --shadow-card-hover: none;
 
   /* Borders */
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5625rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.375rem;
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
   --radius-full: 9999px;
+  /* Referenced by src/app/tags/page.tsx, src/app/books/[slug]/page.tsx and
+     src/app/books/[slug]/client-book.tsx but never defined there, so those
+     pills silently fell back to square corners. Defined here, not in those
+     files — they belong to a different workspace this wave. */
+  --radius-pill: 9999px;
 
   /* Transitions */
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,43 +86,36 @@
   --duration-normal: 220ms;
   --duration-slow: 360ms;
 
-  /* Font families */
-  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body: var(--font-space-grotesk), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+  /* Font families — system faces only, no font is downloaded. */
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --font-ui: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Dark mode overrides */
 .dark {
-  --color-surface-primary: #0B1120;
-  --color-surface-secondary: #111A2E;
-  --color-surface-tertiary: #16233B;
-  --color-surface-inverse: #F8FAFC;
+  --color-surface-primary: #14161A;
+  --color-surface-secondary: #1B1E23;
+  --color-surface-tertiary: #202429;
+  --color-surface-inverse: #E9E7E1;
 
-  --color-text-primary: #E8EEF6;
-  --color-text-secondary: #94A3B8;
-  --color-text-tertiary: #64748B;
-  --color-text-inverse: #0F172A;
-  --color-text-on-primary: #04252E;
+  --color-text-primary: #DDD9D2;
+  --color-text-secondary: #9A948B;
+  --color-text-tertiary: #9A948B;
+  --color-text-inverse: #2F2C28;
+  --color-text-on-primary: #04253D;
 
-  --color-brand-primary: #22D3EE;
-  --color-brand-accent: #0891B2;
+  --color-brand-primary: #7FB4E6;
+  --color-brand-accent: #B0D1EB;
 
-  --color-interactive-default: #22D3EE;
-  --color-interactive-hover: #67E8F9;
-  --color-interactive-focus: #22D3EE;
+  --color-interactive-default: #7FB4E6;
+  --color-interactive-hover: #B0D1EB;
+  --color-interactive-focus: #7FB4E6;
 
-  --color-border-default: #1E293B;
-  --color-border-subtle: #1E293B;
-  --color-border-strong: #263250;
-
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 14px -4px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
-  --shadow-accent: 0 8px 28px -8px rgba(34, 211, 238, 0.28);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(34, 211, 238, 0.1);
+  --color-border-default: #2E333B;
+  --color-border-subtle: #2A2F37;
+  --color-border-strong: #2A2F37;
 }
 
 /* ============================================================
@@ -131,64 +134,70 @@
    scoped under .dark here instead — same tokens, same values.
    ============================================================ */
 :root {
-  /* ---- Current: teal-cyan primary ramp ---- */
-  --current-50:  #ecfeff;
-  --current-100: #d0f5f9;
-  --current-200: #a2eaf2;
-  --current-300: #67e8f9;
-  --current-400: #22d3ee;
-  --current-500: #0aaecb;
-  --current-600: #0891b2;
-  --current-700: #0e7490;
-  --current-800: #155e75;
-  --current-900: #164e63;
-  --current-950: #083344;
+  /* ---- Current: editorial blue link/accent ramp ---- */
+  --current-50:  #eef5fb;
+  --current-100: #d7e8f5;
+  --current-200: #b0d1eb;
+  --current-300: #7fb4e6;
+  --current-400: #4f97d6;
+  --current-500: #2f7ec2;
+  --current-600: #1f6cae;
+  --current-700: #1a5c9c;
+  --current-800: #15497d;
+  --current-900: #123c66;
+  --current-950: #0c2a48;
 
-  /* ---- Sap: teal-green secondary (success / growth, used sparingly) ---- */
-  --sap-300: #5eead4;
-  --sap-400: #2dd4bf;
-  --sap-500: #14b8a6;
-  --sap-600: #0d9488;
-  --sap-700: #0f766e;
+  /* ---- Sap: warm olive-green secondary (success / growth, used sparingly) ---- */
+  --sap-300: #cfe6ba;
+  --sap-400: #8bc65a;
+  --sap-500: #6a9b3f;
+  --sap-600: #456022;
+  --sap-700: #33470a;
 
-  /* ---- Slate: cool neutral ramp ---- */
+  /* ---- Slate: warm neutral ramp (parchment paper, not cool grey) ---- */
   --slate-0:   #ffffff;
-  --slate-50:  #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-150: #e9eef3;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-850: #16233b;
-  --slate-900: #0f172a;
-  --slate-950: #0b1120;
-  --slate-990: #070c18;
+  --slate-50:  #f6f4ef;
+  --slate-100: #efece5;
+  --slate-150: #e9e7e1;
+  --slate-200: #ded9cf;
+  --slate-300: #cdc8bd;
+  --slate-400: #b3ab9c;
+  --slate-500: #948c7c;
+  --slate-600: #69655d;
+  --slate-700: #59544c;
+  --slate-800: #443f39;
+  --slate-850: #38332d;
+  --slate-900: #2f2c28;
+  --slate-950: #211e1a;
+  --slate-990: #171512;
 
   /* ---- Semantic status ramps ---- */
-  --amber-500: #f59e0b;
-  --amber-600: #d97706;
-  --rose-500:  #f43f5e;
-  --rose-600:  #e11d48;
+  --amber-500: #e8a33d;
+  --amber-600: #954d04;
+  --rose-500:  #f2607d;
+  --rose-600:  #c81a3f;
 
   /* GitHub-style star (gold) — theme-independent */
   --star: #e3b341;
 
   /* ============ SEMANTIC — LIGHT (default) ============ */
-  --bg:              var(--slate-50);
-  --surface:         #ffffff;
-  --surface-2:       var(--slate-100);
+  --bg:              var(--slate-150);
+  --surface:         var(--slate-0);
+  --surface-2:       var(--slate-50);
   --surface-sunken:  var(--slate-100);
 
-  --border:          var(--slate-150);
+  --border:          var(--slate-300);
   --border-strong:   var(--slate-200);
 
   --text:            var(--slate-900);
-  --text-muted:      var(--slate-500);
-  --text-subtle:     var(--slate-400);
+  /* --text-subtle deliberately equals --text-muted in both themes.
+     The mockup only has one muted grey (#6f6a62); once it's darkened
+     enough to clear 4.5:1 on this palette's own page background
+     (--bg, the darkest of the light-mode surfaces), there is no
+     headroom left for a second, lighter "subtle" tier that still
+     passes AA wherever a caller happens to place it. */
+  --text-muted:      var(--slate-600);
+  --text-subtle:     var(--slate-600);
   --text-on-accent:  #ffffff;
 
   --accent:          var(--current-700);
@@ -198,24 +207,30 @@
   --accent-soft-text:var(--current-800);
 
   --link:            var(--current-700);
-  --link-hover:      var(--current-900);
+  /* A real visited colour, distinct from the accent-blue ramp — the
+     period detail the redesign calls for. */
+  --link-hover:      #7a4b9e;
 
   --secondary:       var(--sap-600);
-  --secondary-soft:  #e6f7f3;
+  --secondary-soft:  #eef3e6;
 
-  --code-bg:         var(--slate-100);
-  --code-text:       var(--slate-800);
-  --code-border:     var(--slate-150);
+  --code-bg:         #f4f2ec;
+  --code-text:       #33302b;
+  --code-border:     var(--border);
 
   --success:         var(--sap-600);
   --warning:         var(--amber-600);
   --danger:          var(--rose-600);
 
-  --ring:            var(--current-600);
-  --selection-bg:    #cdeef4;
+  --ring:            var(--accent);
+  --selection-bg:    var(--current-100);
   --selection-fg:    var(--slate-900);
 
-  --overlay:         rgba(15, 23, 42, 0.45);
+  --overlay:         rgba(47, 44, 40, 0.45);
+
+  /* ---- Nav / footer band (a solid slate-blue strip, not a surface) ---- */
+  --band-bg:         #3c4a5a;
+  --band-text:       #ffffff;
 
   /* ---- Font aliases (design-system naming, point at the loaded fonts) ---- */
   --font-sans:    var(--font-body);
@@ -289,44 +304,49 @@
 
 /* ============ SEMANTIC — DARK ============ */
 .dark {
-  --bg:              var(--slate-950);
-  --surface:         #111a2e;
-  --surface-2:       var(--slate-850);
-  --surface-sunken:  var(--slate-990);
+  --bg:              #14161a;
+  --surface:         #1b1e23;
+  --surface-2:       #202429;
+  --surface-sunken:  #17191e;
 
-  --border:          var(--slate-800);
-  --border-strong:   #263250;
+  --border:          #2e333b;
+  --border-strong:   #2a2f37;
 
-  --text:            #e8eef6;
-  --text-muted:      var(--slate-400);
-  --text-subtle:     var(--slate-500);
-  --text-on-accent:  #04252e;
+  --text:            #ddd9d2;
+  /* See the light-mode note above --text-muted in :root — the same
+     AA ceiling applies here, just against the dark surfaces instead. */
+  --text-muted:      #9a948b;
+  --text-subtle:     #9a948b;
+  --text-on-accent:  #04253d;
 
-  --accent:          var(--current-400);
-  --accent-hover:    var(--current-300);
-  --accent-active:   var(--current-200);
-  --accent-soft:     #0c3444;
-  --accent-soft-text:var(--current-300);
+  --accent:          var(--current-300);
+  --accent-hover:    var(--current-200);
+  --accent-active:   var(--current-100);
+  --accent-soft:     #12293d;
+  --accent-soft-text:var(--current-200);
 
-  --link:            var(--current-400);
-  --link-hover:      var(--current-300);
+  --link:            var(--current-300);
+  --link-hover:      #c3a6e2;
 
   --secondary:       var(--sap-400);
-  --secondary-soft:  #123430;
+  --secondary-soft:  #14332a;
 
-  --code-bg:         var(--slate-850);
-  --code-text:       #cfdae8;
-  --code-border:     var(--slate-800);
+  --code-bg:         #14171c;
+  --code-text:       #cfd6e0;
+  --code-border:     var(--border);
 
   --success:         var(--sap-400);
   --warning:         var(--amber-500);
   --danger:          var(--rose-500);
 
-  --ring:            var(--current-400);
-  --selection-bg:    #0e5063;
-  --selection-fg:    #eafcff;
+  --ring:            var(--accent);
+  --selection-bg:    #1f3a52;
+  --selection-fg:    #eaf4ff;
 
   --overlay:         rgba(3, 8, 20, 0.6);
+
+  --band-bg:         #232830;
+  --band-text:       #e6e2da;
 }
 
 /* Base styles */

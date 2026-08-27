@@ -59,7 +59,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 function PersonName({ person }: { person: BookPerson }) {
   if (person.url) {
@@ -118,13 +118,13 @@ export default async function BookPage(props: PageProps) {
             className="flex shrink-0 flex-col justify-end box-border p-[22px] shadow-[var(--shadow-lg)]"
             style={{ width: 220, height: 300, borderRadius: "var(--radius-md)", background: "linear-gradient(155deg, var(--accent), var(--current-900))" }}
           >
-            <div style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", color: "rgba(255,255,255,.7)", textTransform: "uppercase" }}>
+            <div style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", color: "rgba(255,255,255,.7)", textTransform: "uppercase" }}>
               {book.publisher || "Book"}
             </div>
             <div className="mt-2" style={{ fontSize: "var(--text-lg)", fontWeight: "var(--fw-bold)", color: "#fff", lineHeight: 1.15, letterSpacing: "var(--ls-tight)" }}>
               {book.title}
             </div>
-            <div className="mt-2.5" style={{ ...mono, fontSize: "var(--text-2xs)", color: "rgba(255,255,255,.85)" }}>
+            <div className="mt-2.5" style={{ ...ui, fontSize: "var(--text-2xs)", color: "rgba(255,255,255,.85)" }}>
               Gordon Beeming
             </div>
           </div>
@@ -193,7 +193,7 @@ export default async function BookPage(props: PageProps) {
                     <span
                       aria-hidden="true"
                       className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full"
-                      style={{ ...mono, fontSize: "10px", fontWeight: "var(--fw-bold)", background: "var(--accent)", color: "var(--text-on-accent)" }}
+                      style={{ ...ui, fontSize: "10px", fontWeight: "var(--fw-bold)", background: "var(--accent)", color: "var(--text-on-accent)" }}
                     >
                       {r.name
                         .split(" ")
@@ -216,7 +216,7 @@ export default async function BookPage(props: PageProps) {
             <Card padding="lg">
               <div
                 className="mb-[var(--space-4)]"
-                style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
+                style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
               >
                 Table of contents
               </div>
@@ -225,7 +225,7 @@ export default async function BookPage(props: PageProps) {
                   <li key={chapter.title}>
                     <details>
                       <summary className="flex cursor-pointer list-none gap-[var(--space-3)]" style={{ fontSize: "var(--text-sm)", lineHeight: "var(--lh-snug)", color: "var(--text)" }}>
-                        <span className="toc-num w-5 shrink-0" style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--accent)" }} />
+                        <span className="toc-num w-5 shrink-0" style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--accent)" }} />
                         <span style={{ color: "var(--text)", fontWeight: "var(--fw-medium)" }}>{chapter.title}</span>
                       </summary>
                       {chapter.sections.length > 0 && (
@@ -256,7 +256,7 @@ export default async function BookPage(props: PageProps) {
       <Link
         href="/#books"
         className="inline-flex items-center gap-1.5 no-underline"
-        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
       >
         ← back to books
       </Link>

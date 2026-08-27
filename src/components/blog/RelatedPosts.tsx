@@ -11,7 +11,7 @@ interface RelatedPostsProps {
   posts: RelatedPost[];
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (posts.length === 0) return null;
@@ -22,7 +22,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
       <div className="related-grid">
         {posts.map((post) => (
           <Card key={post.slug} interactive href={`/blog/${post.slug}`}>
-            <div style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-subtle)" }}>
+            <div style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-subtle)" }}>
               {formatDateShort(post.date)}
             </div>
             <h3

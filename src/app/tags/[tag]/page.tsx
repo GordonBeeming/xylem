@@ -48,7 +48,7 @@ export default async function TagFilteredPage(props: PageProps) {
       <Link
         href="/tags"
         className="no-underline"
-        style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
       >
         ← all tags
       </Link>
@@ -58,13 +58,13 @@ export default async function TagFilteredPage(props: PageProps) {
         >
           Tagged <span style={{ color: "var(--accent)" }}>{displayName}</span>
         </h1>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", color: "var(--text-subtle)" }}>
+        <span style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: "var(--text-subtle)" }}>
           {filtered.length} post{filtered.length !== 1 ? "s" : ""}
         </span>
         <a
           href={`/tags/${decodedTag}/feed.xml`}
           className="no-underline"
-          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: "var(--radius-xs)", padding: "3px 9px" }}
+          style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-2xs)", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: "var(--radius-xs)", padding: "3px 9px" }}
         >
           RSS ↗
         </a>

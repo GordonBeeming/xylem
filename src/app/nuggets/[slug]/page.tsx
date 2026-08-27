@@ -52,7 +52,7 @@ export async function generateMetadata(
   };
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default async function NuggetPage(props: PageProps) {
   const { slug } = await props.params;
@@ -76,7 +76,7 @@ export default async function NuggetPage(props: PageProps) {
         <Link
           href="/nuggets"
           className="no-underline"
-          style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+          style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
         >
           ← all nuggets
         </Link>
@@ -84,7 +84,7 @@ export default async function NuggetPage(props: PageProps) {
           <span className="eyebrow" style={{ color: "var(--secondary)" }}>
             Nugget
           </span>
-          <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
+          <span style={{ ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
             {formatDateShort(nugget.date)}
           </span>
         </div>

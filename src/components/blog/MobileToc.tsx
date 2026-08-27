@@ -1,6 +1,6 @@
 import type { HeadingEntry } from "@/lib/content";
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export function MobileToc({ headings }: { headings: HeadingEntry[] }) {
   if (headings.length === 0) return null;
@@ -11,10 +11,10 @@ export function MobileToc({ headings }: { headings: HeadingEntry[] }) {
         className="flex cursor-pointer items-center justify-between rounded-[var(--radius-md)] border p-[var(--space-4)]"
         style={{ listStyle: "none", border: "1px solid var(--border)", background: "var(--surface-2)" }}
       >
-        <span style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-muted)" }}>
+        <span style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-muted)" }}>
           On this page
         </span>
-        <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
+        <span style={{ ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
           {headings.length} section{headings.length !== 1 ? "s" : ""} ▾
         </span>
       </summary>

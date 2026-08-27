@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Small, self-contained explainers by Gordon Beeming — mini knowledge drops on narrow technical topics.",
 };
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default function NuggetsPage() {
   const nuggets = getAllNuggets();
@@ -56,7 +56,7 @@ export default function NuggetsPage() {
                 </span>
                 <span
                   className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--text-2xs)] text-[color:var(--text-muted)]"
-                  style={mono}
+                  style={ui}
                 >
                   {n.slug}.html
                 </span>
@@ -79,7 +79,7 @@ export default function NuggetsPage() {
                     </Tag>
                   ))}
                 </div>
-                <span className="text-[length:var(--text-2xs)] uppercase text-[color:var(--text-subtle)]" style={mono}>
+                <span className="text-[length:var(--text-2xs)] uppercase text-[color:var(--text-subtle)]" style={ui}>
                   {formatDateShort(n.date)}
                 </span>
               </div>

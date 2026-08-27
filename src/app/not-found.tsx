@@ -67,7 +67,7 @@ export default function NotFound() {
       <div className="mt-[var(--space-10)]">
         <div
           className="mb-[var(--space-4)]"
-          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
+          style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
         >
           Try one of these
         </div>

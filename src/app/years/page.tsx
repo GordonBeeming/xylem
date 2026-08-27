@@ -52,7 +52,7 @@ export default function YearsPage() {
             </span>
             <span
               className="whitespace-nowrap"
-              style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}
+              style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}
             >
               {count} post{count !== 1 ? "s" : ""}
             </span>

@@ -9,20 +9,20 @@ interface NuggetStageProps {
   filename: string;
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 function StageButton({ onClick, children, title, href }: { onClick?: () => void; children: React.ReactNode; title: string; href?: string }) {
   const className =
     "rounded-[var(--radius-xs)] border border-[var(--border)] px-[9px] py-[3px] text-[length:var(--text-2xs)] text-[color:var(--text-muted)] transition-[var(--transition-colors)] hover:border-[var(--border-strong)] hover:text-[color:var(--text)] cursor-pointer no-underline";
   if (href) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" title={title} style={mono} className={className}>
+      <a href={href} target="_blank" rel="noopener noreferrer" title={title} style={ui} className={className}>
         {children}
       </a>
     );
   }
   return (
-    <button type="button" onClick={onClick} title={title} style={mono} className={className}>
+    <button type="button" onClick={onClick} title={title} style={ui} className={className}>
       {children}
     </button>
   );
@@ -51,12 +51,12 @@ export function NuggetStage({ rawUrl, title, filename }: NuggetStageProps) {
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--border-strong)" }} />
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--accent)" }} />
             </span>
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--text-xs)] text-[color:var(--text-muted)]" style={mono}>
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--text-xs)] text-[color:var(--text-muted)]" style={ui}>
               {filename}
             </span>
             <span
               className="shrink-0 rounded-[var(--radius-xs)] border border-[var(--border)] px-[7px] py-[1px] text-[length:var(--text-2xs)] text-[color:var(--text-subtle)]"
-              style={mono}
+              style={ui}
             >
               sandboxed
             </span>
@@ -75,7 +75,7 @@ export function NuggetStage({ rawUrl, title, filename }: NuggetStageProps) {
         </div>
         <NuggetFrame key={reloadKey} src={rawUrl} title={title} fillHeight={full} />
       </div>
-      <div className="mt-[var(--space-4)] text-center text-[length:var(--text-2xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]" style={mono}>
+      <div className="mt-[var(--space-4)] text-center text-[length:var(--text-2xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]" style={ui}>
         Embedded as a standalone HTML file · runs in a sandboxed iframe · styling is the nugget&apos;s own
       </div>
     </div>

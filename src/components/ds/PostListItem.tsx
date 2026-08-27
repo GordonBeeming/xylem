@@ -28,7 +28,7 @@ export function PostListItem({
     >
       <div
         className="flex items-center gap-[var(--space-3)] text-[length:var(--text-xs)] uppercase tracking-[var(--ls-wide)] text-[color:var(--text-muted)]"
-        style={{ fontFamily: "var(--font-mono)" }}
+        style={{ fontFamily: "var(--font-ui)" }}
       >
         <span>{date}</span>
         {readingTime && (
@@ -56,7 +56,7 @@ export function PostListItem({
           {extraTags > 0 && (
             <span
               className="self-center text-[length:var(--text-2xs)] tracking-[var(--ls-wide)] text-[color:var(--text-subtle)]"
-              style={{ fontFamily: "var(--font-mono)" }}
+              style={{ fontFamily: "var(--font-ui)" }}
             >
               +{extraTags} more
             </span>

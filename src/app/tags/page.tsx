@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Browse all tags used across blog posts by Gordon Beeming.",
 };
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default function TagsPage() {
   const published = getAllPosts();
@@ -42,7 +42,7 @@ export default function TagsPage() {
               key={tag}
               href={`/tags/${tag}`}
               className="inline-flex items-baseline gap-[7px] rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface)] px-[13px] py-[6px] text-[color:var(--text-muted)] no-underline transition-[var(--transition-colors)] hover:border-[var(--accent)] hover:text-[color:var(--accent)]"
-              style={{ ...mono, fontSize: `calc(var(--text-sm) * ${scale.toFixed(2)})` }}
+              style={{ ...ui, fontSize: `calc(var(--text-sm) * ${scale.toFixed(2)})` }}
             >
               {(tagDisplayNames[tag] ?? tag).toLowerCase()}
               <span className="text-[length:var(--text-2xs)] text-[color:var(--text-subtle)]">{count}</span>

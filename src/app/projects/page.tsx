@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 // Group projects by lifecycle before ordering by popularity: live projects
 // first, then private previews, then deprecated ones at the bottom.
@@ -52,7 +52,7 @@ function ProjectCard({ project }: { project: ProjectData }) {
           <Link
             href={`/projects/${project.slug}`}
             className="hover:underline"
-            style={{ ...mono, fontSize: featured ? "var(--text-lg)" : "var(--text-base)", fontWeight: "var(--fw-semibold)", color: "var(--text)" }}
+            style={{ ...ui, fontSize: featured ? "var(--text-lg)" : "var(--text-base)", fontWeight: "var(--fw-semibold)", color: "var(--text)" }}
           >
             {project.title}
           </Link>

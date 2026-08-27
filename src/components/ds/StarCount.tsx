@@ -8,7 +8,7 @@ export function StarCount({ n, className = "" }: StarCountProps) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-[length:var(--text-sm)] font-[var(--fw-medium)] leading-none text-[color:var(--text-muted)] ${className}`.trim()}
-      style={{ fontFamily: "var(--font-mono)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       <svg
         width="15"

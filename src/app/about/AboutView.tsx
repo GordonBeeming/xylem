@@ -6,7 +6,7 @@ import { Card } from "@/components/ds/Card";
 import { Button } from "@/components/ds/Button";
 import type { AuthorData, SiteConfig } from "@/lib/tina-helpers";
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 /** `data-tina-field` values for the author-doc fields rendered here. Only
  *  present when the live Tina client wrapper (`ClientAuthor`) is rendering —
@@ -114,7 +114,7 @@ export function AboutView({
           {author.profile_line_2 && (
             <div
               className="mt-[3px]"
-              style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-subtle)" }}
+              style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-subtle)" }}
               data-tina-field={tinaFields?.profile_line_2}
             >
               {author.profile_line_2}

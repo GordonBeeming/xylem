@@ -153,7 +153,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
         {title ? (
           <span
             className="truncate text-[13px] font-medium text-[var(--color-text-secondary)]"
-            style={{ fontFamily: "var(--font-mono)" }}
+            style={{ fontFamily: "var(--font-ui)" }}
           >
             {title}
           </span>
@@ -162,7 +162,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
         )}
         <div
           className="flex items-center gap-1 rounded-full bg-[color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] px-1 py-0.5 text-[11px] font-medium text-[var(--color-brand-primary)]"
-          style={{ fontFamily: "var(--font-mono)" }}
+          style={{ fontFamily: "var(--font-ui)" }}
         >
           <button
             type="button"

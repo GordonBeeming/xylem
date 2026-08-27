@@ -38,7 +38,7 @@ export default async function YearFilteredPage(props: PageProps) {
       <Link
         href="/years"
         className="no-underline"
-        style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
       >
         ← all years
       </Link>
@@ -49,13 +49,13 @@ export default async function YearFilteredPage(props: PageProps) {
         >
           Posts from {year}
         </h1>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", color: "var(--text-subtle)" }}>
+        <span style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: "var(--text-subtle)" }}>
           {filtered.length} post{filtered.length !== 1 ? "s" : ""}
         </span>
         <a
           href={`/years/${year}/feed.xml`}
           className="no-underline"
-          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: "var(--radius-xs)", padding: "3px 9px" }}
+          style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-2xs)", color: "var(--text-muted)", border: "1px solid var(--border)", borderRadius: "var(--radius-xs)", padding: "3px 9px" }}
         >
           RSS ↗
         </a>

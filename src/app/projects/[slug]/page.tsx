@@ -15,7 +15,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 // Same icon-link markup as the /projects card grid (src/app/projects/page.tsx) —
 // not exported there, so duplicated here rather than restructuring that page.
@@ -174,7 +174,7 @@ export default async function ProjectPage(props: PageProps) {
       <Link
         href="/projects"
         className="inline-flex items-center gap-1.5 no-underline"
-        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
       >
         ← back to projects
       </Link>
@@ -193,7 +193,7 @@ export default async function ProjectPage(props: PageProps) {
       {readme && readmeElement && (
         <>
           <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
-          <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
+          <p style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
             README mirrored from{" "}
             {readme.visibility === "private" ? (
               // A private repo's README page is a 404 for every visitor — no

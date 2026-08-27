@@ -2,14 +2,13 @@ import Link from "next/link";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { getSiteConfig, type SiteConfig } from "@/lib/tina-helpers";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
+import { SITE_NAV_LINKS } from "@/lib/nav-links";
 
+// Footer's "Links" column skips "home" (the logo above already links there)
+// and adds one entry that only exists here (Color Palette).
 const navigationLinks = [
-  { href: "/blog", label: "Blog" },
-  { href: "/nuggets", label: "Nuggets" },
-  { href: "/projects", label: "Projects" },
-  { href: "/tags", label: "Tags" },
-  { href: "/about", label: "About" },
-  { href: "/color-palette", label: "Color Palette" },
+  ...SITE_NAV_LINKS.filter((link) => link.href !== "/"),
+  { href: "/color-palette", label: "color palette" },
 ];
 
 const supportLinks: { configKey: keyof SiteConfig; label: string }[] = [
@@ -18,13 +17,13 @@ const supportLinks: { configKey: keyof SiteConfig; label: string }[] = [
   { configKey: "githubsponsors", label: "GitHub Sponsors" },
 ];
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 function Column({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
       <div
-        style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)", marginBottom: "var(--space-4)" }}
+        style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)", marginBottom: "var(--space-4)" }}
       >
         {title}
       </div>
@@ -58,7 +57,7 @@ export function Footer() {
               A personal blog about software development, DevOps, open source, and the
               occasional triathlon story. Built with Next.js.
             </p>
-            <p style={{ margin: "16px 0 0", ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
+            <p style={{ margin: "16px 0 0", ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
               Powered by curiosity and
             </p>
             <a
@@ -115,7 +114,7 @@ export function Footer() {
         </div>
 
         <div className="site-foot-bottom">
-          <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", letterSpacing: "0.02em" }}>
+          <span style={{ ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", letterSpacing: "0.02em" }}>
             © 2013-{currentYear} Gordon Beeming · Opinions are my own and not that of my company or anyone I engage with.
           </span>
           <div className="flex gap-[2px]">

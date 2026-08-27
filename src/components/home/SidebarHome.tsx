@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { slug as slugifyTag } from "github-slugger";
 import type { PostMeta, ProjectData, BookData, SiteConfig } from "@/lib/tina-helpers";
-import { formatDateShort, postHref } from "@/lib/content";
-import { PostListItem } from "@/components/ds/PostListItem";
+import { formatDate, postHref } from "@/lib/content";
 import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import Avatar from "@/components/Avatar";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { HOME_INTRO_PARAGRAPH, ABOUT_RAIL_BLURB } from "@/lib/site-copy";
+import { SidebarSearch } from "./SidebarSearch";
 import styles from "./SidebarHome.module.css";
 
 /** Everything the home page needs, computed once on the server from the
@@ -43,7 +44,7 @@ const ui = { fontFamily: "var(--font-ui)" };
 
 // The Tags rail is a curated cloud, not the full taxonomy (that's /tags) —
 // capped so a long-tail tag doesn't push the rail past the main column.
-const MAX_TAG_PILLS = 20;
+const MAX_TAG_PILLS = 11;
 // Archives shows the most recent years inline; older years are one click
 // away via the "All N posts" link rather than listed exhaustively.
 const MAX_ARCHIVE_YEARS = 5;
@@ -112,16 +113,29 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
             <SectionHeading>Recent writing</SectionHeading>
             <div className={styles.postList}>
               {recentPosts.map((post) => (
-                <PostListItem
-                  key={post.slug}
-                  href={postHref(post.slug)}
-                  date={formatDateShort(post.date)}
-                  readingTime={post.readingTime.text}
-                  title={post.title}
-                  summary={post.summary ?? ""}
-                  tags={post.tags.slice(0, 3)}
-                  extraTags={Math.max(0, post.tags.length - 3)}
-                />
+                <article key={post.slug}>
+                  <div className={styles.postDate} style={ui}>
+                    {formatDate(post.date, "en-GB")}
+                  </div>
+                  <h3 className={styles.postTitle}>
+                    <Link href={postHref(post.slug)}>{post.title}</Link>
+                  </h3>
+                  {post.summary && <p className={styles.postSummary}>{post.summary}</p>}
+                  {post.tags.length > 0 && (
+                    <div className={styles.postTags}>
+                      {post.tags.map((tag) => (
+                        <Link
+                          key={tag}
+                          href={`/tags/${slugifyTag(tag).replace(/--+/g, "-")}`}
+                          className={styles.chip}
+                          style={ui}
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </article>
               ))}
             </div>
             <p className={styles.olderLink} style={ui}>
@@ -157,6 +171,11 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
           </div>
 
           <aside className={styles.aside}>
+            <div>
+              <SectionHeading>Search</SectionHeading>
+              <SidebarSearch />
+            </div>
+
             <div className={styles.aboutCard}>
               <SectionHeading>About</SectionHeading>
               <Avatar

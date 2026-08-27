@@ -30,8 +30,10 @@ a:visited { color: var(--link-hover); }
   flex-wrap: wrap; row-gap: 12px;
 }
 .site-nav-brand { min-width: 0; }
-.site-nav-name { font-size: 24px; color: inherit; }
-.site-nav-bio { font-family: var(--font-ui); font-size: var(--text-2xs); color: inherit; opacity: 0.72; }
+/* the artboard lets the name inherit the 1.6 body leading; a tighter value
+   shortens the whole band */
+.site-nav-name { font-size: 24px; color: inherit; line-height: 1.6; }
+.site-nav-bio { font-family: var(--font-ui); font-size: var(--text-2xs); color: inherit; opacity: 0.72; margin: 5px 0 0; line-height: 1.5; }
 /* actions (search / theme toggle) always pin right */
 .site-nav-inner > div:last-child { margin-left: auto; }
 /* the second row: nav links, separated from the row above by a hairline.
@@ -48,11 +50,9 @@ a:visited { color: var(--link-hover); }
    vertical padding, so the row is guaranteed tall enough on a phone even
    as the links wrap. There is no hamburger/drawer at any width any more —
    all six links stay visible and wrap in place. */
-.site-nav-links a { display: flex; align-items: center; min-height: 44px; }
 /* !important: each link's opacity is also set inline (active vs. inactive),
    and an inline style otherwise always wins over an external stylesheet. */
 .site-nav-links a:hover { opacity: 1 !important; }
-.nav-search:hover { color: var(--text); border-color: var(--border-strong); }
 
 /* theme-aware logo mark: light variant on light bg, dark on dark.
    Site uses next-themes attribute="class", so the dark scope is .dark
@@ -78,10 +78,11 @@ a:visited { color: var(--link-hover); }
   .site-nav-inner { padding: 13px 22px; gap: 14px; }
   /* keep the two nav rows flush with each other, not just with themselves */
   .site-nav-links-inner { padding: 9px 22px; }
+  /* touch targets are a phone concern; at desktop they inflate the band */
+  .site-nav-links a { display: flex; align-items: center; min-height: 44px; }
   /* only once the row is narrow enough to fill: at 1180px this would strand
      each link in its own quarter of the bar */
   .site-nav-links { justify-content: space-between; gap: 8px; }
-  .nav-search-kbd { display: none; }
 }
 
 /* ---------------- generic page shell ----------------

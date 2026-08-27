@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SearchButton } from "@/components/ui/SearchButton";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { SITE_NAV_LINKS } from "@/lib/nav-links";
@@ -22,16 +21,15 @@ export function Header({ siteConfig }: HeaderProps) {
       <header className="site-nav">
         <div className="site-nav-inner">
           <div className="site-nav-brand">
-            <Link href="/" className="site-nav-name no-underline" style={{ fontSize: "var(--text-lg)" }}>
+            <Link href="/" className="site-nav-name no-underline">
               {siteConfig.author}
             </Link>
-            <p className="site-nav-bio" style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-2xs)", opacity: 0.72, margin: "4px 0 0" }}>
+            <p className="site-nav-bio">
               {bio}
             </p>
           </div>
 
           <div className="flex items-center gap-[var(--space-2)]">
-            <SearchButton />
             <ThemeToggle />
           </div>
         </div>

@@ -165,7 +165,7 @@
   --slate-300: #cdc8bd;
   --slate-400: #b3ab9c;
   --slate-500: #948c7c;
-  --slate-600: #69655d;
+  --slate-600: #6f6a62;
   --slate-700: #59544c;
   --slate-800: #443f39;
   --slate-850: #38332d;
@@ -231,6 +231,7 @@
   --overlay:         rgba(47, 44, 40, 0.45);
 
   /* ---- Nav / footer band (a solid slate-blue strip, not a surface) ---- */
+  --chip:            #efece5;
   --band-bg:         #3c4a5a;
   --band-text:       #ffffff;
 
@@ -347,6 +348,7 @@
 
   --overlay:         rgba(3, 8, 20, 0.6);
 
+  --chip:            #262b31;
   --band-bg:         #232830;
   --band-text:       #e6e2da;
 }
@@ -356,6 +358,7 @@ body {
   background-color: var(--color-surface-primary);
   color: var(--color-text-primary);
   font-family: var(--font-body);
+  font-size: 15px;
 }
 
 ::selection {

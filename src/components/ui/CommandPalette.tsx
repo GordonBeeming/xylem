@@ -47,9 +47,18 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const router = useRouter();
   const [uncontrolledQuery, setUncontrolledQuery] = useState("");
-  const isControlled = controlledQuery !== undefined && onQueryChange !== undefined;
-  const query = isControlled ? controlledQuery : uncontrolledQuery;
-  const setQuery = isControlled ? onQueryChange : setUncontrolledQuery;
+  const query = controlledQuery ?? uncontrolledQuery;
+  // stable across renders, so the callbacks below keep their memoization
+  const setQuery = useCallback(
+    (value: string) => {
+      if (onQueryChange) {
+        onQueryChange(value);
+      } else {
+        setUncontrolledQuery(value);
+      }
+    },
+    [onQueryChange]
+  );
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -91,13 +100,13 @@ export function CommandPalette({
         setQuery("");
       }
     },
-    [router, onClose]
+    [router, onClose, setQuery]
   );
 
   const handleClose = useCallback(() => {
     onClose();
     setQuery("");
-  }, [onClose]);
+  }, [onClose, setQuery]);
 
   return (
     <Dialog open={isOpen} onClose={handleClose} className="relative z-[300]">

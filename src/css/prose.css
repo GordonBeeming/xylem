@@ -69,6 +69,15 @@ a:visited { color: var(--link-hover); }
    at `layer(components)`, below Tailwind's utilities layer (see the note
    at the top of tailwind.css), so a stray `inline-flex` utility added
    later would always win over these rules and show both icons at once. */
+/* the artboard's button is a small outlined chip, not a 44px control; the
+   touch target only matters on a phone, where the media query restores it */
+.theme-toggle {
+  font-family: var(--font-ui); font-size: 11px;
+  padding: 4px 9px; gap: 6px;
+  background: transparent; color: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  cursor: pointer;
+}
 .theme-toggle .i-moon { display: inline-flex; }
 .theme-toggle .i-sun  { display: none; }
 .dark .theme-toggle .i-moon { display: none; }
@@ -80,6 +89,7 @@ a:visited { color: var(--link-hover); }
   .site-nav-links-inner { padding: 9px 22px; }
   /* touch targets are a phone concern; at desktop they inflate the band */
   .site-nav-links a { display: flex; align-items: center; min-height: 44px; }
+  .theme-toggle { min-height: 44px; min-width: 44px; }
   /* only once the row is narrow enough to fill: at 1180px this would strand
      each link in its own quarter of the bar */
   .site-nav-links { justify-content: space-between; gap: 8px; }

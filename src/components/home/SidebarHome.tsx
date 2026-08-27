@@ -116,6 +116,7 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
                 <article key={post.slug}>
                   <div className={styles.postDate} style={ui}>
                     {formatDate(post.date, "en-GB")}
+                    {post.readingTime?.text ? ` \u00B7 ${post.readingTime.text}` : ""}
                   </div>
                   <h3 className={styles.postTitle}>
                     <Link href={postHref(post.slug)}>{post.title}</Link>
@@ -171,11 +172,6 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
           </div>
 
           <aside className={styles.aside}>
-            <div>
-              <SectionHeading>Search</SectionHeading>
-              <SidebarSearch />
-            </div>
-
             <div className={styles.aboutCard}>
               <SectionHeading>About</SectionHeading>
               <Avatar
@@ -203,6 +199,11 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
                   {`All ${totalPostCount} posts \u00BB`}
                 </Link>
               </div>
+            </div>
+
+            <div>
+              <SectionHeading>Search</SectionHeading>
+              <SidebarSearch />
             </div>
 
             {topTags.length > 0 && (

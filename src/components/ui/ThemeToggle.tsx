@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 
 const buttonClassName =
-  "theme-toggle inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-md)] px-[var(--space-3)] transition-[var(--transition-colors)] hover:bg-[var(--surface-2)] hover:text-[color:var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]";
+  "theme-toggle inline-flex items-center justify-center rounded-[var(--radius-md)] transition-[var(--transition-colors)] hover:text-[color:var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]";
 
 // `currentColor` + `color-mix` (rather than a border token) let this button
 // sit on any surface — the dark nav band, the light mobile-drawer surface —
@@ -18,7 +18,7 @@ const buttonStyle: React.CSSProperties = {
 // No `inline-flex` here on purpose — see the comment on ThemeToggle below.
 const variantClassName = "items-center gap-[var(--space-2)]";
 const labelClassName = "max-[720px]:hidden";
-const labelStyle: React.CSSProperties = { fontFamily: "var(--font-ui)", fontSize: "var(--text-xs)" };
+const labelStyle: React.CSSProperties = { fontFamily: "var(--font-ui)" };
 
 function MoonIcon() {
   return (

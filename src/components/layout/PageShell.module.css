@@ -45,3 +45,8 @@
   .wrap { padding: 16px 12px 40px; }
   .well { padding: 22px 18px; }
 }
+
+/* A reduced rail for pages whose own content already fills the column. */
+.under { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border-strong); }
+.underGrid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 56px; align-items: start; }
+@media (max-width: 860px) { .underGrid { grid-template-columns: minmax(0, 1fr); gap: 28px; } }

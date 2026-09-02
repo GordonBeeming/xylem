@@ -22,7 +22,7 @@ export default async function AboutPage() {
 
   if (!author) {
     return (
-      <PageShell>
+      <PageShell rail="under">
         <h1 style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", color: "var(--text)" }}>About</h1>
         <p className="mt-4" style={{ color: "var(--text-muted)" }}>
           Author information not available.
@@ -40,7 +40,7 @@ export default async function AboutPage() {
 
   if (tinaData) {
     return (
-      <PageShell>
+      <PageShell rail="under">
       <ClientAuthor
         query={tinaData.query}
         variables={tinaData.variables}
@@ -53,7 +53,7 @@ export default async function AboutPage() {
   }
 
   return (
-    <PageShell>
+    <PageShell rail="under">
       <AboutView author={author} siteConfig={siteConfig} />
     </PageShell>
   );

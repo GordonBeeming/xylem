@@ -2,7 +2,6 @@ import Link from "next/link";
 import { slug as slugifyTag } from "github-slugger";
 import Avatar from "@/components/Avatar";
 import { SiteSearch } from "@/components/ui/SiteSearch";
-import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { ABOUT_RAIL_BLURB } from "@/lib/site-copy";
 import { getAllPosts, getSiteConfig } from "@/lib/tina-helpers";
@@ -15,6 +14,14 @@ const MAX_TAG_PILLS = 11;
 const MAX_ARCHIVE_YEARS = 5;
 
 const ui = { fontFamily: "var(--font-ui)" };
+
+// The rail names each destination rather than showing a bare glyph, the way the
+// design does; an unlabelled icon column reads as decoration.
+const SOCIAL_LABELS: Record<string, string> = {
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  youtube: "YouTube",
+};
 
 function Heading({ children }: { children: React.ReactNode }) {
   return <div className={styles.sectionHeading}>{children}</div>;
@@ -101,11 +108,57 @@ export function SiteRail() {
             const href = siteConfig[configKey];
             if (typeof href !== "string" || href.length === 0) return null;
             return (
-              <SocialIcon key={kind} kind={kind} href={href} size={16} variant="muted" />
+              <a
+                key={kind}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.elsewhereLink}
+              >
+                {SOCIAL_LABELS[kind] ?? kind}
+              </a>
             );
           })}
+          <Link href="/feed.xml" className={styles.elsewhereLink}>
+            RSS feed
+          </Link>
         </div>
       </div>
     </aside>
+  );
+}
+
+/**
+ * The reduced rail: search and the archive, and nothing that repeats what the
+ * page it sits under already says.
+ */
+export function SiteRailBrief() {
+  const posts = getAllPosts();
+  const yearCounts = getYearCounts(posts);
+  const recentYears = Object.entries(yearCounts)
+    .sort((a, b) => Number(b[0]) - Number(a[0]))
+    .slice(0, MAX_ARCHIVE_YEARS);
+
+  return (
+    <div className={styles.underGrid}>
+      <div>
+        <Heading>Search</Heading>
+        <SiteSearch />
+      </div>
+      <div>
+        <Heading>Archives</Heading>
+        <div className={styles.archiveList} style={ui}>
+          {recentYears.map(([year, count]) => (
+            <Link key={year} href={`/years/${year}`} className={styles.archiveRow}>
+              <span>{year}</span>
+              <span className={styles.archiveCount}>{count}</span>
+            </Link>
+          ))}
+          <Link href="/blog" className={styles.archiveAll}>
+            {`All ${posts.length} posts »`}
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

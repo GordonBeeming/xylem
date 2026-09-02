@@ -74,14 +74,14 @@ async function fetchFont(family, weight) {
 }
 
 // Georgia (the site's --font-heading/--font-body) isn't on Google Fonts, so
-// Gelasio — metric-compatible with Georgia — stands in for Satori, which
+// PT Serif and PT Mono match the site faces; Satori needs them fetched, which
 // can only render fonts it's handed as file data. IBM Plex Mono still
 // covers the card's mono labels; the site's own --font-mono (Courier New)
 // is a local system face Satori has no way to load.
 const [gelasioBold, gelasioRegular, plexMono] = await Promise.all([
-  fetchFont('Gelasio', 700),
-  fetchFont('Gelasio', 400),
-  fetchFont('IBM+Plex+Mono', 400),
+  fetchFont('PT+Serif', 700),
+  fetchFont('PT+Serif', 400),
+  fetchFont('PT+Mono', 400),
 ]);
 
 const avatarData = readFileSync(AVATAR_PATH);
@@ -113,7 +113,7 @@ for (const post of posts) {
           padding: '64px 72px',
           background: `radial-gradient(120% 140% at 100% 0%, rgba(127,180,230,0.16), rgba(20,22,26,0) 55%), ${SLATE_950}`,
           color: TEXT,
-          fontFamily: 'Gelasio',
+          fontFamily: 'PT Serif',
         },
         children: [
           // vessel channel motif — vertical accent line + two nodes on the right
@@ -183,7 +183,7 @@ for (const post of posts) {
                   type: 'div',
                   props: {
                     style: {
-                      fontFamily: 'IBM Plex Mono',
+                      fontFamily: 'PT Mono',
                       fontSize: 15,
                       letterSpacing: '0.16em',
                       textTransform: 'uppercase',
@@ -239,7 +239,7 @@ for (const post of posts) {
                       {
                         type: 'div',
                         props: {
-                          style: { fontFamily: 'IBM Plex Mono', fontSize: 15, letterSpacing: '0.04em', color: SLATE_400 },
+                          style: { fontFamily: 'PT Mono', fontSize: 15, letterSpacing: '0.04em', color: SLATE_400 },
                           children: `${post.date} · ${post.readingTime}`,
                         },
                       },
@@ -255,7 +255,7 @@ for (const post of posts) {
                           type: 'div',
                           props: {
                             style: {
-                              fontFamily: 'IBM Plex Mono',
+                              fontFamily: 'PT Mono',
                               fontSize: 14,
                               padding: '6px 14px',
                               borderRadius: '999px',

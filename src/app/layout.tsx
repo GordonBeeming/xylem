@@ -1,10 +1,30 @@
 import type { Metadata } from "next";
+import { PT_Serif, PT_Sans, PT_Mono } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { getSiteConfig } from "@/lib/tina-helpers";
 import "@/css/tailwind.css";
+
+const ptSerif = PT_Serif({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-pt-serif",
+});
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-pt-sans",
+});
+const ptMono = PT_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-pt-mono",
+});
 
 const GA_MEASUREMENT_ID = "G-W0FD111Z7V";
 
@@ -64,7 +84,7 @@ export default function RootLayout({
   const siteConfig = getSiteConfig();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${ptSerif.variable} ${ptSans.variable} ${ptMono.variable}`}>
       <body className="bg-surface-primary text-text-primary antialiased">
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>

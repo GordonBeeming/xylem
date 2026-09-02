@@ -89,10 +89,10 @@
   --duration-slow: 360ms;
 
   /* Font families — system faces only, no font is downloaded. */
-  --font-heading: Georgia, 'Times New Roman', serif;
-  --font-body: Georgia, 'Times New Roman', serif;
-  --font-mono: 'Courier New', Courier, monospace;
-  --font-ui: Verdana, Geneva, Tahoma, sans-serif;
+  --font-heading: var(--font-pt-serif), Georgia, 'Times New Roman', serif;
+  --font-body: var(--font-pt-serif), Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-pt-mono), 'Courier New', Courier, monospace;
+  --font-ui: var(--font-pt-sans), Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Dark mode overrides */

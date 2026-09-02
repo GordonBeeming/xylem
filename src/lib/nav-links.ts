@@ -14,4 +14,7 @@ export const SITE_NAV_LINKS: NavLink[] = [
   { href: "/projects", label: "projects" },
   { href: "/tags", label: "tags" },
   { href: "/about", label: "about" },
+  // Drafts are working notes. NODE_ENV is inlined at build time, so this entry
+  // is compiled out of the production bundle rather than merely hidden.
+  ...(process.env.NODE_ENV === "production" ? [] : [{ href: "/drafts", label: "drafts" }]),
 ];

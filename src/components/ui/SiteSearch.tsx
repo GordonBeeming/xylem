@@ -2,16 +2,19 @@
 
 import { useCallback, useRef, useState } from "react";
 import { CommandPalette, type SearchableItem } from "@/components/ui/CommandPalette";
-import styles from "./SidebarHome.module.css";
+import styles from "./SiteSearch.module.css";
 
 /**
  * The sidebar search field, in the shape a blog of this era would have had.
+ *
+ * It lives in the rail rather than the header, so it is the only way to reach
+ * search on the site; every page with a rail should render it.
  *
  * It is an entry point rather than a second search: whatever is typed here is
  * handed to the command palette, which owns the index and the results. That
  * keeps one implementation and one set of behaviours.
  */
-export function SidebarSearch() {
+export function SiteSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<SearchableItem[]>([]);

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
+import { SiteSearch } from "@/components/ui/SiteSearch";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { PostNavigation } from "@/components/blog/PostNavigation";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
@@ -10,7 +11,7 @@ import { Tag } from "@/components/ds/Tag";
 import { Card } from "@/components/ds/Card";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
-import { formatDateShort, postHref, type HeadingEntry } from "@/lib/content";
+import { formatDate, postHref, type HeadingEntry } from "@/lib/content";
 import { EditInTinaButton } from "@/components/blog/EditInTinaButton";
 import type { PostMeta, SiteConfig } from "@/lib/tina-helpers";
 import { slug as slugifyTag } from "github-slugger";
@@ -123,7 +124,7 @@ export function PostLayout({
             <h1
               id="post-title"
               className="mt-5"
-              style={{ fontSize: "var(--text-3xl)", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.2, color: "var(--text)" }}
+              style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.22, color: "var(--text)" }}
               data-tina-field={tinaFields?.title}
             >
               {meta.title}
@@ -131,19 +132,14 @@ export function PostLayout({
 
             <div className="mt-[var(--space-5)] flex flex-wrap items-center gap-[var(--space-3)]">
               <Avatar size={30} shape="square" alt="Gordon Beeming" className="border border-[var(--border)]" />
-              <span style={{ fontSize: "var(--text-sm)", color: "var(--text)" }}>Gordon Beeming</span>
-              <span style={{ color: "var(--text-subtle)" }}>·</span>
+              <span style={{ fontSize: "14px", color: "var(--text)" }}>Gordon Beeming</span>
               <time
                 dateTime={meta.date}
-                style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}
+                style={{ ...ui, fontSize: "11px", color: "var(--text-muted)" }}
                 data-tina-field={tinaFields?.date}
               >
-                {formatDateShort(meta.date)}
+                {`\u00B7 ${formatDate(meta.date, "en-GB")} \u00B7 ${meta.readingTime.text}`}
               </time>
-              <span style={{ color: "var(--text-subtle)" }}>·</span>
-              <span style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
-                {meta.readingTime.text}
-              </span>
               <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
             </div>
 
@@ -186,6 +182,10 @@ export function PostLayout({
             <Toc headings={headings} />
           </div>
           <AboutRailCard />
+          <div>
+            <div className={styles.sectionHeading}>Search</div>
+            <SiteSearch />
+          </div>
           <RecentPostsRail posts={recentPosts} />
         </aside>
       </div>

@@ -117,20 +117,20 @@ a:visited { color: var(--link-hover); }
 }
 
 /* ---------------- prose (article body) ---------------- */
-.prose { font-size: var(--text-md); line-height: var(--lh-relaxed); color: var(--text); }
+.prose { font-size: 16.5px; line-height: 1.68; color: var(--text); }
 .prose > * + * { margin-top: 1.35em; }
 .prose p { color: var(--text); }
 .prose a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .prose strong { font-weight: var(--fw-semibold); color: var(--text); }
 .prose em { font-style: italic; }
 .prose h2 {
-  font-size: var(--text-xl); font-weight: var(--fw-bold); letter-spacing: var(--ls-tight);
+  font-size: 23px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
   line-height: var(--lh-snug); color: var(--text);
-  margin-top: 2.2em; scroll-margin-top: 90px;
+  margin-top: 32px; scroll-margin-top: 90px;
 }
 .prose h3 {
-  font-size: var(--text-lg); font-weight: var(--fw-semibold); letter-spacing: var(--ls-tight);
-  color: var(--text); margin-top: 1.8em; scroll-margin-top: 90px;
+  font-size: 19px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
+  color: var(--text); margin-top: 26px; scroll-margin-top: 90px;
 }
 /* anchored heading marker */
 .prose h2 .anchor, .prose h3 .anchor {

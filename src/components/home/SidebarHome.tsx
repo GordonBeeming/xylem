@@ -7,7 +7,7 @@ import { Badge } from "@/components/ds/Badge";
 import Avatar from "@/components/Avatar";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { HOME_INTRO_PARAGRAPH, ABOUT_RAIL_BLURB } from "@/lib/site-copy";
-import { SidebarSearch } from "./SidebarSearch";
+import { SiteSearch } from "@/components/ui/SiteSearch";
 import styles from "./SidebarHome.module.css";
 
 /** Everything the home page needs, computed once on the server from the
@@ -203,7 +203,7 @@ export function SidebarHome({ homeData, siteConfig, tinaFields }: SidebarHomePro
 
             <div>
               <SectionHeading>Search</SectionHeading>
-              <SidebarSearch />
+              <SiteSearch />
             </div>
 
             {topTags.length > 0 && (

@@ -1,0 +1,116 @@
+---
+title: 'Every Shunt siding starts small now'
+tags: ['Shunt', 'Git', 'Apple container', 'macOS', 'DevEx', 'Productivity']
+summary: 'Shunt used to build most of a development machine when I only needed an isolated worktree. Now every siding starts with the cheap part and grows into an Apple container guest only when the work needs one.'
+---
+
+I asked an agent to create a [Shunt](/projects/shunt) siding the other day. It stopped to ask whether I wanted to stay in the existing host or create a new siding that would consume more machine resources.
+
+That used to be a fair question. A new siding meant a worktree, copies of any declared data volumes, an output directory, cached images, an Apple `container` guest, Docker inside that guest, and most of the setup needed to run the app. The app stayed stopped, but nearly all the expensive machinery already existed.
+
+This time, though, the question was out of date. I had already changed [Shunt in PR #28](https://github.com/GordonBeeming/shunt/pull/28) so that every new siding starts as a small worktree and only grows into a machine when I ask it to. The code was doing the right thing. My agent instructions were still teaching the old model.
+
+## Why `new` used to be expensive
+
+Shunt gives me isolated places to work on several changes in the same repository. Each one is called a siding.
+
+The runtime isolation is fairly substantial. Shunt uses Apple's [`container`](https://github.com/apple/container) tooling, where each Linux container runs in its own lightweight virtual machine. Inside that guest I run Docker, the application's dependencies, and the app itself. Shunt can then bridge one of those sidings onto the stable local ports I use every day.
+
+That is useful when I need to run the application. It is a lot of work when I only need to change a Markdown file.
+
+The old `new` path prepared nearly everything up front:
+
+- The Git branch and worktree.
+- The standing output directory.
+- Copies of any data volumes declared by the application.
+- The dependency-image cache and Shunt base image.
+- An Apple container guest with its CPU, memory, mounts, environment, Rosetta settings, and Docker daemon.
+
+So I had to decide whether a task deserved a machine before I had even started it. Documentation, configuration, investigation, and plenty of code changes begin with inspecting and editing the source. Sometimes the whole job ends there.
+
+## `new` now stops at the worktree
+
+The command now does the smallest useful thing:
+
+```bash title="Create a siding"
+shunt-dev new docs-refresh
+```
+
+It creates durable Shunt state, an independent Git control repository when the project needs one, a managed branch, and a worktree. If it is the first siding, it also becomes the source base for later sidings.
+
+It does not:
+
+- Require an `.shunt.app.json` runtime contract.
+- Register the repository as a runnable Shunt app.
+- Start Apple's container service.
+- Create data-volume copies or an output directory.
+- Load dependency images.
+- Allocate a guest.
+- Start Docker or the application.
+
+The help text says exactly that:
+
+```text title="shunt-dev new --help"
+Create a small worktree-only siding
+```
+
+"Small" does not mean free. There is still a checkout, a branch, Git metadata, and Shunt's own durable state. The difference is that none of the runtime resources exist yet. I can move into the siding, edit the files, run tests directly in its macOS worktree, and finish the change without ever creating a guest.
+
+## `up` creates the runtime
+
+If the repository is not registered yet, I add its runtime contract and run `shunt-dev app add` from the original checkout. Then I can grow the same siding when I need the application:
+
+```bash title="Grow the siding when it needs to run"
+# Once per repository, from the original checkout.
+shunt-dev app add
+
+# Then grow the existing siding.
+shunt-dev up docs-refresh --no-bridge
+```
+
+`up` materialises the data volumes and output directory, creates the guest, prepares the cached images, starts Docker, and runs the app.
+
+I can choose how far that transition goes:
+
+```bash title="Choose how the running siding is exposed"
+# Run inside the guest without host bridges.
+shunt-dev up docs-refresh --no-bridge
+
+# Add the bridges, but leave the current live siding alone.
+shunt-dev up docs-refresh
+
+# Deliberately put this siding on the stable front door.
+shunt-dev up docs-refresh --switch
+```
+
+Starting a siding should not quietly replace whatever I currently have live, so switching is intentional.
+
+The first materialisation progresses through three durable phases:
+
+```text
+worktree -> data -> guest
+```
+
+If guest creation fails after the data is ready, the siding stays in the `data` phase. A later `up` retries from there instead of deleting the completed work and starting again.
+
+Parking later removes the guest while retaining the worktree, data, and output. That leaves the siding in another persisted state, `parked`, which `up` can grow from again. The source checkout becomes useful at phase one, while runtime isolation arrives at phase three. They no longer have to happen in the same command.
+
+## The cheap path keeps its guards
+
+There is one guard I do not want the cheaper path to relax. By default, a new siding starts from the committed `HEAD` of the source-base siding. If that base has uncommitted or untracked work, `shunt-dev new` stops instead of quietly creating a new workspace from an incomplete state.
+
+I can use `--branch <ref>` to choose an explicit start point, or `--from <branch>` to fetch and continue an existing remote branch. The default should not guess.
+
+The same applies when growing the siding. A worktree-only project cannot run until it has an app contract and has been registered, so `up` checks that before it touches the guest runtime.
+
+The prompt that exposed the mismatch was useful in the end. Some of my [agent guidance](/blog/2026-06-18/your-experience-is-a-runtime-dependency) still described a new siding using the old cost model, so it kept asking whether I wanted to spend resources on one. That made the feature look missing even though the implementation was correct. I updated the guidance so the command, help text, docs, and skill all describe the same lifecycle.
+
+Now my default is simply:
+
+```bash
+shunt-dev new my-change
+```
+
+I do the source work first, and host-side tests may be enough to finish the change. If I need the real application, I run `up`. I can start it privately or bridge it without disturbing the siding I am already using, then put it on the stable front door when I am ready.
+
+So the next time an agent creates a siding, it can create the isolated worktree straight away and leave the guest alone unless I later need the application.

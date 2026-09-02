@@ -96,7 +96,7 @@ export function ClientBook({ query, variables, data }: ClientBookProps) {
           <div className="eyebrow">Book</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.1, color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.1, color: "var(--text)" }}
             data-tina-field={tinaField(book, "title")}
           >
             {book.title}

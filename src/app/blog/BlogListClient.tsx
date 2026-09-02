@@ -166,11 +166,11 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
   const more = visibleYears < groups.length;
 
   return (
-    <div className="page-narrow">
+    <>
       <div className="eyebrow">Writing</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         All posts
       </h1>
@@ -316,7 +316,7 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
           loading earlier years…
         </div>
       )}
-    </div>
+    </>
   );
 }
 
@@ -324,18 +324,18 @@ export default function BlogListClient(props: BlogListClientProps) {
   return (
     <Suspense
       fallback={
-        <div className="page-narrow">
+        <>
           <div className="eyebrow">Writing</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
           >
             All posts
           </h1>
           <div className="py-12 text-center" style={{ color: "var(--text-subtle)" }}>
             Loading...
           </div>
-        </div>
+        </>
       }
     >
       <BlogListInner {...props} />

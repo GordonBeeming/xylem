@@ -2,6 +2,7 @@ import { getAllPosts } from "@/lib/tina-helpers";
 import { getTagCounts, getTagDisplayNames, getYearCounts } from "@/lib/content";
 import BlogListClient from "./BlogListClient";
 import type { Metadata } from "next";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "All Posts",
@@ -25,5 +26,9 @@ export default function BlogPage() {
   const tagDisplayNames = getTagDisplayNames(published);
   const yearCounts = getYearCounts(published);
 
-  return <BlogListClient allPosts={postsData} tagCounts={tagCounts} tagDisplayNames={tagDisplayNames} yearCounts={yearCounts} />;
+  return (
+    <PageShell>
+      <BlogListClient allPosts={postsData} tagCounts={tagCounts} tagDisplayNames={tagDisplayNames} yearCounts={yearCounts} />
+    </PageShell>
+  );
 }

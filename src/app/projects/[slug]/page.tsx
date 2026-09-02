@@ -10,6 +10,7 @@ import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
 import { ProjectVideo } from "@/components/ui/ProjectVideo";
+import { PageShell } from "@/components/layout/PageShell";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -106,7 +107,7 @@ export default async function ProjectPage(props: PageProps) {
           <div className="eyebrow">Project</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
           >
             {project.title}
           </h1>
@@ -170,7 +171,7 @@ export default async function ProjectPage(props: PageProps) {
   );
 
   return (
-    <div className="page">
+    <PageShell>
       <Link
         href="/projects"
         className="inline-flex items-center gap-1.5 no-underline"
@@ -209,6 +210,6 @@ export default async function ProjectPage(props: PageProps) {
           <div className="prose mt-[var(--space-5)]">{readmeElement}</div>
         </>
       )}
-    </div>
+    </PageShell>
   );
 }

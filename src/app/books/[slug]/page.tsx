@@ -8,6 +8,7 @@ import { fetchTina, tinaClient } from "@/components/tina/fetch";
 import { ClientBook } from "./client-book";
 import { Button } from "@/components/ds/Button";
 import { Card } from "@/components/ds/Card";
+import { PageShell } from "@/components/layout/PageShell";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -134,7 +135,7 @@ export default async function BookPage(props: PageProps) {
           <div className="eyebrow">Book</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.1, color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.1, color: "var(--text)" }}
           >
             {book.title}
           </h1>
@@ -252,7 +253,7 @@ export default async function BookPage(props: PageProps) {
   );
 
   return (
-    <div className="page">
+    <PageShell>
       <Link
         href="/#books"
         className="inline-flex items-center gap-1.5 no-underline"
@@ -266,6 +267,6 @@ export default async function BookPage(props: PageProps) {
       ) : (
         body
       )}
-    </div>
+    </PageShell>
   );
 }

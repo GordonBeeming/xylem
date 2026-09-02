@@ -1,0 +1,47 @@
+/* The two-column shell from Main.dc.html, shared by every page that has a
+   rail. Colours and fonts are tokens only, so both themes fall out for free. */
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 26px 28px 60px; }
+.well { background: var(--surface); border: 1px solid var(--border); padding: 32px 34px; }
+.shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 56px; }
+.main { min-width: 0; }
+.aside { min-width: 0; display: flex; flex-direction: column; gap: 26px; }
+
+.sectionHeading {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 18px;
+}
+
+.aboutCard { background: var(--surface-2); border: 1px solid var(--border); padding: 16px; }
+.aboutBlurb { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; color: var(--text-muted); }
+
+.archiveList { display: flex; flex-direction: column; gap: 7px; font-size: var(--text-xs); }
+.archiveRow { display: flex; justify-content: space-between; text-decoration: none; }
+.archiveCount { color: var(--text-muted); }
+.archiveAll { margin-top: 3px; color: var(--text); text-decoration: none; }
+
+.tagCloud { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  font-family: var(--font-ui); font-size: 10px; color: var(--text-muted);
+  background: var(--chip); border: 1px solid var(--border);
+  padding: 2px 6px; text-decoration: none;
+}
+.chip:hover { color: var(--link); border-color: var(--link); }
+
+.elsewhereList { display: flex; flex-direction: column; gap: 7px; font-size: var(--text-xs); }
+.elsewhereLink { text-decoration: none; }
+
+/* Below this the 300px rail leaves no usable measure, so it stacks under. */
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+}
+@media (max-width: 720px) {
+  .wrap { padding: 16px 12px 40px; }
+  .well { padding: 22px 18px; }
+}

@@ -4,6 +4,7 @@ import { getAllPosts } from "@/lib/tina-helpers";
 import { getYearCounts, formatDateShort, postHref } from "@/lib/content";
 import { PostListItem } from "@/components/ds/PostListItem";
 import type { Metadata } from "next";
+import { PageShell } from "@/components/layout/PageShell";
 
 interface PageProps {
   params: Promise<{ year: string }>;
@@ -34,7 +35,7 @@ export default async function YearFilteredPage(props: PageProps) {
   }
 
   return (
-    <div className="page-narrow">
+    <PageShell>
       <Link
         href="/years"
         className="no-underline"
@@ -45,7 +46,7 @@ export default async function YearFilteredPage(props: PageProps) {
       <div className="mt-[18px] flex flex-wrap items-center gap-[var(--space-4)]">
         <h1
           className="tabular-nums"
-          style={{ margin: 0, fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+          style={{ margin: 0, fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
         >
           Posts from {year}
         </h1>
@@ -74,6 +75,6 @@ export default async function YearFilteredPage(props: PageProps) {
           />
         ))}
       </div>
-    </div>
+    </PageShell>
   );
 }

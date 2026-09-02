@@ -159,7 +159,7 @@ export function AboutView({
         <div className="eyebrow">About</div>
         <h2
           className="mt-3"
-          style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+          style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
         >
           Hi, I&apos;m Gordon Beeming.
         </h2>

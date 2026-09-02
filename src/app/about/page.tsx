@@ -3,6 +3,7 @@ import { getAuthor, getSiteConfig } from "@/lib/tina-helpers";
 import { fetchTina, tinaClient } from "@/components/tina/fetch";
 import { AboutView } from "./AboutView";
 import { ClientAuthor } from "./client-author";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "About",
@@ -21,12 +22,12 @@ export default async function AboutPage() {
 
   if (!author) {
     return (
-      <div className="page-narrow">
-        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", color: "var(--text)" }}>About</h1>
+      <PageShell>
+        <h1 style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", color: "var(--text)" }}>About</h1>
         <p className="mt-4" style={{ color: "var(--text-muted)" }}>
           Author information not available.
         </p>
-      </div>
+      </PageShell>
     );
   }
 
@@ -39,6 +40,7 @@ export default async function AboutPage() {
 
   if (tinaData) {
     return (
+      <PageShell>
       <ClientAuthor
         query={tinaData.query}
         variables={tinaData.variables}
@@ -46,8 +48,13 @@ export default async function AboutPage() {
         fallbackAuthor={author}
         siteConfig={siteConfig}
       />
+      </PageShell>
     );
   }
 
-  return <AboutView author={author} siteConfig={siteConfig} />;
+  return (
+    <PageShell>
+      <AboutView author={author} siteConfig={siteConfig} />
+    </PageShell>
+  );
 }

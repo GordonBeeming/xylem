@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ds/Button";
 import { Tag } from "@/components/ds/Tag";
 import { CodeBlock } from "@/components/prose/CodeBlock";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -26,7 +27,7 @@ const suggestions = [
 
 export default function NotFound() {
   return (
-    <div className="page-narrow text-center">
+    <PageShell rail={false}><div className="text-center">
       <div className="eyebrow" style={{ letterSpacing: "var(--ls-wider)" }}>
         Error 404
       </div>
@@ -80,5 +81,6 @@ export default function NotFound() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

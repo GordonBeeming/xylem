@@ -7,6 +7,7 @@ import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
 import { ProjectVideo } from "@/components/ui/ProjectVideo";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -45,7 +46,7 @@ function IconLink({ href, label, children }: { href: string; label: string; chil
 function ProjectCard({ project }: { project: ProjectData }) {
   const featured = Boolean(project.featured);
   return (
-    <Card padding="lg" className={`flex flex-col ${featured ? "lg:col-span-3" : "lg:col-span-2"}`}>
+    <Card padding="lg" className={`flex flex-col ${featured ? "lg:col-span-2" : "lg:col-span-1"}`}>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-[var(--space-3)]">
           {/* Title is the card's primary link; IconLinks below stay as sibling anchors (no nesting). */}
@@ -129,11 +130,11 @@ export default async function ProjectsPage() {
   });
 
   return (
-    <div className="page">
+    <PageShell>
       <div className="eyebrow">Projects</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         Things I&apos;ve built
       </h1>
@@ -150,12 +151,12 @@ export default async function ProjectsPage() {
           No projects found.
         </p>
       ) : (
-        <div className="projects-grid mt-[var(--space-10)] grid grid-cols-1 gap-[var(--space-5)] sm:grid-cols-2 lg:grid-cols-6">
+        <div className="projects-grid mt-[var(--space-10)] grid grid-cols-1 gap-[var(--space-5)] lg:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

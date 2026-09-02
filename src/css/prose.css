@@ -126,11 +126,11 @@ a:visited { color: var(--link-hover); }
 .prose h2 {
   font-size: 23px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
   line-height: var(--lh-snug); color: var(--text);
-  margin-top: 32px; scroll-margin-top: 90px;
+  margin-top: 32px; scroll-margin-top: 158px;
 }
 .prose h3 {
   font-size: 19px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
-  color: var(--text); margin-top: 26px; scroll-margin-top: 90px;
+  color: var(--text); margin-top: 26px; scroll-margin-top: 158px;
 }
 /* anchored heading marker */
 .prose h2 .anchor, .prose h3 .anchor {
@@ -199,7 +199,16 @@ a:visited { color: var(--link-hover); }
 /* The article keeps a 65-75 character measure; the furniture below it
    (related posts, prev/next, the author card) spans the full column. */
 .post-main .prose { max-width: 720px; }
-.post-aside { position: relative; }
+.post-aside {
+  position: sticky;
+  align-self: start;
+  /* clears the 138px header band */
+  top: 158px;
+  /* a long rail scrolls inside itself rather than escaping the viewport */
+  max-height: calc(100vh - 178px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .toc a:hover { color: var(--text) !important; }
 .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
 .prevnext {

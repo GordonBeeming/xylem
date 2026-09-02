@@ -79,9 +79,9 @@ async function fetchFont(family, weight) {
 // covers the card's mono labels; the site's own --font-mono (Courier New)
 // is a local system face Satori has no way to load.
 const [gelasioBold, gelasioRegular, plexMono] = await Promise.all([
-  fetchFont('PT+Serif', 700),
-  fetchFont('PT+Serif', 400),
-  fetchFont('PT+Mono', 400),
+  fetchFont('Libre+Baskerville', 700),
+  fetchFont('Libre+Baskerville', 400),
+  fetchFont('Courier+Prime', 400),
 ]);
 
 const avatarData = readFileSync(AVATAR_PATH);
@@ -113,7 +113,7 @@ for (const post of posts) {
           padding: '64px 72px',
           background: `radial-gradient(120% 140% at 100% 0%, rgba(127,180,230,0.16), rgba(20,22,26,0) 55%), ${SLATE_950}`,
           color: TEXT,
-          fontFamily: 'PT Serif',
+          fontFamily: 'Libre Baskerville',
         },
         children: [
           // vessel channel motif — vertical accent line + two nodes on the right
@@ -183,7 +183,7 @@ for (const post of posts) {
                   type: 'div',
                   props: {
                     style: {
-                      fontFamily: 'PT Mono',
+                      fontFamily: 'Courier Prime',
                       fontSize: 15,
                       letterSpacing: '0.16em',
                       textTransform: 'uppercase',
@@ -239,7 +239,7 @@ for (const post of posts) {
                       {
                         type: 'div',
                         props: {
-                          style: { fontFamily: 'PT Mono', fontSize: 15, letterSpacing: '0.04em', color: SLATE_400 },
+                          style: { fontFamily: 'Courier Prime', fontSize: 15, letterSpacing: '0.04em', color: SLATE_400 },
                           children: `${post.date} · ${post.readingTime}`,
                         },
                       },
@@ -255,7 +255,7 @@ for (const post of posts) {
                           type: 'div',
                           props: {
                             style: {
-                              fontFamily: 'PT Mono',
+                              fontFamily: 'Courier Prime',
                               fontSize: 14,
                               padding: '6px 14px',
                               borderRadius: '999px',

@@ -89,10 +89,10 @@
   --duration-slow: 360ms;
 
   /* Font families — system faces only, no font is downloaded. */
-  --font-heading: var(--font-pt-serif), Georgia, 'Times New Roman', serif;
-  --font-body: var(--font-pt-serif), Georgia, 'Times New Roman', serif;
-  --font-mono: var(--font-pt-mono), 'Courier New', Courier, monospace;
-  --font-ui: var(--font-pt-sans), Verdana, Geneva, Tahoma, sans-serif;
+  --font-heading: var(--font-body-face), Georgia, 'Times New Roman', serif;
+  --font-body: var(--font-body-face), Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-mono-face), 'Courier New', Courier, monospace;
+  --font-ui: var(--font-ui-face), Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Dark mode overrides */
@@ -386,7 +386,7 @@ body {
 
 /* Scroll margin for anchor links with sticky header */
 [id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 158px;
 }
 
 /* Skip link */

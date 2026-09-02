@@ -178,9 +178,7 @@ export function PostLayout({
         </article>
 
         <aside className={`post-aside ${styles.railStack}`}>
-          <div className="sticky" style={{ top: 100 }}>
-            <Toc headings={headings} />
-          </div>
+          <Toc headings={headings} />
           <AboutRailCard />
           <div>
             <div className={styles.sectionHeading}>Search</div>

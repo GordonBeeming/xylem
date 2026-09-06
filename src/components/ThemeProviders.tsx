@@ -6,8 +6,7 @@ export function ThemeProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="light"
       disableTransitionOnChange
       storageKey="xylem-theme"
     >

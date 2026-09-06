@@ -2,12 +2,12 @@
 title: 'copilot_here: November 2025 Updates - ARM64, .NET 10, Airlock & More'
 date: 2025-11-28
 tags: ['copilot_here', 'Docker', 'DevOps', 'ARM64', '.NET', 'PowerShell', 'Security']
-summary: 'November 2025 is a massive release for copilot_here: Native ARM64 support for Apple Silicon, .NET 10 SDKs, PowerShell Core integration, the game-changing Airlock network isolation feature, plus path mapping and flexible mount systems.'
+summary: 'November updates add native ARM64 images, .NET 10, PowerShell Core integration, Airlock network controls, host path mapping, and configurable directory mounts.'
 ---
 
-November has been a busy month for [copilot_here](https://copilot_here.gordonbeeming.com). What started as a path mapping fix turned into a much bigger release than I planned.
+November has been a busy month for [copilot_here](/projects/copilot-here). What started as a path mapping fix turned into a much bigger release than I planned.
 
-We now have native support for Apple Silicon and other ARM64 devices, .NET 10, a fully integrated PowerShell experience inside the container, and Airlock - a network isolation feature that controls what the AI can reach on the network.
+The release adds native ARM64 images, .NET 10, PowerShell support inside the container, and Airlock network controls.
 
 If you're new to copilot_here, check out my [previous posts](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about running GitHub Copilot CLI in a secure, sandboxed Docker environment.
 
@@ -17,7 +17,7 @@ If you're new to copilot_here, check out my [previous posts](https://gordonbeemi
 ## What's New in November 2025
 
 1. **[Native ARM64 Support](#1-native-arm64-support-apple-silicon)** - fast, native performance on Mac and ARM devices
-2. **[.NET 10 SDK](#2-net-10-sdk)** - Bleeding edge .NET and cross-platform scripting
+2. **[.NET 10 SDK](#2-net-10-sdk)** - .NET SDK image variants
 3. **[Playwright Image](#3-playwright-image)** - Browser automation without the .NET overhead
 4. **[Airlock Network Isolation](#4-airlock-network-isolation)** - Control exactly what the AI can access on the network
 5. **[Actual Path Mapping](#5-actual-path-mapping-know-where-you-are)** - Container paths match your host paths
@@ -78,11 +78,11 @@ copilot_here --playwright
 
 ## 4. Airlock Network Isolation
 
-The container already sandboxed filesystem access, but network access was wide open. Airlock closes that gap by routing all network traffic through a custom Rust-based HTTPS proxy that enforces an allowlist.
+Airlock adds network controls to the existing filesystem sandbox. It uses a custom Rust-based HTTPS proxy with enforce and monitor modes.
 
 ### Why Airlock?
 
-When you give an AI tool access to your codebase, you're trusting it not to exfiltrate data. GitHub Copilot is trustworthy, but I'd rather not rely on trust alone. With Airlock, even if something goes wrong, the AI can only talk to the endpoints you've explicitly approved.
+I wanted to control outbound requests as well as filesystem access. In enforce mode, Airlock limits requests to the configured allowlist; monitor mode records requests without blocking them.
 
 ### How It Works
 
@@ -127,14 +127,7 @@ graph LR
     linkStyle 1 stroke:#0063B2,stroke-width:3px,color:#0063B2
 ```
 
-1.  **🔒 The Sealed Chamber (Airlock Network):**
-    The `copilot_here` container is launched into a private, internal-only network. It has **zero** direct access to the internet. If an application tries to bypass the proxy, the connection simply fails because there is no route out.
-
-2.  **🛡️ The Sentry (Secure Proxy):**
-    The Proxy is the only component with a "key" to the outside world. It sits with one foot in the Airlock (to listen for requests) and one foot in the Bridge network (to reach GitHub).
-
-3.  **✅ The Controlled Exit:**
-    Traffic can only leave the Airlock if it explicitly asks the Proxy to carry it. The Proxy inspects the destination against your allow-list and decides whether to let the request pass or block it.
+The app container connects only to the internal network. The proxy connects to that network and to Docker's bridge network, which provides outbound access. In enforce mode, the proxy checks requests against the allowlist before forwarding them.
 
 ### Quick Start
 
@@ -207,7 +200,7 @@ Useful if you want to audit what the AI is actually doing on the network.
 
 ### Security Model
 
-The proxy is written in Rust for memory safety and performance. The app container cannot bypass it - there's simply no route out. You can allow specific API paths rather than whole hosts, the proxy has full visibility into encrypted traffic via HTTPS interception, and you can block plain HTTP entirely unless you explicitly allow it.
+The app container has no direct route to the internet in this configuration. The Rust proxy inspects HTTPS requests and supports path-level rules, so an enforce-mode allowlist can permit particular APIs instead of an entire host. Plain HTTP can also be blocked.
 
 ---
 
@@ -215,9 +208,9 @@ The proxy is written in Rust for memory safety and performance. The app containe
 
 ### The multi-instance confusion problem
 
-Picture this: you're investigating a bug with three terminal windows open - one in `/Users/me/projects/api`, one in `/Users/me/projects/frontend`, one in `/Users/me/investigations/bug-123`.
+With several terminal windows open, I need to distinguish projects such as `/Users/me/projects/api`, `/Users/me/projects/frontend`, and `/Users/me/investigations/bug-123`.
 
-Previously, `copilot_here` mapped all of them to `/work`. Inside the container, they were indistinguishable. Which project were you in?
+Previously, `copilot_here` mapped each project to `/work`, so the container path did not identify the host directory.
 
 ### The fix
 
@@ -336,8 +329,6 @@ copilot_here --update
 
 Check out the [copilot_here marketing site](http://copilot_here.gordonbeeming.com) - I put it together using `copilot_yolo` and the Gemini 3 Pro model (in preview) in just under 90 minutes while watching TV 😅.
 
-<Figure key="/images/copilot_here-site.png" src="/images/copilot_here-site.png" alt="A screenshot of the copilot_here marketing site." width="0" height="0" caption="The copilot_here marketing site showcases the tool's features and capabilities." />
+<Figure key="/images/copilot_here-site.png" src="/images/copilot_here-site.png" alt="A screenshot of the copilot_here marketing site." width="0" height="0" caption="The copilot_here site with installation instructions and feature details." />
 
 Check out the project on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here)
-
-*Questions? Suggestions? Drop a comment below or open an issue on GitHub!*

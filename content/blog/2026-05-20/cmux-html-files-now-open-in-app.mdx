@@ -7,11 +7,9 @@ summary: 'cmux 0.64.5 flipped the default for opening local HTML files: they now
 
 I asked an agent to build me an HTML artifact this morning, hit the link in the terminal, and got the file rendered into a cmux pane next to me instead of opening in Safari where it had landed for the last few weeks. The artifact looked fine, but the in-app preview pane is not what I want for an HTML page I'm about to QA at 1920×1080 with devtools open.
 
-So: what changed, and how to flip it back.
-
 ## What changed
 
-The behaviour switched in [cmux 0.64.5](https://github.com/manaflow-ai/cmux/blob/main/CHANGELOG.md), released on 13 May 2026. Buried in that release is [PR #4041 — "Open supported files in cmux on cmd-click"](https://github.com/manaflow-ai/cmux/pull/4041). It added a new setting that defaults to `true`:
+The behaviour switched in [cmux 0.64.5](https://github.com/manaflow-ai/cmux/blob/main/CHANGELOG.md), released on 13 May 2026. That release includes [PR #4041 — "Open supported files in cmux on cmd-click"](https://github.com/manaflow-ai/cmux/pull/4041). It added a new setting that defaults to `true`:
 
 ```text title="setting"
 app.openSupportedFilesInCmux
@@ -44,14 +42,10 @@ I went for option 3 because I keep my cmux config in `~/.config/cmux/` alongside
 
 cmux picks the change up live, no restart needed in my case. If the pane keeps catching files after the edit, give it a relaunch.
 
-## Worth noting
+## Other file types and HTTPS links
 
 The toggle is global across every file type the new feature covers. There is no per-extension carve-out today, so turning it off also sends your markdown previews and image previews back to the OS default. If you only want to push HTML out and keep the markdown preview, leave it on and just right-click → **Open With** → your browser when you need to.
 
 HTTPS links are a separate story. Those still respect the **Browser → Host Whitelist** setting, which is the one I use to keep GitHub PRs and a handful of internal dashboards opening in cmux instead of bouncing to Safari. That's working exactly as I want it to. The only thing PR #4041 touches is local file cmd-clicks.
 
-## Why I noticed
-
-I had been bouncing artifacts out to Safari for weeks without thinking about it, because that's where I want to QA them. [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) actually flagged the new behaviour the other day, but my own workflow hadn't tripped on it yet (or maybe I'm just getting allergic to updating things with all the vulns going around 😅) so I let it slide. When it finally bit me this morning I pinged him about it. That nerd-sniped him into going off to find the fix at the same time I was. He came back with the UI toggle in the cmux settings panel, I came back with the JSON key, and we pinged each other simultaneously. Teams says he sent the message first... but we all know he should have done that before now 😉
-
-The new default is sensible for plenty of workflows, just not mine. If your last few HTML artifacts from an agent opened in a cmux pane and you wondered when that started, this is when.
+[Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) had flagged the changed behaviour before I ran into it. We checked it at the same time: he found the UI toggle and I found the JSON key. Both change the same setting, so use whichever fits how you manage your cmux configuration.

@@ -2,32 +2,30 @@
 title: 'copilot_here: October 2025 Updates - Auto-Updates, Cross-Platform Support, and More'
 date: 2025-10-28
 tags: ['copilot_here', 'DevOps', 'Developer Experience', 'CLI Tools']
-summary: 'The October 2025 updates to copilot_here bring auto-updating scripts, full Windows support, argument pass-through for native Copilot features like --resume, smart image cleanup, and a bunch of quality-of-life improvements that make the Docker-based Copilot CLI experience even better.'
+summary: 'October changes to copilot_here: Windows support, script updates, installation, Copilot argument forwarding, version reporting and Docker image cleanup.'
 ---
 
-I've been running GitHub Copilot CLI in a Docker container for a while now (check out my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) about the initial setup), and October 2025 brought a wave of improvements that took it from "works on my machine" to "works everywhere, without drama."
+I've been running GitHub Copilot CLI in Docker with [copilot_here](/projects/copilot-here) (my [previous post](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox) covers the initial setup), and the October updates addressed Windows startup, script installation and updates, argument forwarding, and image cleanup.
 
 ## What's New in October 2025
 
 Here's a quick summary of the major updates. Skip to any section that interests you:
 
-1. **[Windows Docker Desktop Support](#1-windows-docker-desktop-support)** - Fixed user creation issues and made Windows a first-class platform
+1. **[Windows Docker Desktop Support](#1-windows-docker-desktop-support)** - Added a fallback when user creation fails
 2. **[Auto-Updating Scripts](#2-auto-updating-scripts)** - One command to update your shell functions without manual copy-paste
-3. **[Quick Install Method](#3-quick-install-method)** - Three commands instead of copying 200+ lines into your shell config
-4. **[Argument Pass-Through](#4-argument-pass-through-unlocking-native-copilot-features)** - All native Copilot CLI features (like `--resume`) just work
+3. **[Quick Install Method](#3-quick-install-method)** - One command instead of copying 200+ lines into your shell config
+4. **[Argument Pass-Through](#4-argument-pass-through-unlocking-native-copilot-features)** - Forwards native Copilot flags such as `--resume`
 5. **[Script Versioning](#5-script-versioning)** - Know exactly which version you're running
 6. **[YOLO Mode Enhancements](#6-yolo-mode-enhancements)** - Auto-approve everything with `--allow-all-paths`
 7. **[Smart Image Cleanup](#7-smart-image-cleanup)** - Only removes images older than 7 days, saves bandwidth and time
 
 ## 1. Windows Docker Desktop Support
 
-### The "It Works On My Machine" Problem
-
-You know that classic developer excuse? Well, it was literally true here. The Docker setup worked perfectly on my Mac... until someone tried it on Windows.
+The setup worked on my Mac, but failed during user creation on Windows Docker Desktop.
 
 ### The Issue
 
-Windows Docker Desktop handles user creation differently than Linux. The container's entrypoint script was trying to create a non-root user (`appuser`) for security, but `useradd` was silently failing on Windows. The script would then try to switch to this non-existent user with `gosu`, and boom 💥
+In the Windows failure I was handling, the entrypoint script hadn't created the non-root user (`appuser`). It then tried to switch to that missing user with `gosu` and failed. The error establishes the missing user; it doesn't explain why user creation failed.
 
 ```bash title="Error output"
 error: failed switching to "appuser": unable to find user appuser:
@@ -47,7 +45,7 @@ if ! id appuser >/dev/null 2>&1; then
 fi
 ```
 
-Running as root in a local dev container isn't ideal. But it beats silently failing, and the warning at least tells users what happened. For a local sandbox tool, I'll take "works on Windows with a caveat" over "crashes on Windows with a cryptic error."
+The fallback runs as root and prints a warning, so it changes the user the command runs under. I accepted that tradeoff for this local development tool, but the warning matters when checking the permissions available in a session.
 
 I also restructured the README to show PowerShell instructions alongside bash/zsh rather than buried in a footnote.
 
@@ -86,11 +84,11 @@ Reloading shell function...
 
 It updates the file and reloads the function in your current session, so you don't need to restart your terminal.
 
-**Pro tip:** If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file, so your dotfiles stay in sync.
+If you have the script symlinked somewhere (like a dotfiles repo), the update function detects the symlink and updates the source file, so your dotfiles stay in sync.
 
 ## 3. Quick Install Method
 
-The old setup required users to copy shell function code from the README and paste it into their config files. It worked, but it was awkward. Why not just let them download and source a script file?
+The old setup required users to copy shell function code from the README and paste it into their config files. It worked, but it was awkward. The installer downloads and sources a script file instead.
 
 ### Before (Manual Mode):
 ```bash title="Terminal"
@@ -106,7 +104,7 @@ The old setup required users to copy shell function code from the README and pas
 curl -fsSL https://github.com/GordonBeeming/copilot_here/releases/download/cli-latest/install.sh | $SHELL
 ```
 
-One command. And because the script lives in its own file now, updating is just `copilot_here --update`.
+Because the script lives in its own file, later updates use `copilot_here --update`.
 
 I also added duplicate detection, so if you accidentally run the setup twice, it won't add the source line multiple times:
 
@@ -134,7 +132,7 @@ for arg in "$@"; do
 done
 ```
 
-Now any Copilot CLI argument just works, whether I've explicitly accounted for it or not:
+Arguments the wrapper doesn't recognise are passed to Copilot for it to handle:
 
 ```bash title="Terminal"
 copilot_here --model gpt-4 "explain this code"
@@ -144,7 +142,7 @@ copilot_here --whatever-future-flag-gets-added
 
 ### The --resume flag
 
-One feature this unlocks is `--resume`. When Copilot is mid-task and something interrupts it (network hiccup, timeout, whatever), you can pick up right where it left off:
+One example is `--resume`. When Copilot is mid-task and something interrupts it (network hiccup, timeout, whatever), you can pick up right where it left off:
 
 ```bash title="Terminal"
 copilot_here --resume
@@ -181,7 +179,7 @@ I added a `--allow-all-paths` flag specifically for this, which pairs with auto-
 
 ## 7. Smart Image Cleanup
 
-Every run was cleaning up all unused images and then immediately pulling the latest one back down. Even if the image it just removed was the current latest. A full download, every single run.
+The cleanup could remove an unused image and immediately pull the same image again on the next launch. That made the cleanup cause unnecessary downloads.
 
 ### The Problem
 
@@ -198,7 +196,7 @@ Pulling latest image...
 
 ### The Fix
 
-Now the cleanup is smart:
+The cleanup checks the image age:
 
 ```bash title="Smart image cleanup"
 # Get cutoff timestamp (7 days ago)
@@ -214,19 +212,9 @@ if [ -n "$image_date" ] && [ "$image_date" -lt "$cutoff_date" ]; then
 fi
 ```
 
-The cleanup now runs after pulling the new image, so it can never remove what it just downloaded. Old images get pruned after 7 days, `<none>` tags are filtered out, and the redundant re-download on every launch is gone.
+The cleanup runs after the pull and filters out `<none>` tags. The age check uses the image creation date, not the time it was downloaded. An image created more than seven days ago can still be the current release, so age alone does not guarantee that cleanup will retain the image just pulled.
 
-## Lessons learned
-
-Cross-platform is genuinely hard. What works on macOS can fail on Windows in ways you won't predict. Test early, or at least make failure modes graceful rather than silent.
-
-Auto-update everything you can. Manual update processes are where scripts go to die, because nobody runs them.
-
-Pass-through beats re-implementation. Don't rebuild what the underlying tool already does - wrap it and get out of the way. That's how `--resume` and every other future Copilot flag just works without any extra effort on my part.
-
-Version your scripts. Future you will thank present you the first time someone files a bug report.
-
-The README is part of the product. A tool that works but confuses people on install might as well not work.
+The changes make the wrapper easier to maintain: version information helps with bug reports, argument forwarding avoids duplicating Copilot's parser, and the installer keeps shell setup in one file. Windows still has the root-user fallback described above, so that warning is worth checking when diagnosing a startup problem.
 
 ## What's next
 
@@ -236,4 +224,4 @@ A few things I'm still poking at:
 - Support for custom Docker registries for enterprise setups
 - A configurable cleanup period, though honestly 7 days hasn't caused complaints yet
 
-The project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here). Install takes three commands and you get Copilot CLI running in a sandboxed container that keeps itself up to date. Give it a try and open an issue if something breaks.
+The project is on GitHub: [copilot_here](https://github.com/GordonBeeming/copilot_here). The installer takes one command and you get Copilot CLI running in a sandboxed container that keeps itself up to date.

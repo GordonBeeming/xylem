@@ -1,112 +1,54 @@
 ---
-title: "The 10x Developer Mindset Isn't About You, It's About Your AI"
+title: 'Building a portfolio site with Gemini, GitHub Spark and Copilot'
 date: 2025-09-17
 tags: ['AI', 'GitHub Spark', 'Gemini', 'Productivity', '10x Developer', 'Leadership', 'DevOps']
-summary: "For 10 years, I promised my wife a new portfolio website. I finally built it in 5 hours. The secret wasn't coding faster; it was realizing that the 10x developer mindset has nothing to do with me, and everything to do with how I lead my AI."
+summary: 'How I used Gemini for the specification, GitHub Spark for a React frontend, and Copilot for refactoring and parallel development on a portfolio site.'
 ---
 
+I built a new portfolio website for my wife, [Tiani Beeming](https://tianibeeming.com), using Gemini to develop the specification, GitHub Spark to generate the initial UI, and GitHub Copilot to work through implementation tasks. The site took about five hours after I'd put it off for roughly ten years.
 
+I'm mostly a backend developer. Getting a portfolio to look right was a large part of why I'd delayed it, and my earlier attempts with v0 and B0lt hadn't produced code I could use in the project. Spark gave me a React starting point I could run and push to a repository. From there, the work was refactoring, reviewing changes and adjusting the UI.
 
-For about 10 years, I'd been promising my wife, [Tiani Beeming](https://tianibeeming.com), that I'd build her a new portfolio website. Like many personal projects, it was one of those "I'll get to it eventually" things that never quite happened.
+## Planning the site with Gemini
 
-Then I finished it in about five hours.
+I had a back-and-forth with Gemini about the portfolio gallery, filter labels and contact page. I treated it as a way to develop the requirements, asking it to consolidate the decisions into a specification.
 
-Not through a sudden burst of productivity or a new JavaScript framework. I stopped being the "doer" and became the "orchestrator," directing a team of AI agents to do the heavy lifting. This project is what really solidified a new idea for me.
+<Figure key="/images/gemini-spec.png" src="/images/gemini-spec.png" alt="A screenshot of a Gemini chat, showing a back-and-forth conversation that results in a detailed project specification for a portfolio website." width="0" height="0" caption="Developing the portfolio specification with Gemini." />
 
-## Redefining the "10x Developer"
+That document became the prompt for Spark. I pasted the full specification rather than summarising it again, so the generation had the details we'd already worked through.
 
-Let's be honest, the term "10x developer" can have a negative feeling around it. For a long time, I felt the same way. It often brings to mind a lone genius who just smashes out more code than everyone else. But I've been thinking of it differently lately: as a **"10x Developer Mindset."**
+## Generating the React frontend
 
-To me, this mindset has two core parts:
+Spark produced a functional React frontend in under five minutes. It was a useful starting point, although the application was still in one large `App.tsx` file.
 
-1.  **Enabling Your Peers:** As an individual contributor, it's about uplifting the team around you. A 10x mindset means you're a force multiplier, enabling more "X" from your peers, not just yourself.
-2.  **Leveraging AI Effectively:** In isolation, especially with the rise of AI, it's about your proficiency in using the right AI tool for the right job, whether that's brainstorming, writing a new feature, or doing a massive refactor.
+<Figure key="/images/spark-generation.png" src="/images/spark-generation.png" alt="A screenshot of the GitHub Spark UI showing a beautifully generated portfolio website based on the spec from Gemini." width="0" height="0" caption="The React frontend generated from the specification." />
 
-This borrows from DevOps principles and a Growth Mindset. It's about collaboration, continuous improvement, and multiplying effectiveness across a system, not just individual output.
+Before assigning separate features, I needed to split that component into pages. I'd found in [my URL shortener project](https://gordonbeeming.com/blog/2025-09-16/my-ai-powered-workflow-building-a-full-stack-app-with-chatgpt-and-github-copilot) that Copilot was easier to review when each issue described a specific task.
 
-This story is about how I put that second part, leveraging AI, into practice.
+## Refactoring before working in parallel
 
-## The Frustration with "Prototype" AI
+I asked Gemini to write a PBI to refactor the monolithic component into a multi-page application using React Router DOM. I created a GitHub issue from that PBI and assigned it to Copilot.
 
-For those of you who know me, you'll know that I am *not* a UI guy. My design sense probably peaked with the gun-metal grey of Windows Forms. Function over form, always.
+<Figure key="/images/multi-page-refactor-pr.png" src="/images/multi-page-refactor-pr.png" alt="A screenshot of the GitHub Pull Request where Copilot refactored the single-page app into a multi-page structure with React Router, showing a detailed summary of the changes." width="0" height="0" caption="Copilot refactoring the application into separate pages." />
 
-A big part of that 10-year delay was the pressure to create something that actually looked modern and professional for Tiani's portfolio. That's a high bar for a backend-focused developer, which is why I was so excited by the promise of AI UI generators.
+Once the pages were separated, I could work on styling while Copilot handled a feature on its own branch. At one point I had two local clones: one for the agent and one for my work. I still reviewed the agent's changes and used the time in the codebase to understand the components Spark had generated.
 
-But my initial attempts were frustrating. You've probably seen the tools that promise to build an app from a prompt. I tried v0 and got a cool-looking UI, but I couldn't get the code to actually work in my project. I tried B0lt, and the exported code wouldn't even run locally. All prototype, no product.
+<Figure key="/images/parallel-work.gif" src="/images/parallel-work.gif" alt="A GIF showing a split screen of a GitHub Issue being worked on by Copilot while the developer is actively coding in VS Code." width="0" height="0" caption="Copilot working on a feature while I make changes separately." />
 
-Then I tried a new workflow.
+Parallel work helped because the tasks could progress independently. I only ran as much at once as I could keep track of; reviewing and integrating the changes was still my responsibility.
 
-## Step 1: The AI as Product Manager (Gemini)
+## Using a React prototype for a Blazor component
 
-Instead of just diving in, I treated Gemini as my Product Manager. A good project starts with a good plan, and I didn't just give it a one-liner. I had a detailed back-and-forth to build out a real specification for Tiani's site.
+After the portfolio was live, I tried a related workflow on another project. Spark had generated a React proof of concept, but the target application used Blazor and an existing control library. I asked Copilot to re-implement the UI using that library.
 
-<Figure key="/images/gemini-spec.png" src="/images/gemini-spec.png" alt="A screenshot of a Gemini chat, showing a back-and-forth conversation that results in a detailed project specification for a portfolio website." width="0" height="0" caption="Having a real conversation with Gemini to hash out the details was key to getting a solid plan." />
+It took several rounds of PR review. I pointed out styling differences and missing logic, and Copilot revised the component.
 
-We clarified details about the portfolio gallery, the filter labels, and the contact page. The result was a solid, consolidated spec. The better the input, the better the output.
+<Figure key="/images/blazor-conversion-pr.png" src="/images/blazor-conversion-pr.png" alt="A screenshot of the GitHub Pull Request showing multiple review sessions and feedback loops to convert a component to Blazor." width="0" height="0" caption="Reviewing the Blazor implementation and requesting changes." />
 
-## Step 2: The AI as UI Designer (GitHub Spark)
+The React prototype gave the agent a concrete UI to work from. That made it useful even though the final application used a different framework.
 
-With the spec in hand, I went over to GitHub Spark. I didn't summarize the plan. I pasted the *entire requirement document* from Gemini directly into the prompt.
+## Reviewing the work
 
-What came back genuinely surprised me.
+A conversation with [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) helped me describe what this felt like. I don't remember his exact wording, but we compared reviewing an agent's work with mentoring a junior developer: give it a clear task, expect to review the first attempt, and explain what needs to change.
 
-<Figure key="/images/spark-generation.png" src="/images/spark-generation.png" alt="A screenshot of the GitHub Spark UI showing a beautifully generated portfolio website based on the spec from Gemini." width="0" height="0" caption="This was the 'wow' moment. A complete, great-looking starting point in seconds." />
-
-In under 5 minutes, I had a good-looking, functional React frontend that I could push directly to a new GitHub repository. Not a flimsy prototype — a solid foundation I could actually build on.
-
-## Step 3: The Critical Refactor - Unlocking Parallel Work
-
-So I have a great starting point, but it's all in one giant `App.tsx` file. A monolithic structure is a roadblock, and this is something I've learned from my recent experiments with AI agents, like the ones I [covered in my last post](https://gordonbeeming.com/blog/2025-09-16/my-ai-powered-workflow-building-a-full-stack-app-with-chatgpt-and-github-copilot). A specific, well-defined task gives an agent like GitHub Copilot something real to work with. A vague prompt gives you vague results.
-
-My first step wasn't to hack at the code myself. I went back to Gemini and asked it to write a PBI for the task: "Refactor the application from a single monolithic component into a true multi-page app structure using React Router DOM."
-
-With that focused PBI in hand, I created a new GitHub issue and assigned it directly to Copilot.
-
-<Figure key="/images/multi-page-refactor-pr.png" src="/images/multi-page-refactor-pr.png" alt="A screenshot of the GitHub Pull Request where Copilot refactored the single-page app into a multi-page structure with React Router, showing a detailed summary of the changes." width="0" height="0" caption="The key was getting the AI to write a specific PBI for the AI developer to execute. Better instructions lead to better outcomes." />
-
-This step was the key that unlocked the next, most powerful part of the workflow.
-
-## Step 4: The Human/AI Parallel Workflow
-
-Now that the codebase was modular, I could stop working sequentially. I could finally work in parallel. I was no longer the bottleneck, but that didn't mean I was hands-off.
-
-While the AI worked on a feature in its own branch, I was in the codebase myself. Making small styling tweaks, building my mental model of the architecture, getting a feel for the code Spark and Copilot were generating.
-
-At one point I cloned the repository twice on my machine: one directory for the Copilot agent, one for me. Genuine parallel development. That's where the speed came from.
-
-<Figure key="/images/parallel-work.gif" src="/images/parallel-work.gif" alt="A GIF showing a split screen of a GitHub Issue being worked on by Copilot while the developer is actively coding in VS Code." width="0" height="0" caption="True parallel development: the AI agent works on its branch while I work on mine. No more waiting." />
-
-## The Bonus Round: From React POC to Working Blazor
-
-After the portfolio site was live, I wanted to see how far this workflow could stretch. I had another project where Spark had generated a great React proof of concept for a piece of UI, but the target project used Blazor with a standard control library.
-
-I didn't ask Copilot to "convert" the code. I asked it to re-implement the React POC as a fully working Blazor component using the project's control library.
-
-The first pass was decent but not there yet. It took several rounds of review in the Pull Request to get it right. I'd flag a styling issue or a missing piece of logic, the agent would go away and refine it, and we'd go again.
-
-<Figure key="/images/blazor-conversion-pr.png" src="/images/blazor-conversion-pr.png" alt="A screenshot of the GitHub Pull Request showing multiple review sessions and feedback loops to convert a component to Blazor." width="0" height="0" caption="It wasn't a single shot. It took a genuine back-and-forth review process to get the Blazor component perfect." />
-
-This unlocked something I hadn't anticipated. Tools like GitHub Spark are focused on popular frameworks like React, and that's fine. But the React code isn't really the point. The real value is using that fully-formed UI as a blueprint. Prototype in React, hand it to an agent as a detailed spec, get it re-implemented in whatever stack you actually need. It's a good way to bridge the gap between UI design and implementation in your target tech stack.
-
-## The Leadership Parallel: Mentoring Your AI
-
-I was chatting with [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) (again) and we landed on something I keep coming back to. I'm paraphrasing because I don't remember the exact words, but the gist was: working with AI agents feels a lot like mentoring a junior developer.
-
-Think about it. To get the best out of a junior dev, you need:
-* Patience — you don't expect their first attempt to be perfect.
-* Clear instructions — well-defined tasks, not vague ideas.
-* Constructive feedback — review their code, explain the "why", guide them toward a better solution.
-* Trust — believe they can learn from that feedback loop.
-
-That's the same skillset you need to work with AI agents effectively. The quality of the outcome reflects your ability to lead. Write clear PBIs (and using another agent to help you write them is a smart move), review the PRs, and have the patience to iterate. I've found this whole process makes you a better technical leader too — you get a lot of reps at giving precise, useful feedback. You have to work *with* your AI, not against it.
-
-## Conclusion: The 10x Orchestrator Mindset
-
-So what does it mean to be a "10x developer" in the age of AI? It's about leverage, not typing speed.
-
-* Use tools like Gemini to think through the what and the why. A good spec is everything.
-* Use tools like GitHub Spark and Copilot to handle the how. Delegate the execution.
-* Don't wait. While your AI agent is building a feature, plan the next one. Only parallelize to the degree you can keep track of what's going on — like any skill, this gets easier with practice.
-* Stay in the loop. You're the quality control. You have the vision.
-
-The role shift is from doer to orchestrator. That's the 10x developer mindset I've landed on.
+I've used “10x developer mindset” to describe helping others get more done as well as using AI effectively. The useful part of that idea here was fairly concrete. I spent time defining tasks and giving feedback while the tools handled more of the implementation. The portfolio was live, and the workflow I'd keep was a detailed specification, separate tasks and a review loop for each change.

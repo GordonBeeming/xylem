@@ -1,100 +1,60 @@
 ---
-title: "It's Always DNS: A TCP Tunnel Debugging Story"
+title: 'Troubleshooting SMTP connectivity between Azure Container Apps and Cloudflare Tunnel'
 date: 2025-10-16
 tags: ['Azure', 'Cloudflare', 'Networking', 'DNS', 'Docker']
-summary: "Exposing a development tool from Azure Container Apps via a Cloudflare Tunnel should be simple. But when TCP traffic refuses to connect, it begins a debugging journey that, as always, ends with DNS."
+summary: 'Checking the app listener, exposed TCP port and tunnel service configuration when smtp4dev HTTP access works but SMTP connections fail.'
 ---
 
+I was exposing `smtp4dev` from Azure Container Apps through a Cloudflare Tunnel so a distributed team could use the mail catcher. Its HTTP web UI worked, but SMTP connections timed out. The useful checks were the SMTP listener, Azure's additional TCP port, and the service address used by `cloudflared`.
 
+Switching to the short app name was part of the working configuration, but the saved tests don't isolate the hostname as the cause.
 
-We've all been there. You have a simple goal that should take 15 minutes, but hours later you're deep in network troubleshooting with no end in sight. My goal was straightforward: securely expose a development mail-catcher tool, `smtp4dev`, running in an Azure Container App Environment to the internet using a Cloudflare Tunnel.
+## The setup
 
-It's a good pattern for giving distributed teams access to internal tools without dealing with VPNs or public IP addresses. But this time, it just wouldn't work.
+There were two apps in the same Container Apps environment:
 
-## The Setup
+- `mail-catcher-app`, running `smtp4dev` with a web UI and an SMTP listener on port `2525`.
+- `tunnel-agent-app`, running `cloudflared`, with separate published hostnames for the web UI and SMTP service.
 
-The architecture has three parts:
-1.  **A "Mail Catcher" Container App (`mail-catcher-app`):** Running the `smtp4dev` image, this app accepts SMTP traffic on a TCP port and exposes a web UI.
-2.  **A "Tunnel Agent" Container App (`tunnel-agent-app`):** Running the `cloudflared` agent in a separate container within the same environment.
-3.  **A Cloudflare Tunnel:** Configured with two public hostnames, one for the HTTP web UI and one for the TCP SMTP traffic.
+HTTP ingress served the web UI, with an additional TCP port for SMTP. A successful request to the web UI only checked the HTTP route; it didn't verify the SMTP port.
 
-HTTP worked straight away. TCP? Nothing. Time to start eliminating variables.
+## Check the listener and exposed port
 
-## Step 1: Check the obvious - ports and ingress
+The app log said `SMTP Server is listening on port 2525 (::)`. That established that the application had opened a listener, but not that the tunnel agent could reach it.
 
-My first suspect was a port mismatch. In Azure Container Apps, to expose both HTTP and TCP traffic, you configure the main ingress for HTTP and then add an "Additional TCP port". I set the main ingress for HTTP on port 80 and added TCP port `2525`.
+Check the additional TCP port's target and exposed port separately. The target must match the application's listener; clients connect to the exposed port. Azure defaults the exposed port to the target port when it isn't specified. The examples here use `2525` for both. [Microsoft's ingress documentation](https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview#additional-tcp-ports) describes these mappings and the visibility restrictions.
 
-I double-checked the Cloudflare Tunnel config was pointing the TCP service at port `2525`.
+## Test from the tunnel agent
 
-Still nothing. Connection timed out every time.
+Run the connectivity test inside `tunnel-agent-app`, where `cloudflared` makes its connection. My image didn't have `telnet` or `nc`, so I used Bash's `/dev/tcp` support:
 
-## Step 2: Can the containers even talk to each other?
-
-Is this a Cloudflare problem or an internal Azure network problem? The only way to know is to test from inside the environment. I dropped a shell into `tunnel-agent-app` to check if it could reach `mail-catcher-app` directly.
-
-My containers are locked down with no `telnet` or `nc`. `bash` has a built-in TCP test that works fine as a substitute:
-
-```bash title="Terminal"
-# This command attempts to open a TCP connection to the specified host and port.
-# It's a great alternative when telnet/nc are not available.
-
+```bash title="TCP connectivity check"
+# Replace HOST and PORT with the origin hostname and exposed port.
 (echo > /dev/tcp/HOST/PORT) &> /dev/null && echo "Success" || echo "Failure"
-````
-
-I ran the test against both the HTTP port and the SMTP port:
-
-```bash title="Terminal"
-# Test the HTTP port (web UI)
-$ (echo > /dev/tcp/mail-catcher-app/80) &> /dev/null && echo "Success" || echo "Failure"
-Success
-
-# Test the TCP port (SMTP)
-$ (echo > /dev/tcp/mail-catcher-app/2525) &> /dev/null && echo "Success" || echo "Failure"
-Failure
 ```
 
-Port 80 succeeded. Port 2525 failed. That narrowed it down considerably - the containers could see each other on the network, but `mail-catcher-app` wasn't accepting connections on the SMTP port from other containers.
+For this setup, the short-name check is:
 
-### Step 3: A confusing contradiction
-
-Here's where it got weird. I had two facts that couldn't both be true at the same time.
-
-What was correctly configured:
-
-* **Azure Ingress:** The `mail-catcher-app` had the "Additional TCP port" set up and enabled for `2525`. The Azure Portal showed everything in order.
-* **Application Logs:** The logs inside `mail-catcher-app` said `SMTP Server is listening on port 2525 (::)`. The app was up, listening on the right port, on all interfaces.
-
-And then the thing that contradicted all of it:
-
-* **Network Test:** The `bash` test from `tunnel-agent-app` to `mail-catcher-app` on port 2525 still timed out.
-
-App listening: yes. Network path configured: yes. Connection working: no. When you've got a running application that says it's listening but nothing on the same internal network can reach it, the problem is usually somewhere in the path between the two, not in the app itself.
-
-### The final twist: it's always DNS
-
-The only variable I hadn't changed was the hostname. And I almost didn't touch it, because the Azure FQDN was already working fine for the HTTP web UI:
-
-`mail-catcher-app.internal.region.azurecontainerapps.io`
-
-My `cloudflared` agent was connecting to `http://mail-catcher-app.internal.region...io` without any issue. So why would the same hostname work for HTTP on port 80 but fail for TCP on port 2525?
-
-That was the red herring I'd been chasing. On a hunch, I switched to the short internal service name in my `bash` test:
-
-```bash title="Terminal"
-# Test the TCP port with the SHORT name
-$ (echo > /dev/tcp/mail-catcher-app/2525) &> /dev/null && echo "Success" || echo "Failure"
-Success
+```bash title="Check the SMTP port from the tunnel agent"
+(echo > /dev/tcp/mail-catcher-app/2525) &> /dev/null && echo "Success" || echo "Failure"
 ```
 
-It worked. Immediately.
+`Success` means a TCP connection opened. It doesn't verify SMTP authentication, message delivery or the client side of the Cloudflare Tunnel. A timeout can also take a while to return; interrupt the check if needed.
 
-The FQDN resolves to the public edge of the Container App Environment. That managed ingress handles HTTP traffic but knows nothing about the internal-only "Additional TCP ports". When `cloudflared` tried to reach port 2525 via the FQDN, the traffic hit the public ingress, which had no idea what to do with it.
+If comparing the short name with an FQDN, repeat the test using the exact FQDN from the app's ingress settings and keep the command beside its output. Use the full value from Azure, including the environment identifier and region, rather than an abbreviated example address.
 
-The short name `mail-catcher-app` goes through the Container Apps environment's internal DNS, which resolves to the container's private IP directly, skipping the public ingress entirely.
+Azure supports app-name addressing within an environment. Its documentation also describes FQDN-based communication within the environment. An `.internal.` FQDN isn't evidence that traffic went to a public endpoint, and the short name doesn't establish a direct connection to a container's private IP that bypasses ingress. [Microsoft's app communication documentation](https://learn.microsoft.com/en-us/azure/container-apps/connect-apps) explains the service-discovery and proxy routing involved.
 
-I updated the service URL in the Cloudflare Tunnel config:
-`https://mail-catcher-app:2525`
+## Configure a TCP origin for SMTP
 
-The tunnel connected. SMTP traffic started flowing. Hours of debugging, and the fix was using the right hostname for the job.
+For the SMTP published route, the origin service should use TCP:
 
-It's always DNS.
+```text title="Cloudflare Tunnel SMTP service"
+tcp://mail-catcher-app:2525
+```
+
+An `https://` origin expects HTTP over TLS; it won't route an ordinary SMTP connection. Cloudflare's [published application protocols](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/) use `tcp://` for arbitrary TCP services. Keep the web UI on its own HTTP or HTTPS route.
+
+The published TCP hostname also requires a compatible client connection. For this routing mode, clients use `cloudflared access tcp` to establish a local connection, then point the SMTP client at that local listener. Publishing the hostname doesn't make it an ordinary public SMTP endpoint.
+
+Once the tunnel agent can reach the TCP origin, test an SMTP submission from the intended client and check that the message appears in `smtp4dev`. That checks the full path that an HTTP request to the web UI leaves untested.

@@ -2,22 +2,14 @@
 title: 'Ghostty tab titles from git repo names'
 date: 2026-03-11
 tags: ['Ghostty', 'Terminal', 'Zsh', 'Git', 'Productivity']
-summary: 'Terminal tab titles normally show the running process name, so when every panel is running Claude Code or copilot they all look the same. A small zsh hook fixes this by showing the git repo name instead.'
+summary: 'Using a zsh hook and Ghostty configuration to show the git repo name in terminal tab titles.'
 ---
 
-Terminal tab titles normally show the name of the running process: `zsh`, `node`, `python`, whatever is active. When nothing specific is running, they fall back to the working directory path. This works fine most of the time.
+When I run Claude Code and GitHub Copilot CLI across several Ghostty tabs, process names such as "claude" and "copilot" don't tell me which project is open. I wanted each tab to show the git repo name, with a short directory path as the fallback outside a repo.
 
-Until you start running AI coding tools.
-
-When you've got four panels in a single Ghostty tab, Claude Code in one, GitHub Copilot CLI in another, a couple of regular shells, the tabs all show the same thing: "claude" or "copilot". Switch to a different repo in another tab with the same layout and now you've got eight panels across two tabs and every title says either "claude" or "copilot". You have to scan the actual output in each panel to spot a file path and figure out which project you're looking at.
+A zsh hook sets the title, and a Ghostty setting stops its shell integration from overwriting it.
 
 If you're using [copilot_here](https://github.com/gordonbeeming/copilot_here) (my sandboxed Docker wrapper for GitHub Copilot CLI), this is actually better. It sets custom tab titles that tell you what's going on at a glance. Normal mode shows "🤖 xylem", YOLO mode (auto-approve everything) shows "🤖⚡️ xylem", and if you've got [Airlock](https://github.com/gordonbeeming/copilot_here#network-airlock) enabled (the secure network isolation mode that restricts which domains the container can reach) you get "🤖 xylem 🛡️". You can immediately tell which project, which mode, and whether network isolation is active, all from the tab title. But it only applies to the copilot_here panels, not to your Claude Code sessions or regular shells.
-
-I wanted something that works everywhere, at the shell level, for every panel and every tab.
-
-## What I wanted
-
-Simple: if I'm inside a git repo, show the repo name as the tab title. If I'm in `~/Developer/github/gordonbeeming/xylem/src/components`, the tab should say "xylem" — not "claude", not the full path, not just "components". If I'm not in a git repo, show enough of the path to be useful.
 
 ## The fix
 
@@ -68,7 +60,7 @@ The `echo -ne "\e]0;...\a"` part is an [OSC 0 escape sequence](https://invisible
 
 ### The Ghostty config
 
-This is the part that tripped me up. I added the zsh hook, reloaded my shell, and... nothing changed. The tab still showed the directory path.
+After adding the zsh hook and reloading my shell, the tab still showed the directory path.
 
 Ghostty's built-in shell integration sets the tab title to the working directory, and it was overwriting my custom title on every prompt. The fix is one line in your Ghostty config (`~/.config/ghostty/config`):
 
@@ -92,12 +84,4 @@ The keyboard shortcuts I use:
 - `Ctrl+Tab` / `Ctrl+Shift+Tab` to navigate between tabs
 - `Cmd+Option+Arrows` to move focus between panels within a tab
 
-With repo-named tabs, I can have three or four projects open and `Ctrl+Tab` between them without squinting at paths to figure out which tab is which. The tab just says "xylem" or "ClaudeNest" or whatever I'm working on, regardless of which subdirectory any of the panels are in.
-
-## The result
-
-Before this, every tab said "claude" or "copilot" or "zsh" depending on what was running. Two tabs working on different repos looked identical. You had to scan terminal output to figure out where you were.
-
-Now the tab says "xylem". Every panel in that repo shows the same title, whether it's running Claude Code, Copilot, or a plain shell. `cd` into a subdirectory and it's still "xylem". Switch to `/tmp` and the tab says "tmp". Navigate to a non-repo path like `~/Developer/github/gordonbeeming` and it shows "Developer/github/gordonbeeming" (last three segments, enough to orient yourself).
-
-Small change. Makes a real difference when you're juggling multiple projects.
+With this configuration, a tab in the `xylem` repo keeps that name as I move between its subdirectories. Outside a repo, the last three path segments give me enough context to identify the directory.

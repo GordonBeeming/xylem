@@ -1,21 +1,17 @@
 ---
-title: 'Deep Code Archaeology with GitHub Copilot CLI: Tracing a Bug Through 6 Months of Git History'
+title: 'Investigating a data migration bug with GitHub Copilot CLI and Git history'
 date: 2025-10-27
 tags: ['GitHub Copilot', 'Debugging', 'Git', 'DevOps']
-summary: 'An archival operation failing on templates created months ago. The kind of investigation that traditionally takes hours of git archaeology. I wondered, could GitHub Copilot CLI handle this kind of deep historical analysis? Turns out, yes. While I made coffee.'
+summary: 'Using Copilot CLI to trace missing cleanup data through Git history, identify affected records and compare migration and fallback options.'
 ---
 
 
 
-Template archival was failing with "Cleanup Handlers Invalid" for templates created back in June, but templates from September onwards worked fine. A quick database check showed `CleanupFlagsJson` was NULL for the older ones.
+Template archival was failing with "Cleanup Handlers Invalid" for some older templates, while recently created ones worked. A database check showed `CleanupFlagsJson` was NULL for the affected records. I asked GitHub Copilot CLI to trace the creation and archival code through Git history and identify which records needed attention.
 
-Classic sign of a refactor that fixed new records but left old data behind. Normally that means hours of `git log`, `git show`, and `git diff` across months of history, manually connecting dots across commits while building a timeline in your head.
+The investigation found a change that populated cleanup flags for new templates without migrating older data. Copilot produced a timeline, assessment queries and remediation options. I spent about five minutes writing the prompt, and it ran for roughly 25 minutes while I worked on other things.
 
-I wanted to see if GitHub Copilot CLI could handle this kind of deep historical dig instead.
-
-It could. While I made coffee.
-
-## The investigation challenge
+## What needed investigating
 
 The scenario: a document generation platform where some templates created between May and August couldn't be archived. Templates from September onwards were fine.
 
@@ -37,17 +33,15 @@ public class DocumentTemplate
 }
 ```
 
-Three questions: when was this introduced, why weren't old records migrated, and what's the blast radius?
+I wanted to know when the missing data originated, whether a migration had been added, and which records were affected.
 
-The challenge: 50K+ lines of code, 200+ commits in the last 6 months, 15+ files potentially involved in template operations.
+The repository had more than 50,000 lines of code and 200 commits across the previous six months, with more than 15 files potentially involved in template operations.
 
-## The experiment
+## The investigation prompt
 
-The traditional approach would be 4-6 hours of manual git investigation: `git log` through 200+ commits, `git show` on each suspect commit, `git diff` to compare states, reading through code changes, building a mental timeline, documenting findings.
+I expected a manual investigation to take several hours, but that was an estimate. I didn't run the same investigation manually to measure the difference.
 
-I wanted to see if Copilot CLI could do this autonomously instead.
-
-I'm running Copilot CLI in a secure Docker container using my `copilot_yolo -dotnet` configuration ([detailed here](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox)), which sandboxes Copilot's access while still letting it work with the codebase.
+I ran Copilot CLI in a Docker container using my `copilot_yolo -dotnet` configuration ([detailed here](https://gordonbeeming.com/blog/2025-10-03/taming-the-ai-my-paranoid-guide-to-running-copilot-cli-in-a-secure-docker-sandbox)), which sandboxes Copilot's access while still letting it work with the codebase.
 
 ```bash title="Terminal"
 copilot_yolo -dotnet
@@ -57,13 +51,9 @@ copilot_yolo -dotnet
 
 > I have a bug where archiving templates created in June gives me the error "Cleanup Handlers Invalid". In the database, these templates have a null value for CleanupFlagsJson. The template was created on 2025-06-15. Can you investigate how the data could have become like this? Search through git history to identify changes to create/update/archive templates since May, and trace where it went wrong. I need to know the blast radius.
 
-Then I walked away to work on other things.
+The prompt included the error, field name, an affected record date and a starting point for the history search. Those gave the agent concrete places to look.
 
-- Active time I spent: ~5 minutes (writing the prompt)
-- Time Copilot spent investigating: ~25 minutes (in background)
-- Time I spent waiting: 0 minutes (worked on other things)
-
-## What Copilot did autonomously
+## Tracing the code and history
 
 ### Phase 1: Find the current state
 
@@ -197,7 +187,9 @@ public async Task<Result<TemplateResponse>> Execute(CreateTemplateRequest reques
 
 ### The archive operation (where it broke)
 
-The archival endpoint expected cleanup flags to exist:
+The archival endpoint expected cleanup flags to exist. These are excerpts of the relevant logic:
+
+The snippets are excerpts rather than a runnable reproduction. In particular, the archive example calls `JsonSerializer.Deserialize` before checking the result; passing a null string can throw before reaching the displayed “Cleanup Handlers Invalid” branch. The null guard in Option 2 avoids that call. Check the actual error-handling path when applying this pattern to another codebase. [Microsoft's Deserialize API reference](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer.deserialize) documents the null-input exception.
 
 ```csharp title="ArchiveTemplate.cs"
 // ArchiveTemplate.cs
@@ -270,9 +262,9 @@ October 27, 2025
  Archival attempted, issue discovered
 ```
 
-## The blast radius
+## Checking affected records
 
-Copilot didn't stop at finding the bug. It also generated SQL queries to assess the damage:
+Copilot generated SQL to find active templates with missing cleanup flags in the relevant date range:
 
 ```sql title="Find affected templates"
 -- Find affected templates
@@ -290,7 +282,7 @@ WHERE t.CleanupFlagsJson IS NULL
 ORDER BY t.CreatedOn;
 ```
 
-47 templates affected - not all templates from that period, just those that hit the edge case. All created between May 15 and September 2, all still active, all blocked from archival.
+The assessment identified 47 affected templates created between May 15 and September 2. They were still active and blocked from archival; other templates from that period were unaffected.
 
 Copilot also checked related operations:
 
@@ -399,23 +391,13 @@ if (template.CleanupFlagsJson == null)
 }
 ```
 
-We went with Option 1 for the clean fix with no technical debt. For templates where the feature data was more complex or missing, we combined Options 1 and 2 to handle the different cases.
+We used Option 1 to backfill the missing data. For templates where the feature data was more complex or missing, we combined Options 1 and 2 to handle the different cases.
 
-## The results
+## Reviewing the investigation
 
-After ~25 minutes running in the background, Copilot delivered a 3,200-word investigation document with a complete timeline, 5 key commits identified and analyzed, SQL queries ready to run, 3 remediation options with code samples, and a clear blast radius of 47 affected templates.
+Copilot's output was a roughly 3,200-word document covering five key commits, the timeline, SQL queries and three remediation options. The excerpts above show two of those commits. The original tally also recorded more than 50 commits covered within the broader six-month history.
 
-Root cause: edge case in the template creation code path from May-August. Fixed on September 3, 2025. No migration for existing NULL records, so old data stayed broken.
-
-Time comparison:
-- Traditional manual approach: 4-6 hours
-- Copilot CLI approach: 5 minutes active, 0 minutes waiting
-- Coverage: 6 months of git history, 50+ commits
-
-## What made this work
-
-### Parallel processing
-Copilot ran multiple git commands simultaneously:
+It ran independent history searches concurrently, using commands such as:
 
 ```bash title="Terminal"
 # All running at the same time
@@ -425,27 +407,6 @@ git log --since="2025-05-01" -- CleanupWorkflowRegistry.cs &
 find . -name "*.cs" | xargs grep -l "CleanupFlagsJson" &
 ```
 
-### Pattern recognition across git history
-It connected the error message to a code location, traced that location through commits, found the related refactors, and landed on the September change that split old and new behavior.
+The useful connection was between the creation path, the later archival code and the absence of a backfill. That explained why fixing new records hadn't repaired the existing ones.
 
-### Context retention
-Once it found the September refactor, it went further automatically: comparing before/after states, checking for data migrations, identifying the vulnerable time window, and generating validation queries.
-
-### Auto-documentation
-The whole investigation ended up in a structured markdown file with timeline diagrams, code snippets, SQL queries, and remediation options. That becomes a permanent artifact you can share with the team.
-
-## What this means for complex investigations
-
-This type of bug - "it worked last month, something changed somewhere in 200 commits" - used to just cost half a day. You'd block your calendar, grab coffee, and grind through git history. Now I can hand it off in 5 minutes and come back to a complete writeup.
-
-It's not a silver bullet. Copilot still needs a clear prompt and a well-structured codebase to navigate. But for the right problems, it's genuinely useful:
-
-- "It worked last month" mysteries
-- Data corruption root cause analysis
-- Blast radius assessments
-- Multi-file architectural change audits
-- Production bug origin stories
-
-The investigation runs while you're doing something else. The output is already documented. That's worth a lot.
-
-Tools used: GitHub Copilot CLI, Git, SQL Server. Time saved: ~4 hours. Coffee consumed: 1 cup.
+I estimated the manual work at four to six hours, so the result was useful, but that estimate isn't a measured saving. The recorded five minutes covered prompting, not every later review or remediation step. What I kept from the workflow was the documented investigation: a traceable change, queries to check its scope and code options I could review before choosing a fix.

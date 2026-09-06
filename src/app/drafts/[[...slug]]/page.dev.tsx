@@ -14,21 +14,11 @@ export const metadata: Metadata = {
 
 const ui = { fontFamily: "var(--font-ui)" };
 
-/** Returning no params in a production build means the export emits nothing at
- *  all for this route, so /drafts is a real 404 rather than a page that answers
- *  200 with 404 content. NODE_ENV is inlined at build time. */
 export function generateStaticParams() {
-  if (process.env.NODE_ENV === "production") return [];
   return [{ slug: [] }, ...getDraftSlugs().map((slug) => ({ slug: [slug] }))];
 }
 
 export default async function DraftsPage({ params }: { params: Promise<{ slug?: string[] }> }) {
-  // Belt and braces: the route emits nothing in production, and refuses to
-  // render even if it somehow did.
-  if (process.env.NODE_ENV === "production") {
-    notFound();
-  }
-
   const { slug } = await params;
 
   // One segment means a single draft; none means the index.

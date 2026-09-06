@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Libre_Baskerville, Libre_Franklin, Courier_Prime } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
+import { SiteSearchProvider } from "@/components/ui/SiteSearchProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
@@ -89,9 +90,11 @@ export default function RootLayout({
       <body className="bg-surface-primary text-text-primary antialiased">
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
-          <Header siteConfig={siteConfig} />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <SiteSearchProvider>
+            <Header siteConfig={siteConfig} />
+            <main id="main-content">{children}</main>
+            <Footer />
+          </SiteSearchProvider>
         </ThemeProviders>
       </body>
     </html>

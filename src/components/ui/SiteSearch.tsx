@@ -1,49 +1,20 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
-import { CommandPalette, type SearchableItem } from "@/components/ui/CommandPalette";
+import { useState } from "react";
+import { useSiteSearch } from "@/components/ui/SiteSearchProvider";
 import styles from "./SiteSearch.module.css";
 
 /**
  * The sidebar search field, in the shape a blog of this era would have had.
  *
- * It lives in the rail rather than the header, so it is the only way to reach
- * search on the site; every page with a rail should render it.
- *
- * It is an entry point rather than a second search: whatever is typed here is
- * handed to the command palette, which owns the index and the results. That
- * keeps one implementation and one set of behaviours.
+ * It hands whatever is typed here to the command palette via
+ * `SiteSearchProvider`, which owns the index and the results. That palette
+ * is also reachable through Cmd+K on every page, so this field is a second
+ * entry point rather than the only one.
  */
 export function SiteSearch() {
-  const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [items, setItems] = useState<SearchableItem[]>([]);
-  const loadedRef = useRef(false);
-
-  // The index is only worth fetching once somebody actually reaches for search.
-  const loadIndex = useCallback(async () => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
-    try {
-      const response = await fetch("/search-index.json");
-      if (!response.ok) {
-        throw new Error(`search index returned ${response.status}`);
-      }
-      setItems((await response.json()) as SearchableItem[]);
-    } catch (error) {
-      loadedRef.current = false;
-      console.error("Failed to load the search index:", error);
-    }
-  }, []);
-
-  const openWith = useCallback(
-    (value: string) => {
-      setQuery(value);
-      setIsOpen(true);
-      void loadIndex();
-    },
-    [loadIndex]
-  );
+  const { openWith, preload } = useSiteSearch();
 
   return (
     <>
@@ -61,22 +32,17 @@ export function SiteSearch() {
           aria-label="Search this site"
           placeholder="Search"
           className={styles.searchInput}
-          onFocus={() => void loadIndex()}
-          onChange={(event) => openWith(event.target.value)}
+          onFocus={preload}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            openWith(event.target.value);
+          }}
         />
         <button type="submit" className={styles.searchGo}>
           Go
         </button>
       </form>
       <p className={styles.searchHint}>Searches posts, projects and nuggets.</p>
-
-      <CommandPalette
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        items={items}
-        query={query}
-        onQueryChange={setQuery}
-      />
     </>
   );
 }

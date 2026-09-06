@@ -73,12 +73,10 @@ async function fetchFont(family, weight) {
   return Buffer.from(await resp.arrayBuffer());
 }
 
-// Georgia (the site's --font-heading/--font-body) isn't on Google Fonts, so
-// PT Serif and PT Mono match the site faces; Satori needs them fetched, which
-// can only render fonts it's handed as file data. IBM Plex Mono still
-// covers the card's mono labels; the site's own --font-mono (Courier New)
-// is a local system face Satori has no way to load.
-const [gelasioBold, gelasioRegular, plexMono] = await Promise.all([
+// The site's faces are Libre Baskerville (body/headings) and Courier Prime
+// (mono). Satori can only render a font it's handed as file data, so both
+// get fetched from Google Fonts and registered under their real names below.
+const [libreBaskervilleBold, libreBaskervilleRegular, courierPrime] = await Promise.all([
   fetchFont('Libre+Baskerville', 700),
   fetchFont('Libre+Baskerville', 400),
   fetchFont('Courier+Prime', 400),
@@ -278,9 +276,9 @@ for (const post of posts) {
       width: 1200,
       height: 630,
       fonts: [
-        { name: 'Gelasio', data: gelasioBold, weight: 700, style: 'normal' },
-        { name: 'Gelasio', data: gelasioRegular, weight: 400, style: 'normal' },
-        { name: 'IBM Plex Mono', data: plexMono, weight: 400, style: 'normal' },
+        { name: 'Libre Baskerville', data: libreBaskervilleBold, weight: 700, style: 'normal' },
+        { name: 'Libre Baskerville', data: libreBaskervilleRegular, weight: 400, style: 'normal' },
+        { name: 'Courier Prime', data: courierPrime, weight: 400, style: 'normal' },
       ],
     }
   );

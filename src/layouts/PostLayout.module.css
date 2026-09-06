@@ -1,0 +1,55 @@
+/* PostLayout — the reading column and rail additions described in
+   SidebarPost.dc.html / SidebarPostPhone.dc.html. `.post-wrap` / `.post-main`
+   / `.post-aside` (the grid, the breakpoint, the well) are shared classes
+   owned by prose.css; this module only covers what's local to this layout. */
+
+/* The article's own measure — related posts, prev/next and the author card
+   render at the full post-main width instead. */
+.measure {
+  max-width: 720px;
+}
+
+.sectionHeading {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 13px;
+}
+
+/* Only the Toc scrolls with the reader; About/Recent posts sit below it in
+   normal flow so a short Toc doesn't leave them pinned off-screen. */
+.railStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.aboutCard {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 16px;
+}
+
+.aboutBlurb {
+  margin: 0 0 10px;
+  font-size: var(--text-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--text-muted);
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recentLink {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--text);
+  text-decoration: none;
+}

@@ -2,35 +2,29 @@
 title: 'Fixing iTerm2 Initial Directory: When the UI fails, use the Shell'
 date: 2026-01-14
 tags: ['iTerm2', 'macOS', 'Zsh', 'Productivity']
-summary: 'Setting your initial directory in iTerm2 should be simple. But sometimes, despite your best efforts in the settings UI, you keep landing in the root directory. Here is the "brute force" fix to get you back into your workspace.'
+summary: 'Using iTerm2’s Send text at start setting to open new terminal sessions in a chosen working directory when the Initial Directory setting does not take effect.'
 ---
 
-You know those moments where you set a preference in an app, click save, and the app just... ignores you?
+I wanted new iTerm2 sessions on my MacBook to start in my GitHub folder, as they had in Warp. The profile's Initial Directory setting looked correct, but new tabs kept opening at `/`. Setting **Send text at start** to run a `cd` command worked around it.
 
-I recently ran into this with iTerm2 on my MacBook. I wanted every new terminal session to start in my GitHub folder, like I had set up in Warp. But no matter what I did in the profile settings, I kept landing at `/`.
-
-I even tried giving iTerm2 "Full Disk Access" in macOS to see if that would help. It didn't.
+I also tried granting iTerm2 Full Disk Access in macOS, which didn't change the behaviour. I wanted to keep using iTerm2 because `opencode` worked better there than in Warp.
 
 ## The Problem
 
 In iTerm2, you should be able to go to your Profile settings and simply define your "Initial Directory." It looks correct and the path is valid, but when you hit `Cmd + T` for a new tab, you are greeted by this:
 
-<Figure 
-  key="/images/iterm2-wrong-directory-root.png" 
-  src="/images/iterm2-wrong-directory-root.png" 
-  alt="iTerm2 prompt showing the current directory as the root slash" 
-  width="0" 
-  height="0" 
-  caption="Welcome to / ... not exactly where I wanted to be. 🙃" 
+<Figure
+  key="/images/iterm2-wrong-directory-root.png"
+  src="/images/iterm2-wrong-directory-root.png"
+  alt="iTerm2 prompt showing the current directory as the root slash"
+  width="0"
+  height="0"
+  caption="A new iTerm2 tab opening at / despite the configured initial directory"
 />
 
-Not exactly the productivity boost I was looking for. That said, `opencode` works better in iTerm than Warp, so I needed to make it work.
+## Set the directory after the shell starts
 
-## The "Hack" Solution
-
-After checking for hidden `cd` commands in my `.zshrc` and toggling every "Advanced Configuration" option I could find, I went for the brute force approach.
-
-If iTerm2 won't *start* in the right directory using the standard UI setting, just tell it to *move* there the moment it opens.
+I checked for hidden `cd` commands in `.zshrc` and tried the Advanced Configuration options without resolving it. The workaround is to run a command after the session opens.
 
 ### The Fix
 
@@ -50,13 +44,13 @@ src="/images/iterm2-send-text-at-start-fix.png"
 alt="The Send text at start field in iTerm2 settings with the cd command entered"
 width="0"
 height="0"
-caption="The ultimate 'I'm the captain now' move for your terminal 🫡"
+caption="Send text at start changes to the GitHub folder and clears the terminal"
 />
 
 ## Why this works
 
 The **Send text at start** field tells iTerm2 to wait for the shell to finish initializing, then type that command automatically.
 
-It bypasses the buggy initial directory logic entirely. The `&& clear` part keeps the terminal clean so the whole thing is invisible in practice. And because it runs after the shell is ready, your login environment — paths, aliases, all of it — is already loaded.
+This changes the working directory explicitly instead of relying on the Initial Directory preference. The `&& clear` clears the terminal after a successful `cd`, so the startup command doesn't remain on screen.
 
-Is it a hack? Yes. Does it save me a few seconds and a small amount of frustration every time I open a terminal? Also yes.
+Open a new tab and run `pwd` to check the directory. To undo the workaround, clear the **Send text at start** field.

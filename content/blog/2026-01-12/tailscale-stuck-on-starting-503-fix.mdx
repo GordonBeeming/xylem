@@ -1,77 +1,64 @@
 ---
-title: 'Tailscale Stuck on "Starting..."? Here is the 503 Fix'
+title: 'Resetting Tailscale on Windows after a 503 no-backend error'
 date: 2026-01-12
 tags: ['Tailscale', 'Troubleshooting', 'DevOps', 'Windows']
-summary: 'You open your laptop, ready to code, but Tailscale is stuck in a "Starting..." loop. You try the CLI and get a 503 Service Unavailable. Here is how to nuke the zombie process and get back to work.'
+summary: 'How to check the Tailscale Windows service and reset local state when the client stays on Starting with a 503 no-backend error, including the re-registration consequences.'
 ---
 
-You've got your coffee, your MacBook Pro M4 is docked, and you're ready to hit some internal Azure resources. Then you see it - that greyed-out Tailscale icon just spinning its wheels.
-
-You try to log in again. Nothing. You try to restart the app. Still "Starting...".
-
-If you're a dev, your next move is the terminal, where you get this:
+Tailscale on Windows can stay on "Starting..." when the client cannot reach its background service. In the case I was troubleshooting, trying to log in from PowerShell returned:
 
 ```powershell title="PowerShell"
 PS C:\Users\VmAdmin> tailscale login
 503 Service Unavailable: no backend
-
 ```
 
-Turns out "Starting..." is Tailscale's way of saying it can't talk to its own background service.
-
-## The Problem
-
-The issue usually isn't your credentials. It's a broken connection between the Tailscale GUI/CLI and the `tailscaled.exe` service.
-
-Dig a bit deeper in the CLI and you'll likely see something about a missing named pipe:
+A related error to look for is:
 
 ```text title="Error output"
 open \\.\pipe\ProtectedPrefix\Administrators\Tailscale\tailscaled: The system cannot find the file specified.
-
 ```
 
-The pipe between the app and the service is gone. Clicking "Login" in the UI won't fix it.
+These errors point to a local service problem, but don't identify why the service is unavailable. Resetting state is a recovery option if restarting the service doesn't resolve it.
 
-## The Solution
+## Check the service first
 
-You have to nuke it. Kill the zombie process and clear the local state.
+Open PowerShell as Administrator and check the service:
 
-### 1. Kill the Zombie
+```powershell title="PowerShell (Admin)"
+Get-Service Tailscale
+```
 
-First, we need to make sure the background process is actually dead. Open PowerShell as **Administrator** and run:
+Start it if it's stopped, or restart it if it's running, then try `tailscale status` again. If it still fails, keep the logs from `C:\ProgramData\Tailscale\Logs` before resetting anything. [Tailscale's daemon documentation](https://tailscale.com/docs/reference/tailscaled) identifies that as the Windows log directory.
+
+## Reset local state
+
+A reset can require a new login, device approval, and a new device entry or IP address. Make sure you have access to the machine independently of Tailscale before stopping the service.
+
+The following sequence stops the service and moves its local data aside. Close the Tailscale tray app first, then run:
 
 ```powershell title="PowerShell (Admin)"
 Stop-Service Tailscale -Force
-# Just to be sure...
 Get-Process tailscaled -ErrorAction SilentlyContinue | Stop-Process -Force
-
 ```
 
-### 2. Clear the Local State
-
-This is the one that usually does it. Local state files can get corrupted after a Windows Update or a hiccup in the Wintun driver. Renaming the folder forces Tailscale to start fresh.
+Once the service has stopped, rename the folder so the previous state and logs are retained:
 
 ```powershell title="PowerShell (Admin)"
 cd C:\ProgramData
-# Rename instead of delete, just in case!
 Rename-Item -Path "Tailscale" -NewName "Tailscale.bak"
-
 ```
 
-### 3. The Resurrection
+If `Tailscale.bak` already exists, choose another backup name. If the rename fails because files are still in use, resolve that before continuing.
 
-Start the service again and force a re-authentication.
+Start the service and authenticate again:
 
 ```powershell title="PowerShell (Admin)"
 Start-Service Tailscale
 tailscale up --force-reauth
-
 ```
 
-Your browser will open asking you to log in. Once you do, you're back up.
+Follow the login link, then check `tailscale status` and access to the resource you need.
 
-## Things to know
+This moves the service's data directory; it isn't a complete removal of every Tailscale setting on Windows. [Tailscale's reset instructions](https://tailscale.com/docs/features/client/uninstall) list additional per-user and legacy locations. Resetting state also doesn't establish that a Windows update or a Wintun driver problem caused the error.
 
-This fixes the "503 No Backend" error pretty much every time, and it also cleans up any corrupted Wintun driver state as a bonus.
-
-The downside: Tailscale treats this as a new machine registration. You'll want to pop into your Tailscale Admin Console and remove the old dead entry to keep your device list clean.
+Once the new registration works, check the admin console for an obsolete device entry before removing it. Keep the saved logs if the service fails again, since repeated resets won't explain the underlying fault.

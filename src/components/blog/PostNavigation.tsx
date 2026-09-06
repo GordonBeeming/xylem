@@ -11,8 +11,8 @@ interface PostNavigationProps {
   nextPost?: NavPost | null;
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
-const eyebrow = { ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase" as const, color: "var(--text-subtle)" };
+const ui = { fontFamily: "var(--font-ui)" };
+const eyebrow = { ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase" as const, color: "var(--text-subtle)" };
 
 export function PostNavigation({ prevPost, nextPost }: PostNavigationProps) {
   if (!prevPost && !nextPost) return null;

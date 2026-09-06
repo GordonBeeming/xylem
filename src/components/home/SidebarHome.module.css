@@ -1,0 +1,246 @@
+/* SidebarHome — the two-column index described in Main.dc.html /
+   MainPhone.dc.html. Every color/font here is a token from tailwind.css;
+   nothing is a literal hex or font stack, so light/dark and any future
+   token tweak fall out for free. */
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 28px 60px;
+}
+
+.well {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px 34px;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 56px;
+}
+
+.main {
+  min-width: 0;
+}
+
+.intro {
+  margin: 0 0 26px;
+  max-width: 720px;
+  font-size: var(--text-md);
+  line-height: var(--lh-relaxed);
+  color: var(--text);
+}
+
+.rule {
+  height: 1px;
+  background: var(--border-strong);
+  margin: 28px 0;
+}
+
+.sectionHeading {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 18px;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  /* the artboard separates rows with space, not rules */
+  gap: 26px;
+  max-width: 720px;
+}
+
+.olderLink {
+  margin: 22px 0 0;
+  font-size: var(--text-xs);
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.projectCell {
+  background: var(--surface-2);
+  padding: 14px 16px;
+  min-width: 0;
+}
+
+.projectHead {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.projectTitle {
+  font-size: var(--text-base);
+  color: var(--text);
+  text-decoration: none;
+}
+.projectTitle:hover {
+  text-decoration: underline;
+}
+
+.projectMeta {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.projectDesc {
+  margin: 5px 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-relaxed);
+}
+
+.bookList {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.bookMeta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.bookTitle {
+  color: var(--text);
+  text-decoration: none;
+}
+.bookTitle:hover {
+  text-decoration: underline;
+}
+
+.aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.aboutCard {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 16px;
+}
+
+.aboutBlurb {
+  margin: 0 0 10px;
+  font-size: var(--text-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--text-muted);
+}
+
+.archiveList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: var(--text-xs);
+}
+
+.archiveRow {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.archiveCount {
+  color: var(--text-muted);
+}
+
+.archiveAll {
+  margin-top: 3px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.elsewhereList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: var(--text-xs);
+}
+
+.elsewhereLink {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Below this the 300px rail leaves no usable measure, so it stacks under
+   the main column — same breakpoint the post page's rail uses. */
+@media (max-width: 860px) {
+  .wrap {
+    padding: 16px 12px 40px;
+  }
+  .well {
+    padding: 22px 18px;
+  }
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+  .projectGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* 44px minimum touch target on every tappable rail row on phone. */
+@media (max-width: 720px) {
+  .archiveRow,
+  .elsewhereLink {
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+/* ---- Writing rows ----
+   The artboard sets these deliberately: rows separated by space rather than a
+   rule, the title in link colour at regular weight, and every tag shown. */
+.postDate {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+.postTitle {
+  margin: 5px 0 7px;
+  font-size: 21px;
+  font-weight: var(--fw-regular);
+  line-height: 1.3;
+}
+.postTitle a { color: var(--link); text-decoration: none; }
+.postTitle a:hover { text-decoration: underline; }
+.postSummary {
+  margin: 0 0 9px;
+  font-size: 14.5px;
+  color: var(--text-muted);
+}
+.postTags { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--chip);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  text-decoration: none;
+}
+.chip:hover { color: var(--link); border-color: var(--link); }

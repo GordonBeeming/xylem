@@ -32,11 +32,33 @@ interface CommandPaletteProps {
   isOpen: boolean;
   onClose: () => void;
   items: SearchableItem[];
+  /** Pass both to control the query from outside, so another field can hand
+   *  its text over. Omit both and the palette keeps its own. */
+  query?: string;
+  onQueryChange?: (value: string) => void;
 }
 
-export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) {
+export function CommandPalette({
+  isOpen,
+  onClose,
+  items,
+  query: controlledQuery,
+  onQueryChange,
+}: CommandPaletteProps) {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [uncontrolledQuery, setUncontrolledQuery] = useState("");
+  const query = controlledQuery ?? uncontrolledQuery;
+  // stable across renders, so the callbacks below keep their memoization
+  const setQuery = useCallback(
+    (value: string) => {
+      if (onQueryChange) {
+        onQueryChange(value);
+      } else {
+        setUncontrolledQuery(value);
+      }
+    },
+    [onQueryChange]
+  );
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -78,13 +100,13 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
         setQuery("");
       }
     },
-    [router, onClose]
+    [router, onClose, setQuery]
   );
 
   const handleClose = useCallback(() => {
     onClose();
     setQuery("");
-  }, [onClose]);
+  }, [onClose, setQuery]);
 
   return (
     <Dialog open={isOpen} onClose={handleClose} className="relative z-[300]">
@@ -109,6 +131,7 @@ export function CommandPalette({ isOpen, onClose, items }: CommandPaletteProps) 
               <ComboboxInput
                 className="w-full border-0 border-b border-[var(--color-border-default)] bg-transparent py-3 pl-12 pr-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-0"
                 placeholder="Search posts, nuggets, projects & books..."
+                value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 autoComplete="off"
               />

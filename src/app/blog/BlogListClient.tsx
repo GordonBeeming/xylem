@@ -23,7 +23,7 @@ interface BlogListClientProps {
   yearCounts: Record<string, number>;
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 function slugifyTag(tag: string): string {
   return slug(tag).replace(/--+/g, "-");
@@ -47,7 +47,7 @@ function FilterPill({ active, onClick, children }: { active: boolean; onClick: (
       aria-pressed={active}
       className="cursor-pointer whitespace-nowrap rounded-[var(--radius-md)] px-3 py-[6px] text-[length:var(--text-xs)] tracking-[var(--ls-wide)] transition-[var(--transition-colors)]"
       style={{
-        ...mono,
+        ...ui,
         background: active ? "var(--accent)" : "transparent",
         color: active ? "var(--text-on-accent)" : "var(--text-muted)",
         border: active ? "1px solid var(--accent)" : "1px solid var(--border)",
@@ -166,11 +166,11 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
   const more = visibleYears < groups.length;
 
   return (
-    <div className="page-narrow">
+    <>
       <div className="eyebrow">Writing</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         All posts
       </h1>
@@ -211,7 +211,7 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
           autoComplete="off"
           className="w-full rounded-[var(--radius-md)] py-[10px] pl-11 pr-4 outline-none"
           style={{
-            ...mono,
+            ...ui,
             fontSize: "var(--text-sm)",
             background: "var(--surface-2)",
             border: "1px solid var(--border)",
@@ -240,7 +240,7 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
           <Link
             href="/tags"
             className="text-[length:var(--text-xs)] underline"
-            style={{ ...mono, color: "var(--text-muted)" }}
+            style={{ ...ui, color: "var(--text-muted)" }}
           >
             view all tags
           </Link>
@@ -257,14 +257,14 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
             updateUrl("", "", "");
           }}
           className="mt-3 text-[length:var(--text-xs)] underline"
-          style={{ ...mono, color: "var(--text-subtle)" }}
+          style={{ ...ui, color: "var(--text-subtle)" }}
         >
           clear filters
         </button>
       )}
 
       <div className="mt-[var(--space-6)]" role="status" aria-live="polite">
-        <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
+        <p style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
           {filteredPosts.length} post{filteredPosts.length !== 1 ? "s" : ""}
           {selectedTag && ` tagged "${tagDisplayNames[selectedTag] ?? selectedTag}"`}
           {selectedYear && ` from ${selectedYear}`}
@@ -282,7 +282,7 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
               >
                 {year}
               </h2>
-              <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
+              <span style={{ ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)" }}>
                 {posts.length} post{posts.length > 1 ? "s" : ""}
               </span>
               <span className="h-px flex-1" style={{ background: "var(--border)" }} />
@@ -311,12 +311,12 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
       {more && (
         <div
           className="py-2 pb-[var(--space-10)]"
-          style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)", letterSpacing: "var(--ls-wide)" }}
+          style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-subtle)", letterSpacing: "var(--ls-wide)" }}
         >
           loading earlier years…
         </div>
       )}
-    </div>
+    </>
   );
 }
 
@@ -324,18 +324,18 @@ export default function BlogListClient(props: BlogListClientProps) {
   return (
     <Suspense
       fallback={
-        <div className="page-narrow">
+        <>
           <div className="eyebrow">Writing</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
           >
             All posts
           </h1>
           <div className="py-12 text-center" style={{ color: "var(--text-subtle)" }}>
             Loading...
           </div>
-        </div>
+        </>
       }
     >
       <BlogListInner {...props} />

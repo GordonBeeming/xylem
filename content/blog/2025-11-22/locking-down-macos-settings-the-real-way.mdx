@@ -1,113 +1,86 @@
 ---
-title: 'Locking Down macOS Settings (The Real Way)'
+title: 'Restricting macOS settings for a child''s account'
 date: 2025-11-22
 tags: ['macOS', 'Parenting', 'Security', 'Terminal']
-summary: 'iOS makes it easy to stop kids from changing passcodes. macOS? Not so much. I explored 3 ways to lock down a Mac, and here is the best solution for a technical parent.'
+summary: 'The account setup and System Settings restrictions I chose for a family Mac, while keeping school Wi-Fi access available and managing NextDNS separately.'
 ---
 
-If you have kids in the Apple ecosystem, you know iOS handles restrictions pretty well. Toggle "Don't Allow Account Changes" or "Don't Allow Passcode Changes" and you're mostly covered.
+I wanted to restrict access to account, Touch ID, and date settings on a family Mac while still letting the kids join Wi-Fi at school. Screen Time covered app limits, but I also wanted control over the settings they could open.
 
-But then you open their Mac, and those options just aren't there.
-
-Screen Time does a decent job with app limits, but it won't stop a resourceful kid from adding a new fingerprint to Touch ID or nudging the system clock back a few hours to dodge downtime. I went looking for a proper fix and ended up testing three different approaches.
-
-## Contents
-
-1. **[Before You Start: Check Account Types](#before-you-start-check-account-types)**
-2. **[Option 1: The "Hidden" Menu (Too Weak)](#option-1-the-hidden-menu-too-weak)**
-3. **[Option 2: The "Enterprise" Way (Profiles)](#option-2-the-enterprise-way-profiles)**
-4. **[Option 3: The "Developer" Way (My Pick)](#option-3-the-developer-way-my-pick)**
-5. **[What did we just do?](#what-did-we-just-do)**
-6. **[How to Revert](#how-to-revert)**
-
----
+I compared hiding panes, using configuration profiles, and writing a System Settings preference with `defaults`. I chose the preference for pane access and kept NextDNS configuration in a profile. These are separate controls: restricting a settings pane is not a guarantee that the underlying setting cannot be changed another way.
 
 ## Before you start: check account types
 
-Before touching any config, there's one thing that has to be true: **your child must be a Standard user.**
+Use an administrator account for managing the Mac and a Standard account for your child. Administrator access would let them undo the restrictions you apply.
 
-If they're an Administrator, they have `sudo` privileges. And kids are surprisingly good at Googling their way around restrictions once they know something is locked. A standard account removes that whole problem before it starts.
+Check the accounts:
 
-Check this now:
 1.  Open **System Settings** > **Users & Groups**.
 2.  Make sure your account is set to **Admin**.
 3.  Make sure their account is set to **Standard**.
 
-## Option 1: The "Hidden" Menu (Too Weak)
+## Hiding panes
 
-The easiest approach is just to hide the settings pane.
+Older versions of System Preferences had a View > Customize option for hiding panes. That only changed which panes were shown, and the user could enable them again. It wasn't an access restriction, and it isn't the setup I wanted.
 
-1. Open **System Settings**.
-2. Go to **View** > **Customize...**
-3. Uncheck **Touch ID & Password**.
+## Configuration profiles
 
-Not a chance. Any kid who wants to change their password will go straight back to that menu, re-check the box, and carry on. Hiding a setting is not the same as blocking it.
+Configuration profiles are another way to manage settings. They are also how I configure NextDNS on the Mac.
 
-## Option 2: The "Enterprise" Way (Profiles)
+The settings a profile enforces and whether a user can remove it depend on the payload and how the profile is installed.
 
-You can create a `.mobileconfig` file (an Apple Configuration Profile) that uses the `DisabledSystemSettings` payload. This is how schools and businesses manage Macs.
+For a few pane restrictions, I found the preference easier to manage than maintaining another profile. I kept the profile approach for NextDNS.
 
-Write an XML file, double-click it to install, and it hard-locks those settings.
+## Restricting panes with defaults
 
-This actually works well. The catch is that managing XML files for simple toggles is fiddly if you're not running a full MDM server. I decided to save the profile approach for something that really needed it (NextDNS), and go a different route for the settings locks.
+The `defaults` command below writes the `DisabledSystemSettings` key in `/Library/Preferences/com.apple.systempreferences`. It is a machine-level preference, so it can affect your administrator account too. Pane identifiers and behaviour can vary by macOS version; check the result from the Standard account.
 
-## Option 3: The "Developer" Way (My Pick)
+### Keeping Wi-Fi available
 
-The `defaults` command can write to the **Global Preferences** at `/Library/Preferences`, which affects all users on the machine. Run it from your Admin account and it locks down their Standard account immediately - no profile installation, no reboot required.
+I wanted to leave network access available while managing the NextDNS configuration separately. Restricting the Network pane would get in the way of joining new networks.
 
-It's also much faster to script and toggle than dealing with profiles.
+The pane selection reflects that:
 
-### The Strategy: "The Wi-Fi Gap"
-
-My situation had one wrinkle: they need to be able to join Wi-Fi at school.
-
-Lock the Network pane and they can't connect to new networks. Leave it open and they could switch their DNS and walk straight past my NextDNS content filters. Neither option on its own is great.
-
-The fix is to be selective about what you lock:
 1.  Leave the Network pane open (Wi-Fi still works).
-2.  Lock the Profiles pane (they can't remove the NextDNS config).
-3.  Lock the Security panes (no password or fingerprint changes).
+2.  Restrict the Profiles pane, with profile removal permissions checked separately.
+3.  Restrict the account and security panes.
 
-### Step 1: Install NextDNS as System
+### Step 1: Install and check the NextDNS profile
 
-Install the NextDNS profile via terminal to force it to the **System** level. A Standard user can't modify or remove a system-level profile.
+Open the NextDNS `.mobileconfig` file from the administrator account, then review and install it in System Settings. Apple's [configuration-profile instructions](https://support.apple.com/guide/mac-help/mh35561/mac) describe the process; the pane may be labelled Profiles or Device Management depending on the macOS version.
 
-```bash title="Terminal"
-sudo profiles -I -F /path/to/nextdns.mobileconfig
-````
+The old `sudo profiles -I -F` command cannot install configuration profiles on macOS 11 or later. The local `man profiles` documentation explicitly directs you to System Settings instead.
 
-### Step 2: Lock the Settings
+Before restricting access to the pane, check that the profile applies to the intended account and that the Standard user cannot remove it. Hiding access to the pane is not a substitute for those checks.
 
-Run this command to lock the specific panes. Note that `com.apple.Network-Settings.extension` is intentionally absent from the list.
+### Step 2: Restrict the settings panes
+
+Before changing it, record any existing value with `sudo defaults read /Library/Preferences/com.apple.systempreferences DisabledSystemSettings`. The following command replaces the array. `com.apple.Network-Settings.extension` is intentionally absent from the list.
 
 ```bash title="Terminal"
 sudo defaults write /Library/Preferences/com.apple.systempreferences DisabledSystemSettings -array "com.apple.Touch-ID-Settings.extension" "com.apple.Date-Time-Settings.extension" "com.apple.Users-Groups-Settings.extension" "com.apple.Profiles-Settings.extension"
 ```
 
-### Step 3: Apply
+### Step 3: Restart System Settings
 
-To pick up the changes without rebooting, kill the settings app:
+Close System Settings so it reloads the preference when opened again:
 
 ```bash title="Terminal"
 sudo killall "System Settings"
 ```
 
-## What did we just do?
+## Check the result
 
-Here's what the end state looks like:
+Reopen System Settings from the Standard account and check the four restricted areas: Touch ID & Password, Date & Time, Users & Groups, and Profiles or Device Management. Confirm that joining a new Wi-Fi network still works and that NextDNS remains configured.
 
-- **Wi-Fi / Network** is unlocked. They can still join school Wi-Fi without any help from you.
-- **Touch ID & Passcode** is locked. No password changes, no sneaking in a new fingerprint.
-- **Date & Time** is locked. This stops the "set the clock back 3 hours" trick that gets around downtime schedules.
-- **Users & Groups** is locked. They can't create a fresh Standard User account to sidestep Screen Time limits.
-- **Profiles** is locked. This is the one that really matters. The "Remove Profile" button lives here, so NextDNS stays put.
+These commands restrict access through System Settings. Don't infer that they prevent every password-change method, all DNS changes, or all ways of bypassing Screen Time. If you need stronger enforcement, use supported management profiles for the settings concerned.
 
-## How to Revert
+## Restore access
 
-When you need to add a fingerprint or change a setting yourself, just delete the key.
+If the key did not exist before this change, remove it to restore access:
 
 ```bash title="Terminal"
 sudo defaults delete /Library/Preferences/com.apple.systempreferences DisabledSystemSettings
 ```
 
-That's it. A few `defaults` writes and your Mac is meaningfully more locked down than it was before.
+Reopen System Settings after removing the key and check that the panes are available again. If the key already contained restrictions before you started, restore that earlier value rather than deleting it.

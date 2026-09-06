@@ -1,32 +1,27 @@
 ---
-title: 'Dave''s DLLs Never Had a CVE'
+title: 'Reducing package supply-chain risk with release-age checks and lockfiles'
 date: 2026-04-02
 tags: ['Security', 'npm', 'Supply Chain', 'DevSecOps', 'NuGet', '.NET', 'Python', 'Rust']
-summary: 'The axios npm compromise reminded us that supply chain attacks are everyone''s problem. Here are two simple defenses with exact configs for npm, pnpm, Bun, uv, NuGet, and Cargo.'
+summary: 'Configuring a delay before adopting new package versions, keeping repeatable installs with lockfiles, and understanding what these controls can and cannot prevent.'
 ---
 
-Remember when the worst thing that could happen to your dependencies was Dave from accounting accidentally overwriting `SharedUtils.dll` in the Binaries folder?
+The axios npm compromise prompted me to look at two controls teams can add to their dependency workflow: a minimum release age before adopting a version, and lockfiles checked into source control. They reduce different risks and work best alongside restrictions on install scripts and regular dependency review.
 
-2006: "Ugh, who checked in 200MB of DLLs to TFS?"  
-2026: "Hey, that npm package you installed last week? It now mines crypto and exfils your `.env`."
-
-We spent 15 years replacing manually managed assemblies with package managers that auto-update dependencies from strangers on the internet. And we called it progress. I [joked about this on LinkedIn](https://www.linkedin.com/posts/gordon-beeming_supplychainsecurity-devhumor-softwaredevelopment-share-7444905335267536896-_IyD) the other day. Because the threat list is long now: typosquatted packages, maintainer account takeovers, "helpful" PRs that slip in backdoors, star-jacking, protestware. At least Dave's DLL didn't phone home.
-
-I'm not saying we should go back to committing a `/lib` folder with 47 mystery DLLs and a README that says "DO NOT DELETE - James knows why." But we do need to be smarter about how we consume packages. Here are two things every team can do today.
+I [joked about this on LinkedIn](https://www.linkedin.com/posts/gordon-beeming_supplychainsecurity-devhumor-softwaredevelopment-share-7444905335267536896-_IyD) by comparing modern package installs with the old shared folder of DLLs maintained by "Dave from accounting". Package managers make updates easier, but a compromised maintainer account or a malicious dependency can distribute code through that same update path.
 
 ## What happened with axios
 
-On March 31, 2026, North Korean threat actors (tracked as UNC1069) compromised the npm account of the lead axios maintainer. They changed the account email and published two backdoored versions: `1.14.1` and `0.30.4`. Both included a malicious dependency called `plain-crypto-js` that silently downloaded and executed a cross-platform RAT called WAVESHAPER.V2.
+On March 31, 2026, attackers used a compromised axios maintainer account to publish malicious packages. [Google Threat Intelligence Group attributed the attack to UNC1069](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package), a North Korea-linked threat actor. They changed the account email and published two backdoored versions: `1.14.1` and `0.30.4`. Both included a malicious dependency called `plain-crypto-js` that silently downloaded and executed a cross-platform RAT called WAVESHAPER.V2.
 
-The malicious versions were live for about 2-3 hours before npm pulled them. That sounds like a small window, but axios gets around 100 million weekly downloads. Wiz reported finding the compromised versions in roughly 3% of the cloud environments they scanned. Two hours was plenty.
+The malicious versions were live for about 2-3 hours before npm pulled them. That sounds like a small window, but axios gets around 100 million weekly downloads. Wiz reported finding the compromised versions in roughly 3% of the cloud environments they scanned. That figure describes the environments Wiz scanned, rather than all axios users.
 
-You need defenses that work before you know there's a problem.
+A delay before adopting new releases can help with attacks discovered shortly after publication.
 
 ## Defense 1: Release-age gating
 
-The concept is simple. Don't install any package version that was published less than a certain number of days ago. If a compromised version gets published and yanked within hours, you never see it. The broader community becomes your canary.
+The concept is simple. Don't install any package version that was published less than a certain number of days ago. A version removed within that window should never become eligible for a new resolution under that policy. The delay gives maintainers and researchers time to identify problems; it doesn't establish that an older package is safe.
 
-Most modern package managers now support this. Here's how to set a 7-day delay in each:
+The following settings use a seven-day delay. Check that your installed package-manager version supports the option, and apply it in CI as well as locally.
 
 ### npm
 
@@ -34,7 +29,7 @@ Most modern package managers now support this. Here's how to set a 7-day delay i
 min-release-age=7
 ```
 
-The value is in days. Drop this in your project's `.npmrc` so the whole team gets it. You can also add `ignore-scripts=true` to block postinstall scripts, which is how the axios payload executed.
+[npm's `min-release-age` setting](https://docs.npmjs.com/using-npm/config/#min-release-age) uses days. Put it in your project's `.npmrc` so the team shares the setting. You can also add `ignore-scripts=true` to block postinstall scripts, which is how the axios payload executed.
 
 ### pnpm
 
@@ -42,7 +37,7 @@ The value is in days. Drop this in your project's `.npmrc` so the whole team get
 minimum-release-age=10080
 ```
 
-pnpm uses minutes. 10,080 minutes is 7 days. pnpm also blocks install scripts by default since v10, which would have stopped the axios payload on its own.
+pnpm uses minutes: 10,080 minutes is seven days. The `.npmrc` form above applies to pnpm 10. For newer versions, use `minimumReleaseAge: 10080` in `pnpm-workspace.yaml`; [pnpm's configuration documentation](https://pnpm.io/settings) explains which settings have moved out of `.npmrc`. pnpm 10 also restricts dependency install scripts by default. Keeping the malicious dependency's script unapproved would prevent that install-time execution path.
 
 ### Bun
 
@@ -51,7 +46,7 @@ pnpm uses minutes. 10,080 minutes is 7 days. pnpm also blocks install scripts by
 minimumReleaseAge = 604800
 ```
 
-Bun uses seconds. 604,800 seconds is 7 days.
+Bun uses seconds: 604,800 seconds is seven days.
 
 ### uv (Python)
 
@@ -59,15 +54,15 @@ Bun uses seconds. 604,800 seconds is 7 days.
 exclude-newer = "7 days"
 ```
 
-uv accepts human-readable duration strings. You can also use an exact RFC 3339 timestamp if you want to pin to a specific point in time.
+[uv accepts human-readable duration strings](https://docs.astral.sh/uv/concepts/resolution/). You can also use an exact RFC 3339 timestamp if you want to pin to a specific point in time.
 
-Four config files, four one-liners. If you had any of these in place on March 31, you would not have pulled the compromised axios versions.
+For package managers installing axios, an enforced seven-day delay would exclude those newly published versions from resolution during the incident. The uv example applies the same approach to Python packages; it doesn't install axios. These settings don't remove a package that is already installed or establish that versions already in a lockfile are trustworthy.
 
 ## Defense 2: Lockfiles and hash pinning
 
-Release-age gating stops you from installing new malicious versions. Lockfiles stop a different attack: someone replacing an existing version with tampered content.
+Release-age checks delay new versions. Lockfiles record the versions selected for a build, and integrity hashes help detect downloaded content that differs from the recorded artifact. A lockfile can still faithfully reproduce a malicious version if that version was selected when the lockfile was created.
 
-Every major package manager generates a lockfile that records exact versions and integrity hashes (SHA-512 for npm/pnpm, SHA-256 for Cargo/uv). When you install, the downloaded package is hashed and compared. If it doesn't match, the install fails.
+Package managers such as npm, pnpm, Cargo and uv record package versions and artifact hashes in their lockfiles. Installs can then check downloaded package content against the recorded hash and fail on a mismatch. Integrity checking establishes that content matches the lockfile; it doesn't check whether the code is benign.
 
 The rules are straightforward:
 
@@ -77,7 +72,7 @@ The rules are straightforward:
 
 ## What about .NET and Rust?
 
-Neither NuGet nor Cargo has native release-age gating yet. But they're not defenseless.
+For NuGet and Cargo, lockfiles, source controls and audit tools provide other useful checks:
 
 **.NET / NuGet** has several layers of protection:
 
@@ -94,11 +89,11 @@ Neither NuGet nor Cargo has native release-age gating yet. But they're not defen
 - **cargo-audit** -- scans against the RustSec Advisory Database for known vulnerabilities
 - **cargo-deny** -- checks licenses, bans specific crates, and verifies sources
 
-If you're in the .NET or Rust ecosystem, you're already in a better position than most. NuGet and crates.io have stronger signing and vetting than npm. But lockfiles and audit tooling still matter.
+These tools cover different checks: signatures and hashes establish provenance or consistency, audit databases report known vulnerabilities, and review records document human assessment. None establishes that every dependency is safe.
 
 ## The checklist
 
-Here's the short version. If you do nothing else today, do these:
+For a project adopting these controls:
 
 1. Add release-age gating to your package manager config (if your ecosystem supports it)
 2. Commit your lockfiles to source control
@@ -106,8 +101,6 @@ Here's the short version. If you do nothing else today, do these:
 4. Run audit tools regularly (`npm audit`, `pnpm audit`, `dotnet restore` with NuGet Audit, `cargo audit`)
 5. Review new dependencies before adding them. Check download counts, maintainer history, and recent activity
 
-Dave from accounting was right all along. He just had the wrong reasons. His air-gapped DLLs never had a CVE, never phoned home to a C2 server, and never ran a postinstall script that downloaded a RAT.
-
-Your `node_modules` folder makes no such promises. But with a couple of config changes, you can at least make sure you're not the first person to find out when something goes wrong.
+Check that CI actually uses the committed lockfile and the intended release-age policy. If an urgent security fix falls inside the waiting period, review that update explicitly rather than disabling the policy for every package.
 
 Thanks to [Brook Jeynes](https://www.linkedin.com/in/brook-jeynes/) for sharing the package manager configs that inspired this post. He had something in mind but didn't have capacity to write it up, so here we are.

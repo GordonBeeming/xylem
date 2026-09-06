@@ -1,0 +1,83 @@
+---
+title: 'Getting sudo to use Touch ID on macOS'
+date: 2026-09-04
+tags: ['macOS', 'Terminal', 'Touch ID', 'Security']
+summary: 'macOS can authenticate sudo with Touch ID through pam_tid.so. The update-safe setup is one line in /etc/pam.d/sudo_local, with the normal password prompt left as a fallback.'
+---
+
+I use Touch ID to authenticate `sudo` commands on my Mac. The setup is one line in `/etc/pam.d/sudo_local`, which macOS provides for local authentication settings that survive system updates. The normal password prompt remains available when Touch ID can't be used.
+
+## Check your current configuration
+
+To see whether Touch ID is already configured, run:
+
+```bash title="Check the active sudo Touch ID configuration"
+grep -v '^[[:space:]]*#' /etc/pam.d/sudo_local 2>/dev/null
+```
+
+On my Mac, the output is:
+
+```text title="Active sudo_local entry"
+auth       sufficient     pam_tid.so
+```
+
+If you see that uncommented line, Touch ID is already enabled for `sudo`. If the command prints nothing, either the file does not exist yet or the line is still commented out.
+
+The main `/etc/pam.d/sudo` policy includes `sudo_local` before the normal smart card and password authentication modules. The `sufficient` part means a successful Touch ID check can complete authentication. If Touch ID is unavailable or fails, PAM continues through the rest of the chain, so the password prompt remains available.
+
+## Enable Touch ID for sudo
+
+The macOS installation I checked includes a template at `/etc/pam.d/sudo_local.template`. Copy it only when the local file does not already exist, then open the local file for editing:
+
+```bash title="Create and edit the local sudo policy"
+if [ ! -f /etc/pam.d/sudo_local ]; then
+  sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+fi
+
+sudo nano /etc/pam.d/sudo_local
+```
+
+Do not overwrite an existing `sudo_local` file because it may contain other local authentication settings.
+
+Find this commented line:
+
+```text title="Disabled Touch ID entry"
+#auth       sufficient     pam_tid.so
+```
+
+Remove the `#` so it becomes:
+
+```text title="Enabled Touch ID entry"
+auth       sufficient     pam_tid.so
+```
+
+In Nano, press `Control-O`, then `Return` to save. Press `Control-X` to exit.
+
+Keep that terminal open until the test below passes, and limit the edit to the `pam_tid.so` line.
+
+## Test the change
+
+`sudo` caches successful authentication for a short period. Clear that cached timestamp before testing or the next command may succeed without asking for anything:
+
+```bash title="Force sudo to authenticate again"
+sudo -k
+sudo whoami
+```
+
+The second command should show a Touch ID prompt. After you authenticate, it should print:
+
+```text title="Expected result"
+root
+```
+
+Your account still needs permission to use `sudo`. Touch ID changes how you authenticate, and macOS can still ask for your account password.
+
+## Turn it off again
+
+Open the same file:
+
+```bash title="Edit the local sudo policy"
+sudo nano /etc/pam.d/sudo_local
+```
+
+Put the `#` back in front of the `pam_tid.so` line, save, then run `sudo -k` and `sudo whoami` again. This time you should get the normal password prompt.

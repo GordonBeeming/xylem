@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ColorSwatch } from "@/components/ds/ColorSwatch";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Color Palette",
@@ -64,11 +65,11 @@ const SEMANTIC = [
 
 export default function ColorPalettePage() {
   return (
-    <div className="page">
+    <PageShell rail={false}>
       <div className="eyebrow">Foundations</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         Color palette
       </h1>
@@ -109,6 +110,6 @@ export default function ColorPalettePage() {
           ))}
         </div>
       </section>
-    </div>
+    </PageShell>
   );
 }

@@ -1,6 +1,7 @@
 import { getAllPosts } from "@/lib/tina-helpers";
 import { getYearCounts } from "@/lib/content";
 import type { Metadata } from "next";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Years",
@@ -15,11 +16,11 @@ export default function YearsPage() {
   const max = sortedYears.length > 0 ? Math.max(...sortedYears.map(([, n]) => n)) : 1;
 
   return (
-    <div className="page-narrow">
+    <PageShell>
       <div className="eyebrow">Archive</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         By year
       </h1>
@@ -52,13 +53,13 @@ export default function YearsPage() {
             </span>
             <span
               className="whitespace-nowrap"
-              style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}
+              style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}
             >
               {count} post{count !== 1 ? "s" : ""}
             </span>
           </a>
         ))}
       </div>
-    </div>
+    </PageShell>
   );
 }

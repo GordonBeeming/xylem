@@ -3,6 +3,7 @@ import { getAllNuggets } from "@/lib/nuggets";
 import { formatDateShort } from "@/lib/content";
 import { Card } from "@/components/ds/Card";
 import { Tag } from "@/components/ds/Tag";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Nuggets",
@@ -10,19 +11,19 @@ export const metadata: Metadata = {
     "Small, self-contained explainers by Gordon Beeming — mini knowledge drops on narrow technical topics.",
 };
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default function NuggetsPage() {
   const nuggets = getAllNuggets();
 
   return (
-    <div className="page">
+    <PageShell>
       <div className="eyebrow" style={{ color: "var(--secondary)" }}>
         Nuggets
       </div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         Interactive demos
       </h1>
@@ -56,7 +57,7 @@ export default function NuggetsPage() {
                 </span>
                 <span
                   className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--text-2xs)] text-[color:var(--text-muted)]"
-                  style={mono}
+                  style={ui}
                 >
                   {n.slug}.html
                 </span>
@@ -79,7 +80,7 @@ export default function NuggetsPage() {
                     </Tag>
                   ))}
                 </div>
-                <span className="text-[length:var(--text-2xs)] uppercase text-[color:var(--text-subtle)]" style={mono}>
+                <span className="text-[length:var(--text-2xs)] uppercase text-[color:var(--text-subtle)]" style={ui}>
                   {formatDateShort(n.date)}
                 </span>
               </div>
@@ -87,6 +88,6 @@ export default function NuggetsPage() {
           ))}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

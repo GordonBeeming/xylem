@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { HeadingEntry } from "@/lib/content";
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export function Toc({ headings }: { headings: HeadingEntry[] }) {
   const [active, setActive] = useState(headings[0]?.id ?? "");
@@ -31,7 +31,7 @@ export function Toc({ headings }: { headings: HeadingEntry[] }) {
     <nav className="toc">
       <div
         className="mb-[var(--space-4)]"
-        style={{ ...mono, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
+        style={{ ...ui, fontSize: "var(--text-2xs)", letterSpacing: "var(--ls-wider)", textTransform: "uppercase", color: "var(--text-subtle)" }}
       >
         On this page
       </div>

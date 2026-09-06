@@ -1,8 +1,9 @@
 /* ============================================================
-   XYLEM — Site chrome + prose (Signal design system)
-   Ported from the Xylem design system's ui_kits/blog/site.css.
-   Skips global resets/body/selection/reduced-motion already
-   covered by tailwind.css (Tailwind preflight + lane-1 tokens).
+   XYLEM — Site chrome + prose (Sidebar design)
+   Layout classes for the shared chrome (nav, footer, page shells)
+   and the article/prose typography. Skips global resets/body/
+   selection/reduced-motion already covered by tailwind.css
+   (Tailwind preflight + design-system tokens).
 
    Theming deviation (same as tailwind.css): the source scopes the
    about-page logo swap under [data-theme="dark"]; this app uses
@@ -11,24 +12,47 @@
 
 a { color: var(--link); }
 a:hover { color: var(--link-hover); }
+/* A real visited colour — a deliberate period detail for this design. */
+a:visited { color: var(--link-hover); }
 
-/* ---------------- nav ---------------- */
+/* ---------------- nav ----------------
+   A solid band, not a translucent surface: --band-bg/--band-text are their
+   own tokens (not --surface/--text) because the band is always a dark strip
+   in both themes, independent of which theme is active. */
 .site-nav {
   position: sticky; top: 0; z-index: 40;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: var(--band-bg); color: var(--band-text);
   border-bottom: 1px solid var(--border);
 }
 .site-nav-inner {
-  max-width: 1160px; margin: 0 auto; padding: 15px 40px;
-  display: flex; align-items: center; gap: 28px;
+  max-width: 1180px; margin: 0 auto; padding: 18px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  flex-wrap: wrap; row-gap: 12px;
 }
-.site-nav-links { display: flex; gap: 22px; margin-left: 8px; }
-/* actions (search / hamburger) always pin right, even when the links are hidden on mobile */
+.site-nav-brand { min-width: 0; }
+/* the artboard lets the name inherit the 1.6 body leading; a tighter value
+   shortens the whole band */
+.site-nav-name { font-size: 24px; color: inherit; line-height: 1.6; }
+.site-nav-bio { font-family: var(--font-ui); font-size: var(--text-2xs); color: inherit; opacity: 0.72; margin: 5px 0 0; line-height: 1.5; }
+/* actions (search / theme toggle) always pin right */
 .site-nav-inner > div:last-child { margin-left: auto; }
-.site-nav-links a:hover { color: var(--accent); }
-.wordmark:hover { opacity: 0.85; }
-.nav-search:hover { color: var(--text); border-color: var(--border-strong); }
+/* the second row: nav links, separated from the row above by a hairline.
+   currentColor rather than a token: the band is always a dark strip in
+   both themes, but --band-text itself differs slightly (#fff vs #e6e2da),
+   so mixing off currentColor tracks whichever shade is actually in use. */
+.site-nav-links-bar { border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+.site-nav-links-inner { max-width: 1180px; margin: 0 auto; padding: 9px 28px; }
+.site-nav-links {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  font-family: var(--font-ui); font-size: var(--text-xs);
+}
+/* 44px minimum touch target: height comes from the link itself rather than
+   vertical padding, so the row is guaranteed tall enough on a phone even
+   as the links wrap. There is no hamburger/drawer at any width any more —
+   all six links stay visible and wrap in place. */
+/* !important: each link's opacity is also set inline (active vs. inactive),
+   and an inline style otherwise always wins over an external stylesheet. */
+.site-nav-links a:hover { opacity: 1 !important; }
 
 /* theme-aware logo mark: light variant on light bg, dark on dark.
    Site uses next-themes attribute="class", so the dark scope is .dark
@@ -38,49 +62,91 @@ a:hover { color: var(--link-hover); }
 .dark .logo-light { display: none; }
 .dark .logo-dark { display: block; }
 
+/* Theme toggle icon swap: the toggle renders both icons and CSS alone
+   decides which shows, so the right one paints on the very first frame
+   with no client-side state and no hydration mismatch. `display` MUST be
+   set here rather than by a utility class on the span — prose.css imports
+   at `layer(components)`, below Tailwind's utilities layer (see the note
+   at the top of tailwind.css), so a stray `inline-flex` utility added
+   later would always win over these rules and show both icons at once. */
+/* the artboard's button is a small outlined chip, not a 44px control; the
+   touch target only matters on a phone, where the media query restores it */
+.theme-toggle {
+  font-family: var(--font-ui); font-size: 11px;
+  padding: 4px 9px; gap: 6px;
+  background: transparent; color: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  cursor: pointer;
+}
+.theme-toggle .i-moon { display: inline-flex; }
+.theme-toggle .i-sun  { display: none; }
+.dark .theme-toggle .i-moon { display: none; }
+.dark .theme-toggle .i-sun  { display: inline-flex; }
+
 @media (max-width: 720px) {
   .site-nav-inner { padding: 13px 22px; gap: 14px; }
-  .site-nav-links { display: none; }
-  .nav-search-kbd { display: none; }
-  .nav-hamburger { display: inline-flex !important; }
+  /* keep the two nav rows flush with each other, not just with themselves */
+  .site-nav-links-inner { padding: 9px 22px; }
+  /* touch targets are a phone concern; at desktop they inflate the band */
+  .site-nav-links a { display: flex; align-items: center; min-height: 44px; }
+  .theme-toggle { min-height: 44px; min-width: 44px; }
+  /* only once the row is narrow enough to fill: at 1180px this would strand
+     each link in its own quarter of the bar */
+  .site-nav-links { justify-content: space-between; gap: 8px; }
 }
 
-/* ---------------- generic page shell ---------------- */
-.page { max-width: 1160px; margin: 0 auto; padding: 56px 40px 40px; }
-.page-narrow { max-width: 760px; margin: 0 auto; padding: 56px 40px 40px; }
+/* ---------------- generic page shell ----------------
+   A bordered "well" holding the page content, against the warm --bg
+   canvas peeking around it — the signature look of this design. */
+.page {
+  max-width: 1180px; margin: 0 auto; padding: 40px 40px 48px;
+  background: var(--surface); border: 1px solid var(--border);
+}
+.page-narrow {
+  max-width: 760px; margin: 0 auto; padding: 40px 40px 48px;
+  background: var(--surface); border: 1px solid var(--border);
+}
 @media (max-width: 720px) {
-  .page, .page-narrow { padding: 36px 22px 32px; }
+  .page, .page-narrow { padding: 24px 20px 32px; }
 }
 
 /* eyebrow / section label */
 .eyebrow {
-  font-family: var(--font-mono); font-size: var(--text-xs);
+  font-family: var(--font-ui); font-size: var(--text-xs);
   letter-spacing: var(--ls-wider); text-transform: uppercase; color: var(--accent);
 }
 
 /* ---------------- prose (article body) ---------------- */
-.prose { font-size: var(--text-md); line-height: var(--lh-relaxed); color: var(--text); }
+.prose { font-size: 16.5px; line-height: 1.68; color: var(--text); }
 .prose > * + * { margin-top: 1.35em; }
 .prose p { color: var(--text); }
 .prose a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .prose strong { font-weight: var(--fw-semibold); color: var(--text); }
 .prose em { font-style: italic; }
 .prose h2 {
-  font-size: var(--text-xl); font-weight: var(--fw-bold); letter-spacing: var(--ls-tight);
+  font-size: 23px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
   line-height: var(--lh-snug); color: var(--text);
-  margin-top: 2.2em; scroll-margin-top: 90px;
+  margin-top: 32px; scroll-margin-top: 158px;
 }
 .prose h3 {
-  font-size: var(--text-lg); font-weight: var(--fw-semibold); letter-spacing: var(--ls-tight);
-  color: var(--text); margin-top: 1.8em; scroll-margin-top: 90px;
+  font-size: 19px; font-weight: var(--fw-regular); letter-spacing: var(--ls-normal);
+  color: var(--text); margin-top: 26px; scroll-margin-top: 158px;
 }
 /* anchored heading marker */
+/* The anchor is hidden until hover, so it must not hold layout space: inline it
+   pushed every heading right of the body text it should line up with. */
+.prose h2, .prose h3 { position: relative; }
 .prose h2 .anchor, .prose h3 .anchor {
-  color: var(--text-subtle); text-decoration: none; margin-right: 0.4em;
-  font-family: var(--font-mono); font-weight: var(--fw-regular); opacity: 0;
+  position: absolute; right: 100%; margin-right: 0.25em;
+  color: var(--text-subtle); text-decoration: none;
+  font-family: var(--font-ui); font-weight: var(--fw-regular); opacity: 0;
   transition: var(--transition-colors);
 }
 .prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
+/* No room in the margin once the well tightens up. */
+@media (max-width: 860px) {
+  .prose h2 .anchor, .prose h3 .anchor { display: none; }
+}
 .prose ul { list-style: disc; padding-left: 1.4em; }
 .prose ol { list-style: decimal; padding-left: 1.4em; }
 .prose li { margin-top: 0.5em; }
@@ -91,6 +157,7 @@ a:hover { color: var(--link-hover); }
 }
 .prose :not(pre) > code {
   font-family: var(--font-mono); font-size: 0.88em;
+  overflow-wrap: anywhere; word-break: break-word;
   background: var(--code-bg); color: var(--code-text);
   border: 1px solid var(--code-border); border-radius: var(--radius-xs);
   padding: 0.12em 0.4em;
@@ -105,7 +172,7 @@ a:hover { color: var(--link-hover); }
 }
 .prose thead { background: var(--surface-2); }
 .prose th {
-  text-align: left; font-family: var(--font-mono); font-weight: var(--fw-medium);
+  text-align: left; font-family: var(--font-ui); font-weight: var(--fw-medium);
   font-size: var(--text-2xs); letter-spacing: var(--ls-wide); text-transform: uppercase;
   color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid var(--border);
 }
@@ -115,10 +182,12 @@ a:hover { color: var(--link-hover); }
 
 /* ---------------- footer ---------------- */
 .site-foot { border-top: 1px solid var(--border); margin-top: 80px; background: var(--surface-sunken); }
-.site-foot-inner { max-width: 1160px; margin: 0 auto; padding: 48px 40px 32px; }
+.site-foot-inner { max-width: 1180px; margin: 0 auto; padding: 48px 40px 32px; }
 .site-foot-top { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
 .site-foot-cols { display: flex; gap: 72px; }
-.site-foot-cols a:hover { color: var(--accent); }
+/* !important: Footer.tsx sets color inline on these links, which otherwise
+   always wins over an external stylesheet and silently defeats :hover. */
+.site-foot-cols a:hover { color: var(--accent) !important; }
 .site-foot-bottom {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
   margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
@@ -130,12 +199,24 @@ a:hover { color: var(--link-hover); }
 
 /* ---------------- post page ---------------- */
 .post-wrap {
-  max-width: 1080px; margin: 0 auto; padding: 48px 40px 0;
-  display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 56px;
-  justify-content: center;
+  max-width: 1180px; margin: 0 auto; padding: 40px 40px 48px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 56px;
+  background: var(--surface); border: 1px solid var(--border);
 }
 .post-main { min-width: 0; }
-.post-aside { position: relative; }
+/* The article keeps a 65-75 character measure; the furniture below it
+   (related posts, prev/next, the author card) spans the full column. */
+.post-main .prose { max-width: 720px; }
+.post-aside {
+  position: sticky;
+  align-self: start;
+  /* clears the 138px header band */
+  top: 158px;
+  /* a long rail scrolls inside itself rather than escaping the viewport */
+  max-height: calc(100vh - 178px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .toc a:hover { color: var(--text) !important; }
 .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
 .prevnext {
@@ -151,13 +232,16 @@ a:hover { color: var(--link-hover); }
 
 .toc-mobile { display: none; }
 .toc-mobile summary::-webkit-details-marker { display: none; }
-@media (max-width: 1000px) {
-  .post-wrap { grid-template-columns: minmax(0, 720px); }
-  .post-aside { display: none; }
+/* Below this the 300px rail leaves no usable measure, so it stacks under
+   the article instead of sitting beside it. The desktop sidebar TOC and the
+   collapsible mobile TOC both cover "on this page", so only one shows at a
+   time to avoid a duplicate. */
+@media (max-width: 860px) {
+  .post-wrap { grid-template-columns: minmax(0, 1fr); padding: 24px 20px 32px; }
+  .post-aside .toc { display: none; }
   .toc-mobile { display: block; margin-bottom: var(--space-8); }
 }
 @media (max-width: 720px) {
-  .post-wrap { padding: 32px 22px 0; }
   .post-main h1 { font-size: var(--text-2xl) !important; }
   .related-grid { grid-template-columns: 1fr; }
   .prevnext { grid-template-columns: 1fr; }
@@ -178,8 +262,8 @@ a:hover { color: var(--link-hover); }
 .nugget-bar button:hover { color: var(--text); border-color: var(--border-strong); }
 /* iOS-safe embed scroll: the wrapper scrolls; the iframe is sized to its
    content height (measured via the resize shim) so touch-scroll works on mobile too. */
-.nugget-scroll { height: 460px; overflow-y: scroll; overflow-x: hidden; -webkit-overflow-scrolling: touch; background: #fff; }
-.nugget-iframe { display: block; width: 100%; border: none; background: #fff; }
+.nugget-scroll { height: 460px; overflow-y: scroll; overflow-x: hidden; -webkit-overflow-scrolling: touch; background: var(--surface); }
+.nugget-iframe { display: block; width: 100%; border: none; background: var(--surface); }
 .nugget-stage.full {
   position: fixed; inset: 0; z-index: 60; max-width: none; margin: 0;
   padding: 24px; background: var(--overlay); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
@@ -201,7 +285,7 @@ a:hover { color: var(--link-hover); }
 /* ---------------- book detail ---------------- */
 .book-hero { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
 .book-meta { display: grid; grid-template-columns: repeat(2, auto); gap: 18px 48px; margin: 24px 0 0; justify-content: start; }
-.book-meta dt { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--text-subtle); }
+.book-meta dt { font-family: var(--font-ui); font-size: var(--text-2xs); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--text-subtle); }
 .book-meta dd { margin: 4px 0 0; font-size: var(--text-sm); color: var(--text); }
 .book-body { display: grid; grid-template-columns: 1fr 300px; gap: 56px; margin-top: 56px; }
 .book-body .toc-num::before { counter-increment: ch; content: counter(ch, decimal-leading-zero); }
@@ -216,22 +300,26 @@ a:hover { color: var(--link-hover); }
 }
 
 /* ---------------- years index ---------------- */
-.year-row:hover span:first-child { color: var(--accent); }
+/* !important: years/page.tsx sets color inline on this span, which
+   otherwise always wins over an external stylesheet and defeats :hover. */
+.year-row:hover span:first-child { color: var(--accent) !important; }
 @media (max-width: 720px) {
   .year-row { grid-template-columns: 64px 1fr auto !important; gap: 14px !important; }
   .year-row span:first-child { font-size: var(--text-md) !important; }
 }
 
-/* ---------------- about ---------------- */
+/* ---------------- about ----------------
+   Not nested inside .page — the real (Tina-backed) about route renders
+   AboutView directly, so this needs its own well background just like
+   .page/.post-wrap, or its text would sit on bare --bg unbordered. */
 .about-wrap {
-  max-width: 1000px; margin: 0 auto; padding: 56px 40px 0;
-  display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: start;
+  display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 56px; align-items: start;
 }
-.about-card { position: sticky; top: 88px; }
+.about-card { position: sticky; top: 158px; }
 @media (max-width: 820px) {
   .about-wrap { grid-template-columns: 1fr; gap: 32px; }
   .about-card { position: static; max-width: 360px; margin: 0 auto; width: 100%; }
 }
 @media (max-width: 720px) {
-  .about-wrap { padding: 36px 22px 0; }
+  .about-wrap { gap: 28px; }
 }

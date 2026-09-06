@@ -5,6 +5,7 @@ import { getAllNuggets, getNugget } from "@/lib/nuggets";
 import { formatDateShort } from "@/lib/content";
 import { Tag } from "@/components/ds/Tag";
 import { NuggetStage } from "@/components/nugget/NuggetStage";
+import { PageShell } from "@/components/layout/PageShell";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -52,7 +53,7 @@ export async function generateMetadata(
   };
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default async function NuggetPage(props: PageProps) {
   const { slug } = await props.params;
@@ -72,11 +73,11 @@ export default async function NuggetPage(props: PageProps) {
 
   return (
     <div>
-      <div className="page-narrow">
+      <PageShell rail={false}>
         <Link
           href="/nuggets"
           className="no-underline"
-          style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+          style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
         >
           ← all nuggets
         </Link>
@@ -84,13 +85,13 @@ export default async function NuggetPage(props: PageProps) {
           <span className="eyebrow" style={{ color: "var(--secondary)" }}>
             Nugget
           </span>
-          <span style={{ ...mono, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
+          <span style={{ ...ui, fontSize: "var(--text-2xs)", color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
             {formatDateShort(nugget.date)}
           </span>
         </div>
         <h1
           className="mt-2.5"
-          style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.08, color: "var(--text)" }}
+          style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.08, color: "var(--text)" }}
         >
           {nugget.title}
         </h1>
@@ -111,7 +112,7 @@ export default async function NuggetPage(props: PageProps) {
             ))}
           </div>
         )}
-      </div>
+      </PageShell>
 
       <NuggetStage rawUrl={rawUrl} title={nugget.title} filename={`${nugget.slug}.html`} />
     </div>

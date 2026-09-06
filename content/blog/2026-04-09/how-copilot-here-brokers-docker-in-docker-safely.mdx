@@ -1,20 +1,20 @@
 ---
-title: 'How copilot_here Brokers Docker-in-Docker Safely'
+title: 'How copilot_here filters Docker requests through a socket broker'
 date: 2026-04-09
 tags: ['copilot_here', 'Docker', 'Security', 'Architecture']
-summary: 'Why I built a brokered Docker socket instead of sharing the raw one, how the two-phase request inspection works, and what it honestly cannot protect you from.'
+summary: 'Why I built a brokered Docker socket instead of sharing the raw one, how the two-phase request inspection works, and the limits of those checks.'
 ---
 
-If you just want the feature overview, [check out the copilot_here site](https://gordonbeeming.com/copilot_here/#docker-broker). If you want the setup steps, head to the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here). This post is the longer story: why I built the brokered Docker socket, how the internals work, and where the boundaries are.
+If you just want the feature overview, [check out the copilot_here site](https://gordonbeeming.com/copilot_here/#docker-broker). If you want the setup steps, head to the [setup guide](/blog/2026-04-09/setting-up-docker-in-docker-in-copilot-here). This post explains why I built the brokered Docker socket, how the internals work, and where the boundaries are.
 
 ## The problem
 
 AI coding agents inside a sandbox need Docker access. Testcontainers spins up a database for integration tests. A build pipeline calls `docker build`. A test harness starts a Redis sidecar. All of these need a working Docker socket.
 
-The naive approach is to bind-mount the host's `/var/run/docker.sock` into the container:
+One way to provide access is to bind-mount the host's `/var/run/docker.sock` into the container:
 
 ```bash title="Terminal"
-# This works. It's also terrifying.
+# This exposes the host Docker daemon to the container.
 docker run -v /var/run/docker.sock:/var/run/docker.sock myimage
 ```
 
@@ -24,9 +24,11 @@ That socket is the Docker daemon's control plane. Whatever can reach it can:
 - Spawn privileged containers with full host kernel access
 - Bind-mount `/etc`, `/root`, or the Docker socket itself into a new container
 - Attach to running containers on the host
-- Effectively become root on the host machine
+- Obtain broad control over the environment where the Docker daemon runs
 
-For a human developer, this is a calculated risk. You trust yourself not to run `docker run --privileged -v /:/host alpine sh`. For an AI agent operating autonomously, that trust is harder to justify.
+On Docker Desktop, the daemon runs inside a Linux VM; on a typical Linux installation it runs on the host itself. The consequences depend on that environment and the daemon configuration.
+
+For a human developer, exposing the socket may be a calculated risk. You trust yourself not to run `docker run --privileged -v /:/host alpine sh`. For an AI agent operating autonomously, that trust is harder to justify.
 
 ## What a broker changes
 
@@ -73,13 +75,13 @@ Path matching is segment-aware: `*` matches exactly one path segment, `**` match
 
 ## Phase 2: Body inspection
 
-Endpoint filtering handles the "which API calls are allowed" question. Body inspection handles "what configuration is allowed inside those calls." It only runs on `POST /containers/create` — that's where the dangerous configuration lives.
+Endpoint filtering handles the "which API calls are allowed" question. Body inspection handles "what configuration is allowed inside those calls." It runs on `POST /containers/create`, where these checks can reject a container configuration before the daemon starts it.
 
 The inspector parses the JSON body and checks five things:
 
 ### Image allowlist
 
-The most important check. The `allowed_images` list starts **empty**, meaning no sibling containers can be spawned at all until you explicitly add patterns. The safe default for an AI agent is "name every image you trust, deny everything else."
+The image check controls which images can be used for new containers. The `allowed_images` list starts **empty**, meaning no sibling containers can be spawned at all until you explicitly add patterns. You need to name the images you want to permit before using them.
 
 ```json title="Example configuration"
 {
@@ -117,7 +119,7 @@ Subpath matching is included, so `/etc/passwd` is caught by the `/etc` rule. Def
 
 ### Dangerous capabilities
 
-Blocks `CapAdd` entries from a deny list: `SYS_ADMIN`, `SYS_MODULE`, `SYS_PTRACE`, `SYS_RAWIO`, `SYS_BOOT`, `MAC_ADMIN`, `MAC_OVERRIDE`, `DAC_READ_SEARCH`, `NET_ADMIN`, `AUDIT_CONTROL`. These capabilities let a container escape its sandbox in various ways. Default: reject.
+Blocks `CapAdd` entries from a deny list: `SYS_ADMIN`, `SYS_MODULE`, `SYS_PTRACE`, `SYS_RAWIO`, `SYS_BOOT`, `MAC_ADMIN`, `MAC_OVERRIDE`, `DAC_READ_SEARCH`, `NET_ADMIN`, `AUDIT_CONTROL`. These capabilities grant access beyond the normal container defaults and can weaken isolation. Default: reject.
 
 Each of these checks can be individually toggled off via the config file if a specific workflow requires it.
 
@@ -150,7 +152,7 @@ graph LR
 
 The proxy container runs a Rust HTTP/HTTPS proxy for regular traffic plus a `socat` bridge that forwards Docker API calls from port 2375 to the host broker. The app container's `DOCKER_HOST` points at `tcp://proxy:2375`.
 
-Here's the part that took the most thought: when the broker inspects a `POST /containers/create` request in airlock mode, it rewrites the `NetworkMode` field. Siblings that would normally land on the default bridge network get placed on the airlock network instead. This means:
+When the broker inspects a `POST /containers/create` request in airlock mode, it rewrites the `NetworkMode` field. Siblings that would normally land on the default bridge network get placed on the airlock network instead. This means:
 
 - Siblings are reachable from the app container via Docker DNS (e.g., `mssql:1433`)
 - Siblings are also network-isolated, meaning they can only reach the proxy, not the external network directly
@@ -164,7 +166,7 @@ Without this rewrite, Testcontainers would start a database on the bridge networ
 
 **Why a userspace proxy instead of eBPF or seccomp?** Portability. The broker runs on Linux, macOS, and Windows. eBPF is Linux-only and seccomp can't inspect HTTP request bodies. A userspace proxy works everywhere and can parse JSON.
 
-**Why default-deny with an empty image allowlist?** Because "opt-in to specific risk" is fundamentally safer than "opt-out of specific risk." An AI agent that can spawn any image is an AI agent that can pull a purpose-built escape tool. By starting empty, users must make a conscious decision about which images to trust.
+**Why default-deny with an empty image allowlist?** Starting empty requires users to choose the images their workflow needs. It avoids permitting arbitrary images just because Docker can pull them.
 
 **Why inspect bodies and not just endpoints?** Because `POST /containers/create` is a single endpoint that can produce wildly different security outcomes depending on the body. A container with `"Privileged": true` is a completely different threat than one without it. Endpoint filtering alone can't distinguish between the two.
 
@@ -172,19 +174,21 @@ Without this rewrite, Testcontainers would start a database on the bridge networ
 
 ## Remaining attack surface
 
-The broker shrinks the attack surface. It does not eliminate it. Here's what's still exposed:
+The default rules leave several operations available beyond the checks on new container configurations:
 
-**Exec into siblings.** `POST /containers/*/exec` is in the endpoint allowlist and has no body inspection. An agent could exec arbitrary commands in any running sibling container. If that sibling has access to something the agent doesn't (a mounted secret, a network connection), exec is the bridge.
+**Exec into existing containers.** `POST /containers/*/exec` is in the endpoint allowlist and has no body inspection. The route allowlist does not scope container IDs to the current session, so an allowed exec request can target an existing container visible to the daemon, including one outside the session. If the target container has access to a mounted secret or a network the agent cannot otherwise reach, exec gives the agent access through that container.
 
-**Docker build.** `POST /build` is allowed. A Dockerfile's `RUN` commands execute on the host Docker daemon during the build. A malicious Dockerfile could exfiltrate data, install backdoors in the built image, or probe the host network during build.
+**Docker build.** `POST /build` is allowed. The daemon executes a Dockerfile's `RUN` steps in its build environment, not as ordinary shell commands directly on the host. A malicious Dockerfile could exfiltrate data, install backdoors in the built image, or probe the host network during build.
 
 **Archive write.** `PUT /containers/*/archive` lets files be written into running containers. An agent could inject a script into a running sibling's filesystem and then exec it.
 
-**Tag trust.** Image allowlist patterns like `postgres:*` trust every tag published to that repository. If an upstream image is compromised and a malicious tag is pushed, it would pass the allowlist. Use specific version tags where possible (e.g., `postgres:16.2` instead of `postgres:*`).
+**Tag trust.** Image allowlist patterns like `postgres:*` trust every tag published to that repository. If an upstream image is compromised and a malicious tag is pushed, it would pass the allowlist. A specific version tag narrows the match (for example, `postgres:16.2` instead of `postgres:*`), but tags can move. [Pinning an image digest](https://docs.docker.com/reference/cli/docker/image/pull/#pull-an-image-by-digest-immutable-identifier) gives a fixed image reference; it still requires choosing an image you trust.
 
-These vectors require the agent to be actively trying to escape rather than accidentally doing something dangerous. The broker catches the common accidental cases: a coding agent that runs `docker run --privileged` because it found that in a Stack Overflow answer, or one that tries to mount `/etc` because a build script asked for it.
+These operations can cause harm through a mistaken command, an untrusted build script or prompt injection, as well as deliberate misuse. The broker blocks the configured cases, such as a create request with `Privileged: true`, but its checks are not a complete boundary against hostile Docker API use.
 
-For maximum lockdown, combine the broker with Airlock mode. Network isolation means even if an agent compromises a sibling container, that container can't reach anything outside the airlock network without going through the proxy.
+The bind-path check described above inspects `HostConfig.Binds`. It should not be read as validation of every Docker storage option: the current body inspector does not check the separate `HostConfig.Mounts` representation. The implementation is available in [DockerBrokerBodyInspector.cs](https://github.com/GordonBeeming/copilot_here/blob/main/app/Infrastructure/DockerBrokerBodyInspector.cs), with the allowed routes in [the default broker rules](https://github.com/GordonBeeming/copilot_here/blob/main/docker/tools/github-copilot/default-docker-broker-rules.json).
+
+Airlock adds network filtering for containers on its internal network. It doesn't extend body inspection to exec or build requests, and allowed proxy destinations remain reachable. Choose it for the network restrictions described above, while accounting for the Testcontainers limitation.
 
 ## What's next
 

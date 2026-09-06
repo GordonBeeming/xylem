@@ -59,7 +59,7 @@ export function ClientProject({ query, variables, data, githubStars }: ClientPro
           <div className="eyebrow">Project</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
             data-tina-field={tinaField(project, "title")}
           >
             {project.title}

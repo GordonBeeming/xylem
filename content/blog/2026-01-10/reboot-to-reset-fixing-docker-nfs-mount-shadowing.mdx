@@ -1,78 +1,80 @@
 ---
-title: 'Reboot to Reset? Fixing Docker NFS Mount Shadowing'
+title: 'Troubleshooting Docker containers starting before an NFS mount'
 date: 2026-01-11
 tags: ['Docker', 'NFS', 'Home Assistant', 'UniFi', 'Self-Hosted']
-summary: 'Everything was working perfectly off the NAS... then you rebooted. Suddenly, Home Assistant is asking for a "New Install." Here is why your data is hiding and how to fix it.'
+summary: 'Why a Docker container can use a local directory when its NFS share is not mounted, how to check the backing filesystem, and the limits of create_host_path: false.'
 ---
 
-I finally bit the bullet and got a NAS at home; I ended up going the UniFi route to add to the rest of my UniFi gear. Naturally, the first thing I wanted to do was get my home automation data off my server's local SSD and onto that new storage.
+After moving my home automation data from the server's SSD to a UniFi NAS, Home Assistant showed its first-run setup screen following a reboot. The existing files were still on the NAS, but the container was using a local directory instead.
 
-Everything worked great... until I did a routine server reboot.
+The problem was the order in which the NFS mount and the container became available. A directory can exist at the expected path without being backed by the expected filesystem.
 
-When the system came back up, I navigated to my Home Assistant URL expecting my usual dashboard, but instead got the "Welcome! Let's get started" screen.
+## How the local directory gets used
 
-All that data, gone? No - just hiding. Here's what happened.
+With Compose's short bind-mount syntax, Docker creates the host source directory if it doesn't exist. If the NAS hasn't mounted yet, that directory is created on the local filesystem. The application can then initialise new data there. [Docker documents this behaviour](https://docs.docker.com/reference/compose-file/services/#volumes).
 
-## The race condition
-
-This usually happens because of a simple race condition. When your server reboots, Docker is often faster than the network mount. If the NAS isn't available the moment Docker tries to start the container, Docker doesn't wait - it just assumes you want to store data locally.
-
-It creates a new folder on your local drive and starts a fresh install right there. If you check your mount point, the folders exist, but they're just empty shells on your local disk:
+On my server, these directories existed under `/mnt`:
 
 ```bash title="Terminal"
 oak@pokedex:~$ ls -la /mnt/
 drwxr-xr-x 3 root root 4096 Jan 10 23:16 homeassistant
 drwxr-xr-x 3 root root 4096 Jan 10 23:16 homebridge
-
 ```
 
-## The "shadow" effect
+That listing showed the paths existed, but it didn't show which filesystem backed them. When I browsed the network share directly, my original files were there.
 
-When I browsed directly to the network share in my file explorer, all my files were safe and sound. But on the server, Docker was already running with a file handle to those local empty directories.
+Mounting the NAS over the local directory can hide the local files from the host's view. An existing container bind mount can still refer to the original local directory. [Docker's bind-mount documentation](https://docs.docker.com/engine/storage/bind-mounts/) explains that mounts obscure existing contents and use private propagation by default.
 
-Because Docker started before the mount was ready, the NAS data covered the local folder once it finally connected - but Docker was already attached to the local version on the SSD and stayed there.
+## Check the backing filesystem
 
-## How to verify
-
-If you suspect your local drive has shadowed your mount, run this command to see which physical drive is actually backing that folder:
+On the host, check the path used by the container:
 
 ```bash title="Terminal"
 df -h /mnt/homeassistant/homeassistant_data
-
 ```
 
-### The "ghost" output (local SSD)
-
-If you see your local system drive (like `/dev/nvme0n1p2`), you're looking at the empty local copy on your SSD:
+This output means the host path is on the local SSD:
 
 ```text title="Output (local SSD)"
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p2  1.8T   42G  1.7T   3% /
-
 ```
 
-### The "real" output (NAS)
-
-This is what you want to see. When the NAS is correctly mounted, the output shows the NAS IP:
+With the NAS mounted, the host output shows its export instead:
 
 ```text title="Output (NAS mounted)"
 Filesystem                            Size  Used Avail Use% Mounted on
 10.42.40.101:/var/nfs/shared/pokedex  9.1T  284G  8.9T   4% /mnt
-
 ```
 
-## The fix: clearing the shadows
+A correct host result doesn't prove that an already-running container uses the same mount. If the mount arrived after the container started, recreate the container after checking the host path and the original files.
 
-To get your real data back, clear out those local empty directories so the NAS mount has nothing to hide behind.
+## Recover without discarding either copy
 
-1. Stop the containers: `docker compose down`
-2. Unmount the NAS: `sudo umount -l /mnt`
-3. Now that the NAS is unmounted, check `/mnt` directly. If there are files there, delete them.
-4. Remount: `sudo mount -a`
+Stop the affected Compose stack before working on the mount:
 
-## The permanent safety net
+```bash title="Terminal"
+docker compose down
+```
 
-To stop this happening after the next reboot, update your `docker-compose.yml` to use a bind mount with `create_host_path: false`. This tells Docker not to start if the source path doesn't exist.
+Check the NAS directly and confirm the original data is present. If the expected share is not mounted on the host, mount it using your existing mount configuration, then repeat the filesystem check. For a share configured at `/mnt` in `fstab`:
+
+```bash title="Terminal"
+sudo mount /mnt
+df -h /mnt/homeassistant/homeassistant_data
+```
+
+Only start the stack once the path resolves to the expected NAS export and contains the application data:
+
+```bash title="Terminal"
+docker compose up -d
+```
+
+If you need to inspect the files beneath the mount, stop every service using it and unmount it normally with `sudo umount /mnt`. If it reports that the mount is busy, find what is using it before proceeding. Preserve any local files separately; they may include changes made while the application was running against the SSD. Don't delete everything under `/mnt` as a recovery step.
+
+## Prevent automatic directory creation
+
+Use the long bind-mount syntax to stop Compose from creating a missing source directory:
 
 ```yaml title="docker-compose.yml"
 services:
@@ -83,8 +85,9 @@ services:
         source: /mnt/homeassistant/homeassistant_data
         target: /config
         bind:
-          create_host_path: false # The Safety Switch 🛑
-
+          create_host_path: false
 ```
 
-With `create_host_path: false`, the container will refuse to start if the NAS isn't mounted yet. A failed start is obvious and easy to fix. A silent fallback to local storage is neither.
+`create_host_path: false` makes a missing source path an error. It doesn't verify that NFS is mounted: an old local directory at the same path can still satisfy the existence check.
+
+Startup also needs to wait for the expected filesystem. Configure that in the service or mount setup that starts your containers, and check it with a reboot. The useful verification is that the NAS mounts before the application starts and that Home Assistant opens the existing installation.

@@ -2,7 +2,7 @@
 title: 'The Conprism: The Illusion of Precision in Estimates and Star Ratings'
 date: '2025-09-15'
 tags: ['Productivity', 'Estimation', 'Feedback', 'Ratings', 'Cognitive Bias']
-summary: 'It started with a typo and a thought about 10-point rating scales. I realized our quest for precision in work estimates and user ratings often creates a "conprism", a false sense of accuracy. Here''s why less is usually more.'
+summary: 'Why I prefer estimates and rating scales that acknowledge uncertainty, with examples from T-shirt sizing, planning poker and five-point feedback.'
 ---
 
 
@@ -11,11 +11,11 @@ I was thinking recently about rating scales. When you're asked to give a rating 
 
 It made me think about how often we run into this same pattern at work. We trust data and precision, assuming that more granularity means more accuracy.
 
-But what if, past a certain point, more options produce *less* meaningful data? What if the quest for precision is actually deceiving us?
+More options can make the answer look more precise without making it more useful.
 
-### The Birth of a Word: Conprism
+### What I mean by conprism
 
-So, what's with the word "conprism" in the title? Full disclosure: it was a typo. I was trying to type "comparison" while brainstorming this idea, and my fingers had other plans. But the more I looked at it, the more it fit.
+“Conprism” started as a typo while I was trying to write “comparison”. I kept it because it gave me a name for the false precision I was trying to describe.
 
 A **conprism** is a lens that gives you a false sense of precision - you think you're being more accurate than you really are. Like looking through a pane of glass that isn't perfectly flat. The view is clear enough, but the details are slightly off.
 
@@ -23,21 +23,21 @@ This shows up a lot in work estimates and user ratings.
 
 ## Through the Conprism of Work Estimates
 
-In software development, the pressure for precise estimates is constant. "How many hours will Feature X take?" Everyone wants predictable timelines, so they demand exact numbers.
+In software development, we often get asked how many hours a feature will take. An exact number is convenient for planning, even when the work is still uncertain.
 
 But when we ask for hour-level estimates on complex, uncertain work, we're looking straight through the conprism.
 
 * 1 hour vs. 2 hours? You can feel that difference.
 * 5 hours vs. 8 hours? Harder, but still tangible.
-* 80 hours vs. 120 hours? That's guesswork dressed up as a plan. The difference is basically made up.
+* 80 hours vs. 120 hours? At that size, I'd want to understand the unknowns before treating the difference as reliable.
 
 The problem is that those arbitrary numbers get treated as commitments. They become the "source of truth," even when that truth is shaky. Teams start sandbagging to protect themselves, and stakeholders build plans on confidence that was never really there.
 
-### Breaking Free: Embracing Simplicity
+### Estimating with room for uncertainty
 
 The fix is to use tools that acknowledge uncertainty rather than pretend it doesn't exist. Agile teams have been doing this for years:
 
-1.  T-shirt sizing: estimate in Small, Medium, Large. A "Large" task is clearly bigger than a "Small" one, and that's often all you need to make a sensible decision. No false precision required.
+1.  T-shirt sizing: estimate in Small, Medium, Large. A "Large" task is clearly bigger than a "Small" one, and that's often all you need to make a sensible decision.
 
 <Figure key="/images/conprism-tshirt-sizing.png" src="/images/conprism-tshirt-sizing.png" alt="An illustration showing T-shirt sizes (S, M, L, XL) with corresponding rough effort levels. The image conveys scaling effort without exact precision." width="0" height="0" caption="T-Shirt Sizing: Communicating effort, not false precision." />
 
@@ -53,11 +53,9 @@ The conprism doesn't just distort project plans. It messes with how we collect f
 
 A simple like/dislike feels too blunt. But a 10-point scale goes too far the other way.
 
-### The "Goldilocks" Scale: Why 5 is Just Right
+### Why I prefer a five-point scale
 
-For rating things like a service or product experience, a 5-point scale hits the sweet spot.
-
-There's actually research behind this - humans can reliably distinguish around 5 to 7 levels of something. More options just add noise. And a 5-point scale gives you a real spectrum without the hair-splitting:
+For the service and product feedback I'm describing, five points gives me enough room to express a view and explain what each rating means:
 
 ⭐️ (1): Terrible.  
 ⭐️⭐️ (2): Not great.  
@@ -65,7 +63,7 @@ There's actually research behind this - humans can reliably distinguish around 5
 ⭐️⭐️⭐️⭐️ (4): Good.  
 ⭐️⭐️⭐️⭐️⭐️ (5): Loved it!
 
-That neutral 3-star option matters more than people give it credit for. It's the honest answer for someone who doesn't feel strongly either way. Take it away and you force them to pick a side they don't actually have, which pollutes your data. "Most of our users are meh about this" is genuinely useful to know.
+That neutral 3-star option matters more than people give it credit for. It gives someone who doesn't feel strongly either way a place to put that answer. Without it, their choice may imply a preference they don't have. "Most of our users are meh about this" is genuinely useful to know.
 
 With a 10-point scale, the conprism is back. Try defining every level and you'll see why:
 
@@ -80,10 +78,6 @@ With a 10-point scale, the conprism is back. Try defining every level and you'll
 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ (9): Genuinely great.  
 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ (10): Excellent, perfect.
 
-What does "Negative Meh" vs. "Positive Meh" actually mean to the person clicking the button? The difference between 5 and 6, or 7 and 8, is completely made up. Every respondent invents their own meaning. You end up with data that looks precise but is really just a collection of inconsistent gut feelings dressed up as numbers.
+What does "Negative Meh" vs. "Positive Meh" actually mean to the person clicking the button? Without shared definitions, respondents can interpret the difference between 5 and 6, or 7 and 8, differently. You end up with data that looks precise but is really just a collection of inconsistent gut feelings dressed up as numbers.
 
-## A Final Thought: Stepping Away from the Conprism
-
-If any of this felt like a dig at your team's process, it wasn't meant that way. This whole thing started with me staring at a 10-point survey and wondering what I was actually supposed to do with it - then realising that feeling was familiar from every sprint planning session where someone asked for a 120-hour estimate.
-
-Two annoying things, same root cause. Sometimes less is genuinely more.
+For work estimates, I'd rather have a size that starts a useful discussion about uncertainty than an hour count that implies more confidence than we have. For ratings, I want each option to mean something I can explain, including a neutral answer. Those are the checks I'd make before adding more points to either scale.

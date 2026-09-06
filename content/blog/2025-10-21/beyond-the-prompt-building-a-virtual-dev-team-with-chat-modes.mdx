@@ -1,49 +1,29 @@
 ---
-title: 'Beyond the Prompt: Building a ''Virtual Dev Team'' with Chat Modes'
+title: 'Creating custom GitHub Copilot chat modes in VS Code'
 date: 2025-10-21
 tags: ['AI', 'VS Code', 'Productivity', 'GitHub Copilot', 'Development', 'C#']
-summary: 'Stop writing huge system prompts every time you need AI help. Start building a team of specialized AI agents right inside your IDE. Here''s how ''chat modes'' can create a virtual PO, Tech Lead, and more.'
+summary: 'How I use task-specific chat modes for issue writing, planning, tests and backlog analysis, with Markdown templates to adapt to a project.'
 ---
 
 
 
-I'm often in this situation: I need my AI assistant to help with a task, but first I have to write a 10-paragraph system prompt explaining my entire project, my tech stack, my coding standards, and what persona I want it to adopt... just to get a decent answer.
+I use VS Code's Custom Chat Modes to keep task-specific instructions ready to select from the chat dropdown. An issue-writing task needs different rules and tools from an integration test or an architecture plan. Keeping those instructions in separate modes saves me repeating them in each prompt.
 
-By the time I'm done writing the prompt, I could have written the code myself.
-
-What if you didn't have to? What if you could just *select your specialist* from a dropdown:
--   "Issue Scribe" (for creating PBIs)
--   "Task Planner" (for planning tasks)
--   "Test Writer" (for writing integration tests)
--   "Backlog Analyst" (for refining the backlog)
-
-...and then ask your question?
-
-You can build this "virtual team" of specialists right inside your IDE using VS Code's Custom Chat Modes.
+The examples below cover an Issue Scribe, Task Planner, Test Writer and Backlog Analyst. They use a fictional C# e-commerce project so you can adapt the instructions to your own codebase.
 
 ## The generalist AI problem
 
-Your default AI chat doesn't know your project's specific rules (e.g., "all features start with '🚀 Feature -'"). It doesn't know your tech stack (e.g., "we always use xUnit, Testcontainers, and FluentAssertions"). And it doesn't know what it *shouldn't* do (e.g., "never suggest creating a new file, just edit existing ones").
+A general chat prompt may be missing the conventions that matter to a particular task: issue-title prefixes, testing libraries, or constraints on which files to change. Project instructions help with shared rules, but I found they became harder to maintain when I also put every specialist workflow into them.
 
-This leads to "prompt fatigue" and a lot of wasted time correcting generic, often wrong suggestions.
+I keep broadly applicable conventions in `copilot-instructions.md` and put the detailed task workflows into chat modes.
 
-### But what about `copilot-instructions.md`?
-
-You might be thinking, "I'll just dump all these rules into my `copilot-instructions.md` file!"
-
-I've been down that road, and it backfires.
-
-That instruction file is loaded every single time you ask a question. It quickly becomes a 500-line monster. When you want to ask a simple question about a regex, the AI is wading through hundreds of lines of irrelevant context about your PBI templates, testing frameworks, and database schemas. It pollutes the prompt and makes responses worse for everyday tasks.
-
-## The solution: a virtual team
-
-Custom Chat Modes fix this. Instead of one giant instruction file, you create a set of specialists.
+## How chat modes fit
 
 Each file defines that agent's persona, its rules, and the tools it's allowed to use. The context is only loaded when you explicitly choose that specialist. When you want to chat, you pick the right person for the job from the chat UI.
 
 <Figure key="/images/chat-mode-picker.png" src="/images/chat-mode-picker.png" alt="A screenshot of the VS Code chat dropdown menu, showing custom chat modes like 'Backlog Refinement', 'Create PBIs', 'Tests', and 'Task Planner'." width="400" height="0" caption="Choosing the right specialist from the chat mode dropdown." />
 
-## Meet the team
+## Example roles
 
 Let's say we're working on a C# e-commerce project called "E-Shop" - a modular monolith using EF Core, MediatR, and Blazor.
 
@@ -76,7 +56,7 @@ This agent is a strict, non-technical assistant. Its only job is to create prope
 
 ### 2. The "Task Planner"
 
-This one acts as a senior developer. It takes a PBI and a developer's high-level thoughts and turns them into a detailed, full-stack execution plan. Honestly this is where I find it most useful.
+This one acts as a senior developer. It takes a PBI and a developer's high-level thoughts and turns them into a detailed, full-stack execution plan. This is the mode I find most useful.
 
 **How we use it:**
 > **USER:**
@@ -245,8 +225,8 @@ You are a "Backlog Analyst." You are read-only and CANNOT modify issues.
 -   `/find-priority`: List all issues with the specified priority label.
 ```
 
-## Worth trying
+## Using the modes with a team
 
-There's a practical upside to this that I didn't fully appreciate until I'd been using it for a while: onboarding. When a junior dev picks up a complex ticket, the Task Planner can walk through the architecture and produce a step-by-step plan scoped to your actual codebase. The Test Writer generates tests in the frameworks you actually use. Neither of those things happen reliably with a generic chat window.
+I've also found these modes useful for onboarding. When a junior dev picks up a complex ticket, the Task Planner can walk through the architecture and produce a step-by-step plan scoped to your actual codebase. The Test Writer generates tests in the frameworks you actually use. Keeping the project conventions in the mode means they don't have to be supplied again for every request.
 
-Start with one persona - the Task Planner is probably the highest-value starting point - and go from there.
+I'd start with the Task Planner, since it's the one I use most. Adjust its architecture and file-location instructions to the project before relying on the plans it produces.

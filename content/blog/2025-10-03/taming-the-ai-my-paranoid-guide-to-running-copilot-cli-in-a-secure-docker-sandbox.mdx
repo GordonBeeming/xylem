@@ -1,40 +1,34 @@
 ---
-title: 'Taming the AI: My Paranoid Guide to Running Copilot CLI in a Secure Docker Sandbox'
+title: 'Running GitHub Copilot CLI in Docker with copilot_here'
 date: 2025-10-03
 tags: ['copilot_here', 'Docker', 'GitHub', 'Copilot', 'Security', 'DevOps']
-summary: 'I love the new GitHub Copilot CLI, but as someone who is a little paranoid about security, I needed a way to use it with more confidence. Here''s how I built a secure, isolated Docker environment for it.'
+summary: 'My Docker setup for running GitHub Copilot CLI with access to a project directory, including installation, image variants and the limits of that isolation.'
 ---
 
 
 
-I love the new GitHub Copilot CLI. But as someone who's a little paranoid about security, the idea of an AI having deep access to my terminal and file system made me uneasy.
+I wanted to use GitHub Copilot CLI's command execution, including `--allow-all-tools`, while limiting which files it could access. I built [copilot_here](/projects/copilot-here) to run it in Docker with the current project mounted into the container.
 
-The Copilot CLI gets its usefulness from executing commands, but that requires a level of trust I wasn't fully comfortable handing over. I wanted to use features like `--allow-all-tools` without feeling like I was handing over the keys to my entire machine.
+That still lets the agent change or delete files in the project. It also has network access, so the container's mounts and network settings matter when deciding which permissions to give it.
 
-So I decided to put it in Docker.
-
-## The "Why": My wishlist for a perfect Copilot environment
+## What I wanted from the setup
 
 I had four goals for what this setup needed to do:
 
-* **Secure isolation:** The tool should only see the files in my current project directory. Nothing else.
+* **Project file access:** Mount the current project without exposing my other host directories.
 * **Auto-authentication:** It should use my existing `gh` login without any extra steps.
 * **Portability:** No global Node.js or `npm` packages on my host machine.
-* **Peace of mind:** I want to *feel* safe enough to let it do its job, even if that means letting it run commands automatically.
+* **Automatic execution:** Keep the file-access boundary clear enough that I can decide when to allow commands without individual prompts.
 
-## The breakthrough: why the cage makes the tiger safer
+## What the container isolates
 
-After a bit of trial and error (and a lot of debugging), I landed on a solution that met all these goals. The core idea is to run Copilot inside a container, which shrinks the "blast radius" of any potential mistakes.
+Copilot runs inside the container with the current project mapped to `/work`. A command such as `rm -rf .` run there can delete the project's files on the host. Other host directories aren't exposed through that project mount.
 
-You're probably thinking, "Wait, if it runs `rm -rf .`, won't that delete my code?" You'd be right. It would.
-
-The key difference is what "`.`" refers to. Inside the container, it would delete the contents of the `/work` directory, which is mapped to your current project directory. It can't touch your home directory, your SSH keys, or any other project folder. It's contained. Annoying? Yes. Catastrophic? No.
-
-One thing worth knowing: this cage has open windows for network access. The container shares your host machine's network, so it's not a firewalled environment like a GitHub-hosted runner. Copilot can reach local resources, which is something to keep in mind.
+This setup also passes authentication into the container. File isolation doesn't restrict what those credentials or network connections can access. In the setup described here, the container shares the host network. The project mount doesn't filter outgoing connections or prevent access to reachable local services.
 
 That isolation is what gives me enough comfort to actually use `--allow-all-tools`. The risk isn't gone, but it's contained to a level I can live with.
 
-<Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="The final, working setup! It took a while to get here, but it was worth it." />
+<Figure key="/images/copilot-working-banner.png" src="/images/copilot-working-banner.png" alt="The final working Copilot CLI session, showing the banner and the logged-in user." width="0" height="0" caption="Copilot CLI running in the container with authentication available." />
 
 ## The final setup: the code
 
@@ -240,15 +234,13 @@ copilot_yolo -dp "write playwright tests for the login page"
 copilot_yolo --no-cleanup "generate README"
 ```
 
-## Beyond the basics: specialized Docker image variants
+## Choosing an image
 
 As the project grew, I kept running into cases where the base image wasn't enough. .NET projects need SDKs. Browser tests need Chromium. So I added specialized variants on top of the base image.
 
-### Available image variants
-
 **Base image (`latest`)**: Node.js 20, Git, and basic tools. Works for general scripting and anything that doesn't need a specific runtime.
 
-**.NET image (`dotnet`)**: Adds .NET 8.0 and 9.0 SDKs with ASP.NET Core runtimes and ICU libraries. Good for .NET work when you don't need browser testing on top.
+**.NET image (`dotnet`)**: The original image included .NET 8.0 and 9.0 SDKs with ASP.NET Core runtimes and ICU libraries. The flag list above includes the later .NET 10 variants too.
 
 **.NET + Playwright image (`dotnet-playwright`)**: Everything in the .NET image, plus Playwright 1.56.0 and Chromium with all its dependencies. About 500-600MB larger than the base image because of the Chromium binaries, so only use it when you need it.
 
@@ -256,16 +248,12 @@ You switch between variants with flags like `-d` for .NET or `-dp` for .NET + Pl
 
 ### Automatic cleanup
 
-The functions automatically remove unused `copilot_here` images (filtered by the `project=copilot_here` label) and keep only the one you're currently using. This stops old image versions from quietly eating your disk space.
+The original cleanup removed unused `copilot_here` images filtered by the `project=copilot_here` label. The [October update](/blog/2025-10-28/copilot_here-october-2025-updates-auto-updates-cross-platform-support-and-more) changed this to retain recent images and avoid downloading the same image on every launch.
 
 If you want to skip the cleanup for faster startup, use `--no-cleanup` (or `-NoCleanup` on PowerShell). You can also skip pulling the latest image with `--no-pull` (or `-NoPull`) if you need to move fast and already have the image locally.
 
-## Conclusion: security and convenience can coexist
+## How I use it
 
-I reach for Docker a lot when I'm evaluating new CLI tools. It's not just for deploying apps; it's genuinely useful for building a sandbox around things you don't fully trust yet.
+I keep `copilot_here` for normal use and `copilot_yolo` for projects where I'm comfortable allowing automatic execution. I choose `-d` for .NET work and `-dp` when I also need browser tests. The project directory and available credentials still need the same care as any other tool that can modify files and run commands.
 
-This setup doesn't make me reckless. I still pay attention to the projects I run it in. But it lowers the stakes enough that I can actually let the tool do what it's designed to do. In my daily workflow I keep both versions installed: `copilot_here` for normal use, and `copilot_yolo` for trusted projects where I want speed over caution.
-
-The image variants mean I'm not stuck picking between "works for my project" and "doesn't bloat my Docker storage". `-d` for .NET, `-dp` when I need browser tests. Simple enough that I actually use it instead of second-guessing which image to reach for.
-
-All the source code is at [https://github.com/GordonBeeming/copilot_here](https://github.com/GordonBeeming/copilot_here). Give it a try.
+The [GitHub repository](https://github.com/GordonBeeming/copilot_here) has the source and current installation details.

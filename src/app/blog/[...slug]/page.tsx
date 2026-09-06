@@ -1,10 +1,5 @@
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import rehypeSlug from "rehype-slug";
-import rehypeKatex from "rehype-katex";
-import rehypeShiki from "@shikijs/rehype";
 import { PostLayout } from "@/layouts/PostLayout";
 import { ClientPost } from "./client-post";
 import { fetchTina, tinaClient } from "@/components/tina/fetch";
@@ -16,28 +11,13 @@ import {
   getSiteConfig,
 } from "@/lib/tina-helpers";
 import { extractHeadings } from "@/lib/content";
-import { Figure } from "@/components/prose/Figure";
-import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
-import { Walkthrough, Step } from "@/components/prose/Walkthrough";
-import { Callout } from "@/components/prose/Callout";
-import { proseComponents } from "@/components/prose/prose-components";
+import { mdxComponents, mdxOptions } from "@/lib/mdx";
 // rehype-code-meta no longer needed — shiki transformers handle meta
 import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ slug: string[] }>;
 }
-
-// MDX-only components (used via JSX in .mdx source, not by rendered README
-// HTML) layered on top of the shared prose tag handlers.
-const mdxComponents = {
-  ...proseComponents,
-  Figure,
-  YouTubeEmbed,
-  Walkthrough,
-  Step,
-  Callout,
-};
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -102,6 +82,11 @@ export default async function BlogPostPage(props: PageProps) {
 
   const relatedPosts = getRelatedPosts(meta.slug, meta.tags, 3);
   const { prev, next } = getAdjacentPosts(meta.slug);
+  // The sidebar's "Recent posts" list is site-wide and newest-first, unlike
+  // relatedPosts, which is scored against this post's tags.
+  const recentPosts = getAllPosts()
+    .filter((post) => post.slug !== meta.slug)
+    .slice(0, 4);
   const headings = extractHeadings(content);
   const siteConfig = getSiteConfig();
 
@@ -140,34 +125,7 @@ export default async function BlogPostPage(props: PageProps) {
     <MDXRemote
       source={content}
       components={mdxComponents}
-      options={{
-        mdxOptions: {
-          remarkPlugins: [remarkGfm, remarkMath],
-          rehypePlugins: [
-            rehypeSlug,
-            rehypeKatex,
-            [rehypeShiki, {
-              themes: {
-                light: "github-light",
-                dark: "github-dark",
-              },
-              defaultColor: false,
-              addLanguageClass: true,
-              parseMetaString: (metaString: string) => {
-                return { __raw: metaString };
-              },
-              transformers: [{
-                pre(node: { properties: Record<string, unknown> }) {
-                  const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
-                  if (meta) {
-                    node.properties["data-meta"] = meta;
-                  }
-                },
-              }],
-            }],
-          ],
-        },
-      }}
+      options={mdxOptions}
     />
   );
 
@@ -175,6 +133,7 @@ export default async function BlogPostPage(props: PageProps) {
     prevPost: prev,
     nextPost: next,
     relatedPosts,
+    recentPosts,
     headings,
     siteConfig,
   };

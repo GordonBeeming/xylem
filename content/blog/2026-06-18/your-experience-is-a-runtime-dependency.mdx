@@ -5,114 +5,44 @@ tags: ['AI', 'Agents', 'Agentic Engineering', 'Skills', 'Productivity', 'Softwar
 summary: "AI agents are already very capable, but they don't automatically have the judgement that makes you effective in your current role. Skills and agent instructions are how you package that experience so the agent can use it."
 ---
 
-I was explaining something to [Jack Pettit](https://www.linkedin.com/in/jackdevau/) earlier and the analogy landed better than I expected.
+I was talking to [Jack Pettit](https://www.linkedin.com/in/jackdevau/) about why people get different results from the same AI agents. The comparison that helped was onboarding a capable new developer: they may know the tools well, but they still need the team's conventions, project history, and expectations for the work.
 
-We were talking about agents. Well, sort of. It was less "what do I think about agents?" and more "why do some people seem to get much better work out of the same tools?"
+I think of that context as a runtime dependency. Skills and repo instructions are how I make my working practices available to an agent, so I don't have to explain them again in every session.
 
-The bit I keep coming back to is this: agents are extremely capable, but they don't have *your* experience. They don't have the production bugs you remember. They don't have the customer conversations that changed how you estimate work. They don't know which reviewer always cares about one particular edge case. They don't know which CLI command you trust and which one you avoid because it lied to you three months ago.
+## Give the agent the context it needs for the task
 
-That stuff matters.
+An agent doesn't automatically know which test command covers the important path, which generated files to leave alone, or what a reviewer expects to see in a PR description. Those details can determine whether otherwise reasonable work is usable in a particular repo.
 
-The model can be brilliant in the general sense and still be missing the dependencies that make it effective in *your* environment.
+Some come from experience: a command that reported success without running the relevant tests, an edge case found in production, or a requirement that usually goes missing from a ticket. Writing them down gives the agent something concrete to act on.
 
-## The missing dependency
+The useful instruction explains the constraint and how to check it. "Be careful with tests" leaves most of the decision unresolved. Naming the command, what it covers, and what a successful result looks like is more useful.
 
-The way I explained it was a bit like onboarding a very sharp new starter.
+## Put instructions where they apply
 
-They might have just finished studying and know the newer tools better than you do. They might be quicker at finding patterns, quicker at reading docs, and less attached to the way things were done five years ago.
+I use three places for this context.
 
-Great, that's useful.
+Global instructions hold preferences that apply across projects, such as how I want review findings reported, when to search instead of guessing, and how much autonomy I expect before the agent asks me a question.
 
-But someone with a few years of real work behind them usually knows things that are hard to teach in a classroom. They know what "done" means on a real team. They know when a shortcut is fine and when it becomes a support ticket. They know that the Jira ticket is often missing the actual requirement. They know which parts of the system are safe to touch and which parts look simple because the complexity is hidden in the business rules.
+Repo instructions cover the local workflow: test commands, generated files, issue templates, deployment scripts, and the checks needed before a change is ready. These belong with the code so someone working in that repo can find them.
 
-That's the gap with agents too.
+Skills describe repeatable tasks that need more than a short rule. Reviewing a pull request, refining backlog items, applying brand guidelines, and writing in my voice each have their own inputs, tools, examples, and checks.
 
-The agent isn't short on raw intelligence, just on runtime context.
+The distinction helps keep the context relevant. I don't want every session to load a detailed PR review procedure when I'm only editing a sentence.
 
-It doesn't know your team conventions unless you give them to it. It doesn't know your preferred validation flow unless you write it down. It doesn't know your taste in PR descriptions, your tolerance for risk, your habits around issue planning, or the little repo-specific commands that make the difference between "technically works" and "works the way we work here."
+## Turn repeated corrections into reusable guidance
 
-So when we complain that agents produce generic output, sometimes the uncomfortable answer is that we gave them generic inputs.
+When I keep correcting the same mistake, I look for a missing instruction. If an agent repeatedly checks GitHub review status without reading unresolved inline threads, the review skill should explain how to retrieve both. If it keeps editing generated output, the repo instructions should name the source file and the generation command.
 
-## Skills are packaged experience
+Formatting preferences deserve examples too. A short example of the PR description I want is often clearer than a list of adjectives such as "concise" or "technical".
 
-This is where skills, `AGENTS.md`, `CLAUDE.md`, and repo instructions start to matter.
+Not every correction needs a permanent rule. Sometimes my request was vague, the mistake was specific to that task, or the existing instruction was simply missed. I want to fix the recurring cause without adding a new paragraph for every bad response.
 
-I don't think of those as prompt hacks anymore. They're closer to packaging your working habits so the agent can load them at the right time.
+I've also gone too far in the other direction. Loading too many rules makes sessions slower and harder to follow. A skill should provide the constraints and checks for a task, with enough room for the agent to choose how to complete it.
 
-Some of that belongs globally:
+## Keep the guidance useful as models change
 
-- how you like review findings reported
-- how you want artifacts created
-- when the agent should search instead of guessing
-- what commands are safe or unsafe in your environment
-- how much autonomy you expect before it comes back to you
+A model upgrade doesn't make my repo conventions or review preferences obvious to it. Those instructions can still help, even when the model needs less guidance with the implementation itself.
 
-Some of it belongs in the repo:
+I expect some instructions to become unnecessary as the tools improve. Others describe decisions that remain specific to my work. Keeping the reason for a rule beside it makes that easier to judge later.
 
-- how to run the tests that actually matter
-- which generated files not to hand-edit
-- where issue templates live
-- which deployment scripts are the real ones
-- what "done" looks like for that codebase
-
-And some of it belongs in skills:
-
-- how to review a pull request in your style
-- how to refine a backlog item
-- how to apply brand rules to an artifact
-- how to write in your voice
-- how to handle a workflow you repeat often enough that rediscovering it every session is waste
-
-The goal is not to bury the model under rules. I've done that too, and it gets slow and annoying quickly. The goal is to make the important context available where it helps.
-
-A good skill isn't "think exactly like me." It's "when doing this kind of task, here are the constraints, examples, tools, and checks that make the result acceptable."
-
-That tends to age better.
-
-## Every model upgrade makes this more useful
-
-The other part of the analogy is that every new model feels a bit like the next year's intake.
-
-Better trained, more capable, more current, and less likely to get stuck on the things the previous one struggled with.
-
-But the new model still doesn't know your history by default.
-
-That's why I think the context you build around agents compounds. If you put your experience only into one-off prompts, it disappears at the end of the session, but if you put it into durable skills and instructions, the next model gets to inherit it too.
-
-That's the interesting bit for me.
-
-You're using this year's model better, but you're also building a small layer of your own professional context that can travel forward as the tools improve.
-
-The agent gets smarter underneath. Your context gets more useful on top.
-
-## This is also engineering work
-
-There's a trap here where people hear "write better prompts" and think this is about being clever with wording.
-
-I don't think that's the job.
-
-The job is closer to making implicit engineering judgement explicit enough that an agent can use it.
-
-If you always check unresolved GitHub review threads a certain way because the simpler command misses inline comments, write that down. If a repo has one command that looks like it runs the tests but does not cover the important path, write that down. If you keep correcting agents for the same formatting, planning, validation, or artifact mistakes, turn the correction into a skill or instruction.
-
-Not every correction deserves a rule. Some mistakes are one-offs, some are the model having a bad day, and some are just your request being vague.
-
-But when the same correction keeps coming back, that's usually a missing dependency.
-
-Package it.
-
-## The output becomes yours
-
-Two developers can use the same model and get very different results.
-
-Part of that is the prompt in the moment, sure, but more and more I think the bigger difference is the environment around the model. The skills, repo instructions, examples, etc... The little bits of scar tissue that have been turned into reusable guidance.
-
-Nobody else has exactly your experience. Nobody else has your exact set of projects, customers, outages, habits, preferences, and tradeoffs.
-
-If you do this properly, the agent becomes better at producing the kind of work you would have produced, with the speed and breadth the model brings.
-
-That's the part worth paying attention to.
-
-The agent is already smart. The missing piece is experience.
-
-And your experience is a dependency you can choose to ship.
+For me, the useful work is making an implicit expectation explicit: what matters, where the evidence is, and how to check the result. When the same correction keeps coming back, I put it in the repo instructions or the relevant skill, then check whether the next task actually benefits from it.

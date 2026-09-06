@@ -9,15 +9,15 @@ I run Claude Code across multiple projects, often with several Ghostty tabs open
 
 Which repo am I in? What GitButler branch is active? Am I close to my 5-hour rate limit? How much have I spent today across all sessions (not that it matters on a Max plan, but it gives you a feel for what this type of workload would cost as an API deployment)? The default status line doesn't tell me.
 
-## The fork-or-build moment
+## Why I built my own
 
-Funny timing, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) published a [blog post about building a custom Claude Code status line](https://www.dandoescode.com/blog/claude-code-custom-statusline) at the same time I was busy writing mine. His [LinkedIn post](https://www.linkedin.com/posts/danieljamesmackay_claudecode-ai-devex-share-7441387824324444160-YkXP) nailed it:
+Funny timing, [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) published a [blog post about building a custom Claude Code status line](https://www.dandoescode.com/blog/claude-code-custom-statusline) at the same time I was busy writing mine. His [LinkedIn post](https://www.linkedin.com/posts/danieljamesmackay_claudecode-ai-devex-share-7441387824324444160-YkXP) described the motivation this way:
 
 > The cost of building has dropped below the cost of compromising.
 
-My first thought was to fork Dan's repo and submit a PR. But then I stopped. Does he want the same things I do? I wanted [GitButler](https://gitbutler.com/) virtual branch detection, multi-line layout with grouped sections, [goccc](https://github.com/backstabslash/goccc) integration for cost tracking in AUD, rate limit progress bars, and terminal tab title renaming. Those are my opinions about what a status line should show, and they're probably not the same as his.
+I considered forking Dan's repo and submitting a PR, but my requirements were quite specific. I wanted [GitButler](https://gitbutler.com/) virtual branch detection, multi-line layout with grouped sections, [goccc](https://github.com/backstabslash/goccc) integration for cost tracking in AUD, rate limit progress bars, and terminal tab title renaming. Those are my opinions about what a status line should show, and they're probably not the same as his.
 
-It's cheap enough now to just have your own version. 15 to 30 minutes with Claude Code and I had exactly what I wanted, packaged as a repo with auto-updates.
+I had an initial version after about 15 to 30 minutes with Claude Code. The full session, including iterations, GitButler research and packaging, took about two hours and produced around 250 lines of bash.
 
 ## How the statusLine hook works
 
@@ -32,7 +32,7 @@ Claude Code has a built-in mechanism: add a `statusLine` config to your `setting
 }
 ```
 
-The JSON blob includes everything you need:
+These are the JSON fields used by the script:
 
 ```json title="stdin JSON (abbreviated)"
 {
@@ -50,8 +50,6 @@ The JSON blob includes everything you need:
   }
 }
 ```
-
-That's it. Stdin, stdout, and a shell script.
 
 ## Building it
 
@@ -101,7 +99,7 @@ Everything on one line was getting cramped. I split it into three lines, each gr
 **Line 2 (Spend & limits)**: session cost, daily cost, rate limit bar with countdown.
 **Line 3 (Technical)**: context window usage, token counts.
 
-Each line answers a different question. Line 1: where am I? Line 2: should I be worried about costs or rate limits? Line 3: why does the model feel slow right now?
+The grouping keeps project identity separate from costs and usage, so I can find the relevant figure without scanning the whole display.
 
 ### v4: hiding empty state
 
@@ -128,13 +126,11 @@ One-liner install:
 curl -sSL https://raw.githubusercontent.com/gordonbeeming/claude-statusline/main/install.sh | bash
 ```
 
-## The bigger picture
+## Other tools I'm building
 
-This status line took one Claude Code session, maybe two hours of back-and-forth including the iterations, GitButler integration research, and packaging. About 250 lines of bash.
+I've been taking a similar approach with [SSMSX](https://github.com/GordonBeeming/ssmsx), a cross-platform SQL Server Management Studio replacement. SSMS is Windows-only, and I wanted something faster than the tools I was using. That project uses Tauri v2 (Rust), React, and a C# Native AOT sidecar for SQL Server connectivity, and I've been working on it in evenings and weekends.
 
-I keep finding myself in this same situation lately. I'm building [SSMSX](https://github.com/GordonBeeming/ssmsx), a cross-platform SQL Server Management Studio replacement, because SSMS is Windows-only, Azure Data Studio is nearing end-of-life, and neither feels fast. It's Tauri v2 (Rust) + React + a C# Native AOT sidecar for SQL Server connectivity. A year ago, building your own SSMS would have been absurd. Now it's a project I'm making real progress on in evenings and weekends.
-
-Dan put it well: the old debate was buy vs build. Build meant weeks of work, so you bought something close enough. That's changed. When you can describe what you want and iterate to a working tool in an afternoon, "close enough" stops being the obvious choice.
+The status line was a much smaller task: a script that shows the repo, branch, costs and limits I need while working.
 
 ## Try it
 

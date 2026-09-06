@@ -27,7 +27,7 @@ export function Comments() {
         </h2>
         <span
           className="rounded-[var(--radius-xs)] border px-[7px] py-0.5"
-          style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--text-subtle)", borderColor: "var(--border)" }}
+          style={{ fontFamily: "var(--font-ui)", fontSize: "var(--text-2xs)", color: "var(--text-subtle)", borderColor: "var(--border)" }}
         >
           via giscus
         </span>

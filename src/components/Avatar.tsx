@@ -11,6 +11,8 @@ interface AvatarProps {
   className?: string;
   /** Teal accent ring (design-system Avatar). Off by default. */
   ring?: boolean;
+  /** "square" keeps the animated avatar in layouts whose design has no rounded corners. */
+  shape?: "round" | "square";
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -21,6 +23,7 @@ const Avatar: React.FC<AvatarProps> = ({
   size = 150,
   className = "",
   ring = false,
+  shape = "round",
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -95,13 +98,15 @@ const Avatar: React.FC<AvatarProps> = ({
   const showAnimatedFallback =
     !prefersReducedMotion && autoplayBlocked && fallbackAnimatedWebP;
 
+  const shapeClass = shape === "square" ? "rounded-none" : "rounded-full";
+
   let content: React.ReactNode;
 
   if (showVideo) {
     content = (
       <video
         ref={videoRef}
-        className={`h-full w-full object-cover rounded-full ${
+        className={`h-full w-full object-cover ${shapeClass} ${
           isLoaded
             ? "opacity-100 transition-opacity duration-500"
             : "opacity-0"
@@ -126,7 +131,7 @@ const Avatar: React.FC<AvatarProps> = ({
           alt={alt}
           width={size}
           height={size}
-          className="h-full w-full object-cover rounded-full"
+          className={`h-full w-full object-cover ${shapeClass}`}
         />
       </video>
     );
@@ -138,7 +143,7 @@ const Avatar: React.FC<AvatarProps> = ({
         alt={alt}
         width={size}
         height={size}
-        className={`h-full w-full object-cover rounded-full ${
+        className={`h-full w-full object-cover ${shapeClass} ${
           isLoaded
             ? "opacity-100 transition-opacity duration-500"
             : "opacity-0"
@@ -155,7 +160,7 @@ const Avatar: React.FC<AvatarProps> = ({
         alt={alt}
         width={size}
         height={size}
-        className={`h-full w-full object-cover rounded-full ${
+        className={`h-full w-full object-cover ${shapeClass} ${
           isLoaded
             ? "opacity-100 transition-opacity duration-500"
             : "opacity-0"
@@ -168,7 +173,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative shrink-0 overflow-hidden rounded-full ${className}`}
+      className={`relative shrink-0 overflow-hidden ${shapeClass} ${className}`}
       style={{
         width: size,
         height: size,

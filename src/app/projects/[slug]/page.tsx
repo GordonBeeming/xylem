@@ -10,12 +10,13 @@ import { Tag } from "@/components/ds/Tag";
 import { Badge } from "@/components/ds/Badge";
 import { StarCount } from "@/components/ds/StarCount";
 import { ProjectVideo } from "@/components/ui/ProjectVideo";
+import { PageShell } from "@/components/layout/PageShell";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 // Same icon-link markup as the /projects card grid (src/app/projects/page.tsx) —
 // not exported there, so duplicated here rather than restructuring that page.
@@ -106,7 +107,7 @@ export default async function ProjectPage(props: PageProps) {
           <div className="eyebrow">Project</div>
           <h1
             className="mt-3"
-            style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+            style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
           >
             {project.title}
           </h1>
@@ -170,11 +171,11 @@ export default async function ProjectPage(props: PageProps) {
   );
 
   return (
-    <div className="page">
+    <PageShell>
       <Link
         href="/projects"
         className="inline-flex items-center gap-1.5 no-underline"
-        style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
+        style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
       >
         ← back to projects
       </Link>
@@ -193,7 +194,7 @@ export default async function ProjectPage(props: PageProps) {
       {readme && readmeElement && (
         <>
           <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
-          <p style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
+          <p style={{ ...ui, fontSize: "var(--text-xs)", color: "var(--text-subtle)" }}>
             README mirrored from{" "}
             {readme.visibility === "private" ? (
               // A private repo's README page is a 404 for every visitor — no
@@ -209,6 +210,6 @@ export default async function ProjectPage(props: PageProps) {
           <div className="prose mt-[var(--space-5)]">{readmeElement}</div>
         </>
       )}
-    </div>
+    </PageShell>
   );
 }

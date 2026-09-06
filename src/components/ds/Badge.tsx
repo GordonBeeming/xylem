@@ -17,7 +17,7 @@ export function Badge({ tone = "neutral", children, className = "" }: BadgeProps
   return (
     <span
       className={`inline-flex items-center gap-[5px] whitespace-nowrap rounded-[var(--radius-sm)] px-2 py-1 text-[length:var(--text-2xs)] font-[var(--fw-medium)] leading-none tracking-[var(--ls-wide)] ${toneClasses[tone]} ${className}`.trim()}
-      style={{ fontFamily: "var(--font-mono)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       {children}
     </span>

@@ -1,28 +1,34 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Libre_Baskerville, Libre_Franklin, Courier_Prime } from "next/font/google";
 import { ThemeProviders } from "@/components/ThemeProviders";
+import { SiteSearchProvider } from "@/components/ui/SiteSearchProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ChromeGate } from "@/components/layout/ChromeGate";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { getSiteConfig } from "@/lib/tina-helpers";
 import "@/css/tailwind.css";
 
+const bodyFace = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-body-face",
+});
+// Libre Franklin ships as a variable font, so it takes a range rather than a
+// weight list.
+const uiFace = Libre_Franklin({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-ui-face",
+});
+const monoFace = Courier_Prime({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-mono-face",
+});
+
 const GA_MEASUREMENT_ID = "G-W0FD111Z7V";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-space-grotesk",
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-  variable: "--font-ibm-plex-mono",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gordonbeeming.com"),
@@ -80,21 +86,15 @@ export default function RootLayout({
   const siteConfig = getSiteConfig();
 
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning className={`${bodyFace.variable} ${uiFace.variable} ${monoFace.variable}`}>
       <body className="bg-surface-primary text-text-primary antialiased">
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
-          <ChromeGate>
+          <SiteSearchProvider>
             <Header siteConfig={siteConfig} />
-          </ChromeGate>
-          <main id="main-content">{children}</main>
-          <ChromeGate>
+            <main id="main-content">{children}</main>
             <Footer />
-          </ChromeGate>
+          </SiteSearchProvider>
         </ThemeProviders>
       </body>
     </html>

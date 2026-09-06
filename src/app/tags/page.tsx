@@ -1,13 +1,14 @@
 import { getAllPosts } from "@/lib/tina-helpers";
 import { getTagCounts, getTagDisplayNames } from "@/lib/content";
 import type { Metadata } from "next";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Tags",
   description: "Browse all tags used across blog posts by Gordon Beeming.",
 };
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 export default function TagsPage() {
   const published = getAllPosts();
@@ -18,11 +19,11 @@ export default function TagsPage() {
   const max = sortedTags.length > 0 ? sortedTags[0][1] : 1;
 
   return (
-    <div className="page-narrow">
+    <PageShell>
       <div className="eyebrow">Tags</div>
       <h1
         className="mt-3"
-        style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", color: "var(--text)" }}
+        style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", color: "var(--text)" }}
       >
         Browse by topic
       </h1>
@@ -42,7 +43,7 @@ export default function TagsPage() {
               key={tag}
               href={`/tags/${tag}`}
               className="inline-flex items-baseline gap-[7px] rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface)] px-[13px] py-[6px] text-[color:var(--text-muted)] no-underline transition-[var(--transition-colors)] hover:border-[var(--accent)] hover:text-[color:var(--accent)]"
-              style={{ ...mono, fontSize: `calc(var(--text-sm) * ${scale.toFixed(2)})` }}
+              style={{ ...ui, fontSize: `calc(var(--text-sm) * ${scale.toFixed(2)})` }}
             >
               {(tagDisplayNames[tag] ?? tag).toLowerCase()}
               <span className="text-[length:var(--text-2xs)] text-[color:var(--text-subtle)]">{count}</span>
@@ -50,6 +51,6 @@ export default function TagsPage() {
           );
         })}
       </div>
-    </div>
+    </PageShell>
   );
 }

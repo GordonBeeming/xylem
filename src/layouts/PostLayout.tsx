@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+import Avatar from "@/components/Avatar";
+import { SiteSearch } from "@/components/ui/SiteSearch";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { PostNavigation } from "@/components/blog/PostNavigation";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
@@ -10,10 +11,12 @@ import { Tag } from "@/components/ds/Tag";
 import { Card } from "@/components/ds/Card";
 import { SocialIcon } from "@/components/social-icons/SocialIcon";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
-import { formatDateShort, type HeadingEntry } from "@/lib/content";
+import { formatDate, postHref, type HeadingEntry } from "@/lib/content";
 import { EditInTinaButton } from "@/components/blog/EditInTinaButton";
 import type { PostMeta, SiteConfig } from "@/lib/tina-helpers";
 import { slug as slugifyTag } from "github-slugger";
+import { ABOUT_RAIL_BLURB } from "@/lib/site-copy";
+import styles from "./PostLayout.module.css";
 
 interface PostLayoutProps {
   meta: PostMeta;
@@ -23,23 +26,26 @@ interface PostLayoutProps {
   headings: HeadingEntry[];
   siteConfig: SiteConfig;
   children: React.ReactNode;
+  // The rail's "Recent posts" list. Optional because the current caller
+  // (src/app/blog/[...slug]/page.tsx, outside this wave's file set) doesn't
+  // compute it yet — see this team member's report for the one-line addition
+  // needed there (getAllPosts().filter(...).slice(0, N)).
+  recentPosts?: PostMeta[];
   // Present only when rendered inside the TinaCMS admin (via ClientPost): the
   // `data-tina-field` values that make each element click-to-edit. Undefined on
   // the static site, where the attributes are simply omitted.
   tinaFields?: { title?: string; date?: string; tags?: string };
 }
 
-const mono = { fontFamily: "var(--font-mono)" };
+const ui = { fontFamily: "var(--font-ui)" };
 
 function AuthorBio({ siteConfig }: { siteConfig: SiteConfig }) {
   const bio = siteConfig.description.replace(/^.*?-\s*/, "");
   return (
     <Card padding="lg" className="mt-[var(--space-10)] flex items-start gap-[var(--space-5)]">
-      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full" style={{ boxShadow: "0 0 0 2px var(--surface), 0 0 0 4px var(--accent)" }}>
-        <Image src="/static/images/avatar.jpg" alt="Gordon Beeming" fill className="object-cover" />
-      </div>
+      <Avatar size={56} shape="square" alt="Gordon Beeming" className="border border-[var(--border)]" />
       <div className="flex-1">
-        <div style={{ fontWeight: "var(--fw-semibold)", fontSize: "var(--text-md)", color: "var(--text)" }}>Gordon Beeming</div>
+        <div style={{ fontSize: "var(--text-md)", color: "var(--text)" }}>Gordon Beeming</div>
         <p className="mt-1.5" style={{ fontSize: "var(--text-sm)", lineHeight: "var(--lh-relaxed)", color: "var(--text-muted)" }}>
           {bio}
         </p>
@@ -55,6 +61,40 @@ function AuthorBio({ siteConfig }: { siteConfig: SiteConfig }) {
   );
 }
 
+function AboutRailCard() {
+  return (
+    <div className={styles.aboutCard}>
+      <div className={styles.sectionHeading}>About</div>
+      <Avatar
+        size={66}
+        shape="square"
+        alt="Gordon Beeming"
+        className="mb-[11px] border border-[var(--border)]"
+      />
+      <p className={styles.aboutBlurb}>{ABOUT_RAIL_BLURB}</p>
+      <Link href="/about" style={ui}>
+        More about me &raquo;
+      </Link>
+    </div>
+  );
+}
+
+function RecentPostsRail({ posts }: { posts: PostMeta[] }) {
+  if (posts.length === 0) return null;
+  return (
+    <div>
+      <div className={styles.sectionHeading}>Recent posts</div>
+      <div className={styles.recentList}>
+        {posts.map((post) => (
+          <Link key={post.slug} href={postHref(post.slug)} className={styles.recentLink}>
+            {post.title}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PostLayout({
   meta,
   prevPost,
@@ -63,6 +103,7 @@ export function PostLayout({
   headings,
   siteConfig,
   children,
+  recentPosts = [],
   tinaFields,
 }: PostLayoutProps) {
   return (
@@ -71,57 +112,52 @@ export function PostLayout({
 
       <div className="post-wrap">
         <article className="post-main" role="article" aria-labelledby="post-title">
-          <Link
-            href="/blog"
-            className="no-underline"
-            style={{ ...mono, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
-          >
-            ← all posts
-          </Link>
-
-          <h1
-            id="post-title"
-            className="mt-5"
-            style={{ fontSize: "var(--text-3xl)", fontWeight: "var(--fw-bold)", letterSpacing: "var(--ls-tighter)", lineHeight: 1.05, color: "var(--text)" }}
-            data-tina-field={tinaFields?.title}
-          >
-            {meta.title}
-          </h1>
-
-          <div className="mt-[var(--space-5)] flex flex-wrap items-center gap-[var(--space-3)]">
-            <div className="relative h-[30px] w-[30px] shrink-0 overflow-hidden rounded-full">
-              <Image src="/static/images/avatar.jpg" alt="Gordon Beeming" fill className="object-cover" />
-            </div>
-            <span style={{ fontSize: "var(--text-sm)", fontWeight: "var(--fw-medium)", color: "var(--text)" }}>Gordon Beeming</span>
-            <span style={{ color: "var(--text-subtle)" }}>·</span>
-            <time
-              dateTime={meta.date}
-              style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}
-              data-tina-field={tinaFields?.date}
+          <div className={styles.measure}>
+            <Link
+              href="/blog"
+              className="no-underline"
+              style={{ ...ui, fontSize: "var(--text-xs)", letterSpacing: "var(--ls-wide)", textTransform: "uppercase", color: "var(--text-muted)" }}
             >
-              {formatDateShort(meta.date)}
-            </time>
-            <span style={{ color: "var(--text-subtle)" }}>·</span>
-            <span style={{ ...mono, fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "var(--ls-wide)" }}>
-              {meta.readingTime.text}
-            </span>
-            <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
-          </div>
+              ← all posts
+            </Link>
 
-          {meta.tags.length > 0 && (
-            <div className="mt-[var(--space-5)] flex flex-wrap gap-1.5" data-tina-field={tinaFields?.tags}>
-              {meta.tags.map((tag) => (
-                <Tag key={tag} as="a" href={`/tags/${slugifyTag(tag).replace(/--+/g, "-")}`} size="sm">
-                  {tag}
-                </Tag>
-              ))}
+            <h1
+              id="post-title"
+              className="mt-5"
+              style={{ fontSize: "34px", fontWeight: "var(--fw-regular)", letterSpacing: "var(--ls-normal)", lineHeight: 1.22, color: "var(--text)" }}
+              data-tina-field={tinaFields?.title}
+            >
+              {meta.title}
+            </h1>
+
+            <div className="mt-[var(--space-5)] flex flex-wrap items-center gap-[var(--space-3)]">
+              <Avatar size={30} shape="square" alt="Gordon Beeming" className="border border-[var(--border)]" />
+              <span style={{ fontSize: "14px", color: "var(--text)" }}>Gordon Beeming</span>
+              <time
+                dateTime={meta.date}
+                style={{ ...ui, fontSize: "11px", color: "var(--text-muted)" }}
+                data-tina-field={tinaFields?.date}
+              >
+                {`\u00B7 ${formatDate(meta.date, "en-GB")} \u00B7 ${meta.readingTime.text}`}
+              </time>
+              <EditInTinaButton relativePath={`${meta.slug}.mdx`} />
             </div>
-          )}
 
-          <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border)" }} />
+            {meta.tags.length > 0 && (
+              <div className="mt-[var(--space-5)] flex flex-wrap gap-1.5" data-tina-field={tinaFields?.tags}>
+                {meta.tags.map((tag) => (
+                  <Tag key={tag} as="a" href={`/tags/${slugifyTag(tag).replace(/--+/g, "-")}`} size="sm">
+                    {tag}
+                  </Tag>
+                ))}
+              </div>
+            )}
 
-          <MobileToc headings={headings} />
-          <div className="prose">{children}</div>
+            <div className="my-[var(--space-8)] h-px" style={{ background: "var(--border-strong)" }} />
+
+            <MobileToc headings={headings} />
+            <div className="prose">{children}</div>
+          </div>
 
           <AuthorBio siteConfig={siteConfig} />
 
@@ -141,10 +177,14 @@ export function PostLayout({
           <Comments />
         </article>
 
-        <aside className="post-aside">
-          <div className="sticky" style={{ top: 100 }}>
-            <Toc headings={headings} />
+        <aside className={`post-aside ${styles.railStack}`}>
+          <Toc headings={headings} />
+          <AboutRailCard />
+          <div>
+            <div className={styles.sectionHeading}>Search</div>
+            <SiteSearch />
           </div>
+          <RecentPostsRail posts={recentPosts} />
         </aside>
       </div>
     </>

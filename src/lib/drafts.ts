@@ -29,6 +29,11 @@ export interface DraftMeta {
   queuePosition: number | null;
 }
 
+export interface DraftBody {
+  meta: DraftMeta;
+  content: string;
+}
+
 export interface QueueInfo {
   nextPublishOn: string | null;
   publishEveryDays: number | null;
@@ -119,4 +124,19 @@ export function getDrafts(): { drafts: DraftMeta[]; queue: QueueInfo } {
 
   const onDisk = new Set(drafts.map((d) => d.slug));
   return { drafts, queue: { ...info, missing: queueSlugs.filter((s) => !onDisk.has(s)) } };
+}
+
+/** One draft with its body, for the local preview. Returns null when the slug
+ *  does not name a bundle on disk. */
+export function getDraft(slug: string): DraftBody | null {
+  const found = getDrafts().drafts.find((d) => d.slug === slug);
+  if (found === undefined) return null;
+  const parsed = readFrontmatter(path.join(DRAFTS_DIR, slug, "post.mdx"));
+  if (parsed === null) return null;
+  return { meta: found, content: parsed.content };
+}
+
+/** Slugs only, for generateStaticParams. */
+export function getDraftSlugs(): string[] {
+  return getDrafts().drafts.map((d) => d.slug);
 }

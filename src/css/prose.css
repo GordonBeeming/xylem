@@ -133,12 +133,20 @@ a:visited { color: var(--link-hover); }
   color: var(--text); margin-top: 26px; scroll-margin-top: 158px;
 }
 /* anchored heading marker */
+/* The anchor is hidden until hover, so it must not hold layout space: inline it
+   pushed every heading right of the body text it should line up with. */
+.prose h2, .prose h3 { position: relative; }
 .prose h2 .anchor, .prose h3 .anchor {
-  color: var(--text-subtle); text-decoration: none; margin-right: 0.4em;
+  position: absolute; right: 100%; margin-right: 0.25em;
+  color: var(--text-subtle); text-decoration: none;
   font-family: var(--font-ui); font-weight: var(--fw-regular); opacity: 0;
   transition: var(--transition-colors);
 }
 .prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
+/* No room in the margin once the well tightens up. */
+@media (max-width: 860px) {
+  .prose h2 .anchor, .prose h3 .anchor { display: none; }
+}
 .prose ul { list-style: disc; padding-left: 1.4em; }
 .prose ol { list-style: decimal; padding-left: 1.4em; }
 .prose li { margin-top: 0.5em; }

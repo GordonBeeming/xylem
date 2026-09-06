@@ -27,3 +27,13 @@
   font-size: 10px; color: var(--text-muted);
   background: var(--chip); border: 1px solid var(--border); padding: 2px 6px;
 }
+
+.title a { color: var(--link); text-decoration: none; }
+.title a:hover { text-decoration: underline; }
+.backLink { margin: 0 0 16px; font-size: var(--text-xs); }
+.backLink a { color: var(--link); text-decoration: none; }
+.imageNote {
+  margin: 12px 0 0; padding: 10px 12px;
+  font-size: 11px; color: var(--text-muted);
+  background: var(--surface-2); border: 1px solid var(--border);
+}

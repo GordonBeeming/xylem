@@ -29,7 +29,7 @@ const sizeClasses: Record<TagSize, string> = {
   md: "text-[length:var(--text-xs)] px-2.5 py-[3px]",
 };
 
-/** Xylem Tag — the mono pill used across posts & nuggets taxonomy. */
+/** Xylem Tag — the square, UI-face label used for taxonomy and link chips across the site. */
 export function Tag({ tone = "neutral", size = "md", children, className = "", ...rest }: TagProps) {
   const classes = `inline-flex items-center whitespace-nowrap rounded-[var(--radius-sm)] font-[var(--fw-medium)] leading-[1.4] tracking-[var(--ls-wide)] no-underline transition-[var(--transition-colors)] ${toneClasses[tone]} ${sizeClasses[size]} ${className}`.trim();
   const style = { fontFamily: "var(--font-ui)" };

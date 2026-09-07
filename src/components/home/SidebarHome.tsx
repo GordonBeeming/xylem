@@ -81,13 +81,9 @@ function BookRow({ book }: { book: BookData }) {
           {metaLine}
         </div>
       )}
-      {book.href ? (
-        <a href={book.href} target="_blank" rel="noopener noreferrer" className={styles.bookTitle}>
-          {book.title}
-        </a>
-      ) : (
-        <span className={styles.bookTitle}>{book.title}</span>
-      )}
+      <Link href={`/books/${book.slug}`} className={styles.bookTitle}>
+        {book.title}
+      </Link>
     </div>
   );
 }

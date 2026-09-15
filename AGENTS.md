@@ -6,6 +6,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Blog writing
 
+Before suggesting blog titles, outlining, drafting, or editing posts, read `AGENTS.local.md` in this repository root if it exists. Apply its local editorial guidance alongside the rules below.
+
 Gordon prefers functional, conversational technical posts. Explain the problem, the relevant technology, and what the reader can do with the information. Keep enough context and explanation to sound natural without turning the post into a story or making it blunt. His direct editorial feedback takes precedence over patterns in older posts and generic advice about engagement.
 
 ## Titles, summaries, and tone

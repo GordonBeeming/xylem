@@ -1,0 +1,54 @@
+---
+title: 'Experimenting with automatic memory in Codex and Claude'
+date: 2026-09-15
+tags: ['AI', 'Codex', 'Claude Code', 'Skills', 'Security']
+summary: 'After rewriting my skills and clearing memory, Codex and Claude felt better to use. My next experiment is to disable automatic memory, informed by research on context and memory poisoning.'
+---
+
+I recently did a substantial rewrite of my skills for Codex and Claude, and the results felt much better than the last time I reworked them. I also wiped the memories for both tools, which left me wondering how much that contributed to the improvement.
+
+It's subjective. The overall experience felt better, I needed fewer corrections, and I was happier with the output. But I changed several things together, and the tasks I've worked on over the last week might simply suit the new skills better. I can't separate those effects from what I've observed so far.
+
+I'm starting to suspect the skills weren't the whole problem. After chatting with [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/), who'd been reading something that raised similar questions, I asked Claude to research the case for and against automatic memory. My next experiment is to work with it disabled and deliberately maintain the instructions I want to carry between sessions.
+
+## What I want to persist
+
+The concern that prompted my research was having to qualify requests with "for this session only". Sometimes I want an agent to do something differently for the task in front of it. I don't necessarily want that request remembered as a preference for future work.
+
+By automatic memory, I mean notes an agent chooses to save and retrieve across sessions, such as Claude Code's `MEMORY.md` and its supporting files. [Claude's documentation](https://code.claude.com/docs/en/memory) distinguishes those notes from the instructions you maintain in `CLAUDE.md`. Memory lets it retain corrections and preferences without you having to write them down yourself.
+
+I still want persistent instructions. Skills give me somewhere to describe a procedure, and top-level instruction files give me somewhere to explain how I want the agent to work. The part I want to control more deliberately is deciding which lessons become lasting guidance, and where they belong.
+
+## What could have been getting in the way
+
+One possibility is that the old memories contained assumptions that no longer matched the way I wanted to work. A preference might have been useful when it was saved and become irrelevant after a skills rewrite. A correction could also have been recorded more broadly than I intended.
+
+Those are possible explanations, not findings from an audit of the memories I deleted. I don't have a specific entry I can point to and say it caused the earlier behaviour.
+
+There is a broader reason to be selective about context. [Anthropic's context engineering guidance](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) describes context as a finite resource and explains how increasing its volume can make it harder for a model to use the relevant information. More information doesn't automatically make the next decision better.
+
+That applies to the instructions I write too. Moving every remembered detail into a large `AGENTS.md` would still leave the agent with all those instructions to interpret. The [Evaluating AGENTS.md study](https://arxiv.org/abs/2602.11988) found that repository context files could reduce task success and increase cost in the settings it tested. Its subject was repository instruction files, so it doesn't establish that disabling automatic memory improves coding agents. It does give me a reason to question unnecessary instructions wherever they live.
+
+Memory also solves a real problem. Repeating the same correction across sessions is tedious, and notes can preserve progress through longer tasks. Anthropic discusses structured note-taking as a way to maintain that continuity. If I turn automatic memory off, I'll have to notice useful corrections and put them somewhere appropriate myself. I want to see how much work that adds.
+
+## Memory poisoning across sessions
+
+I'm generally considered quite security-conscious, and I scrutinise almost everything. But I hadn't considered the security implications of automatic memory, particularly the possibility that an attack could persist across sessions.
+
+A malicious instruction can potentially be saved along with useful information and then influence a later session. Closing the original conversation may leave that stored instruction available to be retrieved again.
+
+[OWASP includes Memory & Context Poisoning as ASI06](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) in its Top 10 for Agentic Applications 2026. It covers corruption of the stored information agents rely on, including persistent memory. That is a broader category than any one coding client's automatic-memory feature.
+
+[Unit 42 demonstrated a memory poisoning attack](https://unit42.paloaltonetworks.com/indirect-prompt-injection-poisons-ai-longterm-memory/) against a travel assistant built with Amazon Bedrock Agents. A poisoned webpage manipulated session summarisation so malicious instructions entered the agent's persistent memory. Their demonstration used Amazon Nova Premier v1 with default prompts and without Bedrock Guardrails. It shows an attack path through automatic summarisation, with those conditions attached; it wasn't a test of my Codex or Claude setup.
+
+There is also research involving those coding tools directly. The [Bad Memory preprint](https://arxiv.org/abs/2607.14611) tested Claude Code and Codex in a synthetic workspace. Its distinction matters: getting an agent to overwrite its memory through untrusted external content was difficult, but payloads already planted in memory files could affect current and future sessions. Results varied across the systems, models, and attacks tested.
+
+I have no evidence that my own memories were poisoned. This gives me another reason to care about how persistent instructions get written and reviewed. Disabling automatic memory also doesn't make skills or other instruction files immune to tampering, or remove prompt injection from the current session.
+
+## What I'm trying next
+
+For now, I'm going to disable automatic memory and keep lasting guidance in the skills and instruction files I deliberately maintain. A request for one task can stay in that conversation. When a correction should apply more widely, I can ask for the relevant instructions to be updated.
+
+I'll pay attention to whether I still need fewer corrections as the tasks change, and whether I'm repeatedly explaining things memory used to handle. I'll also watch for cases where the agent needs information from earlier work that isn't available in the repository or current conversation.
+
+This won't isolate every variable, especially while I'm still changing skills. But it should help me understand whether the extra effort of maintaining guidance explicitly is worthwhile in my day-to-day work, and which kinds of remembered context I actually miss.

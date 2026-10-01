@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
 
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -16,7 +17,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -46,11 +47,22 @@ jobs:
           rm -rf src/app/api
 
       - name: Build
+        if: github.event_name != 'pull_request'
         env:
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm build:tina
+
+      - name: Verify pull request build
+        if: github.event_name == 'pull_request'
+        env:
+          NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm exec tinacms build --skip-cloud-checks
+          pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
@@ -58,6 +70,7 @@ jobs:
           path: ./out
 
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: https://gordonbeeming.com

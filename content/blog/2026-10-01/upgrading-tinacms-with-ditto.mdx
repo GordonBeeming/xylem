@@ -1,0 +1,70 @@
+---
+title: 'Upgrading my TinaCMS sites with ditto, my OpenAI dot'
+date: 2026-10-01
+tags: ['TinaCMS', 'OpenAI', 'AI', 'Agents', 'Software Development']
+summary: 'I marked a TinaCMS upgrade notice to deal with later, then forgot. My OpenAI dot, ditto, reminded me and helped get three personal sites upgraded, tested and deployed, with the remaining checks clearly called out.'
+---
+
+I'd seen the TinaCMS upgrade notice and marked it as something to do. Then I forgot about it. My OpenAI dot, ditto, brought it back to my attention, checked what my sites were actually running, and helped get all three upgraded after one instruction from me.
+
+That reminder is an important part of the experience. I already knew there was something to do. Having an assistant connect that unfinished task to the repositories that still needed changing made it much easier to act on it.
+
+[TinaCMS](https://tina.io) is the Git-backed CMS I use for these sites. The content lives in the repositories, with Tina providing the editing interface. ditto is the name I've given my OpenAI dot, the personal assistant I used to help with this upgrade. OpenAI's [Introducing dots](https://openai.com/index/introducing-dots/) announcement explains the broader idea: an assistant that can keep working on tasks and bring useful things to your attention.
+
+<Figure src="/images/ditto-tinacms-avatar.png" alt="ditto, a small purple fuzzy character with two black eyes" width="240" height="230" caption="ditto, my OpenAI dot" />
+
+## The reminder included the version gap
+
+Tina's September 24 post, [Important TinaCloud authentication changes coming in October](https://tina.io/blog/october-tinacloud-auth-changes), gave site owners a clear action for the upcoming authentication migration: upgrade to at least `tinacms` 3.12.0 to keep CMS login and content editing working. Public content would remain available.
+
+When ditto checked Xylem, the repository behind this blog, it was still on 3.6.3. There was already an upgrade pull request targeting 3.9.3, but merging that would still have left it below the required version.
+
+That's a useful detail to have alongside a reminder. An open dependency PR can look like the work is already in hand. In this case, the proposed version needed checking against the notice before deciding what to merge.
+
+The practical next step was clear: update the affected sites to a version that met the requirement, then check the result through deployment.
+
+## One instruction covered the sites and the outcome
+
+My instruction was:
+
+> can you update all my personal projects that use tinacms to their latest and make sure they run properly, then get the changes merged and verify in production that it's working
+
+That gave ditto both the scope and the outcome I wanted.
+
+The repositories identified were:
+
+- `xylem`, which runs this blog
+- `TianiBeemingCom`
+- `personal-recipes`
+
+Each was upgraded to `tinacms` 3.14.1 and `@tinacms/cli` 3.1.0. Those are the versions used for this work, rather than a claim that they will always be the latest releases.
+
+<Figure src="/images/ditto-tinacms-reminder-and-request.png" alt="Chat showing ditto's TinaCMS upgrade reminder, the version gap and my request to upgrade all three sites" width="700" height="380" caption="The reminder and the request that followed it" />
+
+From my side, the interaction was simple. I didn't have to turn the reminder into a separate set of instructions for each repository, or stop at asking for a dependency bump and then separately ask for the deployment checks.
+
+Being explicit about those checks matters. “Update TinaCMS” could reasonably end with a local change or a PR. Asking for the tested change to be merged and production checked makes it much clearer what still needs doing after the packages have changed.
+
+## From package updates to deployed checks
+
+The package updates across the three sites were merged and deployed. A version number in a manifest wasn't enough evidence to call every part of the upgrade finished, so the result also needed checks on the deployed sites.
+
+<Figure src="/images/ditto-tinacms-project-progress.png" alt="Chat update identifying the three TinaCMS projects and reporting the upgrade versions and local build checks" width="700" height="254" caption="ditto identified the three sites and reported progress on their upgrades" />
+
+From my side, the request was short. The work still involved checking each repository and its deployed site before reporting what was verified and what remained.
+
+## What was verified, and what still needs checking
+
+At the end of this work, the public pages and admin login screens were checked on the deployed sites. Xylem and TianiBeemingCom also passed the Tina Cloud schema checks.
+
+The recipes site had an existing `thumbnailImage` schema mismatch. Its schema-check skip was intentional and predated this upgrade. That needs to stay visible in the result; a skipped check doesn't establish that the schema matches.
+
+Authenticated editing and saving are still unverified. Reaching an admin login screen proves that the entry point loads, but it doesn't prove I can sign in, open content, save a change and see that change come back through the site's publishing flow. That part needs a signed-in check.
+
+<Figure src="/images/ditto-tinacms-completion-status.png" alt="Chat completion report listing deployed sites and checks, with authenticated editing and saving still to verify" width="700" height="615" caption="The completion report separated deployed checks from the remaining signed-in editor test" />
+
+A completion report like this makes delegated maintenance easier to check. It records what changed and where verification stops, leaving a specific next step instead of an ambiguous claim that everything works.
+
+The next check is to sign in to each Tina admin, open a post or recipe, save an agreed test change and verify that it comes through correctly. The recipes schema mismatch remains a separate known limitation.
+
+For me, the useful part of this upgrade was getting from something I'd marked to do and forgotten to changes that were merged and deployed. ditto brought the task back with the actual repository versions checked, and one clear request got the work moving across all three sites.

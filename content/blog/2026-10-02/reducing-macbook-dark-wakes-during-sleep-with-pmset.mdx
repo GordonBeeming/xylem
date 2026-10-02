@@ -1,0 +1,101 @@
+---
+title: 'Reducing dark wakes on a sleeping MacBook with pmset'
+date: 2026-10-02
+tags: ['macOS', 'MacBook', 'Terminal', 'Power Management']
+summary: 'How I used pmset to distinguish idle-sleep assertions from dark wakes, disabled Power Nap and TCP keep-alive on battery, and checked what still woke my MacBook.'
+---
+
+My MacBook was losing battery with the lid shut. After about 18 hours, it had dropped from 66% to 51%, so I assumed an app was keeping it awake. The sleep log showed that it did sleep, but macOS repeatedly woke it for a few seconds with the display off. These are called dark wakes.
+
+I used `pmset`, macOS's command-line power management tool, to check that behaviour and turn off Power Nap and TCP keep-alive on battery. This is what I changed on macOS 27.0.1 and what I could see afterwards.
+
+## The Mac was sleeping between dark wakes
+
+Because I suspected an app, I checked its power assertions: requests from processes to prevent system or display sleep. `pmset -g assertions` shows the current holds, while `pmset -g log` gives you the sleep history to compare them with. I saved that history to a file for the checks below:
+
+```bash title="Inspect assertions and save the sleep log"
+pmset -g assertions
+pmset -g log > pmlog.txt
+L=pmlog.txt
+```
+
+The assertion type matters here. `NoIdleSleepAssertion` holds off idle system sleep; `PreventUserIdleDisplaySleep` holds off display sleep. Seeing one of those requests doesn't tell you whether the Mac slept when you closed the lid.
+
+I use [Insomnia](/projects/insomnia), my macOS keep-awake menu bar app and CLI built on IOKit power assertions. It was on that night with a display-sleep assertion, and the Claude desktop app also held idle-sleep assertions named "Electron". To see whether those stopped lid-shut sleep, I looked for `Clamshell Sleep` in `pmlog.txt`. This excerpt shows the Mac entering sleep on battery:
+
+```text title="The Mac entered sleep when the lid shut"
+Entering Sleep state due to 'Clamshell Sleep':TCPKeepAlive=active Using Batt (Charge:66%) 2 secs
+```
+
+So the Mac had gone to sleep despite those assertions. The next question was what it did while the lid stayed shut.
+
+The log records each dark wake with `DarkWake`, followed by a reason after `due to`. `Using BATT` means it happened on battery, and the trailing seconds show how long the wake lasted. I've shortened these two entries to leave the Wi-Fi and timer reasons visible:
+
+```text title="Brief Wi-Fi and timer wakes during sleep"
+DarkWake from Deep Idle [CDNP] : due to ... wifibt ... E_TKO_TCP_DATA ARPT/ Using BATT (Charge:66%) 5 secs
+DarkWake from Deep Idle [CDNP] : due to ... rtc/Maintenance Using BATT (Charge:64%) 8 secs
+```
+
+These entries showed repeated brief wakes during sleep, including Wi-Fi activity and maintenance timers. There were also `rtc/SleepService` timer wakes. To see how often this happened, I filtered the overnight part of the log, counted its dark wakes, then printed the matching lines to read their reasons:
+
+```bash title="Count and inspect the overnight dark wakes"
+W='($1=="2026-09-30" && $2>="18:09:03") || ($1=="2026-10-01" && $2<="07:51:58")'
+awk "$W" "$L" | grep -c "DarkWake from"
+awk "$W" "$L" | grep "DarkWake from"
+```
+
+The count was 117. If you're checking your own Mac, replace the dates and times with your sleep window. Mine was losing battery while sleeping and repeatedly dark-waking, although the log doesn't tell me how much battery each wake used or which process was responsible for the drain.
+
+## Turn off background sleep activity on battery
+
+With the Mac entering sleep correctly, I wanted to reduce the background activity that could wake it. `pmset` keeps separate settings for battery and AC power, so I checked both before changing anything. Look for `powernap` and `tcpkeepalive` under each heading:
+
+```bash title="Read battery and adapter settings"
+pmset -g custom
+```
+
+Both were `1` in my battery block, meaning enabled. Power Nap lets the Mac periodically update information such as Mail and iCloud while sleeping. TCP keep-alive maintains TCP connections during sleep.
+
+I chose to disable both on battery and let Mail, iCloud and Messages catch up when I opened the lid. The trade-off also affects Find My: macOS warned that disabling TCP keep-alive can stop "Find My Mac" working properly while the Mac sleeps. If you rely on that, weigh it before changing the setting.
+
+The `-b` flag limits the change to battery power. I ran the change and then checked the settings again:
+
+```bash title="Disable background sleep activity on battery and check the settings"
+sudo pmset -b powernap 0 tcpkeepalive 0
+pmset -g custom
+```
+
+The battery block now showed `powernap 0` and `tcpkeepalive 0`, while both stayed `1` on AC. I left those AC settings enabled because I want background syncs while plugged in.
+
+## Allow idle sleep on the power adapter
+
+Checking those settings also showed a separate reason my Mac wouldn't idle-sleep on the adapter: the AC block had `sleep 0`. That disables idle system sleep whether Insomnia is on or off. I want Insomnia to be the only thing deliberately keeping it awake, so I enabled a one-minute system-sleep timer on AC.
+
+macOS warned that the disk-sleep timer should also be non-zero when system sleep is enabled, so I set that to ten minutes. `sleep` controls system sleep and `disksleep` controls disk spindown; both are in minutes, with `0` disabling the timer. These are the commands I ran, followed by the settings check:
+
+```bash title="Allow idle sleep on AC and check the timers"
+sudo pmset -c sleep 1
+sudo pmset -c disksleep 10
+pmset -g custom
+```
+
+The AC block now had `sleep 1` and `disksleep 10`, and the next morning the log showed the Mac idle-sleeping on AC with the lid open.
+
+You can also allow idle system sleep in System Settings under Battery > Options by turning off "Prevent automatic sleeping on power adapter when the display is off". Once the Mac can idle-sleep on AC, long jobs on power need Insomnia on.
+
+If you want to undo both changes, these restore my previous battery settings and AC timers:
+
+```bash title="Restore the previous battery and AC settings"
+sudo pmset -b powernap 1 tcpkeepalive 1
+sudo pmset -c sleep 0 disksleep 0
+```
+
+## What the short trip showed
+
+To check the battery changes, I looked at the sleep log from the next morning's trip. I shut the lid at 80% for about 50 minutes, and the sleep entries now reported `TCPKeepAlive=disabled`.
+
+Incoming Wi-Fi packets still woke the Mac, with reasons including `E_RX_IP_PACKET` and `E_PFN_NET_FOUND`. There were 23 dark wakes in the first three minutes, then about 45 minutes with none, and five more in the last two minutes. It was still at 80% when it fully woke on AC.
+
+None of those wakes had the earlier `E_TKO_TCP_DATA` or `rtc/` reasons. I can't tell from one short trip whether the settings caused the quiet interval, because I may simply have been out of range of a known network.
+
+I haven't measured a night on battery after the change, so the drain is still an open question. My next check is to note the battery percentage before shutting the lid overnight on battery, then compare it in the morning and use the same log commands to count dark wakes and read their reasons.

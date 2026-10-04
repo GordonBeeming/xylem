@@ -1,0 +1,17 @@
+---
+title: 'Fixing Kayo playback on Apple TV with NextDNS'
+date: 2026-10-03
+tags: ['Kayo', 'Apple TV', 'NextDNS', 'DNS']
+summary: 'Scanning the Kayo QR code opened the iPhone app, but playback on Apple TV never started. Allowing two domains in NextDNS fixed it.'
+---
+
+I was trying to watch Kayo on my Apple TV. Scanning the QR code opened the Kayo app on my iPhone, but playback on the TV never started. Allowing `api3.branch.io` and `cdn.branch.io` in NextDNS fixed it.
+
+I use NextDNS to filter DNS requests on my network. If you're using it too and getting the same behaviour, open the NextDNS configuration used by your devices and add these two domains under **Allowlist**, one at a time:
+
+```text title="Domains to allow in NextDNS"
+api3.branch.io
+cdn.branch.io
+```
+
+Keep the exceptions to those two domains. Once I'd added them, I scanned the QR code again and playback started on the Apple TV.

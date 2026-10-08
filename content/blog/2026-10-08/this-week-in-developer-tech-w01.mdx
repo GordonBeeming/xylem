@@ -11,7 +11,7 @@ This week's updates cover how agents run commands, how teams review their change
 
 [GitHub's 7 October secret-detection announcement](https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection/) introduces a model that reads surrounding code to identify likely credentials, including passwords without recognizable token formats. Existing AI-detected password alerts automatically move to the new model at no extra charge for Secret Protection and Advanced Security customers.
 
-AI push protection is in private preview. Secret-classifier checks for Copilot's security review command are coming soon in private preview. The new opt-in checks will consume AI Credits, with billing introduced as those capabilities roll out.
+AI push protection is in private preview. Secret-classifier checks for Copilot's security review command are coming soon in private preview. The new opt-in checks will consume AI Credits when the capabilities are enabled in public preview.
 
 Review existing alerts and eligibility before enabling preview features. Confirm which account receives usage and set an enforceable spending limit where supported. Budget alerts alone do not stop consumption. Keep the distinction between included alert scanning and credit-consuming checks clear when explaining coverage to a team.
 
@@ -41,7 +41,7 @@ For agent-assisted work, this gives teams a way to separate reviewable units wit
 
 ## 5. GitHub is rebuilding its Git architecture
 
-[GitHub's 6 October architecture article](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/), updated on 7 October, explains the rebuild underway to support concurrent work by developers and agents. GitHub reports that monthly Git activity grew from 218.2 billion events in September 2025 to 473.3 billion in August 2026. Developers and agents made 7.38 billion commits in September 2026, more than five times the count a year earlier. Those figures cover GitHub's overall activity, rather than measuring one team's agent usage.
+[GitHub's 6 October architecture article](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/) explains the rebuild underway to support concurrent work by developers and agents. GitHub reports that monthly Git activity grew from 218.2 billion events in September 2025 to 473.3 billion in August 2026. Developers and agents made 7.38 billion commits in September 2026, more than five times the count a year earlier. Those figures cover GitHub's overall activity, rather than measuring one team's agent usage.
 
 The current design couples durable repository copies with the machines serving Git requests. Adding replicas to handle more reads also adds work to every write. The planned architecture separates durable storage in Azure Blob Storage from compute workers that cache repository data. It keeps coordination focused on reference updates while allowing object storage, connectivity validation, and secret scanning to run in parallel with other writes.
 

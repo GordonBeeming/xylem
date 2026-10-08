@@ -1,0 +1,50 @@
+---
+title: 'This Week in Developer Tech · W01'
+date: 2026-10-08
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security']
+summary: "GitHub's context-aware secret detection, Copilot sandboxing, stacked pull requests, and Git infrastructure redesign give teams concrete changes to evaluate, alongside Anthropic's expanded verified access for security work."
+---
+
+This week's updates cover how agents run commands, how teams review their changes, and how security checks fit into that work. GitHub is also rebuilding its Git infrastructure to handle more concurrent repository activity. The details matter when trying these features: some are generally available, others require verification or preview access, and some checks add usage costs.
+
+## 1. Context-aware secret detection
+
+[GitHub's 7 October secret-detection announcement](https://github.blog/changelog/2026-10-07-purpose-built-model-for-leaked-secret-detection/) introduces a model that reads surrounding code to identify likely credentials, including passwords without recognizable token formats. Existing AI-detected password alerts automatically move to the new model at no extra charge for Secret Protection and Advanced Security customers.
+
+AI push protection is in private preview. Secret-classifier checks for Copilot's security review command are coming soon in private preview. The new opt-in checks will consume AI Credits when the capabilities are enabled in public preview.
+
+Review existing alerts and eligibility before enabling preview features. Confirm which account receives usage and set an enforceable spending limit where supported. Budget alerts alone do not stop consumption. Keep the distinction between included alert scanning and credit-consuming checks clear when explaining coverage to a team.
+
+## 2. Copilot local sandboxing
+
+[Copilot local sandboxing reached general availability on 7 October](https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available/) in Copilot CLI, the Copilot app, and VS Code sessions using Agent Host. It's included at no additional cost. Microsoft eXecution Container maps filesystem, network, and credential policies to native controls on Windows, macOS, and Linux.
+
+The useful architectural point is that tool isolation applies regardless of the selected model. Choosing a model doesn't establish what its commands can access.
+
+Test a representative build-and-test workflow with narrowly scoped permissions. Check that allowed work succeeds and attempts to access unrelated files, credentials, or network destinations are denied. Include local MCP tools and language servers where the platform supports sandboxing them. Use the same checks when evaluating an IDE that runs agents.
+
+## 3. Anthropic verified security access
+
+[Anthropic expanded its Cyber Verification Program on 6 October](https://www.anthropic.com/news/cyber-verification-program/) with three tiers. Defense Access covers work such as incident response and vulnerability validation. Red Team Access adds authorized penetration testing and red-teaming for qualifying organizations; individual researchers are not eligible for that tier. Specialized Access is reserved for a limited set of verified organizations testing high-risk safety systems.
+
+Access depends on verification and the tier's security controls. Red Team Access still blocks actions that could cause physical harm or mass disruption. The generally available models remain usable for code review, patching known issues, finding vulnerabilities in owned source code, and triaging alerts.
+
+For a team considering deeper AI-assisted security testing, define the authorized systems and testing scope first. Then check eligibility, workspace access, and the program's data-retention and platform conditions. Plan how findings will be reproduced, prioritized, and patched before increasing the volume of testing.
+
+## 4. Stacked PRs
+
+[GitHub made stacked pull requests generally available on 6 October](https://github.blog/changelog/2026-10-06-stacked-pull-requests-generally-available/) across GitHub.com plans. Teams can split a larger change into dependent pull requests, review them separately, and merge them together.
+
+The release preserves approvals when unchanged code is rebased after its base moves, creates signed replacement commits, and treats a stack as one merge-queue group. The `gh stack` extension also supports worktrees. Auto-merge for stacks is rolling out over the following weeks.
+
+For agent-assisted work, this gives teams a way to separate reviewable units without losing their dependencies. Trial it on a small change with clear layers, then check approval preservation, required checks, and merge-queue behaviour against the repository's actual rules. Smaller pull requests still need enough context for reviewers to understand the combined change.
+
+## 5. GitHub is rebuilding its Git architecture
+
+[GitHub's 6 October architecture article](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/) explains the rebuild underway to support concurrent work by developers and agents. GitHub reports that monthly Git activity grew from 218.2 billion events in September 2025 to 473.3 billion in August 2026. Developers and agents made 7.38 billion commits in September 2026, more than five times the count a year earlier. Those figures cover GitHub's overall activity, rather than measuring one team's agent usage.
+
+The current design couples durable repository copies with the machines serving Git requests. Adding replicas to handle more reads also adds work to every write. The planned architecture separates durable storage in Azure Blob Storage from compute workers that cache repository data. It keeps coordination focused on reference updates while allowing object storage, connectivity validation, and secret scanning to run in parallel with other writes.
+
+For teams increasing agent concurrency, measure push latency and CI queue time alongside code-generation speed. Check whether frequent checkpoints, branch updates, and repeated CI runs are creating avoidable work. GitHub's infrastructure rebuild is underway; the article isn't a promise of a particular speedup for your repository.
+
+For the next tooling trial, use one representative change and record what you checked: the agent's permitted access, the review steps, and any security findings that needed action. Use those results to decide whether to extend the workflow.

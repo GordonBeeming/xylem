@@ -15,6 +15,6 @@ To turn it on for every session, add this to `~/.claude/settings.json`:
 }
 ```
 
-You can also run `/tui fullscreen` inside a session, or set `CLAUDE_CODE_NO_FLICKER=1` before launching.
+Sessions read the settings file when they start, so restart any that were already open. `claude --resume` brings the conversation back.
 
-Sessions read the setting when they start, so restart any open ones. `claude --resume` brings the conversation back.
+You can also run `/tui fullscreen` to switch the session you're in, or set `CLAUDE_CODE_NO_FLICKER=1` before launching.

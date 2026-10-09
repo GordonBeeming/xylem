@@ -1,0 +1,20 @@
+---
+title: 'Getting mouse clicks working in Claude Code'
+date: 2026-10-09
+tags: ['Claude Code', 'Terminal', 'AI']
+summary: 'Mouse clicks only work in Claude Code when it runs in fullscreen mode. One setting turns it on.'
+---
+
+Clicking in Claude Code didn't work for me at all, while [Daniel Mackay](https://www.linkedin.com/in/danieljamesmackay/) had it working fine. The difference is the renderer: Claude Code only listens to the mouse in its fullscreen mode.
+
+To turn it on for every session, add this to `~/.claude/settings.json`:
+
+```json title="~/.claude/settings.json"
+{
+  "tui": "fullscreen"
+}
+```
+
+You can also run `/tui fullscreen` inside a session, or set `CLAUDE_CODE_NO_FLICKER=1` before launching.
+
+Sessions read the setting when they start, so restart any open ones. `claude --resume` brings the conversation back.

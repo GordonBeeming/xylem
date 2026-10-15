@@ -1,0 +1,66 @@
+---
+title: 'This Week in Developer Tech · W02'
+date: 2026-10-15
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', '.NET', 'Cloud Architecture']
+summary: "GitHub workflow lockfiles and push attribution, Cloudflare multimodal decisions, and earlier work on Kubernetes swap, agent benchmarks, Aspire Native AOT and OpenAI's Decisions API: what changed and how to evaluate it."
+---
+
+GitHub's two previews make CI dependencies easier to review and commit identities easier to investigate, while Cloudflare adds audio and video to narrow model decisions. This edition covers the 9 to 15 October briefings and includes earlier reading on sandbox density, fair agent benchmarks, Aspire startup and typed request routing.
+
+## 1. GitHub Actions gets workflow dependency lockfiles
+
+[GitHub announced workflow lockfiles on 14 October](https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview/), in public preview for Free, Team, GitHub Enterprise Cloud, and Enterprise Cloud with data residency. The announcement was updated that day to expand the listed plans.
+
+The `gh actions-lock` CLI extension generates `.github/workflows/actions.lock`. It records commits for action references, their transitive action dependencies, and reusable workflow references, so the YAML can retain readable tags while execution uses the locked code. Onboarded workflows require matching dependency entries. Dependabot updates the relevant lockfile entry alongside an action version update, and administrators can require locking through policy.
+
+Reviewers can inspect the locked commits and their changes. There is a boundary around reusable workflows, though: their internal dependencies use the lockfile in the repository that defines them. [GitHub's lockfile documentation](https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles) explains that scope and the source-repository identity checks.
+
+Try one disposable workflow with a tagged test action. Generate and review the lockfile, move the test tag, then confirm the recorded commit still runs. Add a dependency without regenerating the lockfile and check that execution is blocked. Locking preserves the selected code; reviewing whether that code is safe remains part of the job.
+
+## 2. GitHub records who actually pushed a commit
+
+[Push attribution entered limited public preview on 12 October](https://github.blog/changelog/2026-10-12-push-attribution-public-preview/). GitHub records the authenticated pusher alongside the commit's author and committer, and exposes that identity in its UI and API. GitHub Enterprise customers currently need to request preview access through their account team.
+
+Author and committer names and emails are supplied by the Git client. Someone with write access can set them to a trusted maintainer's details, so those fields alone are a weak audit trail. The new attribution records the authenticated account that delivered the commit. A `Committer must match pusher` ruleset condition can also reject a push when the committer email doesn't match a verified address of that account.
+
+Before enforcing the condition, try it in a test repository with your actual delivery paths, including automation and rebased commits. Check which identities appear in the audit trail and which pushes the rule rejects. Knowing which account pushed a change helps an investigation, but review and authorization still need their own checks.
+
+## 3. Kubernetes node swap increases sandbox density
+
+[The Kubernetes team's 5 October benchmark article](https://kubernetes.io/blog/2026/10/05/scaling-kubernetes-workloads-with-node-swap/) is earlier reading from the briefings, not a launch this week. Node swap has been generally available since Kubernetes 1.34. The tests paired cgroup v2 with fast local NVMe swap, allowing dormant anonymous memory to leave RAM while active workloads kept running.
+
+In the reported gVisor tests, Python sandbox capacity rose from 80 to 240 concurrent sessions, and headless browser capacity doubled from 80 to 160 pods. This is relevant to agent environments that need memory for a burst of work, then sit idle waiting for input. The gains depend on that workload shape and the storage underneath it.
+
+Trial it on an isolated node with Burstable workloads and the documented `LimitedSwap` configuration. Measure density alongside tail latency and OOM failures. At peak density, CPU contention increased latency; pushing the kernel-build memory limit too far made the build over 40% slower. Choose a pod density that meets your latency target.
+
+## 4. Agent benchmark scores depend on the execution environment
+
+[Anthropic's infrastructure-noise study](https://www.anthropic.com/engineering/infrastructure-noise), published on 5 February 2026, is older research included for its relevance to agent comparisons. Holding the Claude model, harness and tasks constant, the team found a Terminal-Bench 2.0 gap of six percentage points between strict resource limits and uncapped execution.
+
+The distinction is between preventing infrastructure failures and making tasks easier. Moderate headroom reduced container failures without a statistically significant score improvement. Beyond roughly three times the specified resources, the agent could solve more tasks using heavier dependencies and processes. A separate SWE-bench experiment showed a smaller 1.54-point effect.
+
+When comparing coding agents, record the guaranteed CPU and memory allocation separately from the hard limits, and keep timeouts consistent. Repeat a representative task set under controlled conditions, counting infrastructure failures separately from incorrect solutions. The study's threefold headroom is a result for that benchmark; calibrate the headroom for your own tasks before attributing a small score difference to the model.
+
+## 5. Aspire's dashboard ships as a native executable
+
+[Microsoft's 6 October Native AOT article](https://devblogs.microsoft.com/aspire/aspire-dashboard-native-aot/) explains work already available in Aspire 13.6. It predates this week's coverage. The dashboard compiles to native code at publish time, removing JIT work at startup. Microsoft reports median page-visible startup falling from 1,429 ms to 491 ms.
+
+Packaging consistency is another useful change. The old dashboard could combine embedded .NET 8 browser assets with a newer installed runtime through roll-forward. The native dashboard ships matching framework code and assets. Getting there required work across Blazor, Fluent UI and Dapper; the article shows how generated JSON metadata and trimming annotations replace assumptions about runtime discovery.
+
+To use the native dashboard through an AppHost, upgrade both the Aspire CLI and AppHost packages to 13.6; older AppHosts retain the managed path. Compare restart-to-visible time and check your telemetry views. The executable doesn't need a separately installed .NET runtime, although the CLI still ensures one is available for other Aspire features. Blazor Web App Native AOT support remains experimental, so this dashboard release doesn't make it a generally supported publishing option for other Blazor apps.
+
+## 6. Clef-omni makes decisions directly from audio and video
+
+[Cloudflare released Clef-omni on 9 October](https://blog.cloudflare.com/clef-faster-cheaper-multimodal/), adding audio and video to its text and image decision inputs. It's available on Workers AI, with [open weights under Apache 2.0](https://huggingface.co/Cloudflare/clef-omni/blob/main/LICENSE). You supply typed questions and allowed answers; the model scores those choices without generating a transcript or prose response.
+
+That could make a narrow classification step simpler: use a recording or clip to choose the next workflow before invoking a larger agent. Cloudflare reports scoring a 21-second video with sound in about 1.5 seconds. Its published evaluations also show accuracy tradeoffs across tasks, so the latency result isn't enough to choose it for your workload.
+
+Start with labelled clips and predefined choices. Compare accuracy and end-to-end latency with your current pipeline, and keep a fallback for uncertain results. Include a case where important instructions accompany a longer clip. The [hosted input documentation](https://developers.cloudflare.com/workers-ai/models/clef-omni/) says media and questions consume the 64,000-token window first, with text state truncated to fit the remaining space. Check that the context needed for the decision survives.
+
+## 7. Decisions API provides typed answers for request routing
+
+[OpenAI opened the Decisions API public beta on 6 October](https://community.openai.com/t/decisions-api-is-now-available-in-public-beta/1403877), before this edition's coverage dates. It's available to all developers, with `gpt-6-luna` currently the only supported model. Text and image inputs can produce a predicate probability, a choice from predefined options, or a score against ordered criteria. OpenAI reports decisions up to ten times faster than using Luna through the Responses API.
+
+This gives applications a narrower interface for classification and routing. For example, a decision can select a request's destination before a larger agent handles the work. The [Decisions API guide](https://developers.openai.com/api/docs/guides/decisions) distinguishes those fixed answer types from generating arbitrary structured objects or tool-call arguments.
+
+Try a labelled set of routing decisions with explicit criteria and a fallback for uncertain results. Compare accuracy, confidence calibration and end-to-end latency with the current path. Choose thresholds using the cost of misrouting in your application; the vendor's speed comparison doesn't establish that the new path makes better decisions for those inputs.

@@ -1,0 +1,70 @@
+---
+title: 'This Week in Developer Tech · W03'
+date: 2026-10-22
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', 'Design', 'Cloud Architecture']
+summary: "GitHub CLI expiring tokens and package firewall, Anthropic's Scion and review loops, Figma Specs, and GitHub's star-history queries: what changed and how to evaluate it."
+---
+
+GitHub's new previews put controls in front of package installation and shorten the lifetime of developer access tokens. Anthropic's source-control and review systems, Figma's shared specifications, and GitHub's star-history redesign offer practical examples of removing work from busy engineering pipelines.
+
+This edition covers the 16 to 22 October 2026 briefings. Some of the engineering articles were published earlier; their dates are kept with the stories.
+
+## 1. GitHub CLI adds expiring OAuth credentials
+
+[GitHub CLI 2.103.0](https://github.com/cli/cli/releases/tag/v2.103.0), released on 21 October, introduces an opt-in public preview of short-lived OAuth access tokens with rotating refresh tokens. The CLI refreshes credentials when needed, so a leaked access token stops working within hours rather than remaining reusable indefinitely.
+
+Existing sign-ins don't change automatically. Use `gh auth login --expiring` for a new sign-in and check `gh auth status` to see what the server actually issued. Unsupported servers can fall back to a nonexpiring token. The preview supports github.com and ghe.com, with GitHub Enterprise Server support from 3.23.
+
+For an IDE integration or script, the important change is token handling. Don't capture `gh auth token` once and keep reusing it; request it when needed. Tokens supplied through `GH_TOKEN` or `GITHUB_TOKEN` aren't refreshed. For HTTPS Git, GitHub recommends `gh auth setup-git` and Git 2.46 or newer. Test the actual Git and API paths across expiry before adopting it, and continue protecting the refresh credential.
+
+## 2. GitHub package firewall checks dependencies before installation
+
+[GitHub introduced package firewall on 20 October](https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview/), in public preview for Enterprise Cloud, including data-resident enterprises. It sits between configured endpoints and the package registry, checking metadata requests and downloads against enterprise policy.
+
+Controls include a minimum package age, malware and vulnerability advisories, attestation downgrades, and newly introduced install scripts. This gives teams a place to stop a dependency before installation can execute code on a developer machine or CI runner. It still depends on what the policy and detection sources can identify.
+
+The preview supports npm only. It's free during preview, with metered billing planned for general availability. NuGet isn't covered by this release.
+
+Trial one disposable runner or agent environment using the [documented endpoint configuration](https://docs.github.com/en/enterprise-cloud@latest/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/protecting-endpoints-with-package-firewall). Check a blocked version, the exception process, and both metadata and archive downloads. Endpoints must use the firewall rather than the upstream registry; changing enterprise policy alone doesn't reroute their traffic.
+
+## 3. Anthropic makes a source checkout optional
+
+[Anthropic's Scion article](https://www.anthropic.com/engineering/redesigning-source-control), published on 13 October and updated on 15 October, describes an internal system already running its monorepo. It isn't a public source-control release.
+
+Anthropic reports growth from roughly 2,500 merged changes a day in May to more than 30,000 in September. At that scale, repeatedly materializing repository copies became expensive. Scion assumes online clients: the server handles history, blame, commits and merges, while clients keep bounded caches and fetch the files they need. A job can request a diff through an API without checking out a repository.
+
+That distinction is worth borrowing before considering a different version-control system. Which CI jobs need files, and which only need a small answer about the repository? Measure checkout, history-query and build costs separately. Removing unnecessary checkouts or fetching narrower data may help without changing Git.
+
+Anthropic explicitly describes an unusual workload. Its design trades offline independence for a central service, so it isn't a reason for an ordinary team to replace Git.
+
+## 4. Claude Code review puts limits on automated review loops
+
+[The Claude Code team's 15 October engineering article](https://claude.dev/blog/solving-code-review-at-anthropic/) describes continuous automated review, human approval based on risk, and fast rollback. It concerns Claude Code's repositories, separate from the monorepo discussed in the Scion article.
+
+One failure is particularly useful: an agent author and reviewer kept each other occupied for more than fifty rounds overnight. The team now asks the author to reconsider after three rounds, narrows later reviews to the diff, and avoids repeating findings. It also measures review rounds alongside defect detection.
+
+The human-review boundary remains explicit. Sensitive paths and CI workflows need people; an agent approval cannot satisfy a required human approval. Revert and incident rates act as guardrails when reducing reviewer effort.
+
+Start with one repository's past incidents and clean changes. Check whether an automated reviewer finds the known defects, creates harmful false positives, and converges after fixes. A lower review-time number isn't useful if the effort reappears as incidents or repeated agent edits. Treat Anthropic's process as design material, not a universal approval policy.
+
+## 5. Figma Specs carries design decisions into coding-agent context
+
+[Figma announced Specs on 15 October](https://www.figma.com/blog/introducing-figma-specs/). It puts collaborative Markdown beside designs and diagrams on the canvas, with references to the work the text describes. A coding agent can receive that context through Figma's MCP server, and the team can update the specification as implementation develops.
+
+[Figma's detailed eligibility guidance](https://help.figma.com/hc/en-us/articles/43663368947863-What-s-new-from-Config-India-2026) lists Specs for Education, Professional, Organization, Enterprise and Government plans. The separate Code Layers beta lists Starter, Professional, Organization, Enterprise and Education plans, excluding K-12 Education. Both are open betas rolling out over the next few weeks; check the detailed eligibility for each feature rather than relying on the page's overview table.
+
+For a design-to-code workflow, the useful addition is reviewed intent: why an edge case behaves a particular way, which alternative was rejected, and what reviewers agreed. A screenshot alone rarely carries those decisions.
+
+Try one small feature with an edge-case diagram and reviewer comments. Ask the agent to identify the decisions it will follow, then change a linked design reference and check whether it notices. Keep credit usage in view when using the Specs agent.
+
+## 6. GitHub bounds star-history queries before aggregation
+
+[GitHub's 14 October star-history article](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/) describes a shipped API redesign. Tools needed a trend over time, but the old endpoint returned individual stargazers. For a repository with about 251,000 stars, reconstructing the curve took roughly 2,511 requests.
+
+Returning aggregate buckets wasn't enough on its own. Applying pagination after grouping still made each request process the full star set. The new endpoint first filters an indexed date range, then groups only the matching rows. A request covers up to 30 weeks; the example's complete history takes about 24 requests.
+
+This is a useful review question for reporting APIs: does a small response also bound the work done to produce it? Inspect the query plan before adding another cache.
+
+The contract still has limits. Unusually dense weeks can be expensive, and removed stars aren't preserved as a historical event log. Test those cases rather than assuming the endpoint represents every star event.
+
+For the next tooling change, choose one representative workflow and check its failure path as carefully as its successful run.

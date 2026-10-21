@@ -247,6 +247,29 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
       }
     );
 
+    // READMEs use <picture><source media="(prefers-color-scheme: dark)" srcset=...>
+    // for themed screenshots. A srcset left relative resolves against the site
+    // route and breaks only for dark-mode readers, so it's easy to miss.
+    // Each candidate is "url [descriptor]"; only the url is rewritten.
+    segment = await replaceAsync(
+      segment,
+      /\bsrcset\s*=\s*(["'])([^"']+)\1/gi,
+      async (_match, quote, srcset) => {
+        const candidates = await Promise.all(
+          srcset
+            .split(",")
+            .map((candidate) => candidate.trim())
+            .filter(Boolean)
+            .map(async (candidate) => {
+              const [url, ...descriptor] = candidate.split(/\s+/);
+              const newUrl = await resolveUrl(url, true);
+              return [newUrl, ...descriptor].join(" ");
+            })
+        );
+        return `srcset=${quote}${candidates.join(", ")}${quote}`;
+      }
+    );
+
     segment = await replaceAsync(
       segment,
       /<a\b([^>]*?)\bhref\s*=\s*(["'])([^"']+)\2([^>]*)>/gi,

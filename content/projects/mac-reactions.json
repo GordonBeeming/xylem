@@ -1,0 +1,12 @@
+{
+  "title": "MacReactions",
+  "description": "A Swift package that recreates Apple's eight FaceTime camera reactions, like confetti, balloons, fireworks and lasers, as click-through overlays for any macOS app, either full screen or inside your own window. Each effect was tuned frame by frame against recordings of the real thing.",
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "macOS"
+  ],
+  "github": "https://github.com/GordonBeeming/mac-reactions",
+  "date": "2026-07-08",
+  "featured": false
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-label="SSMSx">
+  <rect x="8" y="8" width="80" height="80" rx="18" fill="#0063B2"></rect>
+  <rect x="29" y="29" width="38" height="11" rx="3" fill="#ffffff" opacity="0.96"></rect>
+  <rect x="29" y="42.5" width="38" height="11" rx="3" fill="#ffffff" opacity="0.80"></rect>
+  <rect x="29" y="56" width="38" height="11" rx="3" fill="#ffffff" opacity="0.62"></rect>
+  <circle cx="61" cy="34.5" r="2.4" fill="#4ade80"></circle>
+  <circle cx="61" cy="48" r="2.4" fill="#4ade80"></circle>
+  <text x="108" y="59" font-family="-apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="0.5" fill="#1A1A1A">SSMSx</text>
+</svg>

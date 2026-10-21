@@ -1,0 +1,13 @@
+{
+  "title": "Bar UI",
+  "description": "A desktop dashboard for the telemetry ClaudeBar and CodexBar record. It imports their local OpenTelemetry files into its own archive, so limit history, token usage, API cost and burn rate are still there after the bar apps prune their files. A menu bar preview shows recent usage without opening the window.",
+  "techStack": [
+    "Swift",
+    "SwiftUI",
+    "macOS",
+    "OpenTelemetry"
+  ],
+  "github": "https://github.com/GordonBeeming/bar-ui",
+  "date": "2026-10-12",
+  "featured": false
+}

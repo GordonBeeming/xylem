@@ -1,0 +1,13 @@
+{
+  "title": "ide",
+  "description": "A lean, fast code editor built on Tauri, Rust and CodeMirror 6, with files, search, git commit and sync, and optional language server support. It shares editor context with AI coding tools: Claude Code finds it through /ide, and Codex or any other MCP client can connect to a local, token-protected endpoint.",
+  "techStack": [
+    "Tauri",
+    "Rust",
+    "TypeScript",
+    "CodeMirror"
+  ],
+  "github": "https://github.com/GordonBeeming/ide",
+  "date": "2026-06-04",
+  "featured": false
+}

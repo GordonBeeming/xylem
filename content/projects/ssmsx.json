@@ -1,0 +1,15 @@
+{
+  "title": "SSMSx",
+  "description": "A fast SQL Server client for macOS, Windows and Linux. It's a Tauri app with a React UI and Monaco editor, backed by a C# sidecar on Microsoft.Data.SqlClient. It supports Entra sign-in and has an Object Explorer, keyboard-friendly result grids and database diagrams.",
+  "techStack": [
+    "Tauri",
+    "Rust",
+    "React",
+    "TypeScript",
+    "C#",
+    "SQL Server"
+  ],
+  "github": "https://github.com/GordonBeeming/SSMSx",
+  "date": "2026-03-17",
+  "featured": false
+}

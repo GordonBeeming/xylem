@@ -1,0 +1,12 @@
+{
+  "title": "Codex Statusline",
+  "description": "A multi-line status line for the Codex CLI, laid out like Claude Statusline: repo, branch, model and effort, 5h and weekly limits, and context and token usage. Official Codex can't run user commands in its footer, so this ships as a small patch against a pinned Codex commit that you can review.",
+  "techStack": [
+    "Shell",
+    "Python",
+    "Codex"
+  ],
+  "github": "https://github.com/GordonBeeming/codex-statusline",
+  "date": "2026-04-28",
+  "featured": false
+}

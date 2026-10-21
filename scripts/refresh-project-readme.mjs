@@ -112,13 +112,10 @@ function buildFrontmatter({ title, fetchedAt, sourceRepo, sourceBranch, visibili
   return `${fm}---\n\n`;
 }
 
+// Any URL with a scheme (https:, data:, mailto:, tel:, ...) already points
+// somewhere real; only scheme-less paths are relative to the source repo.
 function isAbsoluteOrSkippable(url) {
-  return (
-    /^https?:\/\//i.test(url) ||
-    url.startsWith("//") ||
-    url.startsWith("#") ||
-    url.startsWith("mailto:")
-  );
+  return /^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith("//") || url.startsWith("#");
 }
 
 function splitFragment(url) {
@@ -189,6 +186,38 @@ function splitCodeFences(markdown) {
   return segments;
 }
 
+// Splits a srcset into { url, descriptor } candidates the way the HTML spec's
+// parser does. A URL is a run of non-whitespace, so a comma inside it
+// (`?crop=1,2`) belongs to the URL; only trailing commas end a candidate.
+// Descriptors run to the next comma outside parentheses.
+function parseSrcset(srcset) {
+  const candidates = [];
+  let pos = 0;
+  while (pos < srcset.length) {
+    while (pos < srcset.length && /[\s,]/.test(srcset[pos])) pos++;
+    if (pos >= srcset.length) break;
+    const urlStart = pos;
+    while (pos < srcset.length && !/\s/.test(srcset[pos])) pos++;
+    const url = srcset.slice(urlStart, pos);
+    if (url.endsWith(",")) {
+      candidates.push({ url: url.replace(/,+$/, ""), descriptor: "" });
+      continue;
+    }
+    const descriptorStart = pos;
+    let depth = 0;
+    while (pos < srcset.length) {
+      const ch = srcset[pos];
+      if (ch === "(") depth++;
+      else if (ch === ")" && depth > 0) depth--;
+      else if (ch === "," && depth === 0) break;
+      pos++;
+    }
+    candidates.push({ url, descriptor: srcset.slice(descriptorStart, pos).trim() });
+    pos++;
+  }
+  return candidates;
+}
+
 async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, headers }) {
   const assetOutDir = path.join(ASSETS_DIR, slug);
   const usedBasenames = new Map();
@@ -245,6 +274,31 @@ async function rewriteMarkdown(raw, { owner, repo, branch, baseDir, slug, header
         const newSrc = await resolveUrl(src, true);
         return `<img${pre}src=${quote}${newSrc}${quote}${post}>`;
       }
+    );
+
+    // READMEs use <picture><source media="(prefers-color-scheme: dark)" srcset=...>
+    // for themed screenshots. A srcset left relative resolves against the site
+    // route and breaks only for dark-mode readers, so it's easy to miss.
+    // Each candidate is "url [descriptor]"; only the url is rewritten.
+    // Only srcset inside a real <source> or <img> tag is rewritten; the same
+    // text in prose is documentation. Unquoted values are valid HTML too, so
+    // match them alongside both quote styles.
+    segment = await replaceAsync(segment, /<(?:source|img)\b[^>]*>/gi, (tag) =>
+      replaceAsync(
+        tag,
+        /\bsrcset\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi,
+        async (_match, doubleQuoted, singleQuoted, unquoted) => {
+          const srcset = doubleQuoted ?? singleQuoted ?? unquoted;
+          const quote = singleQuoted !== undefined ? "'" : '"';
+          const candidates = await Promise.all(
+            parseSrcset(srcset).map(async ({ url, descriptor }) => {
+              const newUrl = await resolveUrl(url, true);
+              return descriptor ? `${newUrl} ${descriptor}` : newUrl;
+            })
+          );
+          return `srcset=${quote}${candidates.join(", ")}${quote}`;
+        }
+      )
     );
 
     segment = await replaceAsync(

@@ -15,7 +15,7 @@ This edition covers the 16 to 22 October 2026 briefings. Some of the engineering
 
 The flaws involve [out-of-memory corruption](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) and [stale state retained between requests](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp). PHP considers mod_php the highest risk: a demonstrated attack runs before application code begins, so application authentication cannot protect that path. The advisories distinguish demonstrated exploits from paths assessed through source analysis; using FPM isn't a reason to defer the update.
 
-Check the PHP runtime serving each application, not just the CLI version on a developer machine. Update the deployed runtime or obtain your distribution's patched package, restart the workers, and verify the version or vendor patch status in the running service. PHP 8.1 and older no longer receive normal PHP project updates; check vendor backports or move to a supported branch.
+Check the PHP runtime serving each application, not just the CLI version on a developer machine. Update the deployed runtime or obtain your distribution's patched package, restart the workers, and verify the version or vendor patch status in the running service. PHP 8.1 and older no longer receive normal PHP project updates. For this release, PHP also provides minimal source backports for 7.4, 8.0 and 8.1. Check vendor backports or those source patches while planning a move to a supported branch.
 
 Configuration changes can reduce exposure to particular attack paths, but PHP says only an update is a complete solution. Follow the advisory if an update is temporarily blocked, and keep that installation on the patch list rather than treating a workaround as a fix.
 

@@ -2,14 +2,24 @@
 title: 'This Week in Developer Tech · W03'
 date: 2026-10-22
 tags: ['Developer Tools', 'AI', 'GitHub', 'Security', 'Design', 'Cloud Architecture']
-summary: "GitHub CLI expiring tokens and package firewall, Anthropic's Scion and review loops, Figma Specs, and GitHub's star-history queries: what changed and how to evaluate it."
+summary: "PHP's critical RCE fixes, GitHub CLI expiring tokens and package firewall, Anthropic's Scion and review loops, Figma Specs, and GitHub's star-history queries: what changed and how to evaluate it."
 ---
 
-GitHub's new previews put controls in front of package installation and shorten the lifetime of developer access tokens. Anthropic's source-control and review systems, Figma's shared specifications, and GitHub's star-history redesign offer practical examples of removing work from busy engineering pipelines.
+PHP's security releases need immediate attention for web-serving installations. GitHub's new previews put controls in front of package installation and shorten the lifetime of developer access tokens. Anthropic's source-control and review systems, Figma's shared specifications, and GitHub's star-history redesign offer practical examples of removing work from busy engineering pipelines.
 
 This edition covers the 16 to 22 October 2026 briefings. Some of the engineering articles were published earlier; their dates are kept with the stories.
 
-## 1. GitHub CLI adds expiring OAuth credentials
+## 1. PHP releases critical remote code execution fixes
+
+[PHP's 21 October security advisory](https://www.php.net/archive/2026.php#2026-10-21-5) calls for immediate updates to PHP 8.5.12, 8.4.27, 8.3.36 or 8.2.35. These releases fix two critical vulnerabilities that can allow unauthenticated remote code execution. All PHP installations serving web requests need attention, including PHP-FPM, Apache with mod_php, php-cgi, FrankenPHP and LiteSpeed.
+
+The flaws involve [out-of-memory corruption](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) and [stale state retained between requests](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp). PHP considers mod_php the highest risk: a demonstrated attack runs before application code begins, so application authentication cannot protect that path. The advisories distinguish demonstrated exploits from paths assessed through source analysis; using FPM isn't a reason to defer the update.
+
+Check the PHP runtime serving each application, not just the CLI version on a developer machine. Update the deployed runtime or obtain your distribution's patched package, restart the workers, and verify the version or vendor patch status in the running service. PHP 8.1 and older no longer receive normal PHP project updates. For this release, PHP also provides minimal source backports for 7.4, 8.0 and 8.1. Check vendor backports or those source patches while planning a move to a supported branch.
+
+Configuration changes can reduce exposure to particular attack paths, but PHP says only an update is a complete solution. Follow the advisory if an update is temporarily blocked, and keep that installation on the patch list rather than treating a workaround as a fix.
+
+## 2. GitHub CLI adds expiring OAuth credentials
 
 [GitHub CLI 2.103.0](https://github.com/cli/cli/releases/tag/v2.103.0), released on 21 October, introduces an opt-in public preview of short-lived OAuth access tokens with rotating refresh tokens. The CLI refreshes credentials when needed, so a leaked access token stops working within hours rather than remaining reusable indefinitely.
 
@@ -17,7 +27,7 @@ Existing sign-ins don't change automatically. Use `gh auth login --expiring` for
 
 For an IDE integration or script, the important change is token handling. Don't capture `gh auth token` once and keep reusing it; request it when needed. Tokens supplied through `GH_TOKEN` or `GITHUB_TOKEN` aren't refreshed. For HTTPS Git, GitHub recommends `gh auth setup-git` and Git 2.46 or newer. Test the actual Git and API paths across expiry before adopting it, and continue protecting the refresh credential.
 
-## 2. GitHub package firewall checks dependencies before installation
+## 3. GitHub package firewall checks dependencies before installation
 
 [GitHub introduced package firewall on 20 October](https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview/), in public preview for Enterprise Cloud, including data-resident enterprises. It sits between configured endpoints and the package registry, checking metadata requests and downloads against enterprise policy.
 
@@ -27,7 +37,7 @@ The preview supports npm only. It's free during preview, with metered billing pl
 
 Trial one disposable runner or agent environment using the [documented endpoint configuration](https://docs.github.com/en/enterprise-cloud@latest/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/protecting-endpoints-with-package-firewall). Check a blocked version, the exception process, and both metadata and archive downloads. Endpoints must use the firewall rather than the upstream registry; changing enterprise policy alone doesn't reroute their traffic.
 
-## 3. Anthropic makes a source checkout optional
+## 4. Anthropic makes a source checkout optional
 
 [Anthropic's Scion article](https://www.anthropic.com/engineering/redesigning-source-control), published on 13 October and updated on 15 October, describes an internal system already running its monorepo. It isn't a public source-control release.
 
@@ -37,7 +47,7 @@ That distinction is worth borrowing before considering a different version-contr
 
 Anthropic explicitly describes an unusual workload. Its design trades offline independence for a central service, so it isn't a reason for an ordinary team to replace Git.
 
-## 4. Claude Code review puts limits on automated review loops
+## 5. Claude Code review puts limits on automated review loops
 
 [The Claude Code team's 15 October engineering article](https://claude.dev/blog/solving-code-review-at-anthropic/) describes continuous automated review, human approval based on risk, and fast rollback. It concerns Claude Code's repositories, separate from the monorepo discussed in the Scion article.
 
@@ -47,7 +57,7 @@ The human-review boundary remains explicit. Sensitive paths and CI workflows nee
 
 Start with one repository's past incidents and clean changes. Check whether an automated reviewer finds the known defects, creates harmful false positives, and converges after fixes. A lower review-time number isn't useful if the effort reappears as incidents or repeated agent edits. Treat Anthropic's process as design material, not a universal approval policy.
 
-## 5. Figma Specs carries design decisions into coding-agent context
+## 6. Figma Specs carries design decisions into coding-agent context
 
 [Figma announced Specs on 15 October](https://www.figma.com/blog/introducing-figma-specs/). It puts collaborative Markdown beside designs and diagrams on the canvas, with references to the work the text describes. A coding agent can receive that context through Figma's MCP server, and the team can update the specification as implementation develops.
 
@@ -57,7 +67,7 @@ For a design-to-code workflow, the useful addition is reviewed intent: why an ed
 
 Try one small feature with an edge-case diagram and reviewer comments. Ask the agent to identify the decisions it will follow, then change a linked design reference and check whether it notices. Keep credit usage in view when using the Specs agent.
 
-## 6. GitHub bounds star-history queries before aggregation
+## 7. GitHub bounds star-history queries before aggregation
 
 [GitHub's 14 October star-history article](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/) describes a shipped API redesign. Tools needed a trend over time, but the old endpoint returned individual stargazers. For a repository with about 251,000 stars, reconstructing the curve took roughly 2,511 requests.
 

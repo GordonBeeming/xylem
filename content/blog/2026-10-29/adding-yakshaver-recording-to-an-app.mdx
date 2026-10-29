@@ -5,6 +5,8 @@ tags: ['YakShaver', 'Application Insights', 'OpenTelemetry', 'Feature Flags']
 summary: "Adding a Record with YakShaver button to an app, attaching page context to the recording, and using a correlation id to find the browser and server telemetry behind a bug report."
 ---
 
+There's an SSW Rule on [linking YakShaver bug reports to their telemetry with a recording ID](https://www.ssw.com.au/rules/link-yakshaver-recordings-to-telemetry). In short, give every recording one correlation id from start to finish, so the bug report points straight at the logs from that session. This post is the detailed version: how I added it to a real app, end to end.
+
 [YakShaver](https://yakshaver.ai) turns a screen recording into a work item. I added a Record with YakShaver button to an app's assistant orb so people can report a bug from the page they're using, with the page and user details attached automatically.
 
 The button uses YakShaver Anywhere's hidden mode. Each recording gets a correlation id that's attached to the work item and the app's browser and server telemetry, so I can use the id in a bug report to find its requests and logs.

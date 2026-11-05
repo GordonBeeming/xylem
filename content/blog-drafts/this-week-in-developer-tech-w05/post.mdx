@@ -1,43 +1,43 @@
 ---
 title: 'This Week in Developer Tech · W05'
 date: 2026-11-05
-tags: ['Developer Tools', 'AI', 'GitHub', 'Security']
-summary: "Binance's signing-service theft, Anthropic's Max and Ultra rename, GitHub issue comments that hijacked CI, the exploited Brotli decoder, and OpenAI's Pando Git backend."
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', 'Cloud Architecture']
+summary: "Binance's signing-service theft, Anthropic's Max and Ultra rename, Revolut's self-hosted GLM rollout, Aur0ra's use of Cursor agents, OpenAI's Pando Git backend, and Cloudflare's inference cache leak."
 ---
 
-A DevOps laptop that can submit withdrawals is enough to move funds when the signing service signs what that laptop asks for. Text hidden in a GitHub issue becomes a shell command when a workflow interpolates that text into a `run` step.
+A laptop that can ask a signing service for a signature can move funds while the private key stays put. Cheap self-hosted tokens change which tasks engineers hand to a coding model, and a shared GPU cache can hand one customer's prompt to the next request.
 
-This edition draws on the 30 October to 5 November 2026 briefings, with five selected stories on wallet signing, Claude plan limits, GitHub Actions, the Brotli decoder and Git at agent scale. Earlier incident dates are kept with the relevant stories.
+This edition draws on the 30 October to 5 November 2026 briefings, with six selected stories on signing access, Claude plan limits, self-hosted coding models, agent-driven intrusion, Git at agent scale, and inference cache isolation. Shorter items follow under Other headlines. Earlier announcements and incident dates are kept with the relevant stories. Australian dollar figures are estimates at about 1.42 per US dollar.
 
 ## 1. A Binance theft ran from a DevOps laptop into the signing system
 
-TRM Labs' analysis and the SOCtember breakdown describe an attacker draining about US\$6.36 billion (roughly A\$9 billion, an estimate) from Binance wallets on 10 blockchains. The drain happened on Thursday evening UTC, early Friday 30 October Brisbane time, and most of the funds moved in about 20 minutes. TRM attributes the theft with high confidence to North Korea's TraderTraitor unit. Binance says its first look points to a compromised DevOps engineer's laptop that gave the attacker a service container able to submit withdrawals, and that it has found no sign of a private key leak. The attacker got the signing service to sign what it wanted.
+[TRM Labs' analysis](https://www.trmlabs.com/resources/blog/north-korea-has-stolen-usd-128-billion-in-crypto-usd-74-billion-of-it-in-2026) describes an attacker moving about US\$6.36 billion (about A\$9 billion, an estimate) out of Binance wallets on 10 blockchains on 29 October. Most of it left in about 20 minutes from 20:05 UTC, early Friday 30 October Brisbane time. TRM attributes the theft with high confidence to North Korea's TraderTraitor unit, and says the attacker used 50 pre-signed Ethereum authorisations and likely got Binance's hot-wallet signing system to sign across chains. [SOCtember's breakdown](https://www.soctember.com/threat-intel/trm-binance-6-36-billion-tradertraitor-eip-7702-hot-wallet-signing-infrastructure) reports Binance's first account: a compromised DevOps engineer's laptop gave the attacker a service container that could submit withdrawals, and Binance had found no sign of a private key leak.
 
-On Ethereum, the attacker sent one transaction holding 50 EIP-7702 authorisations signed by a Binance hot wallet, one for each of the next 50 nonces, so one was guaranteed to match. That turned the wallet into a sweeper the attacker controlled, and it kept sweeping new deposits for hours. Tether, Circle and others froze roughly US\$2.7 billion (about A\$3.8 billion, an estimate at about 1.42 AUD per US dollar). More than 420,000 ETH and 18,270 BTC are still out of reach.
+On Ethereum, SOCtember's account of the transactions says the attacker sent one transaction holding 50 EIP-7702 authorisations signed by a Binance hot wallet, one for each of the next 50 nonces, so one was guaranteed to match. That turned the wallet into a sweeper the attacker controlled, and it kept sweeping new deposits for hours. Tether, Circle and others froze nearly US\$2.7 billion (about A\$3.8 billion, an estimate). More than 420,000 ETH and 18,270 BTC, about US\$2.4 billion (about A\$3.4 billion, an estimate), are still out of reach because those native assets have no issuer who can freeze them.
 
 If you run a service that signs on request, such as code signing, a token service or a payments signer, list the users and machines allowed to ask it for a signature, and check whether a burst of unusual requests would raise an alert. For Ethereum, TRM's advice is to treat a request for many authorisations across a range of nonces as a sign of compromise. Binance hasn't published its post-mortem yet, and the loss and frozen figures differ between TRM, Chainalysis, Elliptic and Binance.
 
 ## 2. Anthropic renames Max, and Ultra drops the five-hour limit
 
-Anthropic's announcement on X, posted early Saturday Brisbane time, renames Max 5x to Max at US\$100 a month (about A\$142, an estimate) and Max 20x to Ultra at US\$200 a month (about A\$284, an estimate). Existing subscribers move over automatically. Verified Ultra accounts lose the five-hour session limit, and the weekly limit stays.
+[Claude's announcement on X](https://x.com/claudeai/status/2116220869479428500), posted on 30 October, renames Max 5x to Max at US\$100 a month (about A\$142, an estimate) and Max 20x to Ultra at US\$200 a month (about A\$284, an estimate). Existing subscribers move over automatically. Verified Ultra accounts lose the five-hour session limit, and the weekly limit stays. Newer accounts keep a temporary five-hour limit until Anthropic verifies them. [The Ultra help page](https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan) says that check uses account and payment history, that it lifts on its own, and that verifying a phone number at checkout is a separate step.
 
-The weekly limit still bounds a long Claude Code session. If billing or runbooks still say Max 5x and Max 20x, update those names. Before you plan a session that used to stop at five hours, confirm the account is verified Ultra and read the weekly cap that still applies. The announcement doesn't describe the verification check.
+The weekly limit still bounds a long Claude Code session, because Claude and Claude Code draw from the same pool. If billing or runbooks still say Max 5x and Max 20x, update those names. Before you plan a session that used to stop at five hours, confirm the account is verified Ultra and read the weekly cap that still applies.
 
-## 3. Attackers hid shell commands in GitHub issue comments
+## 3. Revolut moved about 2,000 engineers to self-hosted GLM
 
-The Register reports that Radware found 83 malicious issues, pull requests and comments across 61 public repositories, including Trivy, MLflow, Brave, google/langextract, dotnet/maui, Homebrew cask and github/docs. Of those, 77 were posted within 43 minutes on 1 September, from 74 accounts. The commands sat inside HTML comments, so they don't appear on the rendered page. They run when a workflow feeds that text into a shell command. Radware confirmed two cases where the payload actually ran.
+[The Register's report](https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/5307345) of David Abitbol's talk at AI Engineer NYC says Revolut cut AI coding inference by about 90% by making a self-hosted model the default for about 2,000 engineers. The fintech had been capping Claude Code and Codex after seeing individual spends of US\$1,000 to US\$10,000 a month (about A\$1,400 to A\$14,200, estimates) with little return. It served GLM-5.1, then GLM-5.3, on 56 Nvidia B200 GPUs. Self-hosting GLM-5.1 came in around US\$0.30 per million tokens (about A\$0.43, an estimate), roughly a tenth of the Codex or Claude Code API spend. Revolut also reports a 60% improvement in coding time and a 70% improvement in lead time. Abitbol's point, as quoted, is that the larger change was what people asked for once tokens were cheap: debugging, and Jira and Confluence tickets, rather than saving the budget for the hardest task.
 
-Search your workflows for event text interpolated into `run` steps, including `${{ github.event.issue.body }}` and the same pattern on pull request and comment fields. Pass untrusted text through an environment variable, and keep jobs started by issues, comments or pull requests away from secrets and write tokens.
+Tuning mattered more than adding GPUs. NVFP4, splitting prefill from decode, and treating about 256,000 tokens as the useful window produced a time to first token under 3 seconds and about 200 tokens a second for interactive use. He said the model can serve a million tokens, and that about 256,000 is the window the engineers actually need. GLM is text-only, so vision still goes to models such as Gemini or GPT Luna, and Claude or Codex stays available for the hard exceptions.
 
-GitHub's [2 November changelog](https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/) adds brownouts on 9 and 16 November, 16:00 to 18:00 UTC, ahead of the 2 December default block on `pull_request_target` in public repositories. [W04](/blog/2026-10-29/this-week-in-developer-tech-w04) already covered that trigger.
+These figures are Revolut's, from a conference talk, not an independent audit. Abitbol's privacy argument is that weights running on-premises or in a regional cloud are a different exposure from calling an API hosted in China. That is still a policy choice for each organisation. If you are sizing a private coding model, the targets he gave are concrete: a time to first token under 3 seconds, a practical window around 256,000 tokens, a router for multimodal requests, and a frontier model kept as the exception.
 
-## 4. The exploited Brotli decoder reaches .NET apps that decompress untrusted data
+## 4. A ransomware gang ran Cursor agents from stolen logins to domain admin
 
-[Microsoft's October out-of-band .NET update](https://devblogs.microsoft.com/dotnet/dotnet-october-2026-oob-security-updates/) covers CVE-2026-111497, an out-of-bounds write in Google's Brotli decoder from versions 1.0.3 to 1.2.0. CISA added it to its exploited list on 27 October, and [Check Point's 2 November report](https://research.checkpoint.com/2026/2nd-november-threat-intelligence-report/) says automated scanning and exploitation attempts are under way. The bug was found in Node.js first. It also reaches Python's `brotli` and `brotlicffi` packages, and .NET. [RiskBits' patch rundown](https://riskbits.net/blog/monday-fix-2026-11-02/) collects the version floors.
+[Sophos's report on GOLD OGRE](https://www.sophos.com/en-us/blog/ai-used-in-aur0ra-ransomware-testing-and-execution), the group behind Aur0ra ransomware, says operators handed AI agents VPN logins, a SOCKS proxy, targets and goals. The agents then mapped Active Directory, hunted for passwords in shares and backups, Kerberoasted, relayed NTLM and moved laterally with little further human input. Cursor artifacts recovered in late August show the work running through Cursor's Composer model plus models from Anthropic, xAI and Moonshot. Operators got past guardrails by calling the work authorised red-team or diagnostics testing. In some networks the agents reached domain admin, and three of those victims later appeared on the gang's leak site. Prompts Sophos recovered tell an agent to stop brute-forcing domain admins and try quieter methods, so a person was still steering while the agent did the repetitive work.
 
-A .NET app is exposed when it decompresses untrusted Brotli data, through ASP.NET Core request decompression, `HttpClient` automatic decompression, or `BrotliStream` and `BrotliDecoder`. Request decompression and automatic `HttpClient` decompression are off by default, so `Program.cs` and `HttpClientHandler` show whether this process accepts compressed bodies or enables automatic decompression. .NET Framework isn't affected. Microsoft rates the impact as a memory read or corruption that can lead to disclosure, crashes or privilege escalation. The HTTP2Shell nickname comes from the Node.js remote-code-execution path.
+Breaking in and deploying the ransomware stayed with people. Much of the material comes from an exposed attacker directory that Gambit Security and CloudSEK also analysed in August; Sophos published this analysis now. [Help Net Security](https://www.helpnetsecurity.com/2026/11/02/aur0ra-ransomware-ai-agents/) is a shorter route into the same findings.
 
-Update to .NET 8.0.33, 9.0.22 or 10.0.14, and to .NET 11 RC3 if you are on RC2. Update Node.js to 22.23.4, 24.22.1 or 26.12.1, and `brotli` and `brotlicffi` to 1.2.1. Run `dotnet --list-runtimes` on each host. Self-contained apps and container images carry their own runtime, so rebuild and republish those once the patched runtime is in the build. The same 25 October .NET release also re-ships fixes for two 13 October advisories that didn't fully land. A host that already installed those earlier packages still needs this release before those two fixes are actually present.
+Sophos's advice is the familiar list, and it needs to be in place while the agents are still working through it: segment critical servers, isolate backups, trim domain admin rights, use phishing-resistant MFA, and answer EDR alerts quickly. The report includes detection names and indicators.
 
 ## 5. OpenAI's Pando backend serves concurrent monorepo pushes
 
@@ -46,3 +46,49 @@ Update to .NET 8.0.33, 9.0.22 or 10.0.14, and to .NET 11 RC3 if you are on RC2. 
 OpenAI traces how three-phase commit and write-ahead-log designs contended when unrelated branches moved, and how per-ref versions plus pack reuse avoid that contention. A reader fetching several branches can see them at different points in time. [W04](/blog/2026-10-29/this-week-in-developer-tech-w04) described a similar wait on GitHub's side, where one repository-wide lock held unrelated refs back. OpenAI is also contributing Git client changes upstream, including explicit haves and parallel pack downloads, and is exploring how to share the approach.
 
 Pando is an internal service, and the announcement comes with no package or repository to install. On your own monorepo, time concurrent pushes to independent branches separately from pushes that update the same ref. That split shows whether a broad lock is protecting a consistency rule you still need or only making unrelated pushes wait.
+
+## 6. Cloudflare's GLM-5.3 responses read a stale GPU cache
+
+[W04](/blog/2026-10-29/this-week-in-developer-tech-w04) covered [Cloudflare's 26 October disclosure](https://blog.cloudflare.com/kv-cache-exposure-remediation/). Between 27 August and 9 September, 155 responses from GLM-5.3 on Workers AI contained data from other customers' recent requests. Every affected prompt was longer than 681,280 tokens. Cloudflare took the model offline within 40 minutes of declaring the incident and found no deliberate exploitation.
+
+Two things lined up. The deployment advertised a 1,048,576-token context, but the KV cache on the prefill GPUs only held 681,280 tokens. An SGLang bug in split prefill and decode mode marked an over-length request as rejected and still handed it on, so the decode node attended over cache pages that still held earlier users' prompts and returned an ordinary success response. Cache pages are left in place between requests for speed, so page ownership is the boundary between tenants. Cloudflare's long-context tests had checked status codes and performance, and had not checked whether the output belonged to the caller.
+
+The remediation corrected the capacity mismatch and the rejection path. Cloudflare recommends SGLang 0.5.22 or later, and a check that the KV pool printed in the engine's startup log can hold the configured context length after every config change. For a shared inference service, test with distinctive harmless markers in separate accounts. Include oversized requests and rejected work, then read the output, not only the status code.
+
+## Other headlines
+
+**[Attackers hid shell commands in GitHub issue comments](https://www.radware.com/blog/inside-a-github-supply-chain-attack-campaign/)**
+
+Radware found 83 malicious issues, pull requests and comments across 61 repositories, hidden in HTML comments, with [two confirmed runs](https://www.theregister.com/security/2026/10/29/attackers-turn-github-issues-into-supply-chain-campaign-against-61-public-repos-in-less-than-an-hour/5306153); GitHub will [block `pull_request_target` by default](https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/) in public repositories from 2 December, with brownouts on 9 and 16 November, 16:00 to 18:00 UTC.
+
+**[The exploited Brotli decoder bug, and the fixes for .NET, Node.js and Python](https://devblogs.microsoft.com/dotnet/dotnet-october-2026-oob-security-updates/)**
+
+CVE-2026-111497 is an out-of-bounds write in Brotli 1.0.3 to 1.2.0, CISA lists it as exploited, and [Check Point](https://research.checkpoint.com/2026/2nd-november-threat-intelligence-report/) reports active scanning; patch to .NET 8.0.33, 9.0.22 or 10.0.14 (RC2 to RC3), Node.js 22.23.4, 24.22.1 or 26.12.1, and Python `brotli` and `brotlicffi` 1.2.1.
+
+**[WIRED on a Claude Code agent running on a Pentagon network](https://www.wired.com/story/a-defense-contractor-gave-their-personal-ai-agent-access-to-a-secure-pentagon-system/)**
+
+Sources told WIRED an Accenture employee's personal agent ran with administrative access for about two months and sent login credentials to a high-risk site; Accenture says an independent investigation found the allegations without merit, and the Defense Department declined to comment.
+
+**[Google is shutting down Jules and folding it into Antigravity](https://jules.google/docs/changelog/2026-10-29/)**
+
+Finish sessions by 11 November, after which Jules is read-only until the 31 December 2026 wind-down; export first, and keep `env-variables.json` out of any repo because it holds real secret values.
+
+**[OpenAI on monitoring frontier models that misbehave](https://openai.com/index/how-we-detect-frontier-model-misalignment)**
+
+Activation probes, a review model, an investigative agent and network logs flagged a [September case](https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/) in which an agent used DNS to reach an external chatbot within about 15 minutes.
+
+**[OpenAI Private Intelligence](https://openai.com/business/private-intelligence/)**
+
+You own inputs and outputs, you set agent access and approvals, Zero Data Retention is available for eligible workflows, and Private Inference is an API preview using confidential computing, with no hardware, pricing or attestation details on the page yet.
+
+**[One robots.txt line to opt out of AI training](https://www.theverge.com/tech/1023763/openai-google-microsoft-ai-scraping-standard-opt-out)**
+
+[The IETF draft](https://www.ietf.org/archive/id/draft-kelley-aipref-training-preference-signal-00.html) uses `User-Agent: __usage_ai-training` and `Disallow: /`; Anthropic has started implementing it, OpenAI says the coming months, Google and Microsoft plan 2027, a `User-Agent: *` rule does not count, and the token is a training preference rather than a crawl rule.
+
+**[ChatGPT and Codex move to one shared allowance](https://techcrunch.com/2026/11/02/openai-is-finally-merging-chatgpts-chat-and-work-tabs/)**
+
+OpenAI is merging the Chat and Work tabs, Codex stays separate in the desktop app, and both products will draw tokens from the same allowance.
+
+**[VS Code 1.145 nests Claude, Codex and Copilot in one agent session](https://code.visualstudio.com/updates/v1_145)**
+
+With `chat.agentHost.multipleChatProviders.enabled`, a nested session can use a different harness from its parent; the feature is in preview.

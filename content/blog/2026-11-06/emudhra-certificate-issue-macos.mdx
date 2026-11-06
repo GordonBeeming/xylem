@@ -1,0 +1,27 @@
+---
+title: 'The eMudhra certificate issue on macOS: what to check'
+date: 2026-11-06T06:59:04.296Z
+summary: 'Apple has blocked compromised eMudhra certificates in its security frameworks, but command-line tools can use a separate trust bundle. Here is what to check and how to mitigate it.'
+---
+
+The issue
+
+Compromised eMudhra certificates are a reminder that your browser and your terminal do not necessarily trust the same certificates. Apple has blocked the affected certificates in its security frameworks, but command-line tools using /etc/ssl/cert.pem can still be exposed.
+
+References
+
+Apple’s guidance: https\://support.apple.com/en-us/149555
+
+The macOS impact and mitigation details: https\://emudhra.we-have-a-problem.com/apple.html
+
+How to fix it
+
+Check which certificate store your tools actually use. For tools relying on /etc/ssl/cert.pem, back up that file first, then follow the linked mitigation to remove emSign ECC Root CA - G3. Covering the cross-signed trust path also requires removing AAA Certificate Services, which can break unrelated sites. Test the services you depend on before rolling that change out.
+
+Recheck after macOS updates: an update can restore the bundle and undo your manual changes. Do not disable TLS verification to work around certificate errors.
+
+Fancy a video?
+
+Low Level walks through the issue below.
+
+<YouTubeEmbed src="https://www.youtube.com/embed/m4gx5YoRYfM" title="Low Level explains the eMudhra certificate issue" />

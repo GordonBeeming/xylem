@@ -1,0 +1,145 @@
+---
+title: 'Running Claude Code with a work and a personal account on one machine'
+date: 2026-11-11
+tags: ['Claude Code', 'AI', 'Terminal', 'Shell', 'Productivity']
+summary: 'I use separate Claude Code config folders to keep my work and personal accounts signed in side by side. A shell function picks the account from the folder I launch in, keeping work code under company policy and everything else on my own plan.'
+---
+
+I have two Claude accounts. One is my personal plan, which I use for my own projects, this blog, my tools and everything else I tinker with. The other belongs to a company organisation and has that organisation's Claude Code policy.
+
+By default, Claude Code has one login. Whichever account you signed in with last is the one every repo uses, so switching means `/logout`, `/login`, and hoping you remember to switch back before you open the other repo. That's a lot of admin just to get the right account for the repo you're in, and I wanted something easier, so now the folder I launch from picks the account.
+
+## One config folder per account
+
+Claude Code keeps its settings, session history, plugins and login in a config folder, which is `~/.claude` by default. The [`CLAUDE_CONFIG_DIR`](https://code.claude.com/docs/en/env-vars) environment variable points it somewhere else, and Anthropic's [authentication docs](https://code.claude.com/docs/en/authentication#log-in-with-multiple-accounts) describe how to do this: give each account its own folder and set the variable when you start `claude`. Their example is a one-line alias:
+
+```bash title="~/.zshrc"
+alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work claude'
+```
+
+Each folder has its own login. On macOS the Keychain entry is keyed to the config folder, and on Linux and Windows the `.credentials.json` file lives inside it, so `claude` and `claude-work` can both be signed in at the same time without affecting each other's login. The per-project state that normally sits in `~/.claude.json` (trusted folders, MCP sign-ins, account details) moves into the config folder too, as `~/.claude-work/.claude.json`.
+
+You can use the alias as it is. I also wanted both accounts to share my setup and to have the account picked for me, so I wouldn't need to remember which alias to type.
+
+## Pick your default first
+
+Decide which account plain `claude` should use outside the folders you've mapped. That includes any folder you forget to map.
+
+With personal as the default, a work folder you forgot to map sends work code through your personal plan, outside the company's policy, retention settings and audit trail. With work as the default, a forgotten personal folder sends your side project through the work account, where your admins may be able to see it. It also uses the company's quota.
+
+This is my own machine and most of what I open is personal, so personal is my default. All my work repos live under one org folder, which I use to select the work account. If the laptop belongs to your employer, or most of your day is work code, I'd flip it: make `~/.claude` the work account and give personal its own folder. When choosing your default, think about which account you'd be more comfortable sending a repo to by mistake.
+
+## Share your setup without sharing the login
+
+A new config folder starts without `CLAUDE.md`, rules, skills or plugins. I didn't want to maintain two copies of my setup, so I linked those parts of the work folder back to my personal one. Anything tied to the account stays separate.
+
+```bash title="Create the work folder and link the shared parts"
+mkdir -p ~/.claude-work && chmod 700 ~/.claude-work
+
+for item in CLAUDE.md rules agents commands skills output-styles settings.json plugins; do
+  if [ -e "$HOME/.claude/$item" ] && [ ! -e "$HOME/.claude-work/$item" ]; then
+    ln -s "$HOME/.claude/$item" "$HOME/.claude-work/$item"
+  fi
+done
+```
+
+The loop only links things that exist in `~/.claude` and aren't already in the work folder, so running it again is safe. Trim the list to suit you, especially if you want to keep any of these separate:
+
+- Sharing `settings.json` means a `/config` change in either account changes both. If you want different permissions or a different model per account, leave it out and give the work folder its own file.
+- Sharing `plugins` means plugins install once. I do my plugin updates from one account only so two sessions aren't writing to the same cache at the same time.
+- Anything your organisation enforces through managed settings takes precedence over your own files, so linking your settings doesn't get around it. Some companies also don't want personal skills or plugins used on their code at all. If that's yours, don't link `skills` and `plugins`.
+
+I keep `.credentials.json`, `.claude.json`, `projects`, `history.jsonl` and `sessions` separate. They hold the login, account state and conversation history that I want to keep with each account.
+
+## Let the folder pick the account
+
+I replaced the alias with a small function that wraps `claude`. It checks whether I'm launching from inside my work repos folder and selects the work account if I am. Everywhere else gets personal:
+
+```bash title="~/.zshrc (works in bash too)"
+# Real path of the folder that holds your work repos, and the work account's config folder.
+CLAUDE_WORK_ROOT="$HOME/Developer/work"
+CLAUDE_WORK_DIR="$HOME/.claude-work"
+
+claude() {
+  local here
+  here="$(pwd -P)"
+  case "$here/" in
+    "$CLAUDE_WORK_ROOT"/*)
+      echo "claude: work account ($CLAUDE_WORK_DIR)" >&2
+      CLAUDE_CONFIG_DIR="$CLAUDE_WORK_DIR" command claude "$@"
+      ;;
+    *)
+      command claude "$@"
+      ;;
+  esac
+}
+
+# Explicit overrides for the odd folder that doesn't fit the rule.
+alias claude-work='CLAUDE_CONFIG_DIR="$CLAUDE_WORK_DIR" command claude'
+alias claude-personal='env -u CLAUDE_CONFIG_DIR claude'
+```
+
+In that function:
+
+- `pwd -P` resolves symlinks, so a work repo opened through a symlinked path still matches. That's also why `CLAUDE_WORK_ROOT` should be the real path.
+- `command claude` runs the actual binary instead of calling the function again.
+- The `echo` goes to stderr and tells you which account was picked on every work launch, so it never switches account without telling you.
+- `claude-personal` calls `env`, which can't see shell functions, so it runs the real `claude` with the variable removed.
+
+If you went with work as the default, swap the branches around: match your personal root and start that one with `CLAUDE_CONFIG_DIR` pointing at your personal folder, and let everything else fall through to plain `claude`.
+
+My own version reads the account name from a small per-org profile file, so each org folder can map to a different account, and it also covers new git worktrees. It still uses the `case` above to select the account.
+
+## Sign in and check it worked
+
+Open a new terminal so the function loads, then `cd` into a work repo and run `claude`. You'll see the `claude: work account` line, and because the folder is new, Claude Code takes you through login and first-run setup. Sign in with your work account.
+
+Then run `/status` in both places:
+
+- In a work repo, the `Organization` and `Email` rows should show your work account. If your company uses [server-managed settings](https://code.claude.com/docs/en/server-managed-settings), the `Setting sources` line will also list them. Claude Code only fetches those after you've signed in to that organisation, so they arrive with the work login and stay in the work folder.
+- In any other folder, `/status` should show your personal account, with no company settings listed.
+
+Each account keeps its own history, so `claude --resume` in a work repo only lists work conversations.
+
+## The catches
+
+### IDEs and the desktop app skip the function
+
+The VS Code and JetBrains extensions and the desktop app don't go through it. They use whatever environment they were started with, which usually means your default account. Check `/status` (or the app's account settings) before you trust one of them with work code.
+
+### Device policy applies to every folder
+
+Server-managed settings follow the login, but managed settings your company pushes to the machine itself (an MDM profile or a `managed-settings.json` file) apply to every config folder. If that policy sets `forceLoginOrgUUID`, your personal login will be refused on that machine. That's your company's call, and on a company-managed laptop it's probably the right one.
+
+### Console sign-ins without an API key aren't separated
+
+The docs say that a Claude Console sign-in made without creating an API key is stored outside the config folder, so two of those won't stay separate. Normal claude.ai logins are fine.
+
+### Your own scripts need to respect the variable
+
+Any hook or script that hardcodes `~/.claude` will read and write the personal folder from a work session. Mine all use `${CLAUDE_CONFIG_DIR:-$HOME/.claude}`. That also means anything a script keeps in the config folder is per account. I keep a lock for local dev ports in there, and since my work and personal projects use different ports, a separate lock per account suits my setup.
+
+## Other ways to use multiple accounts
+
+Other setups let you swap logins inside a running session or put a proxy in front of Claude Code to route requests between accounts. Some share one subscription's login across tools or machines.
+
+When I compared how they work with Anthropic's terms, most seemed to be in a grey area or clearly not allowed. I didn't want to risk my access or my company's over an interpretation of those terms, so I went with the separate config folders Anthropic documents. Each account does its own work through its own login. If you're considering one of the other tools, read the terms yourself first.
+
+## Want this setup?
+
+Paste this into a Claude Code session to set it up on your machine. It'll ask about your folders and default account first:
+
+```text title="Paste into Claude Code"
+Read https://gordonbeeming.com/blog/2026-11-11/running-claude-code-with-a-work-and-a-personal-account and help me set up Claude Code with separate work and personal accounts the way it describes.
+
+Before changing anything, ask me:
+- where my work repos live (and any personal folders that should never use the work account)
+- which account should be the default, using the post's reasoning
+- which shell I use, and which parts of my existing ~/.claude I want shared with the second account
+
+Then show me the folder you'll create, the links you'll make, and the exact shell function you'll add, and wait for my OK. After that, make the changes, tell me to open a new terminal, walk me through the first login for the new account, and help me check /status in a work folder and a personal folder.
+
+Don't link or copy .credentials.json, .claude.json, projects, history.jsonl or sessions between the two folders.
+```
+
+I don't need to switch logins now. When I launch from a work repo, I get the work account under the company's policy. Everything else opens on my personal plan.

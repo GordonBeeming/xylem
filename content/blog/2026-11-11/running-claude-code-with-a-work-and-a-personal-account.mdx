@@ -46,7 +46,7 @@ done
 The loop only links things that exist in `~/.claude` and aren't already in the work folder, so running it again is safe. Trim the list to suit you, especially if you want to keep any of these separate:
 
 - Sharing `settings.json` means a `/config` change in either account changes both. If you want different permissions or a different model per account, leave it out and give the work folder its own file.
-- Sharing `plugins` means plugins install once. I do my plugin updates from one account only so two sessions aren't writing to the same cache at the same time.
+- Sharing `plugins` means plugins install once. I add and update plugins and marketplaces from my personal account only, the one that owns the real folder. Claude Code compares a marketplace's install path as text rather than following the symlink, so running those updates from the work account can flag the marketplace as corrupted ([anthropics/claude-code#82272](https://github.com/anthropics/claude-code/issues/82272), closed for inactivity rather than fixed). If that's a deal breaker for you, don't link `plugins` and install them separately in each account.
 - Anything your organisation enforces through managed settings takes precedence over your own files, so linking your settings doesn't get around it. Some companies also don't want personal skills or plugins used on their code at all. If that's yours, don't link `skills` and `plugins`.
 
 I keep `.credentials.json`, `.claude.json`, `projects`, `history.jsonl` and `sessions` separate. They hold the login, account state and conversation history that I want to keep with each account.
@@ -55,7 +55,7 @@ I keep `.credentials.json`, `.claude.json`, `projects`, `history.jsonl` and `ses
 
 I replaced the alias with a small function that wraps `claude`. It checks whether I'm launching from inside my work repos folder and selects the work account if I am. Everywhere else gets personal:
 
-```bash title="~/.zshrc (works in bash too)"
+```bash title="~/.zshrc (or ~/.bashrc for bash)"
 # Real path of the folder that holds your work repos, and the work account's config folder.
 CLAUDE_WORK_ROOT="$HOME/Developer/work"
 CLAUDE_WORK_DIR="$HOME/.claude-work"
@@ -69,7 +69,7 @@ claude() {
       CLAUDE_CONFIG_DIR="$CLAUDE_WORK_DIR" command claude "$@"
       ;;
     *)
-      command claude "$@"
+      env -u CLAUDE_CONFIG_DIR claude "$@"
       ;;
   esac
 }
@@ -84,7 +84,7 @@ In that function:
 - `pwd -P` resolves symlinks, so a work repo opened through a symlinked path still matches. That's also why `CLAUDE_WORK_ROOT` should be the real path.
 - `command claude` runs the actual binary instead of calling the function again.
 - The `echo` goes to stderr and tells you which account was picked on every work launch, so it never switches account without telling you.
-- `claude-personal` calls `env`, which can't see shell functions, so it runs the real `claude` with the variable removed.
+- The personal branch and `claude-personal` both go through `env -u CLAUDE_CONFIG_DIR`. That removes the variable even if your shell already has it set (a terminal opened from a work session, for example), and because `env` can't see shell functions, it runs the real `claude`.
 
 If you went with work as the default, swap the branches around: match your personal root and start that one with `CLAUDE_CONFIG_DIR` pointing at your personal folder, and let everything else fall through to plain `claude`.
 
@@ -114,6 +114,10 @@ Server-managed settings follow the login, but managed settings your company push
 ### Console sign-ins without an API key aren't separated
 
 The docs say that a Claude Console sign-in made without creating an API key is stored outside the config folder, so two of those won't stay separate. Normal claude.ai logins are fine.
+
+### An API key in your environment wins over the folder
+
+If `ANTHROPIC_API_KEY` (or `ANTHROPIC_AUTH_TOKEN`, or an `apiKeyHelper`) is set, Claude Code [uses it ahead of the saved login](https://code.claude.com/docs/en/authentication#authentication-precedence). In `-p` mode it's always used. So the function can print `claude: work account` while requests go out on whoever owns that key. Keep those out of your shell profile if you use this setup, and check `/status`: it marks the credential that isn't in use when a login and a key are both configured.
 
 ### Your own scripts need to respect the variable
 

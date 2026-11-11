@@ -21,7 +21,7 @@ This edition draws on the 6 to 12 November 2026 briefings, with five selected st
 
 Claude Code adds the file to the global git excludes on one machine, and never adds it to the repository's own `.gitignore`. Deleting the file leaves the older copies in history and in forks. Of the 1,122 files, Gitleaks flagged 564 and TruffleHog flagged 643, and neither flagged 215, mostly passwords typed inside commands. Apiiro didn't test whether the secrets still work. One company it notified confirmed that its key had been live. Of 16 coding agents whose documentation the researchers compared, Claude Code is the only one confirmed to save the full command to a project file by default. Earlier bug reports describing the same behaviour were closed by an automated bot as "not planned".
 
-Search your repositories and their history for `.claude/settings.local.json`, rotate anything the file ever held, and add the filename to each repository's `.gitignore`. Approve a pattern such as `Bash(npm run:*)` instead of the exact command. Treat `.claude/`, `.cursor/` and `.gemini/` the way you treat `.env` in pre-commit hooks and in CI secret scanning.
+Search your repositories and their history for `.claude/settings.local.json`, rotate anything the file ever held, and add the filename to each repository's `.gitignore`. If Git is already tracking a copy, `git rm --cached .claude/settings.local.json` stops that without deleting the file on disk. Approve a pattern such as `Bash(npm run:*)` instead of the exact command. Treat `.claude/`, `.cursor/` and `.gemini/` the way you treat `.env` in pre-commit hooks and in CI secret scanning.
 
 ## 3. The ChatGPT desktop app can hand a forwarded SSH agent to Codex
 

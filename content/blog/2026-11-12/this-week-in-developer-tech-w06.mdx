@@ -1,0 +1,64 @@
+---
+title: 'This Week in Developer Tech · W06'
+date: 2026-11-12
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', 'Cloud Architecture']
+summary: "Claude Fable 5.2's price and where it runs, Claude Code allow rules that can store secrets, the ChatGPT desktop app handing a forwarded SSH agent to Codex, .NET 11 with C# 15 unions as .NET 8 and 9 leave support, and GitHub's Project Rubicon Git storage."
+---
+
+An allow rule that stores the exact command can store the password typed into it. A forwarded SSH agent gives Codex the keys loaded on your machine, and .NET 8 and .NET 9 stopped receiving security fixes on 10 November 2026.
+
+This edition draws on the 6 to 12 November 2026 briefings, with five selected stories on Claude Fable 5.2, Claude Code allow rules, the ChatGPT desktop app's SSH agent handling, .NET 11, and GitHub's Git storage. Shorter items follow under Other headlines. Earlier announcements are kept with the relevant stories.
+
+## 1. Claude Fable 5.2 is generally available, with Mythos 5.2 for vetted access
+
+[Anthropic's announcement](https://www.anthropic.com/claude-fable-and-mythos-5-2) on 9 November releases Claude Fable 5.2 and Mythos 5.2 as the same underlying model. Fable 5.2 is generally available, including on Amazon Web Services, Google Cloud and Microsoft Azure, under the id `claude-fable-5-2`. Mythos 5.2 is that model with looser cybersecurity and biology safeguards, and access is limited to vetted organisations in Anthropic's verification programs. The models generate outputs up to 30% faster than Fable 5.1 and Mythos 5.1, at US\$8 per million input tokens and US\$40 per million output tokens. An optional fast mode costs double that, US\$16 and US\$80, and speeds token generation by up to 2.5 times.
+
+[Artificial Analysis's comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-astra-vs-claude-fable-5-2) scores Fable 5.2 (Max, Default Fallback) at 65 on its Intelligence Index, against 57 for GPT-6 Astra (Max). [GitHub's changelog](https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot) says Fable 5.2 is generally available in GitHub Copilot for Copilot Pro+, Max, Business and Enterprise, with a gradual rollout. The Business and Enterprise policy is off by default, and the model retains prompts and outputs for Anthropic's safety classifiers unless the customer has an eligible zero-data-retention arrangement. Anthropic still recommends Opus 5.5 as the daily driver for most coding and knowledge work, with Fable or Mythos for the tasks that need them. Eligible paid plans get one to three extra Fable resets in the launch week, based on how long the subscription has been active.
+
+## 2. Claude Code's "don't ask again" can store a secret in a project file
+
+[Merit AI's summary of Apiiro's research](https://usemeritai.com/news/claude-code-dont-ask-again-secrets-public-github), after The Hacker News reported it on 7 November, describes what Claude Code does when you pick "Yes, and don't ask again". It saves an allow rule to `.claude/settings.local.json`. When that rule is the exact command, any password or token typed into the command is stored in plain text. Apiiro found 1,122 public copies of the file holding at least one secret. Among the secrets are 379 database passwords, 43 SSH logins, 42 GitHub, GitLab or npm tokens, and 23 AWS keys. Counting git history, the shared `.claude/settings.json` and saved chat logs brings the total to 2,539 secrets across 1,994 repositories.
+
+Claude Code adds the file to the global git excludes on one machine, and never adds it to the repository's own `.gitignore`. Deleting the file leaves the older copies in history and in forks. Of the 1,122 files, Gitleaks flagged 564 and TruffleHog flagged 643, and neither flagged 215, mostly passwords typed inside commands. Apiiro didn't test whether the secrets still work. One company it notified confirmed that its key had been live. Of 16 coding agents whose documentation the researchers compared, Claude Code is the only one confirmed to save the full command to a project file by default. Earlier bug reports describing the same behaviour were closed by an automated bot as "not planned".
+
+Search your repositories and their history for `.claude/settings.local.json`, rotate anything the file ever held, and add the filename to each repository's `.gitignore`. If Git is already tracking a copy, `git rm --cached .claude/settings.local.json` stops that without deleting the file on disk. Approve a pattern such as `Bash(npm run:*)` instead of the exact command. Treat `.claude/`, `.cursor/` and `.gemini/` the way you treat `.env` in pre-commit hooks and in CI secret scanning.
+
+## 3. The ChatGPT desktop app can hand a forwarded SSH agent to Codex
+
+[PrivacyAffairs' 9 November article](https://www.privacyaffairs.com/chatgpt-desktop-ssh-agent-forwarding/) inspected the macOS ChatGPT app, build 26.1103.60933 from 8 November, after a [Hacker News thread](https://news.ycombinator.com/item?id=50422628) the same day. When you add a server under Settings > Connections, and `~/.ssh/config` has `ForwardAgent` on for that host, the app links the forwarded agent socket to `~/.codex/app-server-control/forwarded-ssh-agent.sock` and points the background Codex app server at that socket. While the app is connected, commands the agent runs on the remote machine can authenticate with the keys loaded on your own machine, GitHub included. The app doesn't turn forwarding on. OpenAI's remote-connection docs don't mention SSH agents.
+
+If the agent follows instructions from a README or an issue, it has your identity available for `git push` and for every server that trusts your key. PrivacyAffairs says Codex leaves network access off by default, so a `git push` waits for approval, and that prompt is the check. The same article includes a 5 November finding: when two of your computers connect to the same server account, the newer connection replaces the shared link, and the agent ends up with whichever computer's keys connected last.
+
+This rests on PrivacyAffairs' inspection of that build and the Hacker News thread. Hosts with forwarding off aren't affected. For any host you've added to the app, run `ssh -G <host> | grep -i forwardagent`, and on the server look for that `.sock` link. You can give the app its own host alias with `ForwardAgent no`, or put a scoped deploy key on the server instead of your personal keys. `ssh-add -c` and `ssh-add -h` can also limit what a forwarded key is allowed to do.
+
+## 4. .NET 11 ships with C# 15 unions, and .NET 8 and 9 are out of support
+
+[Microsoft's announcement](https://devblogs.microsoft.com/dotnet/announcing-dotnet-11/) says .NET 11 shipped at .NET Conf on 10 November. It is an STS release. The [release notes](https://github.com/dotnet/core/blob/main/release-notes/11.0/README.md) put support from 10 November 2026 to 14 November 2028. C# 15 adds union types, written `public union ProductLookup(Product, ProductNotFound);`, and `closed` class hierarchies. Both give the compiler enough to check that a `switch` covers every case. The same release adds collection-expression arguments, such as `[with(StringComparer.OrdinalIgnoreCase), "Alice", "ALICE", "Bob"]`, extension indexers, and labelled `break` and `continue`.
+
+The SDK enables a Native AOT CLI host and keeps the MSBuild server warm between invocations, both by default. NuGet can require a minimum package publication age, so a new package version can sit before restore will select it. Container publishing can emit reproducible digests through `SOURCE_DATE_EPOCH`. `dotnet new mcpserver` is included. `System.Text.Json` and ASP.NET Core understand unions, and generated OpenAPI documents describe them with `anyOf`. OpenAPI 3.2 is now the default for those documents. LINQ adds `FullJoin`, EF Core 11 translates it on relational providers that support it, and EF Core adds experimental SQL Server vector search. .NET MAUI uses CoreCLR by default.
+
+Unions ship with serializer and OpenAPI support in the same release. .NET 8 and .NET 9 both reached end of support on 10 November 2026, so they no longer get security fixes. .NET 10 remains the LTS release if you want the longer window. `dotnet new mcpserver` and a small union return type in a minimal API are a direct way to try the new surface. Set the NuGet minimum publication age in your package source config as a brake against a package that was just published, including a hijacked one. Microsoft describes that setting as an extra control, not a replacement for vulnerability checks. Inventory repositories and containers still on `net8.0` or `net9.0`.
+
+Runtime Async stays in preview. On a project targeting `net11.0`, opt in with `<Features>runtime-async=on</Features>`. The Blazor AI components and AG-UI hosting are prerelease. The breaking changes include updated minimum CPU requirements. Performance figures in the announcement are Microsoft's, so measure your own workload.
+
+## 5. GitHub's Project Rubicon stores Git objects in blobs and locks only the refs a push touches
+
+[GitHub's engineering post](https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/) on 5 November describes Project Rubicon, its new Git storage. Git objects live in Azure Blob Storage. Only reference updates need agreement, and those go through Ref-CAS, a quorum-replicated compare-and-swap log that locks just the refs a push touches. Repositories are served by disposable virtual replicas whose disks are rebuildable caches, and separate compaction nodes merge packs in the background. In internal tests it handled 5,000 concurrent agents and 7,200 pushes a second to a single repository, with read latency staying low.
+
+The first design kept one log of every reference in a single blob and updated it with conditional writes. Only one conditional write to that blob can be in flight, and throughput landed in the mid-hundreds of writes a second. Splitting the references across several segment blobs let unrelated writes proceed, and a read then had to check every segment, so it was only as fast as the slowest. GitHub built Ref-CAS instead. [W05](/blog/2026-11-05/this-week-in-developer-tech-w05) covered OpenAI's Pando, which also stores immutable packs in blob storage so unrelated branches don't wait on one repository-wide lock.
+
+The post's next steps for agents are work without a clone, an atomic multi-file commit API, and event streams for repository changes. The throughput numbers are GitHub's internal tests. Rubicon is in limited private preview, with a broader rollout early next year.
+
+## Other headlines
+
+**[AlphaProof Code verified Signal's compiled libsignal](https://deepmind.google/blog/introducing-alphaproof-code/)**
+
+On 10 November, DeepMind's Gemini Carbon agents produced about 6.5 million lines of machine-checked Lean proof code for forward secrecy, authentication and post-compromise security of Signal's compiled AArch64 libsignal, in about four weeks ([technical write-up](https://google-deepmind.github.io/code-verification/)).
+
+**[Gemini 4 Carbon is generally available](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/)**
+
+On 10 November Google opened it to paying Gemini API developers, Gemini for business and AI Ultra subscribers at an introductory US\$2 / US\$10 per million input and output tokens, a quarter of Fable 5.2's US\$8 / US\$40, rising to US\$4 / US\$20 after 30 November, while still recommending Gemini 4 Argon for most software engineering and knowledge work ([The Verge](https://www.theverge.com/ai-artificial-intelligence/1030787/google-gemini-4-carbon-public-rollout)).
+
+**[GitHub Agentic Workflows is generally available](https://www.infoq.com/news/2026/11/github-agentic-workflows-ga/)**
+
+InfoQ's 11 November report says Markdown tasks compile to Actions workflows, agents start read-only, the default cap is 1,000 AI Credits a run (US\$10 at US\$0.01 each) and 5,000 a day (US\$50), and the default engine needs a Copilot licence.

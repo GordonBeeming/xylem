@@ -12,6 +12,11 @@ import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
 import { proseComponents } from "@/components/prose/prose-components";
 import { normalizeTinaImages } from "@/components/tina/normalize-images";
 import { postRelativePath } from "@/lib/tina-preview-path";
+import {
+  previewContentImageUrl,
+  previewEditorBranch,
+  rewritePreviewImageData,
+} from "@/lib/tina-preview-images";
 import type { HeadingEntry } from "@/lib/content";
 import type { PostMeta, SiteConfig } from "@/lib/tina-helpers";
 import { PostDocument } from "../../../tina/__generated__/types";
@@ -109,7 +114,10 @@ function headingsFromBody(body: TinaMarkdownContent | undefined, slugger: Github
   return headings;
 }
 
-function previewMarkdownComponents(slugger: GithubSlugger) {
+function previewMarkdownComponents(
+  slugger: GithubSlugger,
+  imageCtx: { slug: string; branch?: string | null },
+) {
   return {
     ...proseComponents,
     h2: (props: { children?: ReactNode }) => {
@@ -119,7 +127,7 @@ function previewMarkdownComponents(slugger: GithubSlugger) {
     },
     Figure: (props: { src?: string; alt?: string; width?: string; height?: string; caption?: string }) => (
       <Figure
-        src={props.src ?? ""}
+        src={previewContentImageUrl(props.src ?? "", imageCtx)}
         alt={props.alt ?? ""}
         width={props.width}
         height={props.height}
@@ -170,12 +178,13 @@ export function TinaPreviewClient({ slug, siteConfig, recentPosts }: TinaPreview
     () => false,
   );
 
-  const post = (normalizeTinaImages(data)?.post ?? {}) as PreviewPost;
+  const imageCtx = { slug, branch: previewEditorBranch() };
+  const post = (rewritePreviewImageData(normalizeTinaImages(data)?.post ?? {}, imageCtx)) as PreviewPost;
   const title = post.title?.trim() ?? "";
   const body = post.body;
   const hasContent = title.length > 0 || textFromNode(body).trim().length > 0;
   const headings = headingsFromBody(body, new GithubSlugger());
-  const markdownComponents = previewMarkdownComponents(new GithubSlugger());
+  const markdownComponents = previewMarkdownComponents(new GithubSlugger(), imageCtx);
   const bodyText = textFromNode(body);
   const reading = readingTime(bodyText || title || "preview");
 

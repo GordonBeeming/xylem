@@ -1,4 +1,5 @@
 import { defineConfig, defineSchema } from "tinacms";
+import { normalizeFigureImageSrc } from "./figure-image-src";
 import { parsePostFilename, postFilename } from "./post-filename";
 
 const schema = defineSchema({
@@ -62,7 +63,20 @@ const schema = defineSchema({
               name: "Figure",
               label: "Figure (Image with Caption)",
               fields: [
-                { type: "image", name: "src", label: "Image", required: true },
+                {
+                  type: "image",
+                  name: "src",
+                  label: "Image",
+                  required: true,
+                  // Picker uploads land in public/images (Tina media cannot
+                  // write to content/blog/<date>/images/). Saved src stays
+                  // /images/<file>, matching copy-images and existing posts.
+                  uploadDir: () => "images",
+                  ui: {
+                    parse: normalizeFigureImageSrc,
+                    format: normalizeFigureImageSrc,
+                  },
+                },
                 { type: "string", name: "alt", label: "Alt Text", required: true },
                 { type: "string", name: "width", label: "Width" },
                 { type: "string", name: "height", label: "Height" },
@@ -94,16 +108,16 @@ const schema = defineSchema({
       },
       fields: [
         { type: "string", name: "name", label: "Name", isTitle: true, required: true },
-        { type: "image", name: "avatar", label: "Avatar" },
+        { type: "image", name: "avatar", label: "Avatar", uploadDir: () => "static/images" },
         { type: "string", name: "profile_line_1", label: "Profile Line 1" },
         { type: "string", name: "profile_line_2", label: "Profile Line 2" },
         { type: "string", name: "company_name", label: "Company Name" },
         { type: "string", name: "company_website", label: "Company Website" },
-        { type: "image", name: "company_logo_dark", label: "Company Logo (Dark)" },
-        { type: "image", name: "company_logo_light", label: "Company Logo (Light)" },
+        { type: "image", name: "company_logo_dark", label: "Company Logo (Dark)", uploadDir: () => "static/images" },
+        { type: "image", name: "company_logo_light", label: "Company Logo (Light)", uploadDir: () => "static/images" },
         { type: "string", name: "mvp_website", label: "MVP Website" },
-        { type: "image", name: "mvp_logo_dark", label: "MVP Logo (Dark)" },
-        { type: "image", name: "mvp_logo_light", label: "MVP Logo (Light)" },
+        { type: "image", name: "mvp_logo_dark", label: "MVP Logo (Dark)", uploadDir: () => "static/images" },
+        { type: "image", name: "mvp_logo_light", label: "MVP Logo (Light)", uploadDir: () => "static/images" },
         { type: "string", name: "email", label: "Email" },
         { type: "string", name: "twitter", label: "Twitter" },
         { type: "string", name: "bluesky", label: "Bluesky" },
@@ -126,7 +140,7 @@ const schema = defineSchema({
         { type: "string", name: "title", label: "Title", isTitle: true, required: true },
         { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
         { type: "string", name: "href", label: "Website URL" },
-        { type: "image", name: "imgSrc", label: "Image" },
+        { type: "image", name: "imgSrc", label: "Image", uploadDir: () => "static/images/projects" },
         { type: "string", name: "techStack", label: "Tech Stack", list: true },
         { type: "string", name: "github", label: "GitHub URL" },
         { type: "string", name: "appStore", label: "App Store URL" },
@@ -160,7 +174,7 @@ const schema = defineSchema({
         { type: "string", name: "title", label: "Title", isTitle: true, required: true },
         { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
         { type: "string", name: "href", label: "URL" },
-        { type: "image", name: "imgSrc", label: "Cover Image" },
+        { type: "image", name: "imgSrc", label: "Cover Image", uploadDir: () => "static/images/books" },
         { type: "string", name: "overview", label: "Overview", ui: { component: "textarea" } },
         {
           type: "object",
@@ -247,7 +261,13 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "uploads",
+      // Empty on purpose: Tina Cloud saves image fields as
+      // `${mediaRoot}${path after __file}`. mediaRoot "uploads" rewrote
+      // existing `/images/x.webp` Figure srcs to `/uploads/images/x.webp`
+      // on save, and would do the same to `/static/images/...` author
+      // and project images. Uploads still go under public/ via
+      // publicFolder plus each field's uploadDir.
+      mediaRoot: "",
       publicFolder: "public",
     },
   },

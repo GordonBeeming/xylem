@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, type ReactNode } from "react";
+import { useMemo, useSyncExternalStore, type ReactNode } from "react";
 import readingTime from "reading-time";
 import GithubSlugger from "github-slugger";
 import { useTina, tinaField } from "tinacms/dist/react";
@@ -150,10 +150,16 @@ function emptySubscribe(): () => void {
  */
 export function TinaPreviewClient({ slug, siteConfig, recentPosts }: TinaPreviewClientProps) {
   const relativePath = postRelativePath(slug);
+  // useTina resets its store to `props.data` whenever that object identity
+  // changes. A fresh placeholder on every render would overwrite the live
+  // document the admin posts back after `open`.
+  const seedData = useMemo(() => placeholderData(slug), [slug]);
+  const variables = useMemo(() => ({ relativePath }), [relativePath]);
   const { data } = useTina<PreviewData>({
     query: PostDocument,
-    variables: { relativePath },
-    data: placeholderData(slug),
+    variables,
+    data: seedData,
+    experimental___selectFormByFormId: () => `content/blog/${relativePath}`,
   });
   const inEditor = useSyncExternalStore(
     emptySubscribe,

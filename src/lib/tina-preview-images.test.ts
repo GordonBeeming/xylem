@@ -10,8 +10,8 @@ import {
 
 const slug = "2026-11-19/tinacms-second-time-around";
 const branch = "tina/gb/tinacms-second-time-around";
-const raw =
-  "https://raw.githubusercontent.com/GordonBeeming/xylem/tina/gb/tinacms-second-time-around/content/blog/2026-11-19/images/story-list-proposal.webp";
+const preview =
+  "/__preview-content/tina/gb/tinacms-second-time-around/__file/content/blog/2026-11-19/images/story-list-proposal.webp";
 
 describe("contentImagesFolder", () => {
   it("uses the date folder next to the post", () => {
@@ -50,20 +50,20 @@ describe("isPublicImagesPath", () => {
 });
 
 describe("previewContentImageUrl", () => {
-  it("rewrites a Tina staging path to the branch file on GitHub", () => {
+  it("rewrites a Tina staging path to the same-origin worker proxy", () => {
     assert.equal(
       previewContentImageUrl(
         "/__staging/tina/gb/tinacms-second-time-around/__file/images/story-list-proposal.webp",
         { slug },
       ),
-      raw,
+      preview,
     );
   });
 
   it("rewrites /images/<file> when the editor branch is known", () => {
     assert.equal(
       previewContentImageUrl("/images/story-list-proposal.webp", { slug, branch }),
-      raw,
+      preview,
     );
   });
 
@@ -104,7 +104,7 @@ describe("rewritePreviewImageData", () => {
     const rewritten = rewritePreviewImageData(data, { slug });
     assert.equal(
       rewritten.body.children[0].props.src,
-      "https://raw.githubusercontent.com/GordonBeeming/xylem/tina/gb/tinacms-second-time-around/content/blog/2026-11-19/images/ssw-rule-live.webp",
+      "/__preview-content/tina/gb/tinacms-second-time-around/__file/content/blog/2026-11-19/images/ssw-rule-live.webp",
     );
     assert.equal(data.body.children[0].props.src.startsWith("/__staging/"), true);
   });

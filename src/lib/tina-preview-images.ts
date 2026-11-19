@@ -3,11 +3,11 @@
  * them to /images at build. Tina's editorial workflow rewrites type:image
  * fields on a branch to `/__staging/<branch>/__file/images/<file>`, which
  * 404s on this static site. In the visual-editor preview only, map those
- * (and leftover /images/<file> paths) to the file on the branch via public
- * raw.githubusercontent.com. Published pages are unchanged.
+ * (and leftover /images/<file> paths) to a same-origin worker proxy that
+ * fetches the file from the branch. Published pages are unchanged.
  */
 
-const RAW_REPO = "https://raw.githubusercontent.com/GordonBeeming/xylem";
+const PREVIEW_PREFIX = "/__preview-content";
 const STAGING_MARKER = "/__staging/";
 const FILE_MARKER = "/__file/";
 const BRANCH_STORAGE_KEY = "tinacms-current-branch";
@@ -62,7 +62,7 @@ export function previewContentImageUrl(
   const branch = staging?.branch || ctx.branch || null;
   if (!filename || !branch) return src;
   const folder = contentImagesFolder(ctx.slug);
-  return `${RAW_REPO}/${branch}/${folder}/${encodeURIComponent(filename)}`;
+  return `${PREVIEW_PREFIX}/${branch}${FILE_MARKER}${folder}/${encodeURIComponent(filename)}`;
 }
 
 export function rewritePreviewImageData<T>(

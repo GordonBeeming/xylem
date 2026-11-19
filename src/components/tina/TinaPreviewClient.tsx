@@ -155,11 +155,14 @@ export function TinaPreviewClient({ slug, siteConfig, recentPosts }: TinaPreview
   // document the admin posts back after `open`.
   const seedData = useMemo(() => placeholderData(slug), [slug]);
   const variables = useMemo(() => ({ relativePath }), [relativePath]);
+  // Do not pass experimental___selectFormByFormId here. The admin registers
+  // the document form from the iframe's `open` query (id = `_sys.path`).
+  // Sending `user-select-form` before that form exists can leave the sidebar
+  // on another form (Site Config) or empty.
   const { data } = useTina<PreviewData>({
     query: PostDocument,
     variables,
     data: seedData,
-    experimental___selectFormByFormId: () => `content/blog/${relativePath}`,
   });
   const inEditor = useSyncExternalStore(
     emptySubscribe,

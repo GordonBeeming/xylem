@@ -34,6 +34,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm test:tina
       - run: rm -rf src/app/api
       - name: Verify Tina and site build without production credentials
         env:

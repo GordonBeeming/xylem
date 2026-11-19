@@ -3,6 +3,8 @@ import { Button } from "@/components/ds/Button";
 import { Tag } from "@/components/ds/Tag";
 import { CodeBlock } from "@/components/prose/CodeBlock";
 import { PageShell } from "@/components/layout/PageShell";
+import { TinaPreviewGate } from "@/components/tina/TinaPreviewGate";
+import { getAllPosts, getSiteConfig } from "@/lib/tina-helpers";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -26,7 +28,11 @@ const suggestions = [
 ];
 
 export default function NotFound() {
+  const siteConfig = getSiteConfig();
+  const recentPosts = getAllPosts().slice(0, 4);
+
   return (
+    <TinaPreviewGate siteConfig={siteConfig} recentPosts={recentPosts}>
     <PageShell rail={false}><div className="text-center">
       <div className="eyebrow" style={{ letterSpacing: "var(--ls-wider)" }}>
         Error 404
@@ -82,5 +88,6 @@ export default function NotFound() {
       </div>
     </div>
     </PageShell>
+    </TinaPreviewGate>
   );
 }

@@ -37,6 +37,15 @@ export function isPublicImagesPath(src: string): boolean {
   return path !== null && /^\/images\/[^/]+$/.test(path);
 }
 
+/** `/images/<file>` plus leftover `/uploads/images/<file>` or `/uploads/<file>`. */
+export function publicImagesFilename(src: string): string {
+  const path = pathnameOf(src);
+  if (!path) return "";
+  if (/^\/images\/[^/]+$/.test(path)) return basename(path);
+  const uploads = path.match(/^\/uploads\/(?:images\/)?([^/]+)$/);
+  return uploads ? uploads[1] : "";
+}
+
 export function previewEditorBranch(): string | null {
   if (typeof window === "undefined") return null;
   const fromQuery = new URLSearchParams(window.location.search).get("branch");
@@ -56,9 +65,7 @@ export function previewContentImageUrl(
   const staging = parseTinaStagingPath(src);
   const filename = staging
     ? basename(staging.repoPath)
-    : isPublicImagesPath(src)
-      ? basename(pathnameOf(src) ?? "")
-      : "";
+    : publicImagesFilename(src);
   const branch = staging?.branch || ctx.branch || null;
   if (!filename || !branch) return src;
   const folder = contentImagesFolder(ctx.slug);

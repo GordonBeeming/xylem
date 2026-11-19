@@ -67,6 +67,13 @@ describe("previewContentImageUrl", () => {
     );
   });
 
+  it("rewrites leftover /uploads/images/<file> the same way as /images/<file>", () => {
+    assert.equal(
+      previewContentImageUrl("/uploads/images/story-list-proposal.webp", { slug, branch }),
+      preview,
+    );
+  });
+
   it("leaves /images/<file> alone without a branch, and leaves foreign URLs alone", () => {
     assert.equal(
       previewContentImageUrl("/images/story-list-proposal.webp", { slug }),
@@ -77,8 +84,8 @@ describe("previewContentImageUrl", () => {
       "https://example.com/pic.webp",
     );
     assert.equal(
-      previewContentImageUrl("/uploads/headshot.png", { slug, branch }),
-      "/uploads/headshot.png",
+      previewContentImageUrl("/static/images/headshot.png", { slug, branch }),
+      "/static/images/headshot.png",
     );
   });
 });

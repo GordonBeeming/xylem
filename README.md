@@ -183,6 +183,12 @@ For browser-based editing at `/admin` in production:
 
 When editors save changes via the TinaCMS admin, Tina Cloud commits to your Git repo, which triggers your CI/CD pipeline to rebuild and deploy.
 
+New posts are saved at `content/blog/<YYYY-MM-DD>/<slug>.mdx`. The date comes from the post's date field, or today, in `Australia/Brisbane`. The slug is a lowercase, hyphenated form of the title (`This Week in Developer Tech · W07` becomes `this-week-in-developer-tech-w07`). The filename can still be edited in the admin.
+
+The site is a static GitHub Pages export, so a post that only exists on a branch is not in the production build. The visual editor still previews it: the 404 page detects the Tina admin iframe and renders the document from the editor, without exposing `TINA_TOKEN`. `/tina-preview?path=YYYY-MM-DD/slug` is a 200 fallback for the same preview. There are no per-branch preview deployments; only `main` is published.
+
+Editorial workflow (save onto a `tina/...` branch and open a draft PR) is a Tina Cloud dashboard setting, not a repo flag. In the project Configuration tab, enable Editorial Workflow and protect `main`. Tina prefixes the branch name you type with `tina/`, so `gb/my-topic` becomes `tina/gb/my-topic`.
+
 ### Without TinaCMS Cloud
 
 Use `pnpm build` (skips `tinacms build`). Content is edited directly in Git. The `/admin` route won't work in production, but the site renders perfectly from the MDX/JSON files.

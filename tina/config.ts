@@ -1,4 +1,5 @@
 import { defineConfig, defineSchema } from "tinacms";
+import { parsePostFilename, postFilename } from "./post-filename";
 
 const schema = defineSchema({
   collections: [
@@ -8,6 +9,17 @@ const schema = defineSchema({
       path: "content/blog",
       format: "mdx",
       ui: {
+        // New files are `<date>/<slug>` at the collection root (leading slash).
+        // The date is the post's date field, or today, in Australia/Brisbane.
+        filename: {
+          readonly: false,
+          slugify: (values) => postFilename(values),
+          parse: parsePostFilename,
+        },
+        // Published posts are in the static export at this URL. A post that
+        // only exists on a branch 404s on production; `not-found` detects the
+        // visual-editor iframe and renders a Tina preview instead. There is
+        // also `/tina-preview?path=YYYY-MM-DD/slug` if a 200 response is needed.
         router: ({ document }) => {
           return `/blog/${document._sys.breadcrumbs.join("/")}`;
         },

@@ -1,8 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import readingTime from "reading-time";
-import { slug as slugify } from "github-slugger";
+import GithubSlugger from "github-slugger";
 import { useTina, tinaField } from "tinacms/dist/react";
 import { TinaMarkdown, type TinaMarkdownContent } from "tinacms/dist/rich-text";
 import { PostLayout } from "@/layouts/PostLayout";
@@ -85,7 +85,17 @@ function textFromNode(node: unknown): string {
   return "";
 }
 
-function headingsFromBody(body: TinaMarkdownContent | undefined): HeadingEntry[] {
+function textFromReactNode(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textFromReactNode).join("");
+  if (typeof node === "object" && "props" in node) {
+    return textFromReactNode((node as { props?: { children?: ReactNode } }).props?.children);
+  }
+  return "";
+}
+
+function headingsFromBody(body: TinaMarkdownContent | undefined, slugger: GithubSlugger): HeadingEntry[] {
   const children = Array.isArray(body?.children) ? body.children : [];
   const headings: HeadingEntry[] = [];
   for (const node of children) {
@@ -94,26 +104,33 @@ function headingsFromBody(body: TinaMarkdownContent | undefined): HeadingEntry[]
     if (type !== "h2") continue;
     const text = textFromNode(node).trim();
     if (!text) continue;
-    headings.push({ id: slugify(text), text });
+    headings.push({ id: slugger.slug(text), text });
   }
   return headings;
 }
 
-const markdownComponents = {
-  ...proseComponents,
-  Figure: (props: { src?: string; alt?: string; width?: string; height?: string; caption?: string }) => (
-    <Figure
-      src={props.src ?? ""}
-      alt={props.alt ?? ""}
-      width={props.width}
-      height={props.height}
-      caption={props.caption}
-    />
-  ),
-  YouTubeEmbed: (props: { src?: string; title?: string }) => (
-    <YouTubeEmbed src={props.src ?? ""} title={props.title} />
-  ),
-};
+function previewMarkdownComponents(slugger: GithubSlugger) {
+  return {
+    ...proseComponents,
+    h2: (props: { children?: ReactNode }) => {
+      const text = textFromReactNode(props.children).trim();
+      const id = text ? slugger.slug(text) : "";
+      return proseComponents.h2({ ...props, id });
+    },
+    Figure: (props: { src?: string; alt?: string; width?: string; height?: string; caption?: string }) => (
+      <Figure
+        src={props.src ?? ""}
+        alt={props.alt ?? ""}
+        width={props.width}
+        height={props.height}
+        caption={props.caption}
+      />
+    ),
+    YouTubeEmbed: (props: { src?: string; title?: string }) => (
+      <YouTubeEmbed src={props.src ?? ""} title={props.title} />
+    ),
+  };
+}
 
 function isInEditorFrame(): boolean {
   return typeof window !== "undefined" && window.self !== window.top;
@@ -148,7 +165,8 @@ export function TinaPreviewClient({ slug, siteConfig, recentPosts }: TinaPreview
   const title = post.title?.trim() ?? "";
   const body = post.body;
   const hasContent = title.length > 0 || textFromNode(body).trim().length > 0;
-  const headings = headingsFromBody(body);
+  const headings = headingsFromBody(body, new GithubSlugger());
+  const markdownComponents = previewMarkdownComponents(new GithubSlugger());
   const bodyText = textFromNode(body);
   const reading = readingTime(bodyText || title || "preview");
 

@@ -51,14 +51,17 @@ export function postFilename(
   return `/${postDateFolder(date, now)}/${slug}`;
 }
 
-/** Sanitise a filename as the editor types, keeping a leading date folder. */
+/** Sanitize a filename as the editor types, keeping typable separators. */
 export function parsePostFilename(filename: string): string {
-  const trimmed = filename.trim().replace(/^\/+/, "");
-  const match = trimmed.match(/^(\d{4}-\d{2}-\d{2})\/(.*)$/);
-  if (match) {
-    const slug = slugifyTitle(match[2]);
-    return slug ? `/${match[1]}/${slug}` : `/${match[1]}/`;
-  }
-  const slug = slugifyTitle(trimmed);
-  return slug ? `/${slug}` : "/";
+  const value = filename
+    .trim()
+    .replace(/^\/+/, "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’`´"“”]/g, "")
+    .replace(/[^a-z0-9/-]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/\/{2,}/g, "/");
+  return value ? `/${value}` : "/";
 }

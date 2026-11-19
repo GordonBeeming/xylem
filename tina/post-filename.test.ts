@@ -103,4 +103,10 @@ describe("parsePostFilename", () => {
       "/this-week-in-developer-tech-w07",
     );
   });
+
+  it("keeps trailing hyphens and slashes so the filename can be typed", () => {
+    assert.equal(parsePostFilename("2026-"), "/2026-");
+    assert.equal(parsePostFilename("2026-11-19/"), "/2026-11-19/");
+    assert.equal(parsePostFilename("2026-11-19/my-"), "/2026-11-19/my-");
+  });
 });

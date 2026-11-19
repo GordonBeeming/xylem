@@ -1,87 +1,86 @@
 ---
-title: 'TinaCMS, Second Time Around'
+title: 'This Week in Developer Tech · W07'
 date: 2026-11-19
-tags: ['TinaCMS', 'Agents', 'AI', 'Productivity', 'Software Development']
-summary: 'I put TinaCMS on this blog, then drifted into drafting posts locally. I have come back to it through the editorial workflow, and I can review a post in the visual editor from my iPad.'
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', 'GitHub Copilot', 'Azure DevOps']
+summary: "OpenAI's GPT-6.2 Astra and Sol, how the Claude Code team verifies agent-written code, Claude Code's experimental Code Mode, GitHub Event Streams for pull requests, the GitHub Copilot app on Azure DevOps repos, and OpenAI's Daybreak security agents."
 ---
 
-I liked the idea of [TinaCMS](https://tina.io) as soon as I saw it. The content stays in the Git repository, and you get a visual editor on top of it. I put it on my personal recipe site, and on [Tiani's portfolio](https://tianibeeming.com), so she could update her work without asking me to edit files and redeploy. Then I added it to this blog.
+A verify skill that boots the app can tell you more than a passing test suite. An agent that waits on a pull request no longer needs to poll or expose a webhook, and an Azure Repos branch policy can now be the thing that decides when an agent merges.
 
-That was the first time around, and it did what I wanted. On the recipe site and the portfolio, the visual editor was the point. On the blog, I slowly stopped opening it.
+This edition draws on the 13 to 19 November 2026 briefings, with six selected stories on GPT-6.2, verifying agent-written code, Claude Code's Code Mode, GitHub Event Streams, the GitHub Copilot app on Azure DevOps, and OpenAI's Daybreak security tools. Shorter items follow under Other headlines. Earlier announcements are kept with the relevant stories.
 
-## Why I stopped opening it
+## 1. OpenAI ships GPT-6.2 Astra and Sol in Codex and the API
 
-The way I was writing posts had shifted. An agent would draft the MDX locally, I'd read it, maybe ask for a few changes, and then we'd publish. If I was already at my machine with the repo checked out, I could review the file there and be done. The editor was still there. I just wasn't reaching for it.
+[OpenAI's announcement](https://openai.com/index/introducing-gpt-6-2-astra-sol) releases two models: GPT-6.2 Astra, the frontier model, and GPT-6.2 Sol, the everyday model. [OpenAI's availability post](https://community.openai.com/t/gpt-6-2-astra-and-sol-are-now-available/1417531) puts both in ChatGPT Work and Codex for Plus, Pro, Enterprise and Edu, and in the API. Ultrafast now reaches Pro 200 plans for Sol. Astra costs US\$8 per million input tokens and US\$40 per million output tokens, 20% below GPT-6 Astra, with cached input at US\$0.40. Sol stays at US\$2 and US\$10.
 
-That was fine while the work happened on my own computer. More of it now happens off my machine, with agents running in the cloud or as bots I message from wherever I am. Asking one of those agents to clone the repo, run the site locally and try to send me a screenshot is a lot of ceremony for a draft I just want to read. Small edits were worse. Each tweak meant another local render, another screenshot, and a long wait for what should have been a quick pass over the post.
+Astra's input and output prices now match the US\$8 and US\$40 that Claude Fable 5.2 launched at, which [W06](/blog/2026-11-12/this-week-in-developer-tech-w06) covered. [Artificial Analysis's results](https://x.com/ArtificialAnlys/status/2122750634210529569) put Astra second on its Intelligence Index and first on its robotics and 3D benchmarks. Its [Coding Agent Index](https://x.com/ArtificialAnlys/status/2122751016055754830), run in the Codex harness, is less flattering: Astra is flat against GPT-6 Astra, and Sol drops 3 points from GPT-6.1 Sol.
 
-I still wanted the same thing I'd liked about Tina in the first place: open the post, see it as it will look, and change it there if I need to. I just needed that to work for a post that wasn't on the live site yet, without me opening a terminal to get there.
+OpenAI's headline claims, such as beating Claude Fable 5.2 on Agents' Last Exam at 5% of the cost, come from its own benchmarks. With the coding index flat, run your own Codex tasks on Astra and Sol before switching defaults.
 
-## Coming back through the editorial workflow
+## 2. How the Claude Code team verifies the code its agents write
 
-That's the second time around. I've started using Tina's [editorial workflow](https://tina.io/docs/drafts/editorial-workflow) for new posts. The post is created in Tina, from `main`, and saved to a new branch named `gb/` plus a short topic slug. Tina creates that branch under a `tina/gb/` prefix, puts the post on it, and opens a draft pull request. I then get a link that opens the post in the visual editor on that branch.
+[Addy Osmani's post on claude.dev](https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/), published 16 November, describes how the Claude Code team checks agent work, which is about 90% of their code. Their view is that running the change matters more than tests. Each repository has a verify skill in `.claude/skills/` that boots and drives the app, and Claude runs it before committing. If a check still fails after three rounds of fixes, Claude stops and calls in a human.
 
-{/* PLACEHOLDER: Gordon will supply a screenshot of an agent creating the branch and post in Tina. Save it as images/tina-branch-creation.webp and replace this note with the Figure below. */}
-*[Placeholder: screenshot of an agent creating the branch and post in Tina. Save as `images/tina-branch-creation.webp`.]*
-{/* <Figure src="/images/tina-branch-creation.webp" alt="Tina admin after a new post was saved onto a tina/gb branch, with the editorial workflow branch picker visible" width="1200" height="800" caption="The post was created in Tina, which opened a tina/gb branch and a draft pull request" /> */}
+The team keeps a 39-item reliability checklist. Each item has a trigger readable from a diff, such as "does --resume still load old transcripts?", so only the 3 to 10 matching items get checked. The review rules in `REVIEW.md` are always read from the base branch, so a change can't edit the checks that judge it. New gates start in observe mode before they block anything, and every commit is stamped with how it was verified, including "none". Their answer to running lots of agents without reading every diff is fast, trustworthy feedback: end-to-end tests first, then property tests for invariants and differential tests, with the old system as the oracle, for migrations.
 
-From there I can read the post as it will look on the site. If a sentence is off, I can fix it in the editor instead of sending it back for another local render and another screenshot. When I'm happy with it, I decide what happens to the pull request.
+The flaky-test rule is worth copying. The agent may not retry or add sleeps, and if it can't find the root cause, it deletes the test and writes down why. The "changes can't modify their own checks" and "observe before enforce" sections apply to any agent setup, Copilot and Codex included, and a repository-local verify skill is cheap to add.
 
-An agent can do the Tina side of that: create the post, save it onto the branch, and send me the visual editor link. I still review the post in Tina, which is the part I had drifted away from.
+This is Anthropic describing its own practice. The team reports that a separate rubric grader raised task success by up to 10 points, but that figure is from internal testing on structured file generation, not coding generally.
 
-## A weekly post, reviewed in Tina
+## 3. Claude Code's Code Mode runs several tool calls from one script
 
-This morning's weekly post is a decent example of the whole loop. News, the assistant that puts together This Week in Developer Tech, sent me the proposed story list for W07.
+Claude Code v2.1.323, published to npm on 12 November, added Code Mode, an opt-in experiment described in the [Code Mode docs](https://code.claude.com/docs/en/code-mode). Normally Claude makes one tool call, such as Bash, Read or Edit, reads the result, then decides what to do next. In Code Mode it writes a small JavaScript program that can run commands in parallel, pass one result into the next call, and send back only the output it needs. You still see each tool call and diff, and the code itself is in the transcript viewer (Ctrl+O).
 
-<Figure src="/images/story-list-proposal.webp" alt="iPad chat with News proposing the W07 story list and a widget asking whether to draft it" width="1200" height="900" caption="News sent the W07 story list and asked me to confirm it before drafting" />
+This is the "code execution instead of tool-call ping-pong" pattern, now built into a mainstream coding agent. The docs suggest it for repetitive edits across many files, searches that need filtering, and independent commands that can run at the same time. To try it, run `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1 claude` on a repetitive refactor and compare the transcript with a normal session.
 
-{/* PLACEHOLDER IMAGES (not on disk when this draft was written; drop the redacted/exported files into images/ and uncomment):
-     morning-briefing-reactions.webp, ready-for-review-in-tina.webp, tina-visual-editor-w07.webp, lgtm-publish.webp, w07-is-live.webp */}
-*[Placeholder: morning briefing in the same iPad chat, with reactions on the day's stories. Save as `images/morning-briefing-reactions.webp`. This one needs the same sidebar redaction as the story-list image.]*
-{/* <Figure src="/images/morning-briefing-reactions.webp" alt="iPad chat showing the morning briefing stories with reactions in the News conversation" width="1200" height="900" caption="The same iPad chat, earlier that morning, with the day's stories and reactions" /> */}
+It is off by default and only works in an interactive terminal session on the native build, with a Claude subscription or Console account, on Opus 5.5, Sonnet 5.5, Haiku 5.5 or Fable 5.2. It doesn't work with `-p`, the Agent SDK, VS Code, the Desktop app, cloud sessions, Bedrock or Foundry, or for zero-data-retention or HIPAA organisations. In auto mode the safety classifier reviews the code as a whole rather than each tool call, and code stops after 10 minutes unless it runs in the background. The docs and the [changelog](https://code.claude.com/docs/en/changelog) give no official token-saving figures.
 
-I said yes, the post was drafted onto the Tina branch, and I got a link to the visual editor.
+## 4. GitHub Event Streams lets agents wait on a pull request without polling
 
-*[Placeholder: the "ready for your review in Tina" message, with a screenshot. Save as `images/ready-for-review-in-tina.webp`.]*
-{/* <Figure src="/images/ready-for-review-in-tina.webp" alt="News message saying W07 is ready for review in Tina, with a screenshot of the post" width="1200" height="700" caption="I was sent a visual editor link once the post was on the Tina branch" /> */}
+[GitHub's changelog](https://github.blog/changelog/2026-11-17-github-event-streams-is-now-in-preview/) on 17 November puts Event Streams in preview. An agent or script subscribes to a pull request and keeps a connection open to GitHub. It then receives an event when a review is submitted, commits are pushed, a merge conflict appears, the pull request is merged or closed, or a check suite changes status.
 
-*[Placeholder: Tina visual editor on iPad, on branch tina/gb/this-week-in-developer-tech-w07, showing the W07 preview. Save as `images/tina-visual-editor-w07.webp`.]*
-{/* <Figure src="/images/tina-visual-editor-w07.webp" alt="Tina visual editor on an iPad, with the tina/gb branch selected and the W07 post previewed" width="1200" height="900" caption="The visual editor, opened from the link, with W07 rendered on the tina/gb branch" /> */}
+Agents that watch pull requests today either poll, which spends rate limit and tokens on "anything new?" calls, or need a public webhook endpoint, which a laptop or dev box doesn't have. Event Streams needs no inbound endpoint, so a local agent can react within seconds and stay idle otherwise. It is one of the agent features GitHub listed as next in its Project Rubicon post, covered in [W06](/blog/2026-11-12/this-week-in-developer-tech-w06), as event streams for repository changes.
 
-The preview showed the title, the date, the tags and the full body, with a banner that it's an editor preview and not on the live site yet. I read it on my iPad, replied "LGTM, publish", and it was merged. I then got the live link and a screenshot.
+Access is through a waitlist, and the preview is available on all plans once you're approved. Events cover subscribed pull requests, not every repository event, and the API may change before general availability. Long-running agent loops that watch reviews and CI get the most from it.
 
-*[Placeholder: the "LGTM, publish" message and "Publishing W07 now." Save as `images/lgtm-publish.webp`.]*
-{/* <Figure src="/images/lgtm-publish.webp" alt="iPad chat showing the reply LGTM, publish, and a response that W07 is being published" width="1200" height="700" caption="I approved the post from the same chat, and the publish started" /> */}
+## 5. The GitHub Copilot app works on Azure DevOps repos, from clone to merged pull request
 
-*[Placeholder: the "W07 is live" message with a screenshot of the published page. Save as `images/w07-is-live.webp`.]*
-{/* <Figure src="/images/w07-is-live.webp" alt="Message saying W07 is live, with a screenshot of the published blog post" width="1200" height="700" caption="After the merge, I got the live link and a screenshot of the published post" /> */}
+[GitHub's Ignite changelog](https://github.blog/changelog/2026-11-17-github-copilot-app-microsoft-ignite-releases/) on 17 November adds Azure DevOps integration to the GitHub Copilot desktop app in public preview. You can clone an Azure Repos repository, have an agent create a branch, make changes and open a pull request, then click Fix on review comments. Agent merge, if you turn it on, fixes CI failures and completes the pull request once your Azure DevOps checks and branch policies pass.
 
-The published post is here: [This Week in Developer Tech · W07](https://gordonbeeming.com/blog/2026-11-19/this-week-in-developer-tech-w07).
+Until now the app's agent workflow only covered repositories hosted on GitHub. Many enterprise and consulting codebases still live in Azure DevOps, and this brings the same pull request loop to them without moving the code. Turn it on under Settings > Experimental, then add the Microsoft account you use for Azure DevOps under Accounts > Add account. A repository with real branch policies and required reviewers shows how agent merge behaves.
 
-## A reviewer when I need one, a merge when I don't
+The same release adds GitHub Enterprise Server support and browser use in public preview, where Copilot drives your signed-in Chromium browser in an isolated tab group to fill in forms, read pages or test the web app you're building. Browser use needs the GitHub Copilot extension for Chrome and works in your signed-in sessions, so consider which tabs and accounts it can reach. Cloud sessions aren't available for Azure DevOps repositories, so those agents run locally.
 
-I use the same Tina flow for [SSW Rules](https://www.ssw.com.au/rules/). The difference is what happens after the editor link exists. For a rule, I can send both the Tina link and the pull request to another developer to check, so they can read the rendered rule rather than only the diff. For a personal post, I just say to merge it.
+## 6. OpenAI's Daybreak agents pen-test web apps and turn findings into draft pull requests
 
-<Figure src="/images/ssw-rule-ready-to-review.webp" alt="Action today message saying an SSW Rule is ready to review in Tina, with links to the rule, draft pull request 13644 and issue 51, naming Gordon and Daniel Mackay as authors" width="1200" height="516" caption="The handover included a Tina link, the draft pull request and the issue, ready for review" />
+At its "Cyber at the Frontier" event on 12 November, OpenAI launched two security products, [SecurityWeek reports](https://www.securityweek.com/openai-unveils-daybreak-red-team-defense-factory-security-tools/). Daybreak Red Team uses a group of agents with your source code and app context to probe web apps, confirm whether a finding can actually be exploited, and re-test once a patch lands. It can also triage findings from scanners, bug bounties and disclosure reports. The agents run on GPT-6 Cyber.
 
-<Figure src="/images/ssw-rule-live.webp" alt="Later message saying the SSW Rule is live, that it passed both checks, and that the issue 51 comment was updated, with a screenshot of the published rule" width="1200" height="608" caption="Once it was merged, I got confirmation that the rule was live and that the issue had been updated" />
+[Daybreak Defense Factory](https://openai.com/daybreak/defense-factory/) takes findings from Red Team or from Wiz, Snyk and Endor Labs, traces them through connected GitHub repositories, and proposes a patch plus a test. You can refine the patch with Codex and open it as a draft pull request, and Defense Factory can also watch new commits or run on a schedule. Finding issues was rarely the hard part of security. The backlog of unverified findings is, and confirming exploitability and handing engineers a tested patch is what reduces it.
 
-The open pull request is watched as well, and I get a nudge if a reviewer has left it sitting there too long. I don't have to remember to go and check whether someone has looked at it.
+Red Team is early access by request, and Defense Factory is a preview plugin in ChatGPT for workspaces with Daybreak access. Nothing deploys automatically, because patches stay as draft pull requests. No pricing was published, and Greg Brockman's pitch, [as The Register reports it](https://www.theregister.com/security/2026/11/12/openai-launches-security-products-tells-orgs-theyre-doomed-if-they-dont-use-them/5309500), that companies are only as secure as the frontier model they defend with is vendor framing. If your workspace gets access, point Defense Factory at an existing Snyk or Dependabot backlog on one repository and count how many proposed patches you would merge as they are.
 
-## It works from my iPad
+## Other headlines
 
-Most of the W07 review happened on my iPad. I didn't clone the repo, I didn't run the site, and I didn't wait on a screenshot of a local render. The visual editor is just a link, so I can read the post properly on a decent screen and approve it from the same chat.
+**[The FBI warns about ARTEX, an open-source AI pen-testing framework](https://www.ic3.gov/CSA/2026/261113.pdf)**
 
-That was the bit that made the old loop feel like more work than it was worth. If I'm not at my machine, "just run it locally" isn't a small ask. A Tina link is.
+FLASH-20261113-001 says criminal groups have used the multi-agent Go framework, which calls Claude, GPT, DeepSeek, Grok and other models through their APIs, since at least August, with some intrusions reaching privileged access in under three hours ([The Record](https://therecord.media/artex-ai-tool-fbi-flash-alert)).
 
-## The preview needed a small fix
+**[OpenAI launches ChatGPT Wallet for agent purchases](https://openai.com/index/introducing-chatgpt-wallet)**
 
-One practical wrinkle is worth mentioning. The visual editor loads the live site in the preview pane and hydrates it with the post from Tina. If that post only exists on a branch, the live site doesn't have a page for it yet, so the preview used to 404 and the editing fields never appeared.
+Agents pay with network payment tokens and a Face ID or fingerprint check for every purchase, starting with US ChatGPT Pro users, and OpenAI's Commerce Partner Playbook asks sites to recognise its agents through signed Web Bot Auth requests.
 
-The fix was small. A Cloudflare Worker now detects those admin iframe requests and serves a preview shell instead of a 404. The page then hydrates from Tina's data, and the post shows up with a banner that it isn't on the live site yet. Once that was in, the W07 link worked the way I'd wanted it to.
+**[Project Zero moves to "Full X" disclosure](https://projectzero.google/2026/11/disclosure-policy.html)**
 
-## Still the same reason I installed it
+Bug details now go public 90 days after the vendor is told, fix or no fix, dropping to 60 days on 2 February 2027 and 30 days on 3 January 2028.
 
-I've come back to Tina for the same reason I installed it: the content stays in Git, and I can edit it visually. The editorial workflow is what made that practical again on this blog. A post can live on a branch, I can open it in the visual editor, and I can do that from my iPad. For some posts I send the Tina link and the pull request to someone else. For others I just say publish.
+**[Microsoft's agent-framework package on PyPI shipped a credential stealer](https://www.stepsecurity.io/blog/microsoft-agent-framework-pypi-package-compromised)**
 
-That's the second time around, and it's the way I should have been using it on this blog all along.
+Versions 1.26.1 and 1.26.2 installed a `.pth` startup hook that harvested cloud, GitHub and CI secrets on every Python start, so check for them and rotate anything an affected environment could reach ([GitHub advisory](https://github.com/advisories/GHSA-764m-3ppc-5m73)).
+
+**[Windows turns Microsoft Execution Containers into a managed agent boundary](https://blogs.windows.com/windowsexperience/2026/11/17/microsoft-ignite-2026-building-windows-for-the-next-era-of-work/)**
+
+At Ignite, Microsoft added per-agent network limits in preview, general availability of learning mode and Intune policies for MXC, and says OpenAI has turned MXC on by default in Codex.
+
+**[Musk says Grok 4.8 has soft-launched to some Grok Bot users](https://x.com/elonmusk/status/2122758986483269956)**
+
+Elon Musk said general release is another week or two away, and with no xAI release note or model page yet, the rollout is unconfirmed.

@@ -57,7 +57,8 @@ export async function GET(
 
 function imageResponse(filename: string, bytes: Uint8Array) {
   const ext = filename.slice(filename.lastIndexOf(".")).toLowerCase();
-  return new NextResponse(bytes, {
+  const body = Buffer.from(bytes);
+  return new NextResponse(body, {
     status: 200,
     headers: {
       "content-type": CONTENT_TYPES[ext] ?? "application/octet-stream",

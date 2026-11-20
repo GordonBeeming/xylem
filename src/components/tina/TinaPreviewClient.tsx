@@ -1,23 +1,23 @@
 "use client";
 
-import { useMemo, useSyncExternalStore, type ReactNode } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import readingTime from "reading-time";
 import GithubSlugger from "github-slugger";
 import { useTina, tinaField } from "tinacms/dist/react";
 import { TinaMarkdown, type TinaMarkdownContent } from "tinacms/dist/rich-text";
 import { PostLayout } from "@/layouts/PostLayout";
 import { TinaPreviewMessage } from "@/components/tina/TinaPreviewMessage";
-import { Figure } from "@/components/prose/Figure";
-import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
-import { proseComponents } from "@/components/prose/prose-components";
 import { normalizeTinaImages } from "@/components/tina/normalize-images";
+import {
+  headingsFromBody,
+  postMarkdownComponents,
+  textFromNode,
+} from "@/components/tina/post-markdown";
 import { postRelativePath } from "@/lib/tina-preview-path";
 import {
-  previewContentImageUrl,
   previewEditorBranch,
   rewritePreviewImageData,
 } from "@/lib/tina-preview-images";
-import type { HeadingEntry } from "@/lib/content";
 import type { PostMeta, SiteConfig } from "@/lib/tina-helpers";
 import { PostDocument } from "../../../tina/__generated__/types";
 
@@ -78,68 +78,6 @@ function placeholderData(slug: string): PreviewData {
   };
 }
 
-function textFromNode(node: unknown): string {
-  if (node == null) return "";
-  if (typeof node === "string") return node;
-  if (Array.isArray(node)) return node.map(textFromNode).join("");
-  if (typeof node === "object") {
-    const value = node as { text?: unknown; children?: unknown };
-    if (typeof value.text === "string") return value.text;
-    return textFromNode(value.children);
-  }
-  return "";
-}
-
-function textFromReactNode(node: ReactNode): string {
-  if (node == null || typeof node === "boolean") return "";
-  if (typeof node === "string" || typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(textFromReactNode).join("");
-  if (typeof node === "object" && "props" in node) {
-    return textFromReactNode((node as { props?: { children?: ReactNode } }).props?.children);
-  }
-  return "";
-}
-
-function headingsFromBody(body: TinaMarkdownContent | undefined, slugger: GithubSlugger): HeadingEntry[] {
-  const children = Array.isArray(body?.children) ? body.children : [];
-  const headings: HeadingEntry[] = [];
-  for (const node of children) {
-    if (!node || typeof node !== "object") continue;
-    const type = (node as { type?: string }).type;
-    if (type !== "h2") continue;
-    const text = textFromNode(node).trim();
-    if (!text) continue;
-    headings.push({ id: slugger.slug(text), text });
-  }
-  return headings;
-}
-
-function previewMarkdownComponents(
-  slugger: GithubSlugger,
-  imageCtx: { slug: string; branch?: string | null },
-) {
-  return {
-    ...proseComponents,
-    h2: (props: { children?: ReactNode }) => {
-      const text = textFromReactNode(props.children).trim();
-      const id = text ? slugger.slug(text) : "";
-      return proseComponents.h2({ ...props, id });
-    },
-    Figure: (props: { src?: string; alt?: string; width?: string; height?: string; caption?: string }) => (
-      <Figure
-        src={previewContentImageUrl(props.src ?? "", imageCtx)}
-        alt={props.alt ?? ""}
-        width={props.width}
-        height={props.height}
-        caption={props.caption}
-      />
-    ),
-    YouTubeEmbed: (props: { src?: string; title?: string }) => (
-      <YouTubeEmbed src={props.src ?? ""} title={props.title} />
-    ),
-  };
-}
-
 function isInEditorFrame(): boolean {
   return typeof window !== "undefined" && window.self !== window.top;
 }
@@ -184,7 +122,7 @@ export function TinaPreviewClient({ slug, siteConfig, recentPosts }: TinaPreview
   const body = post.body;
   const hasContent = title.length > 0 || textFromNode(body).trim().length > 0;
   const headings = headingsFromBody(body, new GithubSlugger());
-  const markdownComponents = previewMarkdownComponents(new GithubSlugger(), imageCtx);
+  const markdownComponents = postMarkdownComponents(new GithubSlugger(), imageCtx);
   const bodyText = textFromNode(body);
   const reading = readingTime(bodyText || title || "preview");
 

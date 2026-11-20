@@ -3,8 +3,10 @@ import { describe, it } from "node:test";
 import {
   decodeBranchName,
   isDocumentNavigationRequest,
+  isPreviewServer,
   previewContextFromEnvAndCookies,
   tinaBranchCookieOptions,
+  pickFilesystemOrTinaPost,
   tinaFetchOptions,
 } from "./tina-preview-mode-core.ts";
 
@@ -112,5 +114,31 @@ describe("decodeBranchName", () => {
     assert.equal(decodeBranchName(" main "), "main");
     assert.equal(decodeBranchName(""), "");
     assert.equal(decodeBranchName(null), "");
+  });
+});
+
+describe("isPreviewServer", () => {
+  it("is false unless XYLEM_PREVIEW is the string 1, and is read at call time", () => {
+    assert.equal(isPreviewServer({}), false);
+    assert.equal(isPreviewServer({ XYLEM_PREVIEW: "" }), false);
+    assert.equal(isPreviewServer({ XYLEM_PREVIEW: "true" }), false);
+    assert.equal(isPreviewServer({ XYLEM_PREVIEW: "1" }), true);
+  });
+});
+
+describe("pickFilesystemOrTinaPost", () => {
+  it("prefers the filesystem post when it exists", () => {
+    assert.equal(
+      pickFilesystemOrTinaPost("filesystem", true, "tina"),
+      "filesystem",
+    );
+  });
+
+  it("uses the Tina post when draft mode is on and the file is not in this build", () => {
+    assert.equal(pickFilesystemOrTinaPost(null, true, "tina"), "tina");
+  });
+
+  it("does not use Tina data when draft mode is off", () => {
+    assert.equal(pickFilesystemOrTinaPost(null, false, "tina"), null);
   });
 });

@@ -6,6 +6,7 @@ import GithubSlugger from "github-slugger";
 import readingTime from "reading-time";
 import {
   isPreviewServer,
+  pickFilesystemOrTinaPost,
   previewContextFromEnvAndCookies,
   TINA_BRANCH_COOKIE,
   type PreviewContext,
@@ -19,6 +20,7 @@ export {
   isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,
   tinaBranchCookieOptions,
+  pickFilesystemOrTinaPost,
   tinaFetchOptions,
   type PreviewContext,
   type TinaBranchCookieOptions,
@@ -30,7 +32,7 @@ export {
  * without calling Next dynamic APIs during `output: "export"`.
  */
 export async function getPreviewContext(): Promise<PreviewContext> {
-  if (!isPreviewServer) {
+  if (!isPreviewServer()) {
     return { enabled: false, branch: null };
   }
   const { cookies, draftMode } = await import("next/headers");
@@ -72,6 +74,18 @@ export function metaFromTinaPost(
     readingTime: { text: reading.text, minutes: Math.ceil(reading.minutes) },
   };
   return { meta, content: bodyText };
+}
+
+export function postFromFilesystemOrTina(
+  filesystem: { meta: PostMeta; content: string } | null,
+  preview: PreviewContext,
+  tinaData: { data?: { post?: TinaPostFields | null } } | null,
+  slug: string,
+): { meta: PostMeta; content: string } | null {
+  const tinaPost = tinaData?.data?.post
+    ? metaFromTinaPost(tinaData.data.post, slug)
+    : null;
+  return pickFilesystemOrTinaPost(filesystem, preview.enabled, tinaPost);
 }
 
 export function previewHeadings(body: TinaMarkdownContent | null | undefined) {

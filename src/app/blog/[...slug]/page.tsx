@@ -2,21 +2,14 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { PostLayout } from "@/layouts/PostLayout";
 import { ClientPost } from "./client-post";
-import { fetchTina, tinaClient } from "@/components/tina/fetch";
 import {
   getAllPosts,
-  getPost,
   getRelatedPosts,
   getAdjacentPosts,
   getSiteConfig,
 } from "@/lib/tina-helpers";
-import {
-  getPreviewContext,
-  metaFromTinaPost,
-  previewHeadings,
-  relativePathForSlug,
-  tinaFetchOptions,
-} from "@/lib/tina-preview-mode";
+import { previewHeadings } from "@/lib/tina-preview-mode";
+import { resolveBlogPost } from "@/lib/resolve-blog-post";
 import { extractHeadings } from "@/lib/content";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
 // rehype-code-meta no longer needed — shiki transformers handle meta
@@ -35,7 +28,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { slug } = await props.params;
-  const result = getPost(slug);
+  const { result } = await resolveBlogPost(slug);
 
   if (result === null) {
     return { title: "Post Not Found" };
@@ -79,24 +72,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function BlogPostPage(props: PageProps) {
   const { slug } = await props.params;
-  const preview = await getPreviewContext();
-  let result = getPost(slug);
-  const relativePath = relativePathForSlug(slug);
-
-  // Live editing data from the Tina client. In draft mode the official
-  // x-branch header selects the editorial branch (unpublished docs included).
-  // Null on the static build and on a plain `pnpm dev` (no Tina server on
-  // :4001) — the page then renders straight from the filesystem with no client JS.
-  const tinaData = await fetchTina(() =>
-    tinaClient.queries.post(
-      { relativePath },
-      tinaFetchOptions(preview.enabled ? preview.branch : null),
-    ),
-  );
-
-  if (result === null && preview.enabled && tinaData?.data && "post" in tinaData.data && tinaData.data.post) {
-    result = metaFromTinaPost(tinaData.data.post, slug.join("/"));
-  }
+  const { preview, result, tinaData } = await resolveBlogPost(slug);
 
   if (result === null) {
     notFound();

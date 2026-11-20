@@ -25,7 +25,17 @@ export function decodeBranchName(branch?: string | null): string {
   return current;
 }
 
-export const isPreviewServer = process.env.XYLEM_PREVIEW === "1";
+/**
+ * True on the OpenNext preview Worker. Must be read at call time, not as a
+ * module-level const: Cloudflare populates process.env from wrangler vars
+ * only after the first request, and Next does not inline this name unless
+ * it is listed in `next.config.ts` `env`.
+ */
+type PreviewEnv = { XYLEM_PREVIEW?: string | undefined };
+
+export function isPreviewServer(env: PreviewEnv = process.env as PreviewEnv): boolean {
+  return env.XYLEM_PREVIEW === "1";
+}
 
 export type PreviewContext = {
   enabled: boolean;
@@ -83,4 +93,15 @@ export function tinaFetchOptions(branch: string | null | undefined) {
       headers: { "x-branch": branch },
     },
   };
+}
+
+/** Filesystem first; Tina Cloud only when draft mode is on and no file exists in this build. */
+export function pickFilesystemOrTinaPost<T>(
+  filesystem: T | null,
+  previewEnabled: boolean,
+  tinaPost: T | null | undefined,
+): T | null {
+  if (filesystem) return filesystem;
+  if (previewEnabled && tinaPost) return tinaPost;
+  return null;
 }

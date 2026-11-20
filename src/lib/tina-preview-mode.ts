@@ -5,6 +5,7 @@ import type { TinaMarkdownContent } from "tinacms/dist/rich-text";
 import GithubSlugger from "github-slugger";
 import readingTime from "reading-time";
 import {
+  isBuildTimeDynamicApiError,
   isPreviewServer,
   pickFilesystemOrTinaPost,
   previewContextFromEnvAndCookies,
@@ -17,6 +18,7 @@ export {
   TINA_BRANCH_COOKIE,
   decodeBranchName,
   isPreviewServer,
+  isBuildTimeDynamicApiError,
   isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,
   tinaBranchCookieOptions,
@@ -35,14 +37,21 @@ export async function getPreviewContext(): Promise<PreviewContext> {
   if (!isPreviewServer()) {
     return { enabled: false, branch: null };
   }
-  const { cookies, draftMode } = await import("next/headers");
-  const { isEnabled } = await draftMode();
-  const branch = (await cookies()).get(TINA_BRANCH_COOKIE)?.value ?? null;
-  return previewContextFromEnvAndCookies({
-    previewServer: true,
-    draftModeEnabled: isEnabled,
-    branch,
-  });
+  try {
+    const { cookies, draftMode } = await import("next/headers");
+    const { isEnabled } = await draftMode();
+    const branch = (await cookies()).get(TINA_BRANCH_COOKIE)?.value ?? null;
+    return previewContextFromEnvAndCookies({
+      previewServer: true,
+      draftModeEnabled: isEnabled,
+      branch,
+    });
+  } catch (error) {
+    // draftMode() and cookies() throw in generateStaticParams and other
+    // build-time contexts that have no HTTP request.
+    if (!isBuildTimeDynamicApiError(error)) throw error;
+    return { enabled: false, branch: null };
+  }
 }
 
 type TinaPostFields = {

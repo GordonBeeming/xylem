@@ -128,6 +128,9 @@ export function MermaidDiagram({ chart, title }: MermaidDiagramProps) {
 
   useEffect(() => {
     const signal = { cancelled: false };
+    // setState runs only after the async mermaid.render() call, not synchronously
+    // in this effect. The hooks rule still flags the renderDiagram() invocation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- state updates after await
     renderDiagram(signal);
     return () => { signal.cancelled = true; };
   }, [renderDiagram]);

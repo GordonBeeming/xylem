@@ -1,8 +1,11 @@
 type EventParams = Record<string, string | number | boolean>;
+type Gtag = (command: "event", eventName: string, params?: EventParams) => void;
 
 export function trackEvent(eventName: string, params?: EventParams): void {
-  if (typeof window !== 'undefined' && 'gtag' in window) {
-    (window as any).gtag('event', eventName, params);
+  if (typeof window === "undefined") return;
+  const gtag = (window as Window & { gtag?: Gtag }).gtag;
+  if (typeof gtag === "function") {
+    gtag("event", eventName, params);
   }
 }
 

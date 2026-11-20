@@ -33,6 +33,7 @@ const SWIPE_THRESHOLD_PX = 50;
  * doesn't tolerate well in next-mdx-remote.
  */
 export function Step(_props: StepProps) {
+  void _props;
   return null;
 }
 Step.displayName = "WalkthroughStep";
@@ -60,16 +61,14 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
   const pointerStartX = useRef<number | null>(null);
 
   const total = steps.length;
-
-  // Clamp the index when steps change (e.g. MDX hot-reload removes a step)
-  // so we don't end up rendering null on a valid Walkthrough.
-  useEffect(() => {
-    if (total > 0 && index >= total) {
-      setIndex(total - 1);
-    }
-  }, [index, total]);
-
-  const current = steps[index];
+  // Adjust the stored index when steps change (e.g. MDX hot-reload removes a
+  // step) so later handlers aren't left pointing past the end. The derived
+  // currentIndex keeps this render valid before that state update flushes.
+  if (total > 0 && index >= total) {
+    setIndex(total - 1);
+  }
+  const currentIndex = total === 0 ? 0 : Math.min(index, total - 1);
+  const current = steps[currentIndex];
 
   const goPrev = useCallback(() => {
     setIndex((i) => (i > 0 ? i - 1 : i));
@@ -119,7 +118,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
   // Preload neighbouring frames so next-click is instant.
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const neighbours = [steps[index - 1], steps[index + 1]].filter(
+    const neighbours = [steps[currentIndex - 1], steps[currentIndex + 1]].filter(
       Boolean,
     ) as StepProps[];
     const links: HTMLLinkElement[] = neighbours.map((step) => {
@@ -133,11 +132,11 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
     return () => {
       links.forEach((link) => link.remove());
     };
-  }, [index, steps]);
+  }, [currentIndex, steps]);
 
   if (total === 0 || !current) return null;
 
-  const stepNumber = index + 1;
+  const stepNumber = currentIndex + 1;
 
   return (
     <div
@@ -167,7 +166,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
           <button
             type="button"
             onClick={goPrev}
-            disabled={index === 0}
+            disabled={currentIndex === 0}
             aria-label="Previous step"
             className="rounded-full px-1.5 py-0.5 transition hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_18%,transparent)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
           >
@@ -179,7 +178,7 @@ export function Walkthrough({ title, children }: WalkthroughProps) {
           <button
             type="button"
             onClick={goNext}
-            disabled={index === total - 1}
+            disabled={currentIndex === total - 1}
             aria-label="Next step"
             className="rounded-full px-1.5 py-0.5 transition hover:bg-[color-mix(in_srgb,var(--color-brand-primary)_18%,transparent)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
           >

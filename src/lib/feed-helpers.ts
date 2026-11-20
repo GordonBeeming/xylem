@@ -1,4 +1,4 @@
-import { getAllPosts, getSiteConfig, type PostData } from './tina-helpers';
+import { getAllPosts, getSiteConfig } from './tina-helpers';
 import { sortPosts } from './content';
 import { slug } from 'github-slugger';
 

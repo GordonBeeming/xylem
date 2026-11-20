@@ -26,10 +26,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// Preview Worker: render slugs that are not in this build (branch-only
-// documents). Pages is `output: "export"`, so this stays false there.
-export const dynamicParams = process.env.XYLEM_PREVIEW === "1";
-
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { slug } = await props.params;
   const { result } = await resolveBlogPost(slug);

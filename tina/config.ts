@@ -255,6 +255,38 @@ export default defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
   branch: process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "main",
   token: process.env.TINA_TOKEN || "",
+  ui: {
+    // Official "View Preview" button. The admin also enters draft mode via
+    // cmsCallback + fetchWithToken, so this URL can rely on the draft-mode
+    // cookie already being set when opened from the same origin.
+    previewUrl: ({ branch }) => {
+      const params = new URLSearchParams();
+      if (branch) params.set("branch", branch);
+      params.set("slug", "/");
+      return { url: `https://gordonbeeming.com/api/preview/enter?${params}` };
+    },
+  },
+  cmsCallback: (cms) => {
+    const tina = cms.api?.tina as {
+      branch?: string;
+      fetchWithToken?: (url: string) => Promise<unknown>;
+    } | undefined;
+    const fetchWithToken = tina?.fetchWithToken?.bind(tina);
+    if (fetchWithToken && typeof window !== "undefined") {
+      const params = new URLSearchParams();
+      if (tina?.branch) params.set("branch", tina.branch);
+      params.set("slug", "/");
+      void fetchWithToken(`/api/preview/enter?${params}`);
+    }
+    cms.events.subscribe("branch:change", (event: { branchName?: string }) => {
+      const branch = event?.branchName;
+      if (!branch || !fetchWithToken) return;
+      void fetchWithToken(
+        `/api/preview/change-branch?branch=${encodeURIComponent(branch)}`,
+      );
+    });
+    return cms;
+  },
   build: {
     outputFolder: "admin",
     publicFolder: "public",

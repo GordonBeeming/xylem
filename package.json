@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && next dev",
     "dev:tina": "node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && tinacms dev -c \"next dev\"",
-    "build": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && next build",
+    "build": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && node scripts/tina-build-if-preview.mjs && next build",
     "build:tina": "node scripts/check-project-readmes.mjs && node scripts/copy-images.mjs && node scripts/copy-nuggets.mjs && node scripts/generate-og-images.mjs && tinacms build && next build",
     "start": "next start",
     "lint": "eslint",
@@ -23,13 +23,18 @@
     "blog:publisher:reconcile": "node scripts/blog-automation/publisher/cli.mjs reconcile",
     "lint:blog-automation": "eslint \"scripts/blog-automation/**/*.mjs\"",
     "test:blog-automation": "node --test scripts/blog-automation/test/*.test.mjs",
-    "test:tina": "node --test --experimental-strip-types --disable-warning=ExperimentalWarning tina/post-filename.test.ts tina/figure-image-src.test.ts src/lib/tina-preview-path.test.ts src/lib/tina-preview-seed.test.ts src/lib/tina-preview-images.test.ts src/components/tina/post-markdown.test.ts"
+    "test:tina": "node --test --experimental-strip-types --disable-warning=ExperimentalWarning tina/post-filename.test.ts tina/figure-image-src.test.ts src/lib/tina-preview-path.test.ts src/lib/tina-preview-seed.test.ts src/lib/tina-preview-images.test.ts src/components/tina/post-markdown.test.ts src/lib/tina-preview-mode.test.ts",
+    "preview": "XYLEM_PREVIEW=1 opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy:preview": "XYLEM_PREVIEW=1 opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",
     "@headlessui/react": "^2.2.9",
     "@monaco-editor/react": "^4.7.0",
+    "@opennextjs/cloudflare": "^1.20.17",
     "@shikijs/rehype": "^4.0.2",
+    "@tinacms/auth": "^1.1.5",
     "@tinacms/cli": "^3.1.0",
     "giscus": "^1.6.0",
     "github-slugger": "^2.0.0",
@@ -77,6 +82,7 @@
     "eslint-config-next": "16.4.6",
     "satori": "^0.26.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.165.0"
   }
 }

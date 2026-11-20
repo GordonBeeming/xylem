@@ -5,10 +5,18 @@ import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
 import { Walkthrough, Step } from "@/components/prose/Walkthrough";
 import { Callout } from "@/components/prose/Callout";
 import { proseComponents } from "@/components/prose/prose-components";
-import { previewContentImageUrl } from "@/lib/tina-preview-images";
+import {
+  previewContentImageUrl,
+  publicPreviewImageSrc,
+} from "@/lib/tina-preview-images";
 import { textFromReactNode } from "./post-markdown-body";
 
-export type PostMarkdownImageCtx = { slug: string; branch?: string | null };
+export type PostMarkdownImageCtx = {
+  slug: string;
+  branch?: string | null;
+  /** On the preview app, Figures stay on same-origin `/images/<file>`. */
+  keepPublicImageSrc?: boolean;
+};
 
 export {
   shouldRenderLiveMarkdown,
@@ -36,7 +44,11 @@ export function postMarkdownComponents(
       caption?: string;
     }) => (
       <Figure
-        src={previewContentImageUrl(props.src ?? "", imageCtx)}
+        src={
+          imageCtx.keepPublicImageSrc
+            ? publicPreviewImageSrc(props.src ?? "")
+            : previewContentImageUrl(props.src ?? "", imageCtx)
+        }
         alt={props.alt ?? ""}
         width={props.width}
         height={props.height}

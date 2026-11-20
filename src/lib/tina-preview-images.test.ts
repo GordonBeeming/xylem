@@ -6,6 +6,7 @@ import {
   parseTinaStagingPath,
   previewContentImageUrl,
   rewritePreviewImageData,
+  publicPreviewImageSrc,
 } from "./tina-preview-images.ts";
 
 const slug = "2026-11-19/tinacms-second-time-around";
@@ -114,5 +115,32 @@ describe("rewritePreviewImageData", () => {
       "/__preview-content/tina/gb/tinacms-second-time-around/__file/content/blog/2026-11-19/images/ssw-rule-live.webp",
     );
     assert.equal(data.body.children[0].props.src.startsWith("/__staging/"), true);
+  });
+});
+
+describe("publicPreviewImageSrc", () => {
+  it("keeps a public /images path as /images/<file>", () => {
+    assert.equal(
+      publicPreviewImageSrc("/images/story-list-proposal.webp"),
+      "/images/story-list-proposal.webp",
+    );
+  });
+
+  it("maps leftover /uploads paths and Tina staging paths to /images/<file>", () => {
+    assert.equal(
+      publicPreviewImageSrc("/uploads/images/story-list-proposal.webp"),
+      "/images/story-list-proposal.webp",
+    );
+    assert.equal(
+      publicPreviewImageSrc(
+        "/__staging/tina/gb/tinacms-second-time-around/__file/images/ssw-rule-live.webp",
+      ),
+      "/images/ssw-rule-live.webp",
+    );
+  });
+
+  it("leaves unrelated srcs alone", () => {
+    assert.equal(publicPreviewImageSrc("/static/images/avatar.png"), "/static/images/avatar.png");
+    assert.equal(publicPreviewImageSrc("https://example.com/x.webp"), "https://example.com/x.webp");
   });
 });

@@ -1,22 +1,12 @@
 /**
- * Unpublished posts keep images in content/blog/<date>/images/ and only copy
- * them to /images at build. Tina's editorial workflow rewrites type:image
- * fields on a branch to `/__staging/<branch>/__file/images/<file>`, which
- * 404s on this static site. In the visual-editor preview only, map those
- * (and leftover /images/<file> paths) to a same-origin worker proxy that
- * fetches the file from the branch. Published pages are unchanged.
+ * Map Tina staging paths and leftover `/uploads` Figure srcs to the public
+ * `/images/<file>` URL the preview app (and the static site) serve. The
+ * preview Route Handler at /images/[filename] loads the file from the
+ * editor branch when draft mode is on. Published pages are unchanged.
  */
 
-const PREVIEW_PREFIX = "/__preview-content";
 const STAGING_MARKER = "/__staging/";
 const FILE_MARKER = "/__file/";
-const BRANCH_STORAGE_KEY = "tinacms-current-branch";
-
-export function contentImagesFolder(slug: string): string {
-  const parts = slug.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
-  const dir = parts.length >= 2 ? parts.slice(0, -1).join("/") : "";
-  return dir ? `content/blog/${dir}/images` : "content/blog/images";
-}
 
 export function parseTinaStagingPath(
   src: string,
@@ -54,55 +44,6 @@ export function publicPreviewImageSrc(src: string): string {
     ? basename(staging.repoPath)
     : publicImagesFilename(src);
   return filename ? `/images/${filename}` : src;
-}
-
-export function previewEditorBranch(): string | null {
-  if (typeof window === "undefined") return null;
-  const fromQuery = new URLSearchParams(window.location.search).get("branch");
-  if (fromQuery) return fromQuery;
-  try {
-    return window.localStorage.getItem(BRANCH_STORAGE_KEY);
-  } catch {
-    return null;
-  }
-}
-
-export function previewContentImageUrl(
-  src: string,
-  ctx: { slug: string; branch?: string | null },
-): string {
-  if (!src) return src;
-  const staging = parseTinaStagingPath(src);
-  const filename = staging
-    ? basename(staging.repoPath)
-    : publicImagesFilename(src);
-  const branch = staging?.branch || ctx.branch || null;
-  if (!filename || !branch) return src;
-  const folder = contentImagesFolder(ctx.slug);
-  return `${PREVIEW_PREFIX}/${branch}${FILE_MARKER}${folder}/${encodeURIComponent(filename)}`;
-}
-
-export function rewritePreviewImageData<T>(
-  data: T,
-  ctx: { slug: string; branch?: string | null },
-): T {
-  return walk(data, ctx) as T;
-}
-
-function walk(value: unknown, ctx: { slug: string; branch?: string | null }): unknown {
-  if (typeof value === "string") return previewContentImageUrl(value, ctx);
-  if (Array.isArray(value)) return value.map((item) => walk(item, ctx));
-  if (value !== null && typeof value === "object") {
-    const proto = Object.getPrototypeOf(value);
-    if (proto === null || proto === Object.prototype) {
-      const out: Record<string, unknown> = {};
-      for (const [key, val] of Object.entries(value)) {
-        out[key] = key.startsWith("_") ? val : walk(val, ctx);
-      }
-      return out;
-    }
-  }
-  return value;
 }
 
 function pathnameOf(src: string): string | null {

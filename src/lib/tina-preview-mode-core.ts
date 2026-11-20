@@ -11,6 +11,38 @@ export type PreviewContext = {
   branch: string | null;
 };
 
+export type TinaBranchCookieOptions = {
+  path: "/";
+  httpOnly: true;
+  sameSite: "none" | "lax";
+  secure: boolean;
+};
+
+/**
+ * Same flags as Next.js production draft mode: Path=/, HttpOnly, Secure,
+ * SameSite=None. Lax would be omitted from admin iframe subnavigations.
+ */
+export function tinaBranchCookieOptions(
+  nodeEnv: string | undefined = process.env.NODE_ENV,
+): TinaBranchCookieOptions {
+  const isProd = nodeEnv !== "development";
+  return {
+    path: "/",
+    httpOnly: true,
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
+  };
+}
+
+/** True for a top-level document navigation (Tina's "View Preview" button). */
+export function isDocumentNavigationRequest(headers: {
+  get(name: string): string | null;
+}): boolean {
+  const mode = (headers.get("sec-fetch-mode") || "").toLowerCase();
+  const dest = (headers.get("sec-fetch-dest") || "").toLowerCase();
+  return mode === "navigate" || dest === "document";
+}
+
 export function previewContextFromEnvAndCookies(options: {
   previewServer: boolean;
   draftModeEnabled: boolean;

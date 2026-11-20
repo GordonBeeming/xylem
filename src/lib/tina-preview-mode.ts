@@ -15,9 +15,12 @@ export {
   DRAFT_MODE_COOKIE,
   TINA_BRANCH_COOKIE,
   isPreviewServer,
+  isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,
+  tinaBranchCookieOptions,
   tinaFetchOptions,
   type PreviewContext,
+  type TinaBranchCookieOptions,
 } from "./tina-preview-mode-core";
 
 /**

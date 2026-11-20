@@ -15,7 +15,6 @@ import {
   shouldRenderLiveMarkdown,
   textFromNode,
 } from "@/components/tina/post-markdown";
-import { previewEditorBranch } from "@/lib/tina-preview-images";
 
 interface LayoutProps {
   prevPost: PostMeta | null;
@@ -59,12 +58,7 @@ export function ClientPost({ query, variables, data, meta, layoutProps, children
   const post = live.post;
   const body = post.body as TinaMarkdownContent | undefined;
   const liveBody = shouldRenderLiveMarkdown(edit || useTinaBody, body);
-  const imageCtx = {
-    slug: meta.slug,
-    branch: previewEditorBranch(),
-    keepPublicImageSrc: edit || useTinaBody,
-  };
-  const markdownComponents = postMarkdownComponents(new GithubSlugger(), imageCtx);
+  const markdownComponents = postMarkdownComponents(new GithubSlugger());
   const liveHeadings = liveBody
     ? headingsFromBody(body, new GithubSlugger())
     : layoutProps.headings;

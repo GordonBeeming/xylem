@@ -7,7 +7,7 @@ import {
   shouldRenderLiveMarkdown,
   textFromNode,
 } from "./post-markdown-body.ts";
-import { previewContentImageUrl } from "../../lib/tina-preview-images.ts";
+import { publicPreviewImageSrc } from "../../lib/tina-preview-images.ts";
 
 const sampleBody = {
   type: "root",
@@ -60,22 +60,20 @@ describe("textFromNode", () => {
 });
 
 describe("Figure src in the shared markdown map", () => {
-  const slug = "2026-11-19/writing-and-reviewing-content-in-tinacms";
-
-  it("leaves /images/x.webp alone without a branch (published / local files)", () => {
+  it("maps leftover /uploads and Tina staging srcs to /images/<file>", () => {
     assert.equal(
-      previewContentImageUrl("/images/story-list-proposal.webp", { slug }),
+      publicPreviewImageSrc("/images/story-list-proposal.webp"),
       "/images/story-list-proposal.webp",
     );
-  });
-
-  it("rewrites a branch Figure through the existing preview helper", () => {
     assert.equal(
-      previewContentImageUrl("/images/story-list-proposal.webp", {
-        slug,
-        branch: "tina/gb/example",
-      }),
-      "/__preview-content/tina/gb/example/__file/content/blog/2026-11-19/images/story-list-proposal.webp",
+      publicPreviewImageSrc("/uploads/images/story-list-proposal.webp"),
+      "/images/story-list-proposal.webp",
+    );
+    assert.equal(
+      publicPreviewImageSrc(
+        "/__staging/tina/gb/example/__file/images/story-list-proposal.webp",
+      ),
+      "/images/story-list-proposal.webp",
     );
   });
 });

@@ -18,9 +18,8 @@ const schema = defineSchema({
           parse: parsePostFilename,
         },
         // Published posts are in the static export at this URL. A post that
-        // only exists on a branch 404s on production; `not-found` detects the
-        // visual-editor iframe and renders a Tina preview instead. There is
-        // also `/tina-preview?path=YYYY-MM-DD/slug` if a 200 response is needed.
+        // only exists on a branch is served by the preview app once the admin
+        // has entered official Next.js draft mode. Visitors still get a 404.
         router: ({ document }) => {
           return `/blog/${document._sys.breadcrumbs.join("/")}`;
         },

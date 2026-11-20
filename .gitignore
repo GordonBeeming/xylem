@@ -59,3 +59,6 @@ next-env.d.ts
 .wrangler
 .dev.vars
 cloudflare-env.d.ts
+
+# Inlined content snapshot for the preview Worker (generated).
+/src/lib/generated/content-snapshot.json

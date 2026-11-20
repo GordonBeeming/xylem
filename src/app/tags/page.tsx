@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getTagCounts, getTagDisplayNames } from "@/lib/content";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/PageShell";
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 const ui = { fontFamily: "var(--font-ui)" };
 
-export default function TagsPage() {
-  const published = getAllPosts();
+export default async function TagsPage() {
+  const published = await getListedPosts();
   const tagCounts = getTagCounts(published);
   const tagDisplayNames = getTagDisplayNames(published);
 

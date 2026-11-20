@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getYearCounts } from "@/lib/content";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/PageShell";
@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "Browse blog posts by year.",
 };
 
-export default function YearsPage() {
-  const published = getAllPosts();
+export default async function YearsPage() {
+  const published = await getListedPosts();
   const yearCounts = getYearCounts(published);
 
   const sortedYears = Object.entries(yearCounts).sort(([a], [b]) => Number(b) - Number(a));

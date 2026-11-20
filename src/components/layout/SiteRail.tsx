@@ -4,7 +4,8 @@ import Avatar from "@/components/Avatar";
 import { SiteSearch } from "@/components/ui/SiteSearch";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 import { ABOUT_RAIL_BLURB } from "@/lib/site-copy";
-import { getAllPosts, getSiteConfig } from "@/lib/tina-helpers";
+import { getSiteConfig } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getTagCounts, getTagDisplayNames, getYearCounts } from "@/lib/content";
 import styles from "./PageShell.module.css";
 
@@ -33,8 +34,8 @@ function Heading({ children }: { children: React.ReactNode }) {
  * filesystem the same way the footer reads its own config, so no page has to
  * thread rail data through its props.
  */
-export function SiteRail() {
-  const posts = getAllPosts();
+export async function SiteRail() {
+  const posts = await getListedPosts();
   const siteConfig = getSiteConfig();
   const yearCounts = getYearCounts(posts);
   const tagCounts = getTagCounts(posts);
@@ -132,8 +133,8 @@ export function SiteRail() {
  * The reduced rail: search and the archive, and nothing that repeats what the
  * page it sits under already says.
  */
-export function SiteRailBrief() {
-  const posts = getAllPosts();
+export async function SiteRailBrief() {
+  const posts = await getListedPosts();
   const yearCounts = getYearCounts(posts);
   const recentYears = Object.entries(yearCounts)
     .sort((a, b) => Number(b[0]) - Number(a[0]))

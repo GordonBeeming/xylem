@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import { loadContentSnapshot } from "./content-snapshot";
 
 export interface PostMeta {
   title: string;
@@ -80,19 +81,29 @@ export function getAllPosts(): PostMeta[] {
     return cachedAllPosts;
   }
 
-  const files = walkDir(BLOG_DIR);
-  const posts: PostMeta[] = [];
-
-  for (const file of files) {
-    const post = parsePostFile(file);
-    if (post !== null) {
-      posts.push(post);
+  let posts: PostMeta[] = [];
+  try {
+    const files = walkDir(BLOG_DIR);
+    for (const file of files) {
+      const post = parsePostFile(file);
+      if (post !== null) {
+        posts.push(post);
+      }
     }
+  } catch {
+    posts = [];
   }
 
   posts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+
+  if (posts.length === 0) {
+    const snap = loadContentSnapshot();
+    if (snap?.posts.length) {
+      posts = snap.posts.map((post) => post.meta);
+    }
+  }
 
   cachedAllPosts = posts;
   return posts;
@@ -102,17 +113,24 @@ export function getPost(
   slugParts: string[]
 ): { meta: PostMeta; content: string } | null {
   const slug = slugParts.join("/");
-  const filePath = path.join(BLOG_DIR, slug + ".mdx");
+  try {
+    const filePath = path.join(BLOG_DIR, slug + ".mdx");
 
-  if (!fs.existsSync(filePath)) {
-    const mdPath = path.join(BLOG_DIR, slug + ".md");
-    if (!fs.existsSync(mdPath)) {
-      return null;
+    if (!fs.existsSync(filePath)) {
+      const mdPath = path.join(BLOG_DIR, slug + ".md");
+      if (fs.existsSync(mdPath)) {
+        const fromFile = readPostFile(mdPath, slug);
+        if (fromFile) return fromFile;
+      }
+    } else {
+      const fromFile = readPostFile(filePath, slug);
+      if (fromFile) return fromFile;
     }
-    return readPostFile(mdPath, slug);
+  } catch {
+    // workerd has no content/ filesystem; use the inlined snapshot.
   }
-
-  return readPostFile(filePath, slug);
+  const snap = loadContentSnapshot()?.posts.find((post) => post.meta.slug === slug);
+  return snap ? { meta: snap.meta, content: snap.content } : null;
 }
 
 function readPostFile(
@@ -254,35 +272,43 @@ function parseProjectFile(file: string): ProjectData | null {
 }
 
 export function getAllProjects(): ProjectData[] {
-  if (!fs.existsSync(PROJECTS_DIR)) {
-    return [];
-  }
-  const files = fs
-    .readdirSync(PROJECTS_DIR)
-    .filter((f) => f.endsWith(".json"));
-  const projects: ProjectData[] = [];
+  try {
+    if (fs.existsSync(PROJECTS_DIR)) {
+      const files = fs
+        .readdirSync(PROJECTS_DIR)
+        .filter((f) => f.endsWith(".json"));
+      const projects: ProjectData[] = [];
 
-  for (const file of files) {
-    const project = parseProjectFile(file);
-    // Filenames that don't pass the slug allowlist would 404 at
-    // getProjectBySlug() — skip them here instead of linking to a dead page.
-    if (project !== null && isValidProjectSlug(project.slug)) {
-      projects.push(project);
+      for (const file of files) {
+        const project = parseProjectFile(file);
+        // Filenames that don't pass the slug allowlist would 404 at
+        // getProjectBySlug() — skip them here instead of linking to a dead page.
+        if (project !== null && isValidProjectSlug(project.slug)) {
+          projects.push(project);
+        }
+      }
+      if (projects.length > 0) return projects;
     }
+  } catch {
+    // workerd: fall through to the inlined snapshot
   }
-
-  return projects;
+  return loadContentSnapshot()?.projects ?? [];
 }
 
 export function getProjectBySlug(slug: string): ProjectData | undefined {
   if (!isValidProjectSlug(slug)) {
     return undefined;
   }
-  const file = `${slug}.json`;
-  if (!fs.existsSync(path.join(PROJECTS_DIR, file))) {
-    return undefined;
+  try {
+    const file = `${slug}.json`;
+    if (fs.existsSync(path.join(PROJECTS_DIR, file))) {
+      const project = parseProjectFile(file);
+      if (project) return project;
+    }
+  } catch {
+    // workerd: fall through to the inlined snapshot
   }
-  return parseProjectFile(file) ?? undefined;
+  return loadContentSnapshot()?.projects.find((project) => project.slug === slug);
 }
 
 // ─── Project README helpers ──────────────────────────────────────────────────
@@ -304,11 +330,10 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
     return null;
   }
   const filePath = path.join(PROJECT_README_DIR, `${slug}.md`);
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-
   try {
+    if (!fs.existsSync(filePath)) {
+      return loadContentSnapshot()?.projectReadmes[slug] ?? null;
+    }
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
 
@@ -341,9 +366,8 @@ export function getProjectReadme(slug: string): ProjectReadme | null {
       sourceBranch: data.sourceBranch.trim(),
       visibility: data.visibility === "public" || data.visibility === "private" ? data.visibility : undefined,
     };
-  } catch (error) {
-    console.error(`Error reading project readme ${filePath}:`, error);
-    return null;
+  } catch {
+    return loadContentSnapshot()?.projectReadmes[slug] ?? null;
   }
 }
 
@@ -417,20 +441,22 @@ function parseBookFile(file: string): BookData | null {
 }
 
 export function getAllBooks(): BookData[] {
-  if (!fs.existsSync(BOOKS_DIR)) {
-    return [];
-  }
-  const files = fs.readdirSync(BOOKS_DIR).filter((f) => f.endsWith(".json"));
-  const books: BookData[] = [];
-
-  for (const file of files) {
-    const book = parseBookFile(file);
-    if (book) {
-      books.push(book);
+  try {
+    if (fs.existsSync(BOOKS_DIR)) {
+      const files = fs.readdirSync(BOOKS_DIR).filter((f) => f.endsWith(".json"));
+      const books: BookData[] = [];
+      for (const file of files) {
+        const book = parseBookFile(file);
+        if (book) {
+          books.push(book);
+        }
+      }
+      if (books.length > 0) return books;
     }
+  } catch {
+    // workerd: fall through to the inlined snapshot
   }
-
-  return books;
+  return loadContentSnapshot()?.books ?? [];
 }
 
 export function getBook(slug: string): BookData | null {
@@ -439,10 +465,15 @@ export function getBook(slug: string): BookData | null {
   }
   const file = `${slug}.json`;
   const filePath = path.join(BOOKS_DIR, file);
-  if (!fs.existsSync(filePath)) {
-    return null;
+  try {
+    if (fs.existsSync(filePath)) {
+      const book = parseBookFile(file);
+      if (book) return book;
+    }
+  } catch {
+    // workerd: fall through to the inlined snapshot
   }
-  return parseBookFile(file);
+  return loadContentSnapshot()?.books.find((book) => book.slug === slug) ?? null;
 }
 
 // ─── Site config helpers ─────────────────────────────────────────────────────
@@ -471,21 +502,22 @@ export interface SiteConfig {
 
 const CONFIG_PATH = path.join(process.cwd(), "content", "config", "site.json");
 
+const FALLBACK_SITE_CONFIG: SiteConfig = {
+  title: "xylem | Gordon Beeming",
+  author: "Gordon Beeming",
+  description: "Gordon Beeming - Developer Blog",
+  siteUrl: "https://gordonbeeming.com",
+  language: "en-us",
+  locale: "en-US",
+  timezone: "Australia/Brisbane",
+};
+
 export function getSiteConfig(): SiteConfig {
   try {
     const raw = fs.readFileSync(CONFIG_PATH, "utf-8");
     return JSON.parse(raw) as SiteConfig;
-  } catch (error) {
-    console.error("Error reading site config:", error);
-    return {
-      title: "xylem | Gordon Beeming",
-      author: "Gordon Beeming",
-      description: "Gordon Beeming - Developer Blog",
-      siteUrl: "https://gordonbeeming.com",
-      language: "en-us",
-      locale: "en-US",
-      timezone: "Australia/Brisbane",
-    };
+  } catch {
+    return loadContentSnapshot()?.siteConfig ?? FALLBACK_SITE_CONFIG;
   }
 }
 
@@ -516,37 +548,35 @@ const AUTHORS_DIR = path.join(process.cwd(), "content", "authors");
 
 export function getAuthor(name: string): AuthorData | null {
   const fileName = name.toLowerCase().replace(/\s+/g, "-") + ".mdx";
-  const filePath = path.join(AUTHORS_DIR, fileName);
-
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-
+  const snapshotKey = fileName.replace(/\.mdx$/, "");
   try {
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const { data, content } = matter(raw);
-    return {
-      name: (data.name as string) ?? name,
-      avatar: data.avatar as string | undefined,
-      profile_line_1: data.profile_line_1 as string | undefined,
-      profile_line_2: data.profile_line_2 as string | undefined,
-      company_name: data.company_name as string | undefined,
-      company_website: data.company_website as string | undefined,
-      company_logo_dark: data.company_logo_dark as string | undefined,
-      company_logo_light: data.company_logo_light as string | undefined,
-      mvp_website: data.mvp_website as string | undefined,
-      mvp_logo_dark: data.mvp_logo_dark as string | undefined,
-      mvp_logo_light: data.mvp_logo_light as string | undefined,
-      email: data.email as string | undefined,
-      twitter: data.twitter as string | undefined,
-      bluesky: data.bluesky as string | undefined,
-      linkedin: data.linkedin as string | undefined,
-      github: data.github as string | undefined,
-      layout: data.layout as string | undefined,
-      body: content,
-    };
-  } catch (error) {
-    console.error(`Error reading author file ${filePath}:`, error);
-    return null;
+    const filePath = path.join(AUTHORS_DIR, fileName);
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, "utf-8");
+      const { data, content } = matter(raw);
+      return {
+        name: (data.name as string) ?? name,
+        avatar: data.avatar as string | undefined,
+        profile_line_1: data.profile_line_1 as string | undefined,
+        profile_line_2: data.profile_line_2 as string | undefined,
+        company_name: data.company_name as string | undefined,
+        company_website: data.company_website as string | undefined,
+        company_logo_dark: data.company_logo_dark as string | undefined,
+        company_logo_light: data.company_logo_light as string | undefined,
+        mvp_website: data.mvp_website as string | undefined,
+        mvp_logo_dark: data.mvp_logo_dark as string | undefined,
+        mvp_logo_light: data.mvp_logo_light as string | undefined,
+        email: data.email as string | undefined,
+        twitter: data.twitter as string | undefined,
+        bluesky: data.bluesky as string | undefined,
+        linkedin: data.linkedin as string | undefined,
+        github: data.github as string | undefined,
+        layout: data.layout as string | undefined,
+        body: content,
+      };
+    }
+  } catch {
+    // workerd: fall through to the inlined snapshot
   }
+  return loadContentSnapshot()?.authors[snapshotKey] ?? null;
 }

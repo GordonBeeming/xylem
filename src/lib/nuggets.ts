@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
+import { loadContentSnapshot } from "./content-snapshot";
 
 export interface NuggetMeta {
   title: string;
@@ -67,13 +68,15 @@ export function getAllNuggets(): NuggetMeta[] {
     return cachedAllNuggets;
   }
 
+  let nuggets: NuggetMeta[] = [];
+  try {
   if (!fs.existsSync(NUGGETS_DIR)) {
-    cachedAllNuggets = [];
+    const snap = loadContentSnapshot()?.nuggets ?? [];
+    cachedAllNuggets = snap;
     return cachedAllNuggets;
   }
 
   const entries = fs.readdirSync(NUGGETS_DIR, { withFileTypes: true });
-  const nuggets: NuggetMeta[] = [];
 
   for (const entry of entries) {
     if (!entry.isFile() || !entry.name.endsWith(".html")) {
@@ -107,6 +110,13 @@ export function getAllNuggets(): NuggetMeta[] {
   nuggets.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+  } catch {
+    nuggets = [];
+  }
+
+  if (nuggets.length === 0) {
+    nuggets = loadContentSnapshot()?.nuggets ?? [];
+  }
 
   cachedAllNuggets = nuggets;
   return nuggets;

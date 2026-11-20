@@ -1,10 +1,10 @@
 import { SidebarHome, type HomeData } from "@/components/home/SidebarHome";
 import {
-  getAllPosts,
   getAllProjects,
   getAllBooks,
   getSiteConfig,
 } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { enrichProjectsWithStars } from "@/lib/github-stars";
 import { getYearCounts, getTagCounts, getTagDisplayNames } from "@/lib/content";
 import { fetchTina, tinaClient } from "@/components/tina/fetch";
@@ -17,7 +17,7 @@ const RECENT_POST_COUNT = 5;
 const RECENT_PROJECT_COUNT = 6;
 
 export default async function Home() {
-  const posts = getAllPosts();
+  const posts = await getListedPosts();
   const projects = await enrichProjectsWithStars(getAllProjects());
   const recentProjects = [...projects]
     .sort((a, b) => {
@@ -31,7 +31,7 @@ export default async function Home() {
 
   const homeData: HomeData = {
     totalPostCount: posts.length,
-    // getAllPosts() is already sorted newest-first.
+    // await getListedPosts() is already sorted newest-first.
     recentPosts: posts.slice(0, RECENT_POST_COUNT),
     projects: recentProjects,
     books,

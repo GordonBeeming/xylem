@@ -1,6 +1,12 @@
 import { defineConfig, defineSchema } from "tinacms";
 import { normalizeFigureImageSrc } from "./figure-image-src";
 import { parsePostFilename, postFilename } from "./post-filename";
+import {
+  changeTinaDraftBranch,
+  draftModeEnterUrl,
+  enterTinaDraftMode,
+  reloadSameOriginPreviewIframes,
+} from "./enter-draft-mode";
 
 const schema = defineSchema({
   collections: [
@@ -254,10 +260,34 @@ export default defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
   branch: process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "main",
   token: process.env.TINA_TOKEN || "",
+  // Official Tina preview hooks. onLogin only runs after a fresh
+  // authenticate(); an already-signed-in reload must also enter draft
+  // mode from cmsCallback (see enterTinaDraftMode).
+  admin: {
+    authHooks: {
+      onLogin: async ({ token }) => {
+        const access = token?.id_token || token?.access_token;
+        if (!access || typeof window === "undefined") return;
+        await fetch(draftModeEnterUrl(), {
+          headers: { Authorization: `Bearer ${access}` },
+          credentials: "same-origin",
+        });
+      },
+      onLogout: async () => {
+        if (typeof window !== "undefined") {
+          // The Tina admin is a standalone Vite app, not a Next Client
+          // Component, so the official onLogout path is a top-level
+          // navigation to the draft-mode exit handler.
+          // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+          window.location.href = "/api/preview/exit";
+        }
+      },
+    },
+  },
   ui: {
     // Official "View Preview" button. The admin also enters draft mode via
-    // cmsCallback + fetchWithToken, so this URL can rely on the draft-mode
-    // cookie already being set when opened from the same origin.
+    // cmsCallback + authProvider.fetchWithToken, so this URL can rely on
+    // the draft-mode cookie already being set when opened from the same origin.
     previewUrl: ({ branch }) => {
       const params = new URLSearchParams();
       if (branch) params.set("branch", branch);
@@ -266,23 +296,20 @@ export default defineConfig({
     },
   },
   cmsCallback: (cms) => {
-    const tina = cms.api?.tina as {
-      branch?: string;
-      fetchWithToken?: (url: string) => Promise<unknown>;
-    } | undefined;
-    const fetchWithToken = tina?.fetchWithToken?.bind(tina);
-    if (fetchWithToken && typeof window !== "undefined") {
-      const params = new URLSearchParams();
-      if (tina?.branch) params.set("branch", tina.branch);
-      params.set("slug", "/");
-      void fetchWithToken(`/api/preview/enter?${params}`);
+    const enter = async () => {
+      const ok = await enterTinaDraftMode(cms);
+      if (ok) reloadSameOriginPreviewIframes();
+    };
+    if (typeof window !== "undefined") {
+      void enter();
+      cms.events.subscribe("cms:login", () => {
+        void enter();
+      });
     }
     cms.events.subscribe("branch:change", (event: { branchName?: string }) => {
       const branch = event?.branchName;
-      if (!branch || !fetchWithToken) return;
-      void fetchWithToken(
-        `/api/preview/change-branch?branch=${encodeURIComponent(branch)}`,
-      );
+      if (!branch) return;
+      void changeTinaDraftBranch(cms, branch);
     });
     return cms;
   },

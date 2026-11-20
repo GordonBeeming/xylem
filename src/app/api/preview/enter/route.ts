@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isUserAuthorized } from "@tinacms/auth";
 import {
   TINA_BRANCH_COOKIE,
+  decodeBranchName,
   isDocumentNavigationRequest,
   tinaBranchCookieOptions,
 } from "@/lib/tina-preview-mode";
@@ -26,7 +27,7 @@ import {
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const slugParam = url.searchParams.get("slug");
-  const branch = url.searchParams.get("branch")?.trim() || "";
+  const branch = decodeBranchName(url.searchParams.get("branch"));
   const target = slugParam && slugParam.startsWith("/") ? slugParam : "/";
   const clientID = process.env.NEXT_PUBLIC_TINA_CLIENT_ID?.trim();
 

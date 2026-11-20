@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   decodeBranchName,
+  isBuildTimeDynamicApiError,
   isDocumentNavigationRequest,
   isPreviewServer,
   previewContextFromEnvAndCookies,
@@ -142,3 +143,14 @@ describe("pickFilesystemOrTinaPost", () => {
     assert.equal(pickFilesystemOrTinaPost(null, false, "tina"), null);
   });
 });
+
+describe("isBuildTimeDynamicApiError", () => {
+  it("recognizes Next.js draftMode() inside generateStaticParams", () => {
+    const error = new Error(
+      "Route /blog/[...slug] used `draftMode()` inside `generateStaticParams`. This is not supported because `generateStaticParams` runs at build time without an HTTP request. Read more: https://nextjs.org/docs/messages/next-dynamic-api-wrong-context",
+    );
+    assert.equal(isBuildTimeDynamicApiError(error), true);
+    assert.equal(isBuildTimeDynamicApiError(new Error("Tina token missing")), false);
+  });
+});
+

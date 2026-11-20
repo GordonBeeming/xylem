@@ -105,3 +105,15 @@ export function pickFilesystemOrTinaPost<T>(
   if (previewEnabled && tinaPost) return tinaPost;
   return null;
 }
+
+/** Next throws these when draftMode() or cookies() run outside a request. */
+export function isBuildTimeDynamicApiError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("generateStaticParams") ||
+    message.includes("next-dynamic-api-wrong-context") ||
+    message.includes("used `draftMode()`") ||
+    message.includes("used `cookies()`")
+  );
+}
+

@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { PostLayout } from "@/layouts/PostLayout";
 import { ClientPost } from "./client-post";
 import {
+  getAllPosts,
   getRelatedPosts,
   getAdjacentPosts,
   getSiteConfig,
@@ -19,8 +20,10 @@ interface PageProps {
   params: Promise<{ slug: string[] }>;
 }
 
-export async function generateStaticParams() {
-  const posts = await getListedPosts();
+export function generateStaticParams() {
+  // Published posts only. getListedPosts() reads draftMode(), which Next
+  // forbids inside generateStaticParams.
+  const posts = getAllPosts();
   return posts.map((post) => ({
     slug: post.slug.split("/"),
   }));

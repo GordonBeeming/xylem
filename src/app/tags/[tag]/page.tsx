@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getAllPosts } from "@/lib/tina-helpers";
 import { getListedPosts } from "@/lib/listed-content";
 import { getTagCounts, getTagDisplayNames, formatDateShort, postHref } from "@/lib/content";
 import { PostListItem } from "@/components/ds/PostListItem";
@@ -11,8 +12,10 @@ interface PageProps {
   params: Promise<{ tag: string }>;
 }
 
-export async function generateStaticParams() {
-  const published = await getListedPosts();
+export function generateStaticParams() {
+  // Published posts only. getListedPosts() reads draftMode(), which Next
+  // forbids inside generateStaticParams.
+  const published = getAllPosts();
   const tagCounts = getTagCounts(published);
   return Object.keys(tagCounts).map((tag) => ({ tag }));
 }

@@ -11,6 +11,7 @@ import rehypeReact from "rehype-react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import type { ReactElement } from "react";
 import { proseComponents } from "@/components/prose/prose-components";
+import { shikiRehypeOptions } from "@/lib/shiki-options";
 
 const CLOBBER_PREFIX = defaultSchema.clobberPrefix ?? "";
 
@@ -79,22 +80,7 @@ const processor = unified()
   .use(rehypeSlug)
   .use(rehypeSanitize, defaultSchema)
   .use(rehypeFixAnchorHashes)
-  .use(rehypeShiki, {
-    themes: { light: "github-light", dark: "github-dark" },
-    defaultColor: false,
-    addLanguageClass: true,
-    parseMetaString: (metaString: string) => {
-      return { __raw: metaString };
-    },
-    transformers: [{
-      pre(node: { properties: Record<string, unknown> }) {
-        const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
-        if (meta) {
-          node.properties["data-meta"] = meta;
-        }
-      },
-    }],
-  })
+  .use(rehypeShiki, shikiRehypeOptions)
   // proseComponents supplies the CodeBlock/MermaidDiagram <pre> handler, so
   // the box chrome comes from those components rather than a CSS class on
   // the raw <pre> (as a stringify-to-HTML pipeline would have needed).

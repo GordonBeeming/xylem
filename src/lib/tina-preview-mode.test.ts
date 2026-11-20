@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,
+  tinaBranchCookieOptions,
   tinaFetchOptions,
 } from "./tina-preview-mode-core.ts";
 
@@ -46,5 +48,46 @@ describe("tinaFetchOptions", () => {
       fetchOptions: { headers: { "x-branch": "tina/gb/example" } },
     });
     assert.equal(tinaFetchOptions(null), undefined);
+  });
+});
+
+describe("tinaBranchCookieOptions", () => {
+  it("matches Next.js production draft-mode flags", () => {
+    assert.deepEqual(tinaBranchCookieOptions("production"), {
+      path: "/",
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+  });
+
+  it("uses SameSite=Lax in development", () => {
+    assert.deepEqual(tinaBranchCookieOptions("development"), {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+  });
+});
+
+describe("isDocumentNavigationRequest", () => {
+  it("treats a top-level document navigation as a View Preview click", () => {
+    assert.equal(
+      isDocumentNavigationRequest(new Headers({ "sec-fetch-mode": "navigate" })),
+      true,
+    );
+    assert.equal(
+      isDocumentNavigationRequest(new Headers({ "sec-fetch-dest": "document" })),
+      true,
+    );
+  });
+
+  it("treats cmsCallback fetch as a non-document request", () => {
+    assert.equal(
+      isDocumentNavigationRequest(new Headers({ "sec-fetch-mode": "cors" })),
+      false,
+    );
+    assert.equal(isDocumentNavigationRequest(new Headers()), false);
   });
 });

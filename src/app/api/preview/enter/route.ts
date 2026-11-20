@@ -2,7 +2,11 @@ import { cookies, draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { isUserAuthorized } from "@tinacms/auth";
-import { TINA_BRANCH_COOKIE } from "@/lib/tina-preview-mode";
+import {
+  TINA_BRANCH_COOKIE,
+  isDocumentNavigationRequest,
+  tinaBranchCookieOptions,
+} from "@/lib/tina-preview-mode";
 
 /**
  * Official Tina + Next draft-mode enter handler, as an App Router Route
@@ -10,8 +14,14 @@ import { TINA_BRANCH_COOKIE } from "@/lib/tina-preview-mode";
  * `isAuthorized(req)` on the Pages API). In development, TinaCloud is not
  * required — matching the contextual-drafts guide.
  *
- * `draftMode().enable()` plus `redirect()` is the official Next.js Draft Mode
- * pattern: the bypass cookie is set on the redirect response.
+ * Next.js draft-mode docs use `enable()` then a Response when the caller is
+ * `fetch` / XHR (Tina's cmsCallback uses fetchWithToken). A fetch-followed
+ * redirect can drop Set-Cookie, so the admin iframe never receives
+ * `__prerender_bypass` and is not routed to the preview app. Document
+ * navigations (Tina's "View Preview" button) still redirect after enable.
+ *
+ * `x-branch` uses the same Path / HttpOnly / Secure / SameSite=None flags as
+ * the official draft cookie so the iframe sends it on subsequent requests.
  */
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -38,13 +48,12 @@ export async function GET(request: NextRequest) {
 
   if (branch) {
     const jar = await cookies();
-    jar.set(TINA_BRANCH_COOKIE, branch, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    });
+    jar.set(TINA_BRANCH_COOKIE, branch, tinaBranchCookieOptions());
   }
 
-  redirect(target);
+  if (isDocumentNavigationRequest(request.headers)) {
+    redirect(target);
+  }
+
+  return NextResponse.json({ ok: true, branch: branch || null });
 }

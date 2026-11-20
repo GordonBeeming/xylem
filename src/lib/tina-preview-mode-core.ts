@@ -31,9 +31,9 @@ export function decodeBranchName(branch?: string | null): string {
  * only after the first request, and Next does not inline this name unless
  * it is listed in `next.config.ts` `env`.
  */
-export function isPreviewServer(
-  env: { XYLEM_PREVIEW?: string } = process.env,
-): boolean {
+type PreviewEnv = { XYLEM_PREVIEW?: string | undefined };
+
+export function isPreviewServer(env: PreviewEnv = process.env as PreviewEnv): boolean {
   return env.XYLEM_PREVIEW === "1";
 }
 

@@ -84,7 +84,7 @@ export default async function BlogPostPage(props: PageProps) {
   const { prev, next } = getAdjacentPosts(meta.slug);
   // The sidebar's "Recent posts" list is site-wide and newest-first, unlike
   // relatedPosts, which is scored against this post's tags.
-  const recentPosts = await getListedPosts()
+  const recentPosts = (await getListedPosts())
     .filter((post) => post.slug !== meta.slug)
     .slice(0, 4);
   const headings =

@@ -1,16 +1,18 @@
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
+import { bundledLanguages, createHighlighter } from "shiki";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 /**
- * Shared @shikijs/rehype options for post MDX and project READMEs.
+ * Display options shared by post MDX and project READMEs.
  *
- * workerd cannot instantiate Shiki's default Oniguruma WASM engine, which
- * 500s every request-time markdown render on the preview Worker. The
- * JavaScript regex engine is the supported Cloudflare/Shiki path.
+ * @shikijs/rehype 4.0.2's default plugin does not forward `engine` to
+ * getSingletonHighlighter, so passing it there still boots Oniguruma WASM,
+ * which workerd rejects ("Wasm code generation disallowed by embedder").
+ * We create the highlighter ourselves with the JavaScript regex engine.
  */
-export const shikiRehypeOptions = {
-  engine: createJavaScriptRegexEngine(),
-  themes: { light: "github-light", dark: "github-dark" },
-  defaultColor: false,
+export const shikiDisplayOptions = {
+  themes: { light: "github-light", dark: "github-dark" } as const,
+  defaultColor: false as const,
   addLanguageClass: true,
   parseMetaString: (metaString: string) => ({ __raw: metaString }),
   transformers: [
@@ -26,3 +28,25 @@ export const shikiRehypeOptions = {
     },
   ],
 };
+
+const highlighterPromise = createHighlighter({
+  engine: createJavaScriptRegexEngine({ forgiving: true }),
+  themes: ["github-light", "github-dark"],
+  langs: Object.keys(bundledLanguages),
+});
+
+type TreeHandler = ReturnType<typeof rehypeShikiFromHighlighter>;
+let treeHandler: TreeHandler | undefined;
+
+/** Rehype plugin: highlight code with a workerd-safe Shiki engine. */
+export function rehypeShikiJs() {
+  return async (...args: Parameters<TreeHandler>) => {
+    const handler =
+      treeHandler ??
+      (treeHandler = rehypeShikiFromHighlighter(
+        await highlighterPromise,
+        shikiDisplayOptions,
+      ));
+    return handler(...args);
+  };
+}

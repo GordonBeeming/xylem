@@ -6,12 +6,11 @@ import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
-import rehypeShiki from "@shikijs/rehype";
 import rehypeReact from "rehype-react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import type { ReactElement } from "react";
 import { proseComponents } from "@/components/prose/prose-components";
-import { shikiRehypeOptions } from "@/lib/shiki-options";
+import { rehypeShikiJs } from "@/lib/shiki-options";
 
 const CLOBBER_PREFIX = defaultSchema.clobberPrefix ?? "";
 
@@ -80,7 +79,7 @@ const processor = unified()
   .use(rehypeSlug)
   .use(rehypeSanitize, defaultSchema)
   .use(rehypeFixAnchorHashes)
-  .use(rehypeShiki, shikiRehypeOptions)
+  .use(rehypeShikiJs)
   // proseComponents supplies the CodeBlock/MermaidDiagram <pre> handler, so
   // the box chrome comes from those components rather than a CSS class on
   // the raw <pre> (as a stringify-to-HTML pipeline would have needed).

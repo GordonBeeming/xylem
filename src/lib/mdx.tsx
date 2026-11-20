@@ -2,9 +2,8 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeSlug from "rehype-slug";
 import rehypeKatex from "rehype-katex";
-import rehypeShiki from "@shikijs/rehype";
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
-import { shikiRehypeOptions } from "@/lib/shiki-options";
+import { rehypeShikiJs } from "@/lib/shiki-options";
 import { Figure } from "@/components/prose/Figure";
 import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
 import { Walkthrough, Step } from "@/components/prose/Walkthrough";
@@ -31,7 +30,7 @@ export const mdxOptions: MDXRemoteProps["options"] = {
     rehypePlugins: [
       rehypeSlug,
       rehypeKatex,
-      [rehypeShiki, shikiRehypeOptions],
+      rehypeShikiJs,
     ],
   },
 };

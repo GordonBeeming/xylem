@@ -13,6 +13,8 @@ import { previewHeadings } from "@/lib/tina-preview-mode";
 import { resolveBlogPost } from "@/lib/resolve-blog-post";
 import { extractHeadings } from "@/lib/content";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
+import { renderPostMarkdown } from "@/lib/render-post-markdown";
+import { isPreviewServer } from "@/lib/tina-preview-mode";
 // rehype-code-meta no longer needed — shiki transformers handle meta
 import type { Metadata } from "next";
 
@@ -121,7 +123,9 @@ export default async function BlogPostPage(props: PageProps) {
   };
 
 
-  const mdxBody = (
+  const mdxBody = isPreviewServer() ? (
+    await renderPostMarkdown(content)
+  ) : (
     <MDXRemote
       source={content}
       components={mdxComponents}

@@ -8,6 +8,11 @@ const isPreviewWorker = process.env.XYLEM_PREVIEW === "1";
 
 const nextConfig: NextConfig = {
   ...(!isDev && !isPreviewWorker ? { output: "export" } : {}),
+  // Inline the flag so the preview server does not depend on wrangler vars
+  // being present when this module first evaluates. Pages inlines "".
+  env: {
+    XYLEM_PREVIEW: isPreviewWorker ? "1" : "",
+  },
   reactStrictMode: true,
   // Dev-only routes are named `page.dev.tsx` so they resolve as pages under
   // `next dev` and simply do not exist in a build. A static export cannot hold a

@@ -17,6 +17,7 @@
     "enabled": true
   },
   "vars": {
-    "NEXT_PUBLIC_TINA_CLIENT_ID": "8e8eb6ca-0176-48be-9461-808cf0022d7b"
+    "NEXT_PUBLIC_TINA_CLIENT_ID": "8e8eb6ca-0176-48be-9461-808cf0022d7b",
+    "XYLEM_PREVIEW": "1"
   }
 }

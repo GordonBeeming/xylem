@@ -2,6 +2,7 @@ import { cookies, draftMode } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import {
   TINA_BRANCH_COOKIE,
+  decodeBranchName,
   tinaBranchCookieOptions,
 } from "@/lib/tina-preview-mode";
 
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
       { status: 401 },
     );
   }
-  const branch = new URL(request.url).searchParams.get("branch")?.trim();
+  const branch = decodeBranchName(new URL(request.url).searchParams.get("branch"));
   if (!branch) {
     return NextResponse.json({ message: "Missing branch" }, { status: 400 });
   }

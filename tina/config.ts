@@ -1,12 +1,7 @@
 import { defineConfig, defineSchema } from "tinacms";
 import { normalizeFigureImageSrc } from "./figure-image-src";
 import { parsePostFilename, postFilename } from "./post-filename";
-import {
-  changeTinaDraftBranch,
-  draftModeEnterUrl,
-  enterTinaDraftMode,
-  reloadSameOriginPreviewIframes,
-} from "./enter-draft-mode";
+import { bindTinaDraftModeHooks, draftModeEnterUrl } from "./enter-draft-mode";
 
 const schema = defineSchema({
   collections: [
@@ -296,21 +291,7 @@ export default defineConfig({
     },
   },
   cmsCallback: (cms) => {
-    const enter = async () => {
-      const ok = await enterTinaDraftMode(cms);
-      if (ok) reloadSameOriginPreviewIframes();
-    };
-    if (typeof window !== "undefined") {
-      void enter();
-      cms.events.subscribe("cms:login", () => {
-        void enter();
-      });
-    }
-    cms.events.subscribe("branch:change", (event: { branchName?: string }) => {
-      const branch = event?.branchName;
-      if (!branch) return;
-      void changeTinaDraftBranch(cms, branch);
-    });
+    bindTinaDraftModeHooks(cms);
     return cms;
   },
   build: {

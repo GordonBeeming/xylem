@@ -14,6 +14,7 @@ import {
 export {
   DRAFT_MODE_COOKIE,
   TINA_BRANCH_COOKIE,
+  decodeBranchName,
   isPreviewServer,
   isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,

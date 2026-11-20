@@ -4,6 +4,27 @@ export const DRAFT_MODE_COOKIE = "__prerender_bypass";
 /** Official Tina editorial-workflow cookie used as the `x-branch` fetch header. */
 export const TINA_BRANCH_COOKIE = "x-branch";
 
+/**
+ * Tina's Client.getBranch() returns encodeURIComponent(name), and a leftover
+ * cookie or query value may be encoded more than once. Decode to the raw
+ * Git branch name before storing it or sending it as the x-branch header.
+ */
+export function decodeBranchName(branch?: string | null): string {
+  const trimmed = branch?.trim() ?? "";
+  if (!trimmed) return "";
+  let current = trimmed;
+  for (let i = 0; i < 3; i += 1) {
+    try {
+      const next = decodeURIComponent(current);
+      if (next === current) break;
+      current = next;
+    } catch {
+      break;
+    }
+  }
+  return current;
+}
+
 export const isPreviewServer = process.env.XYLEM_PREVIEW === "1";
 
 export type PreviewContext = {
@@ -51,7 +72,7 @@ export function previewContextFromEnvAndCookies(options: {
   if (!options.previewServer || !options.draftModeEnabled) {
     return { enabled: false, branch: null };
   }
-  const branch = options.branch?.trim() || null;
+  const branch = decodeBranchName(options.branch) || null;
   return { enabled: true, branch };
 }
 

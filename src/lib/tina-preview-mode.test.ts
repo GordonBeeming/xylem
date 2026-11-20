@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  decodeBranchName,
   isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,
   tinaBranchCookieOptions,
@@ -38,6 +39,17 @@ describe("previewContextFromEnvAndCookies", () => {
         branch: "tina/gb/example",
       }),
       { enabled: true, branch: "tina/gb/example" },
+    );
+  });
+
+  it("decodes a URL-encoded x-branch cookie from Client.getBranch()", () => {
+    assert.deepEqual(
+      previewContextFromEnvAndCookies({
+        previewServer: true,
+        draftModeEnabled: true,
+        branch: "gb%2Ftina-preview-test",
+      }),
+      { enabled: true, branch: "gb/tina-preview-test" },
     );
   });
 });
@@ -89,5 +101,16 @@ describe("isDocumentNavigationRequest", () => {
       false,
     );
     assert.equal(isDocumentNavigationRequest(new Headers()), false);
+  });
+});
+
+describe("decodeBranchName", () => {
+  it("returns the raw Git branch name from a Client.getBranch() value", () => {
+    assert.equal(decodeBranchName("gb%2Ftina-preview-test"), "gb/tina-preview-test");
+    assert.equal(decodeBranchName("gb%252Ftina-preview-test"), "gb/tina-preview-test");
+    assert.equal(decodeBranchName("gb/tina-preview-test"), "gb/tina-preview-test");
+    assert.equal(decodeBranchName(" main "), "main");
+    assert.equal(decodeBranchName(""), "");
+    assert.equal(decodeBranchName(null), "");
   });
 });

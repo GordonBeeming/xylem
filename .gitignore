@@ -54,3 +54,8 @@ next-env.d.ts
 # tina
 /tina/__generated__
 .playwright-mcp/
+# OpenNext / Wrangler (preview Worker)
+.open-next
+.wrangler
+.dev.vars
+cloudflare-env.d.ts

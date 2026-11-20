@@ -33,6 +33,9 @@ interface ClientPostProps {
   meta: PostMeta;
   layoutProps: LayoutProps;
   children: ReactNode;
+  /** When the preview Worker is in draft mode, always render the Tina body
+   *  (including unpublished branch documents that have no MDXRemote children). */
+  useTinaBody?: boolean;
 }
 
 /**
@@ -50,12 +53,12 @@ interface ClientPostProps {
  * isn't rendered at all: the server component renders `PostLayout`
  * directly with filesystem data, so the static site works with no JS.
  */
-export function ClientPost({ query, variables, data, meta, layoutProps, children }: ClientPostProps) {
+export function ClientPost({ query, variables, data, meta, layoutProps, children, useTinaBody = false }: ClientPostProps) {
   const { data: live } = useTina({ query, variables, data });
   const { edit } = useEditState();
   const post = live.post;
   const body = post.body as TinaMarkdownContent | undefined;
-  const liveBody = shouldRenderLiveMarkdown(edit, body);
+  const liveBody = shouldRenderLiveMarkdown(edit || useTinaBody, body);
   const imageCtx = { slug: meta.slug, branch: previewEditorBranch() };
   const markdownComponents = postMarkdownComponents(new GithubSlugger(), imageCtx);
   const liveHeadings = liveBody

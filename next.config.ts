@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
+// The GitHub Pages build stays a static export. The OpenNext preview Worker
+// build sets XYLEM_PREVIEW=1 so the same app can use Route Handlers and
+// Next.js draft mode (official Tina + Next preview flow).
+const isPreviewWorker = process.env.XYLEM_PREVIEW === "1";
 
 const nextConfig: NextConfig = {
-  ...(!isDev ? { output: "export" } : {}),
+  ...(!isDev && !isPreviewWorker ? { output: "export" } : {}),
   reactStrictMode: true,
   // Dev-only routes are named `page.dev.tsx` so they resolve as pages under
   // `next dev` and simply do not exist in a build. A static export cannot hold a

@@ -1,0 +1,4 @@
+# Local Wrangler / OpenNext preview. Copy to .dev.vars (gitignored).
+# TINA_TOKEN is the Tina Cloud read-only token; never commit the real value.
+NEXT_PUBLIC_TINA_CLIENT_ID=8e8eb6ca-0176-48be-9461-808cf0022d7b
+TINA_TOKEN=

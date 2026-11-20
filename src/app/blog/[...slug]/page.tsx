@@ -3,11 +3,11 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { PostLayout } from "@/layouts/PostLayout";
 import { ClientPost } from "./client-post";
 import {
-  getAllPosts,
   getRelatedPosts,
   getAdjacentPosts,
   getSiteConfig,
 } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { previewHeadings } from "@/lib/tina-preview-mode";
 import { resolveBlogPost } from "@/lib/resolve-blog-post";
 import { extractHeadings } from "@/lib/content";
@@ -20,7 +20,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getListedPosts();
   return posts.map((post) => ({
     slug: post.slug.split("/"),
   }));
@@ -84,7 +84,7 @@ export default async function BlogPostPage(props: PageProps) {
   const { prev, next } = getAdjacentPosts(meta.slug);
   // The sidebar's "Recent posts" list is site-wide and newest-first, unlike
   // relatedPosts, which is scored against this post's tags.
-  const recentPosts = getAllPosts()
+  const recentPosts = await getListedPosts()
     .filter((post) => post.slug !== meta.slug)
     .slice(0, 4);
   const headings =

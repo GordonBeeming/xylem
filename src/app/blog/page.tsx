@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getTagCounts, getTagDisplayNames, getYearCounts } from "@/lib/content";
 import BlogListClient from "./BlogListClient";
 import type { Metadata } from "next";
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     "Browse all blog posts by Gordon Beeming about development, DevOps, Azure, and modern web technologies.",
 };
 
-export default function BlogPage() {
-  const published = getAllPosts();
+export default async function BlogPage() {
+  const published = await getListedPosts();
 
   const postsData = published.map((p) => ({
     title: p.title,

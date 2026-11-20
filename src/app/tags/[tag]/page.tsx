@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getTagCounts, getTagDisplayNames, formatDateShort, postHref } from "@/lib/content";
 import { PostListItem } from "@/components/ds/PostListItem";
 import { slug } from "github-slugger";
@@ -12,7 +12,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const published = getAllPosts();
+  const published = await getListedPosts();
   const tagCounts = getTagCounts(published);
   return Object.keys(tagCounts).map((tag) => ({ tag }));
 }
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { tag } = await props.params;
   const decodedTag = decodeURIComponent(tag);
-  const published = getAllPosts();
+  const published = await getListedPosts();
   const displayNames = getTagDisplayNames(published);
   const displayName = displayNames[decodedTag] ?? decodedTag;
   return {
@@ -33,7 +33,7 @@ export default async function TagFilteredPage(props: PageProps) {
   const { tag } = await props.params;
   const decodedTag = decodeURIComponent(tag);
 
-  const published = getAllPosts();
+  const published = await getListedPosts();
   const displayNames = getTagDisplayNames(published);
   const displayName = displayNames[decodedTag] ?? decodedTag;
   const filtered = published.filter((post) =>

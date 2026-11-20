@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllPosts } from "@/lib/tina-helpers";
+import { getListedPosts } from "@/lib/listed-content";
 import { getYearCounts, formatDateShort, postHref } from "@/lib/content";
 import { PostListItem } from "@/components/ds/PostListItem";
 import type { Metadata } from "next";
@@ -11,7 +11,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const published = getAllPosts();
+  const published = await getListedPosts();
   const yearCounts = getYearCounts(published);
   return Object.keys(yearCounts).map((year) => ({ year }));
 }
@@ -27,7 +27,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function YearFilteredPage(props: PageProps) {
   const { year } = await props.params;
 
-  const published = getAllPosts();
+  const published = await getListedPosts();
   const filtered = published.filter((post) => post.date.startsWith(year));
 
   if (filtered.length === 0) {

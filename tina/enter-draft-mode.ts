@@ -51,9 +51,10 @@ export function branchFromTinaClient(tina: TinaApiClient | undefined): string {
 export function tinaFetchWithToken(
   tina: TinaApiClient | undefined,
 ): TinaAuthProvider["fetchWithToken"] | undefined {
-  const fetchWithToken = tina?.authProvider?.fetchWithToken;
-  if (typeof fetchWithToken !== "function") return undefined;
-  return fetchWithToken.bind(tina.authProvider);
+  const authProvider = tina?.authProvider;
+  const fetchWithToken = authProvider?.fetchWithToken;
+  if (!authProvider || typeof fetchWithToken !== "function") return undefined;
+  return fetchWithToken.bind(authProvider);
 }
 
 export async function enterTinaDraftMode(cms: TinaCMSLike): Promise<boolean> {

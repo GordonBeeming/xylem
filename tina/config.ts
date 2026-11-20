@@ -3,6 +3,7 @@ import { normalizeFigureImageSrc } from "./figure-image-src";
 import { parsePostFilename, postFilename } from "./post-filename";
 import {
   changeTinaDraftBranch,
+  draftModeEnterUrl,
   enterTinaDraftMode,
   reloadSameOriginPreviewIframes,
 } from "./enter-draft-mode";

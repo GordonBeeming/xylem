@@ -35,7 +35,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:tina
-      - run: rm -rf src/app/api
+      - run: rm -rf src/app/api src/app/images
       - name: Verify Tina and site build without production credentials
         env:
           NEXT_PUBLIC_TINA_CLIENT_ID: test-client
@@ -69,8 +69,8 @@ jobs:
 
       - name: Prepare for static export
         run: |
-          # Remove API routes (not compatible with static export)
-          rm -rf src/app/api
+          # Remove Route Handlers (not compatible with static export)
+          rm -rf src/app/api src/app/images
 
       - name: Build
         env:

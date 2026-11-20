@@ -46,6 +46,16 @@ export function publicImagesFilename(src: string): string {
   return uploads ? uploads[1] : "";
 }
 
+/** Map Tina staging, leftover /uploads, and /images srcs to `/images/<file>`. */
+export function publicPreviewImageSrc(src: string): string {
+  if (!src) return src;
+  const staging = parseTinaStagingPath(src);
+  const filename = staging
+    ? basename(staging.repoPath)
+    : publicImagesFilename(src);
+  return filename ? `/images/${filename}` : src;
+}
+
 export function previewEditorBranch(): string | null {
   if (typeof window === "undefined") return null;
   const fromQuery = new URLSearchParams(window.location.search).get("branch");

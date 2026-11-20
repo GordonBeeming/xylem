@@ -59,7 +59,11 @@ export function ClientPost({ query, variables, data, meta, layoutProps, children
   const post = live.post;
   const body = post.body as TinaMarkdownContent | undefined;
   const liveBody = shouldRenderLiveMarkdown(edit || useTinaBody, body);
-  const imageCtx = { slug: meta.slug, branch: previewEditorBranch() };
+  const imageCtx = {
+    slug: meta.slug,
+    branch: previewEditorBranch(),
+    keepPublicImageSrc: edit || useTinaBody,
+  };
   const markdownComponents = postMarkdownComponents(new GithubSlugger(), imageCtx);
   const liveHeadings = liveBody
     ? headingsFromBody(body, new GithubSlugger())

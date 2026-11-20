@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
 import Image from "next/image";
 
 interface AvatarProps {
@@ -13,6 +13,16 @@ interface AvatarProps {
   ring?: boolean;
   /** "square" keeps the animated avatar in layouts whose design has no rounded corners. */
   shape?: "round" | "square";
+}
+
+function subscribeReducedMotion(onStoreChange: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -31,13 +41,11 @@ const Avatar: React.FC<AvatarProps> = ({
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    setPrefersReducedMotion(
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    );
-  }, []);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
 
   // Lazy load via IntersectionObserver
   useEffect(() => {

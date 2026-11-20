@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo, Suspense } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { PostListItem } from "@/components/ds/PostListItem";
 import Link from "next/link";
@@ -65,23 +65,18 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
   const searchInputRef = useRef<HTMLInputElement>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedTag, setSelectedTag] = useState("");
-  const [visibleYears, setVisibleYears] = useState(2);
+  const searchQuery = searchParams.get("q") ?? "";
+  const selectedTag = searchParams.get("tag") ?? "";
+  const selectedYear = searchParams.get("year") ?? "";
+  const filterKey = `${selectedTag}|${selectedYear}|${searchQuery}`;
+  const [yearPaging, setYearPaging] = useState({ key: filterKey, count: 2 });
+  const visibleYears = yearPaging.key === filterKey ? yearPaging.count : 2;
 
-  // Sync state from URL on mount
   useEffect(() => {
-    const q = searchParams.get("q") ?? "";
-    const tag = searchParams.get("tag") ?? "";
-    const year = searchParams.get("year") ?? "";
-    setSearchQuery(q);
-    setSelectedTag(tag);
-    setSelectedYear(year);
-    if (q && searchInputRef.current) {
+    if (searchQuery && searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, [searchParams]);
+  }, [searchQuery]);
 
   const updateUrl = useCallback(
     (q: string, tag: string, year: string) => {
@@ -96,48 +91,40 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
   );
 
   const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
     updateUrl(value, selectedTag, selectedYear);
   };
 
   const handleTagChange = (tag: string) => {
     const newTag = selectedTag === tag ? "" : tag;
-    setSelectedTag(newTag);
     updateUrl(searchQuery, newTag, selectedYear);
   };
 
   const handleYearChange = (year: string) => {
     const newYear = selectedYear === year ? "" : year;
-    setSelectedYear(newYear);
     updateUrl(searchQuery, selectedTag, newYear);
   };
 
-  const filteredPosts = useMemo(() => {
-    return allPosts.filter((post) => {
-      if (selectedTag && !post.tags.some((t) => slugifyTag(t) === selectedTag.toLowerCase())) {
+  const filteredPosts = allPosts.filter((post) => {
+    if (selectedTag && !post.tags.some((t) => slugifyTag(t) === selectedTag.toLowerCase())) {
+      return false;
+    }
+    if (selectedYear && !post.date.startsWith(selectedYear)) {
+      return false;
+    }
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const matchesTitle = post.title.toLowerCase().includes(q);
+      const matchesSummary = post.summary?.toLowerCase().includes(q);
+      const matchesTags = post.tags.some((t) => t.toLowerCase().includes(q) || slugifyTag(t).includes(q));
+      if (!matchesTitle && !matchesSummary && !matchesTags) {
         return false;
       }
-      if (selectedYear && !post.date.startsWith(selectedYear)) {
-        return false;
-      }
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        const matchesTitle = post.title.toLowerCase().includes(q);
-        const matchesSummary = post.summary?.toLowerCase().includes(q);
-        const matchesTags = post.tags.some((t) => t.toLowerCase().includes(q) || slugifyTag(t).includes(q));
-        if (!matchesTitle && !matchesSummary && !matchesTags) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }, [allPosts, selectedTag, selectedYear, searchQuery]);
+    }
+    return true;
+  });
 
-  const groups = useMemo(() => groupByYear(filteredPosts), [filteredPosts]);
+  const groups = groupByYear(filteredPosts);
 
-  useEffect(() => {
-    setVisibleYears(2);
-  }, [selectedTag, selectedYear, searchQuery]);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -145,14 +132,17 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleYears((n) => (n < groups.length ? n + 2 : n));
+          setYearPaging((prev) => {
+            const count = prev.key === filterKey ? prev.count : 2;
+            return { key: filterKey, count: count < groups.length ? count + 2 : count };
+          });
         }
       },
       { rootMargin: "400px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [groups.length]);
+  }, [groups.length, filterKey]);
 
   const sortedTags = Object.entries(tagCounts)
     .sort(([, a], [, b]) => b - a)
@@ -251,9 +241,6 @@ function BlogListInner({ allPosts, tagCounts, tagDisplayNames, yearCounts }: Blo
         <button
           type="button"
           onClick={() => {
-            setSearchQuery("");
-            setSelectedTag("");
-            setSelectedYear("");
             updateUrl("", "", "");
           }}
           className="mt-3 text-[length:var(--text-xs)] underline"

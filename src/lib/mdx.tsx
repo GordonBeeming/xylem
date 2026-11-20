@@ -4,6 +4,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeKatex from "rehype-katex";
 import rehypeShiki from "@shikijs/rehype";
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
+import { shikiRehypeOptions } from "@/lib/shiki-options";
 import { Figure } from "@/components/prose/Figure";
 import { YouTubeEmbed } from "@/components/prose/YouTubeEmbed";
 import { Walkthrough, Step } from "@/components/prose/Walkthrough";
@@ -30,20 +31,7 @@ export const mdxOptions: MDXRemoteProps["options"] = {
     rehypePlugins: [
       rehypeSlug,
       rehypeKatex,
-      [rehypeShiki, {
-        themes: { light: "github-light", dark: "github-dark" },
-        defaultColor: false,
-        addLanguageClass: true,
-        parseMetaString: (metaString: string) => ({ __raw: metaString }),
-        transformers: [{
-          pre(node: { properties: Record<string, unknown> }) {
-            const meta = (this as unknown as { options: { meta?: { __raw?: string } } }).options?.meta?.__raw;
-            if (meta) {
-              node.properties["data-meta"] = meta;
-            }
-          },
-        }],
-      }],
+      [rehypeShiki, shikiRehypeOptions],
     ],
   },
 };

@@ -1,6 +1,56 @@
 ---
 title: This Week in Developer Tech · W08
 date: 2026-11-25T22:58:17.893Z
+tags: ['Developer Tools', 'AI', 'GitHub', 'Security', '.NET', 'Rust']
+summary: "How Netflix's Commerce team reworked development for coding agents, the 1Password incident that started with an employee's GitHub account, Anthropic's Messages API move from Python to Rust, Microsoft Copilot SDK 2.0, and unpatched RCE in the abandoned Idunno.AntiCsrf library."
 ---
 
-Draft in progress
+Agents do better work when the docs, decision records and review rules are written for them as well as for people. Proving that agent-written code behaves like the code it replaces took Anthropic far more effort than writing it. One developer's GitHub account and one forgotten WebForms module were each enough to get attackers into production systems.
+
+This edition draws on the 20 to 26 November 2026 briefings, with five selected stories on Netflix's agent-ready development process, the 1Password security incident, Anthropic's Rust migration, Microsoft Copilot SDK 2.0, and the Idunno.AntiCsrf exploits. It was a quieter week, so there is no Other headlines section.
+
+## 1. How Netflix's Commerce team reworked development for coding agents
+
+[InfoQ's write-up](https://www.infoq.com/news/2026/11/netflix-sdlc-ai-coding-agents/) of a QCon San Francisco talk, published 23 November, covers how Netflix's Commerce team changed its development process for coding agents. Netflix engineer Mark Khuzam said most of the work wasn't about the agents. It was documentation, consistency and review. The team's first agent-run test migration took four attempts, because the docs were hard to find and the tests were written inconsistently.
+
+The team wrote 45 architecture decision records "for people and for agents". Each one has the context, the decision, a pattern, an anti-pattern and notes for AI use. The records now ship inside almost every repository, and `AGENTS.md` works like a `robots.txt` that points agents at them. A review agent pre-checks each pull request against those records. Its first version left 23 comments on one pull request, and it now posts only verified blockers, each with evidence, a fix and the rule it breaks. Adding a "revise" label to a pull request has an agent push a fix. Nothing is merged automatically, and engineers own the code.
+
+For work that spans services, the team tried loading every repository, git submodules and a Git MCP server, which "sees one file, not the system". They settled on a GraphRAG index per domain, pinned to specific commits and served through one MCP tool. Claude Code, Cursor, Codex, a Slack bot and CI review all query it, and every answer cites a file and line.
+
+Netflix reported no Sev 1 incidents in 2026 on a core service, 32% more pull requests year over year, and developer NPS rising from -3 to +25 over three quarters. These are self-reported results from one team with no controlled comparison, and the session video isn't out yet. Decision records with a section on what an agent should do, and a review bot that posts blockers only, are both cheap to pilot on one repository.
+
+## 2. An attacker used a 1Password employee's GitHub account to push malicious code to its backend
+
+[1Password's incident update](https://1password.com/blog/update-on-nov-2026-security-incident), published 25 November US time, says it started investigating on 19 November after signs that an attacker had taken over an employee's corporate GitHub account. With that account, the attacker copied source code from private repositories, got into the CI/CD system, and pushed malicious code to backend services. That code downloaded account records for a subset of customers: names and sign-in email addresses, account and user IDs, account creation and last sign-in times, public keys, SRP parameters and other non-secret metadata, and the tokens in invitation, provisioning and account-recovery email links.
+
+1Password says vault contents, vault keys, account passwords, Secret Keys, recovery keys, and the apps and browser extensions weren't affected. The email-link tokens only work alongside an SSO sign-in or a code sent by email, and 1Password has lengthened those codes from six digits to ten alphanumeric characters. It has rotated every internal credential that may have been exposed, including CI/CD secrets, and says it has found no account takeovers. Customers don't need to change anything, but should expect phishing, especially invitation or account-recovery emails they didn't ask for.
+
+The way in was one developer's GitHub account, and that was enough to change production code and reach CI/CD secrets at a company many teams trust with their own secrets. It's worth checking what a single engineer's GitHub identity can do in your organisation: push to deploy branches without review, reach CI secrets from any branch, or hold long-lived tokens.
+
+Everything here is 1Password's own account, and outside security experts are checking its containment work. 1Password hasn't said how many customers are affected or how the GitHub account was compromised, and [TechCrunch](https://techcrunch.com/2026/11/25/1password-said-hackers-broke-into-its-internal-systems-but-customer-passwords-are-safe/) has asked about both.
+
+## 3. How Anthropic moved its Messages API from Python to Rust
+
+[Anthropic's engineering post](https://www.anthropic.com/research/migrating-api-to-rust), published 26 November, describes rewriting the Messages API, the service behind the Claude API, Claude Code and Cowork, from Python to Rust. Claude wrote a first version of the core request path in about a week. The hard part was proving that the Rust version behaved exactly like production while the Python version kept changing. Public traffic moved to Rust in September, and Anthropic reports about 70% less CPU per request and about 20% lower median time to first token.
+
+Tests weren't enough. In April the Rust port passed about 98% of roughly 700 integration tests, but only about a quarter of real inputs matched production, and an audit of the ported tests found more than 100 weakened assertions. The team shadowed production traffic instead. Because model output varies between runs, the model ran once and the same output was replayed through both versions, so any difference came from the code. Customer requests couldn't be read, so each mismatch was logged by its step, the part of the prompt involved, the first differing byte and the lengths. A given bug leaves the same fingerprint each time, so the records could be grouped.
+
+Every 10 to 30 minutes a script grouped new kinds of mismatch, and a coordinating agent gave each kind to a worker agent. The worker reproduced it in a sandbox, fixed the Rust, and added a test that failed on the old code and passed on the new. Engineers reviewed each fix before it was checked again against shadowed traffic, and their corrections became `CLAUDE.md` rules, lints and tests. Eventually a merge check required every Python change to come with a matching Rust change. In one rejected fix, an agent copied the web search tool's description into files, which satisfied the verifier but couldn't ship.
+
+These are Anthropic's own figures for its own service, and the approach depends on being able to shadow production traffic safely. The fingerprinting and replay design applies to any large migration where tests don't capture all the behaviour, such as .NET Framework to modern .NET moves or service rewrites.
+
+## 4. Microsoft Copilot SDK 2.0 runs the agent runtime in your process, with per-user sessions
+
+The GitHub Copilot SDK is now the Microsoft Copilot SDK, and [Microsoft's announcement](https://commandline.microsoft.com/microsoft-copilot-sdk-2-0-github/) covers v2.0.0, shipped on 17 November at Ignite. The runtime has been rebuilt in Rust and runs inside your process. One runtime can host many isolated sessions, each with its own state, credentials, tools, files and history. A session can run as the user who requested it, so model and tool calls are attributed to that user, not your server. A new "empty" mode starts with no ambient shell, files or CLI defaults. SDKs cover TypeScript, Python, Go, .NET, Java and Rust.
+
+Microsoft's numbers are from a warmed workload. Creating a client and session and completing one turn went from 5.25 s on the TypeScript CLI to 55.3 ms with the in-process Rust core. Memory for 10 clients went from 1,383 MB to 126 MB, and throughput from 7.55 to 120 sessions per second. For agents inside multi-user apps, that removes the need for a container per session, which cuts cold starts and cost.
+
+The [v2.0.0 release notes](https://github.com/microsoft/copilot-sdk/releases/tag/v2.0.0) list breaking changes. Packages and namespaces are renamed, and because the runtime now runs in-process by default, you lose process isolation. `RuntimeConnection.forSpawnedStdio()` switches back to a separate process. Microsoft still recommends a hard container boundary for sessions that run untrusted code.
+
+## 5. Attackers are exploiting Idunno.AntiCsrf, an abandoned WebForms library, and there's no patch
+
+Mandiant advisory MNDT-2026-0048, published 18 November and [widely reported on 23 November](https://thehackernews.com/2026/11/hackers-exploit-critical-aspnet-anti.html), covers CVE-2026-131914, rated CVSS 9.3, in Idunno.AntiCsrf versions 0.9.1.0 and 0.9.1 Beta. The ASP.NET WebForms module deserialises the CSRF form token with an unkeyed `ObjectStateFormatter` and no MAC check. One POST request carrying any non-empty CSRF cookie plus a Base64 gadget chain runs code as `w3wp.exe`. Mandiant says it has seen active exploitation and found the root cause during an incident response, [according to CyberTech Edition](https://cybertechedition.com/news/mandiant-idunno-anticsrf-cve-2026-131914-exploited/).
+
+The project has had no updates since December 2008, so nobody will ship a fix. A dependency like this usually only turns up when someone audits old WebForms apps, which is common work in .NET modernisation projects.
+
+Search `Web.config` files and `bin/` folders for `Idunno.AntiCsrf` or `AntiCsrfModule`. Remove the module and replace it with `System.Web.Helpers.AntiForgery`, `ViewStateUserKey` with MAC-protected ViewState, or ASP.NET Core `IAntiforgery`. In IIS logs, look for unusual POSTs to `.aspx` pages that return 302 or 500 responses. If you find signs of exploitation, rotate the machine keys, encryption keys and connection strings in `Web.config` and `applicationHost.config`, and check web roots for unauthorised files. No attacker, victim list or indicators of compromise have been published.

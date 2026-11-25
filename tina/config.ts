@@ -89,7 +89,6 @@ const schema = defineSchema({
               fields: [
                 { type: "string", name: "src", label: "YouTube Embed URL", required: true },
                 { type: "string", name: "title", label: "Video Title" },
-                { type: "number", name: "duration", label: "Duration (seconds)" },
                 { type: "number", name: "width", label: "Width" },
                 { type: "number", name: "height", label: "Height" },
               ],

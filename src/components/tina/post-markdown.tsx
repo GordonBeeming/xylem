@@ -40,8 +40,8 @@ export function postMarkdownComponents(slugger: GithubSlugger) {
         caption={props.caption}
       />
     ),
-    YouTubeEmbed: (props: { src?: string; title?: string }) => (
-      <YouTubeEmbed src={props.src ?? ""} title={props.title} />
+    YouTubeEmbed: (props: { src?: string; title?: string; duration?: number | string }) => (
+      <YouTubeEmbed src={props.src ?? ""} title={props.title} duration={props.duration} />
     ),
     Walkthrough,
     Step,

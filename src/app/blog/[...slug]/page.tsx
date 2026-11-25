@@ -10,6 +10,7 @@ import {
 } from "@/lib/tina-helpers";
 import { getListedPosts } from "@/lib/listed-content";
 import { previewHeadings } from "@/lib/tina-preview-mode";
+import { hasInvalidMarkdown } from "@/components/tina/post-markdown-body";
 import { resolveBlogPost } from "@/lib/resolve-blog-post";
 import { extractHeadings } from "@/lib/content";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
@@ -92,9 +93,13 @@ export default async function BlogPostPage(props: PageProps) {
   const recentPosts = (await getListedPosts())
     .filter((post) => post.slug !== meta.slug)
     .slice(0, 4);
-  const headings =
+  const tinaBody =
     preview.enabled && tinaData?.data && "post" in tinaData.data
-      ? previewHeadings(tinaData.data.post?.body)
+      ? tinaData.data.post?.body
+      : undefined;
+  const headings =
+    tinaBody && !hasInvalidMarkdown(tinaBody)
+      ? previewHeadings(tinaBody)
       : extractHeadings(content);
   const siteConfig = getSiteConfig();
 

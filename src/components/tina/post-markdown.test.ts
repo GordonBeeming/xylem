@@ -4,6 +4,8 @@ import GithubSlugger from "github-slugger";
 import type { TinaMarkdownContent } from "tinacms/dist/rich-text";
 import {
   headingsFromBody,
+  hasInvalidMarkdown,
+  markdownFromInvalidBody,
   shouldRenderLiveMarkdown,
   textFromNode,
 } from "./post-markdown-body.ts";
@@ -36,6 +38,37 @@ describe("shouldRenderLiveMarkdown", () => {
   it("uses the live Tina body only when edit mode is on and a body exists", () => {
     assert.equal(shouldRenderLiveMarkdown(true, sampleBody), true);
     assert.equal(shouldRenderLiveMarkdown(true, undefined), false);
+  });
+
+  it("keeps the server-rendered body when Tina could not parse the MDX", () => {
+    const invalid = {
+      type: "root",
+      children: [
+        {
+          type: "invalid_markdown",
+          value: '## VSTS Accounts\n\n<YouTubeEmbed src="https://www.youtube.com/embed/Y7NQSB99DJ8" width="560" height="315" title="VSTS Overview - 01 - Account" duration={459} />\n',
+          children: [{ type: "text", text: "" }],
+        },
+      ],
+    } as TinaMarkdownContent;
+    assert.equal(hasInvalidMarkdown(invalid), true);
+    assert.equal(hasInvalidMarkdown(sampleBody), false);
+    assert.equal(shouldRenderLiveMarkdown(true, invalid), false);
+    assert.match(markdownFromInvalidBody(invalid) ?? "", /VSTS Accounts/);
+    assert.match(markdownFromInvalidBody(invalid) ?? "", /YouTubeEmbed/);
+  });
+
+  it("strips frontmatter from an invalid_markdown value", () => {
+    const invalid = {
+      type: "root",
+      children: [
+        {
+          type: "invalid_markdown",
+          value: "---\ntitle: Demo\n---\n\n## Hello\n",
+        },
+      ],
+    } as TinaMarkdownContent;
+    assert.equal(markdownFromInvalidBody(invalid), "## Hello\n");
   });
 });
 

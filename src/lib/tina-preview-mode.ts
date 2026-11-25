@@ -1,5 +1,5 @@
 import { postRelativePath } from "./tina-preview-path";
-import { headingsFromBody, textFromNode } from "../components/tina/post-markdown-body";
+import { headingsFromBody, markdownFromInvalidBody, textFromNode } from "../components/tina/post-markdown-body";
 import type { PostMeta } from "./tina-helpers";
 import type { TinaMarkdownContent } from "tinacms/dist/rich-text";
 import GithubSlugger from "github-slugger";
@@ -70,7 +70,7 @@ export function metaFromTinaPost(
 ): { meta: PostMeta; content: string } {
   const title = post.title?.trim() || "Untitled";
   const body = post.body;
-  const bodyText = textFromNode(body ?? undefined);
+  const bodyText = markdownFromInvalidBody(body) ?? textFromNode(body ?? undefined);
   const reading = readingTime(bodyText || title || "preview");
   const meta: PostMeta = {
     title,

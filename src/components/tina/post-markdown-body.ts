@@ -13,7 +13,41 @@ export function shouldRenderLiveMarkdown(
   edit: boolean,
   body: TinaMarkdownContent | null | undefined,
 ): body is TinaMarkdownContent {
-  return Boolean(edit && body);
+  return Boolean(edit && body && !hasInvalidMarkdown(body));
+}
+
+function firstInvalidMarkdown(node: unknown): { value?: string } | undefined {
+  if (node == null) return undefined;
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const found = firstInvalidMarkdown(child);
+      if (found) return found;
+    }
+    return undefined;
+  }
+  if (typeof node !== "object") return undefined;
+  const value = node as { type?: string; value?: unknown; children?: unknown };
+  if (value.type === "invalid_markdown") {
+    return { value: typeof value.value === "string" ? value.value : undefined };
+  }
+  return firstInvalidMarkdown(value.children);
+}
+
+/** Tina's MDX parser turns the whole body into one invalid_markdown node
+ *  when a component attribute does not match the schema (string width on a
+ *  number field, a leftover React `key`, a boolean allowfullscreen, …).
+ *  TinaMarkdown then dumps the raw source into a <pre>. */
+export function hasInvalidMarkdown(body: TinaMarkdownContent | null | undefined): boolean {
+  return firstInvalidMarkdown(body) !== undefined;
+}
+
+/** Raw MDX from an invalid_markdown node, with optional frontmatter stripped. */
+export function markdownFromInvalidBody(
+  body: TinaMarkdownContent | null | undefined,
+): string | undefined {
+  const raw = firstInvalidMarkdown(body)?.value;
+  if (!raw?.trim()) return undefined;
+  return raw.replace(/^\uFEFF?---[\s\S]*?---\s*/, "");
 }
 
 export function textFromNode(node: unknown): string {

@@ -10,6 +10,8 @@ import { textFromReactNode } from "./post-markdown-body";
 
 export {
   shouldRenderLiveMarkdown,
+  hasInvalidMarkdown,
+  markdownFromInvalidBody,
   textFromNode,
   textFromReactNode,
   headingsFromBody,

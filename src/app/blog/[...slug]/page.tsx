@@ -15,6 +15,7 @@ import { resolveBlogPost } from "@/lib/resolve-blog-post";
 import { extractHeadings } from "@/lib/content";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
 import { renderPostMarkdown } from "@/lib/render-post-markdown";
+import { normalizeJsxLiteralAttributes } from "@/lib/render-post-markdown-core";
 import { isPreviewServer } from "@/lib/tina-preview-mode";
 // rehype-code-meta no longer needed — shiki transformers handle meta
 import type { Metadata } from "next";
@@ -132,7 +133,9 @@ export default async function BlogPostPage(props: PageProps) {
     await renderPostMarkdown(content)
   ) : (
     <MDXRemote
-      source={content}
+      // next-mdx-remote drops JSX expression attributes (`duration={459}`),
+      // so rewrite them to quoted values first (same helper as the Worker path).
+      source={normalizeJsxLiteralAttributes(content)}
       components={mdxComponents}
       options={mdxOptions}
     />

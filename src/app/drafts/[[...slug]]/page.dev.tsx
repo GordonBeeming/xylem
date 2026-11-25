@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { getDraft, getDrafts, getDraftSlugs } from "@/lib/drafts";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
+import { normalizeJsxLiteralAttributes } from "@/lib/render-post-markdown-core";
 import styles from "./drafts.module.css";
 
 export const metadata: Metadata = {
@@ -56,7 +57,7 @@ export default async function DraftsPage({ params }: { params: Promise<{ slug?: 
         )}
         <div style={{ height: 1, background: "var(--border-strong)", margin: "22px 0" }} />
         <div className="prose">
-          <MDXRemote source={draft.content} components={mdxComponents} options={mdxOptions} />
+          <MDXRemote source={normalizeJsxLiteralAttributes(draft.content)} components={mdxComponents} options={mdxOptions} />
         </div>
       </PageShell>
     );

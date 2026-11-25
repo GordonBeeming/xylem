@@ -1,4 +1,5 @@
 import {
+  extractVideoId,
   visibleCaption,
   youtubeEmbedSrc,
 } from "./YouTubeEmbed-core";
@@ -6,16 +7,20 @@ import {
 interface YouTubeEmbedProps {
   src: string;
   title?: string;
+  duration?: number | string;
 }
 
 /** Xylem YouTubeEmbed — responsive 16:9 player. Embeds the native YouTube
  *  player directly (YouTube's own poster + one-click play) on the
- *  privacy-friendly youtube-nocookie domain, lazy-loaded. The video title
- *  is shown as a figcaption, matching Figure. */
-export function YouTubeEmbed({ src, title }: YouTubeEmbedProps) {
+ *  privacy-friendly youtube-nocookie domain, lazy-loaded. The figcaption
+ *  follows the SSW Rules standard: bold "Video: {{ TITLE }} ({{ LENGTH }})"
+ *  under the player, with length omitted when it is not known. */
+export function YouTubeEmbed({ src, title, duration }: YouTubeEmbedProps) {
   const embedSrc = youtubeEmbedSrc(src);
   const iframeTitle = title?.trim() || "YouTube video";
-  const caption = visibleCaption(title);
+  const caption = visibleCaption(title, duration, {
+    isVideo: extractVideoId(src) !== null,
+  });
 
   return (
     <figure className="my-6">
@@ -30,7 +35,7 @@ export function YouTubeEmbed({ src, title }: YouTubeEmbedProps) {
         />
       </div>
       {caption && (
-        <figcaption className="mt-[var(--space-3)] text-center text-[length:var(--text-sm)] leading-[var(--lh-normal)] italic text-[color:var(--text-muted)]">
+        <figcaption className="mt-[var(--space-3)] text-left text-[length:var(--text-base)] leading-[var(--lh-normal)] font-[weight:var(--fw-bold)] not-italic text-[color:var(--text)]">
           {caption}
         </figcaption>
       )}

@@ -13,7 +13,7 @@
 const CLIENT_ID = process.env.NEXT_PUBLIC_TINA_CLIENT_ID ?? "";
 
 /** `/__staging/<branch>/__file/<repoPath>` — branch names may contain slashes. */
-const STAGING_FILE = /\/__staging\/.+?\/__file(\/[^?#]*)/;
+const STAGING_FILE = /^\/__staging\/.+?\/__file(\/[^?#]*)$/;
 
 function stripTinaCloudPrefix(value: string, clientId: string): string {
   const cdnPrefix = clientId ? `https://assets.tina.io/${clientId}/` : "";
@@ -24,8 +24,24 @@ function stripTinaCloudPrefix(value: string, clientId: string): string {
   return value;
 }
 
+function pathnameOfCompleteSrc(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed || /\s/.test(trimmed)) return null;
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      return new URL(trimmed).pathname;
+    } catch {
+      return null;
+    }
+  }
+  if (trimmed.startsWith("/")) return trimmed.split(/[?#]/)[0];
+  return null;
+}
+
 function repoPathFromStaging(value: string): string | null {
-  const match = value.trim().match(STAGING_FILE);
+  const path = pathnameOfCompleteSrc(value);
+  if (!path) return null;
+  const match = path.match(STAGING_FILE);
   if (!match) return null;
   try {
     return decodeURIComponent(match[1]);

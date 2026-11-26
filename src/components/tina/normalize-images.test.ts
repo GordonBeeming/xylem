@@ -59,9 +59,16 @@ describe("normalizeTinaImageUrl", () => {
     assert.equal(normalizeTinaImageUrl(""), "");
   });
 
-  it("does not strip a different TinaCloud client ID prefix, but still unwraps staging", () => {
+  it("leaves a different TinaCloud client ID URL unchanged", () => {
     const other = `https://assets.tina.io/other-client/__staging/main/__file${sswLight}`;
-    assert.equal(normalizeTinaImageUrl(other, clientId), sswLight);
+    assert.equal(normalizeTinaImageUrl(other, clientId), other);
+  });
+
+  it("leaves prose that only mentions a staging URL unchanged", () => {
+    const sentence = `The logo is at https://assets.tina.io/${clientId}/__staging/main/__file${sswLight}`;
+    assert.equal(normalizeTinaImageUrl(sentence, clientId), sentence);
+    const relativeMention = `see /__staging/main/__file${sswLight} in the network tab`;
+    assert.equal(normalizeTinaImageUrl(relativeMention, clientId), relativeMention);
   });
 });
 

@@ -23,7 +23,7 @@
     "blog:publisher:reconcile": "node scripts/blog-automation/publisher/cli.mjs reconcile",
     "lint:blog-automation": "eslint \"scripts/blog-automation/**/*.mjs\"",
     "test:blog-automation": "node --test scripts/blog-automation/test/*.test.mjs",
-    "test:tina": "node --test --experimental-strip-types --disable-warning=ExperimentalWarning tina/post-filename.test.ts tina/figure-image-src.test.ts tina/enter-draft-mode.test.ts src/lib/tina-preview-path.test.ts src/lib/tina-preview-seed.test.ts src/lib/tina-preview-images.test.ts src/components/tina/post-markdown.test.ts src/components/prose/YouTubeEmbed.test.ts src/lib/render-post-markdown.test.ts src/lib/tina-preview-mode.test.ts src/lib/listed-content.test.ts src/lib/preview-images-serve.test.ts",
+    "test:tina": "node --test --experimental-strip-types --disable-warning=ExperimentalWarning tina/post-filename.test.ts tina/figure-image-src.test.ts tina/enter-draft-mode.test.ts src/lib/tina-preview-path.test.ts src/lib/tina-preview-seed.test.ts src/lib/tina-preview-images.test.ts src/components/tina/normalize-images.test.ts src/components/tina/post-markdown.test.ts src/components/prose/YouTubeEmbed.test.ts src/lib/render-post-markdown.test.ts src/lib/tina-preview-mode.test.ts src/lib/listed-content.test.ts src/lib/preview-images-serve.test.ts",
     "preview": "node scripts/generate-content-snapshot.mjs && XYLEM_PREVIEW=1 opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:preview": "node scripts/generate-content-snapshot.mjs && XYLEM_PREVIEW=1 opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"

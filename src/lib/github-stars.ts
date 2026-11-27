@@ -1,5 +1,6 @@
 import type { ProjectData } from "./tina-helpers";
-import { parseGitHubRepo } from "./github-stars-core";
+import { applySnapshotStarCounts, parseGitHubRepo } from "./github-stars-core";
+import { loadContentSnapshot } from "./content-snapshot";
 import { shouldFetchLiveGitHubStars } from "./tina-preview-mode-core";
 
 export { parseGitHubRepo } from "./github-stars-core";
@@ -47,13 +48,17 @@ async function fetchStarCount(repo: string): Promise<number | undefined> {
 
 /**
  * Enrich an array of projects with live GitHub star counts.
- * Falls back to any `githubStars` value already present in the project data (from JSON).
+ * Falls back to any `githubStars` value already present in the project data, then to
+ * star counts baked into the content snapshot at build time.
  */
 export async function enrichProjectsWithStars(
   projects: ProjectData[]
 ): Promise<ProjectData[]> {
   if (!shouldFetchLiveGitHubStars()) {
-    return projects;
+    return applySnapshotStarCounts(
+      projects,
+      loadContentSnapshot()?.projects ?? [],
+    );
   }
   const enriched = await Promise.all(
     projects.map(async (project) => {

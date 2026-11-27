@@ -1,21 +1,9 @@
 import type { ProjectData } from "./tina-helpers";
+import { parseGitHubRepo } from "./github-stars-core";
+import { shouldFetchLiveGitHubStars } from "./tina-preview-mode-core";
 
-/**
- * Extract the GitHub owner/repo from a GitHub URL.
- * Returns null if the URL is not a valid GitHub repo URL.
- */
-function parseGitHubRepo(url: string): string | null {
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname !== "github.com") return null;
-    // pathname like /GordonBeeming/copilot_here
-    const parts = parsed.pathname.split("/").filter(Boolean);
-    if (parts.length < 2) return null;
-    return `${parts[0]}/${parts[1]}`;
-  } catch {
-    return null;
-  }
-}
+export { parseGitHubRepo } from "./github-stars-core";
+export { shouldFetchLiveGitHubStars } from "./tina-preview-mode-core";
 
 /**
  * Fetch the star count for a single GitHub repository.
@@ -64,6 +52,9 @@ async function fetchStarCount(repo: string): Promise<number | undefined> {
 export async function enrichProjectsWithStars(
   projects: ProjectData[]
 ): Promise<ProjectData[]> {
+  if (!shouldFetchLiveGitHubStars()) {
+    return projects;
+  }
   const enriched = await Promise.all(
     projects.map(async (project) => {
       if (!project.github) return project;

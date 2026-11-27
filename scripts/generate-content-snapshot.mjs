@@ -205,6 +205,57 @@ function collectNuggets() {
   return nuggets;
 }
 
+
+function parseGitHubRepo(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname !== "github.com") return null;
+    const parts = parsed.pathname.split("/").filter(Boolean);
+    if (parts.length < 2) return null;
+    return `${parts[0]}/${parts[1]}`;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchStarCount(repo) {
+  const headers = {
+    Accept: "application/vnd.github.v3+json",
+    "User-Agent": "xylem-content-snapshot",
+  };
+  const token = process.env.GITHUB_TOKEN;
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers,
+      signal: controller.signal,
+    });
+    if (!response.ok) return undefined;
+    const data = await response.json();
+    return typeof data.stargazers_count === "number" ? data.stargazers_count : undefined;
+  } catch {
+    return undefined;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function enrichProjectsWithBuildTimeStars(projects) {
+  return Promise.all(
+    projects.map(async (project) => {
+      if (typeof project.githubStars === "number" || typeof project.github !== "string") {
+        return project;
+      }
+      const repo = parseGitHubRepo(project.github);
+      if (!repo) return project;
+      const stars = await fetchStarCount(repo);
+      return stars !== undefined ? { ...project, githubStars: stars } : project;
+    }),
+  );
+}
+
 const snapshot = {
   posts: collectPosts(),
   projects: collectProjects(),
@@ -215,9 +266,12 @@ const snapshot = {
   nuggets: collectNuggets(),
 };
 
+snapshot.projects = await enrichProjectsWithBuildTimeStars(snapshot.projects);
+
 mkdirSync(outDir, { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(snapshot)}\n`);
 const bytes = statSync(outFile).size;
+const withStars = snapshot.projects.filter((project) => typeof project.githubStars === "number").length;
 console.log(
-  `Wrote content snapshot: ${snapshot.posts.length} posts, ${snapshot.projects.length} projects, ${snapshot.books.length} books, ${snapshot.nuggets.length} nuggets, ${Object.keys(snapshot.authors).length} authors (${(bytes / 1024).toFixed(1)} KB)`,
+  `Wrote content snapshot: ${snapshot.posts.length} posts, ${snapshot.projects.length} projects (${withStars} with GitHub stars), ${snapshot.books.length} books, ${snapshot.nuggets.length} nuggets, ${Object.keys(snapshot.authors).length} authors (${(bytes / 1024).toFixed(1)} KB)`,
 );

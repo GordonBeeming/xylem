@@ -1,0 +1,29 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--gutter);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+}
+
+.label {
+  margin: 0;
+}
+
+.exit {
+  color: var(--text-on-accent);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  white-space: nowrap;
+}
+
+.exit:hover {
+  color: var(--text-on-accent);
+}

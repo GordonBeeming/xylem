@@ -1,4 +1,5 @@
 import client from "../../../tina/__generated__/client";
+import { getPreviewContext, isPreviewServer, shouldFetchTina } from "@/lib/tina-preview-mode";
 import { normalizeTinaImages } from "./normalize-images";
 
 /**
@@ -29,12 +30,23 @@ function isServerUnreachable(error: unknown): boolean {
  * that `useTina` needs for form registration and live preview — or `null` when
  * the Tina GraphQL server isn't reachable, so callers fall back to the
  * filesystem render (the static site works with no Tina server and no JS).
+ * On the preview Worker this is a no-op outside official draft mode, so
+ * published pages use the inlined snapshot instead of TinaCloud.
  */
 export async function fetchTina<
   T extends { query: string; variables: object; data: object },
 >(
   run: () => Promise<T>,
 ): Promise<{ query: string; variables: Record<string, unknown>; data: T["data"] } | null> {
+  const preview = await getPreviewContext();
+  if (
+    !shouldFetchTina({
+      previewServer: isPreviewServer(),
+      draftModeEnabled: preview.enabled,
+    })
+  ) {
+    return null;
+  }
   try {
     const result = await run();
     return {

@@ -5,6 +5,7 @@ import {
   TINA_BRANCH_COOKIE,
   tinaBranchCookieOptions,
 } from "@/lib/tina-preview-mode";
+import { safeRedirectPath } from "@/lib/safe-redirect-path";
 
 export async function GET(request: NextRequest) {
   const draft = await draftMode();
@@ -17,8 +18,8 @@ export async function GET(request: NextRequest) {
     expires: new Date(0),
     maxAge: 0,
   });
-  const next = new URL(request.url).searchParams.get("slug");
-  redirect(next && next.startsWith("/") ? next : "/");
+  const params = new URL(request.url).searchParams;
+  redirect(safeRedirectPath(params.get("redirect") ?? params.get("slug")));
 }
 
 export async function POST(request: NextRequest) {

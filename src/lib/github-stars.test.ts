@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { parseGitHubRepo } from "./github-stars-core.ts";
+import { applySnapshotStarCounts, parseGitHubRepo } from "./github-stars-core.ts";
 import { shouldFetchLiveGitHubStars } from "./tina-preview-mode-core.ts";
 
 describe("parseGitHubRepo", () => {
@@ -22,5 +22,27 @@ describe("shouldFetchLiveGitHubStars", () => {
 
   it("uses snapshot star counts on the preview Worker", () => {
     assert.equal(shouldFetchLiveGitHubStars({ XYLEM_PREVIEW: "1" }), false);
+  });
+});
+
+describe("applySnapshotStarCounts", () => {
+  it("fills missing star counts from the snapshot and keeps existing ones", () => {
+    const projects = applySnapshotStarCounts(
+      [
+        { slug: "myterm", githubStars: 9 },
+        { slug: "xylem" },
+        { slug: "private-app" },
+      ],
+      [
+        { slug: "myterm", githubStars: 1 },
+        { slug: "xylem", githubStars: 4 },
+        { slug: "other", githubStars: 8 },
+      ],
+    );
+    assert.deepEqual(projects, [
+      { slug: "myterm", githubStars: 9 },
+      { slug: "xylem", githubStars: 4 },
+      { slug: "private-app" },
+    ]);
   });
 });

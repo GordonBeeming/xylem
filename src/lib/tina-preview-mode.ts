@@ -18,6 +18,8 @@ export {
   TINA_BRANCH_COOKIE,
   decodeBranchName,
   isPreviewServer,
+  shouldFetchTina,
+  shouldFetchLiveGitHubStars,
   isBuildTimeDynamicApiError,
   isDocumentNavigationRequest,
   previewContextFromEnvAndCookies,

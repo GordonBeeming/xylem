@@ -5,6 +5,7 @@ import {
   isBuildTimeDynamicApiError,
   isDocumentNavigationRequest,
   isPreviewServer,
+  shouldFetchTina,
   previewContextFromEnvAndCookies,
   tinaBranchCookieOptions,
   pickFilesystemOrTinaPost,
@@ -154,3 +155,25 @@ describe("isBuildTimeDynamicApiError", () => {
   });
 });
 
+describe("shouldFetchTina", () => {
+  it("still fetches on local dev and the Pages build", () => {
+    assert.equal(
+      shouldFetchTina({ previewServer: false, draftModeEnabled: false }),
+      true,
+    );
+  });
+
+  it("does not fetch on the preview Worker outside draft mode", () => {
+    assert.equal(
+      shouldFetchTina({ previewServer: true, draftModeEnabled: false }),
+      false,
+    );
+  });
+
+  it("fetches on the preview Worker in official draft mode", () => {
+    assert.equal(
+      shouldFetchTina({ previewServer: true, draftModeEnabled: true }),
+      true,
+    );
+  });
+});

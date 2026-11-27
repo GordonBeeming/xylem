@@ -3,6 +3,7 @@ import { Libre_Baskerville, Libre_Franklin, Courier_Prime } from "next/font/goog
 import { ThemeProviders } from "@/components/ThemeProviders";
 import { SiteSearchProvider } from "@/components/ui/SiteSearchProvider";
 import { Header } from "@/components/layout/Header";
+import { PreviewModeBanner } from "@/components/layout/PreviewModeBanner";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { getSiteConfig } from "@/lib/tina-helpers";
@@ -91,6 +92,7 @@ export default function RootLayout({
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ThemeProviders>
           <SiteSearchProvider>
+            <PreviewModeBanner />
             <Header siteConfig={siteConfig} />
             <main id="main-content">{children}</main>
             <Footer />

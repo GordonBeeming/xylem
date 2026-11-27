@@ -37,6 +37,26 @@ export function isPreviewServer(env: PreviewEnv = process.env as PreviewEnv): bo
   return env.XYLEM_PREVIEW === "1";
 }
 
+/**
+ * Local `pnpm dev:tina` and the GitHub Pages build still fetch Tina (for
+ * useTina and for baking live data into the static export). The preview
+ * Worker only talks to TinaCloud in official Next.js draft mode.
+ */
+export function shouldFetchTina(options: {
+  previewServer: boolean;
+  draftModeEnabled: boolean;
+}): boolean {
+  if (!options.previewServer) return true;
+  return options.draftModeEnabled;
+}
+
+/** The preview Worker uses star counts baked into the content snapshot. */
+export function shouldFetchLiveGitHubStars(
+  env: PreviewEnv = process.env as PreviewEnv,
+): boolean {
+  return !isPreviewServer(env);
+}
+
 export type PreviewContext = {
   enabled: boolean;
   branch: string | null;
